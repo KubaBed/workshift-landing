@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Satoshi", system-ui, sans-serif;
+  --font-display: "Satoshi", system-ui, sans-serif;
+
+  --color-alabaster: #FFFFFF;
+  --color-navy: #0A2540;
+  --color-navy-dark: #071B2E;
+
+  --color-accent: #ee703d;
+  --color-accent-light: #f5a273;
+  --color-accent-rose: #cc7cab;
+  --color-accent-violet: #d5a4e7;
+  --color-accent-purple: #8530d1;
+  --color-chartreuse: #d2ff00;
+
+  --container-max-w: 1400px;
+}
+
+@layer base {
+  :root {
+    --foreground-rgb: 15, 23, 42;
+    --background-start-rgb: 255, 255, 255;
+    --background-end-rgb: 255, 255, 255;
+  }
+
+  body {
+    @apply text-slate-600 bg-white font-sans antialiased selection:bg-chartreuse selection:text-navy overflow-x-hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display tracking-tight text-slate-900;
+  }
+
+  /* Reset button styles for Framer Motion */
+  button {
+    @apply cursor-pointer;
+  }
+}
+
+/* Custom utilities */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Liquid Glass Refraction */
+  .glass-panel {
+    @apply bg-white/70 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_#0000000a] shadow-[inset_0_1px_0_#ffffff66];
+  }
+
+  .glass-panel-dark {
+    @apply bg-navy-dark/70 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_#00000033] shadow-[inset_0_1px_0_#ffffff0d];
+  }
+
+  /* No scrollbar utility */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

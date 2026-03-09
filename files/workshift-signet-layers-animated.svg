@@ -1,0 +1,76 @@
+<svg width="320" height="320" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Front layer: full gradient fill -->
+    <linearGradient id="gFront" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ee703d"/>
+      <stop offset="50%" stop-color="#cc7cab"/>
+      <stop offset="100%" stop-color="#8530d1"/>
+    </linearGradient>
+
+    <!-- Mid layer: semi-transparent -->
+    <linearGradient id="gMid" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ee703d" stop-opacity="0.38"/>
+      <stop offset="100%" stop-color="#d5a4e7" stop-opacity="0.22"/>
+    </linearGradient>
+
+    <!-- Back layer: very light transparent -->
+    <linearGradient id="gBack" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5a273" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#d5a4e7" stop-opacity="0.07"/>
+    </linearGradient>
+
+    <!-- Stroke gradients -->
+    <linearGradient id="sgBack" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5a273" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#d5a4e7" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="sgMid" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ee703d" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#cc7cab" stop-opacity="0.45"/>
+    </linearGradient>
+    <linearGradient id="sgFront" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ee703d"/>
+      <stop offset="50%" stop-color="#cc7cab"/>
+      <stop offset="100%" stop-color="#8530d1"/>
+    </linearGradient>
+
+    <!-- Glow filter -->
+    <filter id="glow" x="-25%" y="-25%" width="150%" height="150%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Fade-in animation -->
+    <style>
+      .layer-back  { animation: fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.1s both; }
+      .layer-mid   { animation: fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.28s both; }
+      .layer-front { animation: fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.46s both; }
+
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(18px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+    </style>
+  </defs>
+
+  <!-- Layer 1 — back, transparent -->
+  <g class="layer-back">
+    <rect x="18" y="128" width="222" height="130" rx="10"
+      fill="url(#gBack)" stroke="url(#sgBack)" stroke-width="1.5"/>
+  </g>
+
+  <!-- Layer 2 — mid, semi-transparent -->
+  <g class="layer-mid">
+    <rect x="42" y="96" width="222" height="130" rx="10"
+      fill="url(#gMid)" stroke="url(#sgMid)" stroke-width="2"/>
+  </g>
+
+  <!-- Layer 3 — front, full gradient fill -->
+  <g class="layer-front" filter="url(#glow)">
+    <rect x="66" y="64" width="222" height="130" rx="10"
+      fill="url(#gFront)" stroke="url(#sgFront)" stroke-width="2.5"/>
+    <!-- subtle inner detail lines -->
+    <line x1="90" y1="108" x2="224" y2="108" stroke="white" stroke-width="1.2" opacity="0.22"/>
+    <line x1="90" y1="128" x2="190" y2="128" stroke="white" stroke-width="1.2" opacity="0.13"/>
+  </g>
+</svg>

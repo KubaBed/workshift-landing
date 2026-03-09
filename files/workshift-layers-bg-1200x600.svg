@@ -1,0 +1,134 @@
+<svg width="1200" height="600" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+
+    <!-- Gradient fills -->
+    <linearGradient id="gFront" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ee703d"/>
+      <stop offset="50%" stop-color="#cc7cab"/>
+      <stop offset="100%" stop-color="#8530d1"/>
+    </linearGradient>
+
+    <linearGradient id="gMid" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ee703d" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#d5a4e7" stop-opacity="0.2"/>
+    </linearGradient>
+
+    <linearGradient id="gBack" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5a273" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#d5a4e7" stop-opacity="0.06"/>
+    </linearGradient>
+
+    <!-- Stroke gradients -->
+    <linearGradient id="sgBack" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5a273" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#d5a4e7" stop-opacity="0.15"/>
+    </linearGradient>
+    <linearGradient id="sgMid" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ee703d" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#cc7cab" stop-opacity="0.4"/>
+    </linearGradient>
+    <linearGradient id="sgFront" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ee703d"/>
+      <stop offset="50%" stop-color="#cc7cab"/>
+      <stop offset="100%" stop-color="#8530d1"/>
+    </linearGradient>
+
+    <!-- Glow filter for front layer -->
+    <filter id="glow" x="-15%" y="-15%" width="130%" height="130%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Soft ambient glow -->
+    <filter id="ambientGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="40" result="blur"/>
+      <feMerge><feMergeNode in="blur"/></feMerge>
+    </filter>
+
+    <style>
+      /* ── Intersection Observer–powered fade-in ── */
+      .ws-root {
+        opacity: 0;
+        transition: none;
+      }
+      .ws-root.visible .layer-back  {
+        animation: fadeSlideUp 1s cubic-bezier(0.22,1,0.36,1) 0.05s both;
+      }
+      .ws-root.visible .layer-mid   {
+        animation: fadeSlideUp 1s cubic-bezier(0.22,1,0.36,1) 0.22s both;
+      }
+      .ws-root.visible .layer-front {
+        animation: fadeSlideUp 1s cubic-bezier(0.22,1,0.36,1) 0.4s both;
+      }
+      .ws-root.visible {
+        opacity: 1;
+      }
+
+      @keyframes fadeSlideUp {
+        from { opacity: 0; transform: translateY(28px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Fallback: auto-play if JS/IntersectionObserver not available */
+      @media (prefers-reduced-motion: no-preference) {
+        .layer-back  { animation: fadeSlideUp 1s cubic-bezier(0.22,1,0.36,1) 0.3s both; }
+        .layer-mid   { animation: fadeSlideUp 1s cubic-bezier(0.22,1,0.36,1) 0.55s both; }
+        .layer-front { animation: fadeSlideUp 1s cubic-bezier(0.22,1,0.36,1) 0.8s both; }
+        .ws-root { opacity: 1 !important; }
+      }
+    </style>
+  </defs>
+
+  <!-- ── Ambient color bleed (very subtle, non-animated) ── -->
+  <ellipse cx="680" cy="340" rx="320" ry="160" fill="#ee703d" opacity="0.06" filter="url(#ambientGlow)"/>
+  <ellipse cx="820" cy="260" rx="220" ry="120" fill="#8530d1" opacity="0.05" filter="url(#ambientGlow)"/>
+
+  <g class="ws-root" id="wsLayers">
+
+    <!-- ── LAYER 1 — back, very transparent ── -->
+    <g class="layer-back">
+      <rect x="380" y="220" width="480" height="270" rx="20"
+        fill="url(#gBack)" stroke="url(#sgBack)" stroke-width="1.5"/>
+    </g>
+
+    <!-- ── LAYER 2 — mid, semi-transparent ── -->
+    <g class="layer-mid">
+      <rect x="420" y="172" width="480" height="270" rx="20"
+        fill="url(#gMid)" stroke="url(#sgMid)" stroke-width="2"/>
+    </g>
+
+    <!-- ── LAYER 3 — front, full gradient ── -->
+    <g class="layer-front" filter="url(#glow)">
+      <rect x="460" y="124" width="480" height="270" rx="20"
+        fill="url(#gFront)" stroke="url(#sgFront)" stroke-width="2.5"/>
+      <!-- inner detail -->
+      <line x1="492" y1="186" x2="720" y2="186" stroke="white" stroke-width="1.5" opacity="0.18"/>
+      <line x1="492" y1="212" x2="660" y2="212" stroke="white" stroke-width="1.5" opacity="0.1"/>
+    </g>
+
+  </g>
+
+  <!-- ── Intersection Observer Script ── -->
+  <script type="text/javascript"><![CDATA[
+    (function() {
+      var root = document.getElementById('wsLayers');
+      if (!root || !window.IntersectionObserver) return;
+
+      // Remove the CSS fallback animations so JS controls timing
+      var style = document.createElementNS('http://www.w3.org/2000/svg', 'style');
+      style.textContent = '@media (prefers-reduced-motion: no-preference) { .layer-back,.layer-mid,.layer-front { animation: none; } .ws-root { opacity: 0 !important; } }';
+      root.closest('svg').insertBefore(style, root.closest('svg').firstChild);
+
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            root.classList.add('visible');
+            observer.disconnect();
+          }
+        });
+      }, { threshold: 0.2 });
+
+      observer.observe(root);
+    })();
+  ]]></script>
+</svg>
