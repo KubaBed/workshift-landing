@@ -3,9 +3,8 @@ import * as THREE from 'three';
 
 const SPHERE_RADIUS = 12;
 const PARTICLE_COUNT = 3500;
-const INNER_COUNT = 600;
-const AVOIDANCE_DISTANCE = 4;
-const AVOIDANCE_FACTOR = 1.2;
+const AVOIDANCE_RADIUS = 5;
+const AVOIDANCE_STRENGTH = 1.5;
 const LERP_SPEED = 0.03;
 
 const NAVY = new THREE.Color(0x0A2540);
@@ -36,15 +35,13 @@ export function ParticleSphere() {
     const group = new THREE.Group();
     scene.add(group);
 
-    const totalCount = PARTICLE_COUNT + INNER_COUNT;
-    const basePositions = new Float32Array(totalCount * 3);
-    const currentPositions = new Float32Array(totalCount * 3);
-    const offsetsArr = new Float32Array(totalCount * 3);
-    const targetOffsetsArr = new Float32Array(totalCount * 3);
-    const sizes = new Float32Array(totalCount);
-    const colors = new Float32Array(totalCount * 3);
-    const lerpFactors = new Float32Array(totalCount);
-    const avoidFlags = new Uint8Array(totalCount);
+    const basePositions = new Float32Array(PARTICLE_COUNT * 3);
+    const currentPositions = new Float32Array(PARTICLE_COUNT * 3);
+    const offsetsArr = new Float32Array(PARTICLE_COUNT * 3);
+    const targetOffsetsArr = new Float32Array(PARTICLE_COUNT * 3);
+    const colors = new Float32Array(PARTICLE_COUNT * 3);
+    const lerpFactors = new Float32Array(PARTICLE_COUNT);
+    const avoidFlags = new Uint8Array(PARTICLE_COUNT);
 
     for (let i = 0; i < PARTICLE_COUNT; i++) {
       const phi = Math.acos(1 - (2 * (i + 0.5)) / PARTICLE_COUNT);
@@ -53,23 +50,9 @@ export function ParticleSphere() {
       basePositions[i * 3] = SPHERE_RADIUS * Math.sin(phi) * Math.cos(theta) * scatter;
       basePositions[i * 3 + 1] = SPHERE_RADIUS * Math.sin(phi) * Math.sin(theta) * scatter;
       basePositions[i * 3 + 2] = SPHERE_RADIUS * Math.cos(phi) * scatter;
-      sizes[i] = 1.5 + Math.random() * 3.0;
       const r = Math.random();
       const c = r < 0.7 ? NAVY : r < 0.85 ? ACCENT_COL : VIOLET;
       colors[i * 3] = c.r; colors[i * 3 + 1] = c.g; colors[i * 3 + 2] = c.b;
-    }
-
-    for (let i = 0; i < INNER_COUNT; i++) {
-      const idx = PARTICLE_COUNT + i;
-      const rad = Math.random() * SPHERE_RADIUS * 0.7;
-      const phi = Math.random() * Math.PI * 2;
-      const theta = Math.random() * Math.PI;
-      basePositions[idx * 3] = rad * Math.sin(theta) * Math.cos(phi);
-      basePositions[idx * 3 + 1] = rad * Math.sin(theta) * Math.sin(phi);
-      basePositions[idx * 3 + 2] = rad * Math.cos(theta);
-      sizes[idx] = 0.8 + Math.random() * 2.0;
-      const c = Math.random() < 0.5 ? NAVY : ACCENT_COL;
-      colors[idx * 3] = c.r; colors[idx * 3 + 1] = c.g; colors[idx * 3 + 2] = c.b;
     }
 
     currentPositions.set(basePositions);
@@ -107,15 +90,11 @@ export function ParticleSphere() {
     group.add(new THREE.LineSegments(linesGeo, linesMat));
 
     let cursorNDC = { x: 9999, y: 9999 };
-    let cursorWorld = new THREE.Vector3(9999, 9999, 0);
 
     const onMouseMove = (e: MouseEvent) => {
       const rect = container.getBoundingClientRect();
       cursorNDC.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       cursorNDC.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-      const v = new THREE.Vector3(cursorNDC.x, cursorNDC.y, 0.5).unproject(camera);
-      const d = v.sub(camera.position).normalize();
-      cursorWorld = camera.position.clone().add(d.multiplyScalar(-camera.position.z / d.z));
     };
 
     const onTouchMove = (e: TouchEvent) => {
@@ -123,14 +102,10 @@ export function ParticleSphere() {
       const t = e.touches[0];
       cursorNDC.x = ((t.clientX - rect.left) / rect.width) * 2 - 1;
       cursorNDC.y = -((t.clientY - rect.top) / rect.height) * 2 + 1;
-      const v = new THREE.Vector3(cursorNDC.x, cursorNDC.y, 0.5).unproject(camera);
-      const d = v.sub(camera.position).normalize();
-      cursorWorld = camera.position.clone().add(d.multiplyScalar(-camera.position.z / d.z));
     };
 
     const onMouseLeave = () => {
       cursorNDC = { x: 9999, y: 9999 };
-      cursorWorld = new THREE.Vector3(9999, 9999, 0);
     };
 
     container.addEventListener('mousemove', onMouseMove);
@@ -139,8 +114,6 @@ export function ParticleSphere() {
 
     let autoRotY = 0;
     let frameId: number;
-    const invMat = new THREE.Matrix4();
-    const localCur = new THREE.Vector3();
 
     const animate = () => {
       frameId = requestAnimationFrame(animate);
@@ -156,23 +129,26 @@ export function ParticleSphere() {
       linesMat.color.lerp(logoHovered ? LINE_HOVER : LINE_DEFAULT, 0.05);
       linesMat.opacity += ((logoHovered ? 0.12 : 0.06) - linesMat.opacity) * 0.05;
 
-      invMat.copy(group.matrixWorld).invert();
-      localCur.copy(cursorWorld).applyMatrix4(invMat);
-
-      for (let i = 0; i < totalCount; i++) {
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
         const i3 = i * 3;
-        const px = basePositions[i3] + offsetsArr[i3];
-        const py = basePositions[i3 + 1] + offsetsArr[i3 + 1];
-        const dx = px - localCur.x;
-        const dy = py - localCur.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+        const bx = basePositions[i3];
+        const by = basePositions[i3 + 1];
+        const bz = basePositions[i3 + 2];
 
-        if (dist < AVOIDANCE_DISTANCE) {
-          const inv = 1 / (dist || 0.001);
-          targetOffsetsArr[i3] = dx * inv * AVOIDANCE_FACTOR;
-          targetOffsetsArr[i3 + 1] = dy * inv * AVOIDANCE_FACTOR;
-          targetOffsetsArr[i3 + 2] = 0;
-          if (!avoidFlags[i]) { lerpFactors[i] = 0; avoidFlags[i] = 1; }
+        if (logoHovered) {
+          const distFromCenter = Math.sqrt(bx * bx + by * by + bz * bz);
+          if (distFromCenter < AVOIDANCE_RADIUS) {
+            const inv = 1 / (distFromCenter || 0.001);
+            targetOffsetsArr[i3] = bx * inv * AVOIDANCE_STRENGTH;
+            targetOffsetsArr[i3 + 1] = by * inv * AVOIDANCE_STRENGTH;
+            targetOffsetsArr[i3 + 2] = bz * inv * AVOIDANCE_STRENGTH;
+            if (!avoidFlags[i]) { lerpFactors[i] = 0; avoidFlags[i] = 1; }
+          } else {
+            targetOffsetsArr[i3] = 0;
+            targetOffsetsArr[i3 + 1] = 0;
+            targetOffsetsArr[i3 + 2] = 0;
+            if (avoidFlags[i]) { avoidFlags[i] = 0; lerpFactors[i] = 0; }
+          }
         } else {
           targetOffsetsArr[i3] = 0;
           targetOffsetsArr[i3 + 1] = 0;
@@ -186,9 +162,9 @@ export function ParticleSphere() {
         offsetsArr[i3 + 2] += (targetOffsetsArr[i3 + 2] - offsetsArr[i3 + 2]) * lf;
         if (lf < 1) lerpFactors[i] = Math.min(lf + LERP_SPEED, 1);
 
-        currentPositions[i3] = basePositions[i3] + offsetsArr[i3];
-        currentPositions[i3 + 1] = basePositions[i3 + 1] + offsetsArr[i3 + 1];
-        currentPositions[i3 + 2] = basePositions[i3 + 2] + offsetsArr[i3 + 2];
+        currentPositions[i3] = bx + offsetsArr[i3];
+        currentPositions[i3 + 1] = by + offsetsArr[i3 + 1];
+        currentPositions[i3 + 2] = bz + offsetsArr[i3 + 2];
       }
       pointsGeo.attributes.position.needsUpdate = true;
 
