@@ -193,6 +193,10 @@ export function ParticleSphere() {
       container.removeEventListener('mousemove', onMouseMove);
       container.removeEventListener('touchmove', onTouchMove);
       container.removeEventListener('mouseleave', onMouseLeave);
+      pointsGeo.dispose();
+      pointsMat.dispose();
+      linesGeo.dispose();
+      linesMat.dispose();
       renderer.dispose();
       if (container.contains(renderer.domElement)) container.removeChild(renderer.domElement);
     };
