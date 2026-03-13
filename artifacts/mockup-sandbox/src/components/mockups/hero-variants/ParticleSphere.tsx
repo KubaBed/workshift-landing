@@ -3,8 +3,7 @@ import * as THREE from 'three';
 
 const SPHERE_RADIUS = 12;
 const PARTICLE_COUNT = 3500;
-const AVOIDANCE_RADIUS = 5;
-const AVOIDANCE_STRENGTH = 1.5;
+const REPULSION_STRENGTH = 2.5;
 const LERP_SPEED = 0.03;
 
 const NAVY = new THREE.Color(0x0A2540);
@@ -137,18 +136,11 @@ export function ParticleSphere() {
 
         if (logoHovered) {
           const distFromCenter = Math.sqrt(bx * bx + by * by + bz * bz);
-          if (distFromCenter < AVOIDANCE_RADIUS) {
-            const inv = 1 / (distFromCenter || 0.001);
-            targetOffsetsArr[i3] = bx * inv * AVOIDANCE_STRENGTH;
-            targetOffsetsArr[i3 + 1] = by * inv * AVOIDANCE_STRENGTH;
-            targetOffsetsArr[i3 + 2] = bz * inv * AVOIDANCE_STRENGTH;
-            if (!avoidFlags[i]) { lerpFactors[i] = 0; avoidFlags[i] = 1; }
-          } else {
-            targetOffsetsArr[i3] = 0;
-            targetOffsetsArr[i3 + 1] = 0;
-            targetOffsetsArr[i3 + 2] = 0;
-            if (avoidFlags[i]) { avoidFlags[i] = 0; lerpFactors[i] = 0; }
-          }
+          const inv = 1 / (distFromCenter || 0.001);
+          targetOffsetsArr[i3] = bx * inv * REPULSION_STRENGTH;
+          targetOffsetsArr[i3 + 1] = by * inv * REPULSION_STRENGTH;
+          targetOffsetsArr[i3 + 2] = bz * inv * REPULSION_STRENGTH;
+          if (!avoidFlags[i]) { lerpFactors[i] = 0; avoidFlags[i] = 1; }
         } else {
           targetOffsetsArr[i3] = 0;
           targetOffsetsArr[i3 + 1] = 0;
