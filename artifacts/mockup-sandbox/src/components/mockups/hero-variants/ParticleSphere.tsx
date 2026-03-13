@@ -29,7 +29,7 @@ export function ParticleSphere() {
     const camera = new THREE.PerspectiveCamera(
       50, container.clientWidth / container.clientHeight, 0.1, 1000
     );
-    camera.position.z = 32;
+    camera.position.z = 38;
 
     const group = new THREE.Group();
     scene.add(group);
@@ -112,14 +112,23 @@ export function ParticleSphere() {
     container.addEventListener('mouseleave', onMouseLeave);
 
     let autoRotY = 0;
+    let smoothTiltX = 0;
+    let smoothTiltY = 0;
     let frameId: number;
 
     const animate = () => {
       frameId = requestAnimationFrame(animate);
 
-      autoRotY += 0.0015;
-      group.rotation.y = autoRotY;
-      group.rotation.x = Math.sin(autoRotY * 0.4) * 0.1;
+      autoRotY += 0.0003;
+
+      const isActive = cursorNDC.x < 9000;
+      const targetTiltY = isActive ? cursorNDC.x * 0.28 : 0;
+      const targetTiltX = isActive ? -cursorNDC.y * 0.14 : 0;
+      smoothTiltY += (targetTiltY - smoothTiltY) * 0.05;
+      smoothTiltX += (targetTiltX - smoothTiltX) * 0.05;
+
+      group.rotation.y = autoRotY + smoothTiltY;
+      group.rotation.x = Math.sin(autoRotY * 0.4) * 0.08 + smoothTiltX;
       group.updateMatrixWorld();
 
       const cDist = Math.sqrt(cursorNDC.x * cursorNDC.x + cursorNDC.y * cursorNDC.y);
