@@ -2,15 +2,65 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 const SPHERE_RADIUS = 12;
-const PARTICLE_COUNT = 3500;
-const REPULSION_STRENGTH = 8;
-const LERP_SPEED = 0.06;
+const AVOIDANCE_DISTANCE = 4;
+const AVOIDANCE_FACTOR = -0.3;
+const LERP_SPEED = 0.02;
 
-const NAVY = new THREE.Color(0x0A2540);
-const ACCENT_COL = new THREE.Color(0xee703d);
-const VIOLET = new THREE.Color(0x8530d1);
-const LINE_DEFAULT = new THREE.Color(0x0A2540);
-const LINE_HOVER = new THREE.Color(0xee703d);
+const PALETTE = [
+  new THREE.Color(0x0A2540),
+  new THREE.Color(0x0A2540),
+  new THREE.Color(0x0A2540),
+  new THREE.Color(0x0A2540),
+  new THREE.Color(0x0A2540),
+  new THREE.Color(0xee703d),
+  new THREE.Color(0xee703d),
+  new THREE.Color(0x8530d1),
+  new THREE.Color(0xcc7cab),
+];
+const LINE_COLOR = new THREE.Color(0x0A2540);
+
+interface Dot {
+  mesh: THREE.Mesh;
+  pivot: THREE.Group;
+  isAvoiding: boolean;
+  lerpFactor: number;
+  targetPos: THREE.Vector3;
+}
+
+function createDot(pivot: THREE.Group, size: number, opacity: number): Dot {
+  const color = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+  const material = new THREE.MeshBasicMaterial({ color, transparent: true, opacity });
+  const geometry = new THREE.CircleGeometry(size, 6);
+  const mesh = new THREE.Mesh(geometry, material);
+  return { mesh, pivot, isAvoiding: false, lerpFactor: 0, targetPos: new THREE.Vector3() };
+}
+
+function avoidMouse(dot: Dot, mousePos: THREE.Vector3): void {
+  const pivotGlobalPos = new THREE.Vector3();
+  dot.pivot.getWorldPosition(pivotGlobalPos);
+  pivotGlobalPos.setZ(0);
+  const mouseFlat = new THREE.Vector3(mousePos.x, mousePos.y, 0);
+  const distance = pivotGlobalPos.distanceTo(mouseFlat);
+
+  if (distance < AVOIDANCE_DISTANCE) {
+    const dir = new THREE.Vector3(
+      pivotGlobalPos.x - mousePos.x,
+      pivotGlobalPos.y - mousePos.y,
+      pivotGlobalPos.z
+    ).normalize();
+    dot.targetPos.x = dir.x * AVOIDANCE_FACTOR;
+    dot.targetPos.y = dir.y * AVOIDANCE_FACTOR;
+    if (!dot.isAvoiding) { dot.lerpFactor = 0; dot.isAvoiding = true; }
+  } else {
+    if (dot.isAvoiding) { dot.isAvoiding = false; dot.lerpFactor = 0; }
+    dot.targetPos.set(0, 0, 0);
+  }
+}
+
+function controlMovement(dot: Dot): void {
+  dot.mesh.position.lerp(dot.targetPos, dot.lerpFactor);
+  if (dot.lerpFactor < 1) dot.lerpFactor += LERP_SPEED;
+}
 
 export function ParticleSphere() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -22,8 +72,7 @@ export function ParticleSphere() {
     let frameId: number;
     let initialized = false;
     let ro: ResizeObserver | null = null;
-
-    const cleanup: Array<() => void> = [];
+    const cleanupFns: Array<() => void> = [];
 
     const init = (w: number, h: number) => {
       if (initialized || w === 0 || h === 0) return;
@@ -41,153 +90,132 @@ export function ParticleSphere() {
       container.appendChild(canvas);
 
       const camera = new THREE.PerspectiveCamera(50, w / h, 0.1, 1000);
-      camera.position.z = 38;
+      camera.position.z = 32;
 
-      const group = new THREE.Group();
-      scene.add(group);
-
-      const basePositions = new Float32Array(PARTICLE_COUNT * 3);
-      const currentPositions = new Float32Array(PARTICLE_COUNT * 3);
-      const offsetsArr = new Float32Array(PARTICLE_COUNT * 3);
-      const targetOffsetsArr = new Float32Array(PARTICLE_COUNT * 3);
-      const colors = new Float32Array(PARTICLE_COUNT * 3);
-      const lerpFactors = new Float32Array(PARTICLE_COUNT);
-      const avoidFlags = new Uint8Array(PARTICLE_COUNT);
+      const dots: Dot[] = [];
+      const pivotsGroup = new THREE.Group();
+      const PARTICLE_COUNT = 3500;
 
       for (let i = 0; i < PARTICLE_COUNT; i++) {
         const phi = Math.acos(1 - (2 * (i + 0.5)) / PARTICLE_COUNT);
         const theta = Math.PI * (1 + Math.sqrt(5)) * i;
         const scatter = 0.9 + Math.random() * 0.2;
-        basePositions[i * 3] = SPHERE_RADIUS * Math.sin(phi) * Math.cos(theta) * scatter;
-        basePositions[i * 3 + 1] = SPHERE_RADIUS * Math.sin(phi) * Math.sin(theta) * scatter;
-        basePositions[i * 3 + 2] = SPHERE_RADIUS * Math.cos(phi) * scatter;
-        const r = Math.random();
-        const c = r < 0.7 ? NAVY : r < 0.85 ? ACCENT_COL : VIOLET;
-        colors[i * 3] = c.r; colors[i * 3 + 1] = c.g; colors[i * 3 + 2] = c.b;
+        const x = SPHERE_RADIUS * Math.sin(phi) * Math.cos(theta) * scatter;
+        const y = SPHERE_RADIUS * Math.sin(phi) * Math.sin(theta) * scatter;
+        const z = SPHERE_RADIUS * Math.cos(phi) * scatter;
+
+        const pivot = new THREE.Group();
+        pivot.position.set(x, y, z);
+        const size = 0.018 + Math.random() * 0.041;
+        const opacity = 0.25 + Math.random() * 0.55;
+        const dot = createDot(pivot, size, opacity);
+        dots.push(dot);
+        pivot.add(dot.mesh);
+        pivotsGroup.add(pivot);
       }
 
-      currentPositions.set(basePositions);
+      for (let i = 0; i < 800; i++) {
+        const r = Math.random() * SPHERE_RADIUS * 0.75;
+        const phi = Math.random() * Math.PI * 2;
+        const theta = Math.random() * Math.PI;
+        const x = r * Math.sin(theta) * Math.cos(phi);
+        const y = r * Math.sin(theta) * Math.sin(phi);
+        const z = r * Math.cos(theta);
 
-      const pointsGeo = new THREE.BufferGeometry();
-      pointsGeo.setAttribute('position', new THREE.BufferAttribute(currentPositions, 3));
-      pointsGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        const pivot = new THREE.Group();
+        pivot.position.set(x, y, z);
+        const size = 0.012 + Math.random() * 0.033;
+        const opacity = 0.08 + Math.random() * 0.2;
+        const dot = createDot(pivot, size, opacity);
+        dots.push(dot);
+        pivot.add(dot.mesh);
+        pivotsGroup.add(pivot);
+      }
 
-      const pointsMat = new THREE.PointsMaterial({
-        size: 0.14,
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.75,
-        sizeAttenuation: true,
-        depthWrite: false,
+      scene.add(pivotsGroup);
+
+      const linesMaterial = new THREE.LineBasicMaterial({
+        color: LINE_COLOR, transparent: true, opacity: 0.08,
       });
-      group.add(new THREE.Points(pointsGeo, pointsMat));
-
-      const lineIdx: number[] = [];
-      for (let i = 0; i < PARTICLE_COUNT; i += 3) {
-        for (let j = i + 1; j < Math.min(i + 10, PARTICLE_COUNT); j += 3) {
-          const dx = basePositions[i * 3] - basePositions[j * 3];
-          const dy = basePositions[i * 3 + 1] - basePositions[j * 3 + 1];
-          const dz = basePositions[i * 3 + 2] - basePositions[j * 3 + 2];
-          if (Math.sqrt(dx * dx + dy * dy + dz * dz) < 2.5) lineIdx.push(i, j);
+      const lineSegments: number[] = [];
+      const surfaceDots = dots.slice(0, PARTICLE_COUNT);
+      for (let i = 0; i < surfaceDots.length; i += 3) {
+        for (let j = i + 1; j < Math.min(i + 10, surfaceDots.length); j += 3) {
+          const dist = surfaceDots[i].pivot.position.distanceTo(surfaceDots[j].pivot.position);
+          if (dist < 2.5) lineSegments.push(i, j);
         }
       }
+      const linesGeometry = new THREE.BufferGeometry();
+      const linesPositions = new Float32Array(lineSegments.length * 3);
+      linesGeometry.setAttribute('position', new THREE.BufferAttribute(linesPositions, 3));
+      const lines = new THREE.LineSegments(linesGeometry, linesMaterial);
+      scene.add(lines);
 
-      const linesMat = new THREE.LineBasicMaterial({
-        color: LINE_DEFAULT, transparent: true, opacity: 0.06,
-      });
-      const linesGeo = new THREE.BufferGeometry();
-      const linesPos = new Float32Array(lineIdx.length * 3);
-      linesGeo.setAttribute('position', new THREE.BufferAttribute(linesPos, 3));
-      group.add(new THREE.LineSegments(linesGeo, linesMat));
+      let cursorPos = new THREE.Vector3(9999, 9999, 0);
+      const worldPos = new THREE.Vector3();
 
-      let cursorNDC = { x: 9999, y: 9999 };
-
-      const onMouseMove = (e: MouseEvent) => {
+      const onMouseMove = (event: MouseEvent) => {
         const rect = container.getBoundingClientRect();
-        cursorNDC.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-        cursorNDC.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+        const ndcX = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        const ndcY = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+        const vector = new THREE.Vector3(ndcX, ndcY, 0.5);
+        vector.unproject(camera);
+        const dir = vector.sub(camera.position).normalize();
+        const distance = -camera.position.z / dir.z;
+        cursorPos = camera.position.clone().add(dir.multiplyScalar(distance));
       };
-      const onTouchMove = (e: TouchEvent) => {
+
+      const onTouchMove = (event: TouchEvent) => {
         const rect = container.getBoundingClientRect();
-        const t = e.touches[0];
-        cursorNDC.x = ((t.clientX - rect.left) / rect.width) * 2 - 1;
-        cursorNDC.y = -((t.clientY - rect.top) / rect.height) * 2 + 1;
+        const touch = event.touches[0];
+        const ndcX = ((touch.clientX - rect.left) / rect.width) * 2 - 1;
+        const ndcY = -((touch.clientY - rect.top) / rect.height) * 2 + 1;
+        const vector = new THREE.Vector3(ndcX, ndcY, 0.5);
+        vector.unproject(camera);
+        const dir = vector.sub(camera.position).normalize();
+        const distance = -camera.position.z / dir.z;
+        cursorPos = camera.position.clone().add(dir.multiplyScalar(distance));
       };
-      const onMouseLeave = () => { cursorNDC = { x: 9999, y: 9999 }; };
+
+      const onMouseLeave = () => {
+        cursorPos = new THREE.Vector3(9999, 9999, 0);
+      };
 
       container.addEventListener('mousemove', onMouseMove);
       container.addEventListener('touchmove', onTouchMove, { passive: true });
       container.addEventListener('mouseleave', onMouseLeave);
 
       let autoRotY = 0;
-      let smoothTiltX = 0;
-      let smoothTiltY = 0;
 
       const animate = () => {
         frameId = requestAnimationFrame(animate);
-
         autoRotY += 0.0003;
-        const isActive = cursorNDC.x < 9000;
-        const targetTiltY = isActive ? cursorNDC.x * 0.07 : 0;
-        const targetTiltX = isActive ? -cursorNDC.y * 0.035 : 0;
-        smoothTiltY += (targetTiltY - smoothTiltY) * 0.05;
-        smoothTiltX += (targetTiltX - smoothTiltX) * 0.05;
-        group.rotation.y = autoRotY + smoothTiltY;
-        group.rotation.x = Math.sin(autoRotY * 0.4) * 0.08 + smoothTiltX;
-        group.updateMatrixWorld();
+        pivotsGroup.rotation.y = autoRotY;
+        pivotsGroup.rotation.x = Math.sin(autoRotY * 0.4) * 0.1;
 
-        const cDist = Math.sqrt(cursorNDC.x * cursorNDC.x + cursorNDC.y * cursorNDC.y);
-        const logoHovered = cDist < 0.45;
-        linesMat.color.lerp(logoHovered ? LINE_HOVER : LINE_DEFAULT, 0.05);
-        linesMat.opacity += ((logoHovered ? 0.12 : 0.06) - linesMat.opacity) * 0.05;
-
-        for (let i = 0; i < PARTICLE_COUNT; i++) {
-          const i3 = i * 3;
-          const bx = basePositions[i3];
-          const by = basePositions[i3 + 1];
-          const bz = basePositions[i3 + 2];
-
-          if (logoHovered) {
-            const distFromCenter = Math.sqrt(bx * bx + by * by + bz * bz);
-            const inv = 1 / (distFromCenter || 0.001);
-            targetOffsetsArr[i3] = bx * inv * REPULSION_STRENGTH;
-            targetOffsetsArr[i3 + 1] = by * inv * REPULSION_STRENGTH;
-            targetOffsetsArr[i3 + 2] = bz * inv * REPULSION_STRENGTH;
-            if (!avoidFlags[i]) { lerpFactors[i] = LERP_SPEED; avoidFlags[i] = 1; }
-          } else {
-            targetOffsetsArr[i3] = 0;
-            targetOffsetsArr[i3 + 1] = 0;
-            targetOffsetsArr[i3 + 2] = 0;
-            if (avoidFlags[i]) { avoidFlags[i] = 0; lerpFactors[i] = 0; }
-          }
-
-          const lf = lerpFactors[i];
-          offsetsArr[i3] += (targetOffsetsArr[i3] - offsetsArr[i3]) * lf;
-          offsetsArr[i3 + 1] += (targetOffsetsArr[i3 + 1] - offsetsArr[i3 + 1]) * lf;
-          offsetsArr[i3 + 2] += (targetOffsetsArr[i3 + 2] - offsetsArr[i3 + 2]) * lf;
-          if (lf < 1) lerpFactors[i] = Math.min(lf + LERP_SPEED, 1);
-
-          currentPositions[i3] = bx + offsetsArr[i3];
-          currentPositions[i3 + 1] = by + offsetsArr[i3 + 1];
-          currentPositions[i3 + 2] = bz + offsetsArr[i3 + 2];
+        for (const dot of dots) {
+          avoidMouse(dot, cursorPos);
+          controlMovement(dot);
+          dot.mesh.lookAt(camera.position);
         }
-        pointsGeo.attributes.position.needsUpdate = true;
 
-        const lp = linesGeo.attributes.position.array as Float32Array;
-        for (let i = 0; i < lineIdx.length; i += 2) {
-          const a = lineIdx[i] * 3;
-          const b = lineIdx[i + 1] * 3;
-          lp[i * 3] = currentPositions[a];
-          lp[i * 3 + 1] = currentPositions[a + 1];
-          lp[i * 3 + 2] = currentPositions[a + 2];
-          lp[(i + 1) * 3] = currentPositions[b];
-          lp[(i + 1) * 3 + 1] = currentPositions[b + 1];
-          lp[(i + 1) * 3 + 2] = currentPositions[b + 2];
+        const posArray = linesGeometry.attributes.position.array as Float32Array;
+        for (let i = 0; i < lineSegments.length; i += 2) {
+          const idxA = lineSegments[i];
+          const idxB = lineSegments[i + 1];
+          surfaceDots[idxA].mesh.getWorldPosition(worldPos);
+          posArray[i * 3] = worldPos.x;
+          posArray[i * 3 + 1] = worldPos.y;
+          posArray[i * 3 + 2] = worldPos.z;
+          surfaceDots[idxB].mesh.getWorldPosition(worldPos);
+          posArray[(i + 1) * 3] = worldPos.x;
+          posArray[(i + 1) * 3 + 1] = worldPos.y;
+          posArray[(i + 1) * 3 + 2] = worldPos.z;
         }
-        linesGeo.attributes.position.needsUpdate = true;
-
+        linesGeometry.attributes.position.needsUpdate = true;
         renderer.render(scene, camera);
       };
+
       animate();
 
       const onResize = () => {
@@ -200,27 +228,19 @@ export function ParticleSphere() {
       };
       window.addEventListener('resize', onResize);
 
-      cleanup.push(() => {
+      cleanupFns.push(() => {
         cancelAnimationFrame(frameId);
         window.removeEventListener('resize', onResize);
         container.removeEventListener('mousemove', onMouseMove);
         container.removeEventListener('touchmove', onTouchMove);
         container.removeEventListener('mouseleave', onMouseLeave);
-        pointsGeo.dispose();
-        pointsMat.dispose();
-        linesGeo.dispose();
-        linesMat.dispose();
         renderer.dispose();
-        if (container.contains(renderer.domElement)) {
-          container.removeChild(renderer.domElement);
-        }
+        if (container.contains(canvas)) container.removeChild(canvas);
       });
     };
 
     const tryInit = () => {
-      const w = container.clientWidth;
-      const h = container.clientHeight;
-      init(w, h);
+      init(container.clientWidth, container.clientHeight);
       return initialized;
     };
 
@@ -233,7 +253,7 @@ export function ParticleSphere() {
 
     return () => {
       ro?.disconnect();
-      cleanup.forEach(fn => fn());
+      cleanupFns.forEach(fn => fn());
     };
   }, []);
 
@@ -241,33 +261,6 @@ export function ParticleSphere() {
     <div
       ref={containerRef}
       style={{ position: 'absolute', inset: 0, pointerEvents: 'auto' }}
-    >
-      <svg
-        width="64"
-        height="64"
-        viewBox="0 0 92 92"
-        fill="none"
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          pointerEvents: 'none',
-          filter: 'drop-shadow(0 0 16px rgba(238,112,61,0.35))',
-          zIndex: 1,
-        }}
-      >
-        <rect x="18" y="20" width="40" height="10" rx="3" fill="#F0F0F2" opacity="0.15" />
-        <rect x="34" y="41" width="40" height="10" rx="3" fill="url(#sphere-logo-grad)" />
-        <rect x="18" y="62" width="40" height="10" rx="3" fill="#F0F0F2" opacity="0.15" />
-        <defs>
-          <linearGradient id="sphere-logo-grad" x1="34" y1="46" x2="74" y2="46">
-            <stop offset="0%" stopColor="#ee703d" />
-            <stop offset="50%" stopColor="#cc7cab" />
-            <stop offset="100%" stopColor="#8530d1" />
-          </linearGradient>
-        </defs>
-      </svg>
-    </div>
+    />
   );
 }
