@@ -3,7 +3,7 @@ import * as THREE from 'three';
 
 const SPHERE_RADIUS = 12;
 const PARTICLE_COUNT = 3500;
-const REPULSION_STRENGTH = 6;
+const REPULSION_STRENGTH = 8;
 const LERP_SPEED = 0.06;
 
 const NAVY = new THREE.Color(0x0A2540);
@@ -128,8 +128,8 @@ export function ParticleSphere() {
 
         autoRotY += 0.0003;
         const isActive = cursorNDC.x < 9000;
-        const targetTiltY = isActive ? cursorNDC.x * 0.28 : 0;
-        const targetTiltX = isActive ? -cursorNDC.y * 0.14 : 0;
+        const targetTiltY = isActive ? cursorNDC.x * 0.07 : 0;
+        const targetTiltX = isActive ? -cursorNDC.y * 0.035 : 0;
         smoothTiltY += (targetTiltY - smoothTiltY) * 0.05;
         smoothTiltX += (targetTiltX - smoothTiltX) * 0.05;
         group.rotation.y = autoRotY + smoothTiltY;
@@ -153,7 +153,7 @@ export function ParticleSphere() {
             targetOffsetsArr[i3] = bx * inv * REPULSION_STRENGTH;
             targetOffsetsArr[i3 + 1] = by * inv * REPULSION_STRENGTH;
             targetOffsetsArr[i3 + 2] = bz * inv * REPULSION_STRENGTH;
-            if (!avoidFlags[i]) { lerpFactors[i] = 0; avoidFlags[i] = 1; }
+            if (!avoidFlags[i]) { lerpFactors[i] = LERP_SPEED; avoidFlags[i] = 1; }
           } else {
             targetOffsetsArr[i3] = 0;
             targetOffsetsArr[i3 + 1] = 0;
