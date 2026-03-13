@@ -13,7 +13,9 @@ A React + Vite landing page for Workshift, featuring animated sections, GSAP/Fra
 
 ## Project Structure
 - `src/` - React source files
-  - `components/` - All page section components (Hero variants V1-V5, About, Contact, etc.)
+  - `components/` - All page section components (Hero variants V1-V5 + active HeroTypographic C, About, Contact, etc.)
+    - `HeroTypographic.jsx` - **Active main hero** (Variant C: split layout, word-reveal animation, stats)
+    - `HeroParticleSphere.jsx` - Three.js particle sphere used by HeroTypographic
   - `components/ui/` - Reusable UI components (Logo, GradientDivider)
   - `App.jsx` - Main app component
   - `main.jsx` - Entry point

@@ -19,15 +19,7 @@ const PALETTE = [
 ];
 const LINE_COLOR = new THREE.Color(0x0A2540);
 
-interface Dot {
-  mesh: THREE.Mesh;
-  pivot: THREE.Group;
-  isAvoiding: boolean;
-  lerpFactor: number;
-  targetPos: THREE.Vector3;
-}
-
-function createDot(pivot: THREE.Group, size: number, opacity: number): Dot {
+function createDot(pivot, size, opacity) {
   const color = PALETTE[Math.floor(Math.random() * PALETTE.length)];
   const material = new THREE.MeshBasicMaterial({ color, transparent: true, opacity });
   const geometry = new THREE.CircleGeometry(size, 6);
@@ -35,13 +27,12 @@ function createDot(pivot: THREE.Group, size: number, opacity: number): Dot {
   return { mesh, pivot, isAvoiding: false, lerpFactor: 0, targetPos: new THREE.Vector3() };
 }
 
-function avoidMouse(dot: Dot, mousePos: THREE.Vector3): void {
+function avoidMouse(dot, mousePos) {
   const pivotGlobalPos = new THREE.Vector3();
   dot.pivot.getWorldPosition(pivotGlobalPos);
   pivotGlobalPos.setZ(0);
   const mouseFlat = new THREE.Vector3(mousePos.x, mousePos.y, 0);
   const distance = pivotGlobalPos.distanceTo(mouseFlat);
-
   if (distance < AVOIDANCE_DISTANCE) {
     const dir = new THREE.Vector3(
       pivotGlobalPos.x - mousePos.x,
@@ -57,29 +48,36 @@ function avoidMouse(dot: Dot, mousePos: THREE.Vector3): void {
   }
 }
 
-function controlMovement(dot: Dot): void {
+function controlMovement(dot) {
   dot.mesh.position.lerp(dot.targetPos, dot.lerpFactor);
   if (dot.lerpFactor < 1) dot.lerpFactor += LERP_SPEED;
 }
 
-export function ParticleSphere() {
-  const containerRef = useRef<HTMLDivElement>(null);
+export function HeroParticleSphere() {
+  const containerRef = useRef(null);
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    let frameId: number;
+    let frameId;
     let initialized = false;
-    let ro: ResizeObserver | null = null;
-    const cleanupFns: Array<() => void> = [];
+    let ro = null;
+    const cleanupFns = [];
 
-    const init = (w: number, h: number) => {
+    const init = (w, h) => {
       if (initialized || w === 0 || h === 0) return;
       initialized = true;
 
+      let renderer;
+      try {
+        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+        if (!renderer.getContext()) { renderer.dispose(); return; }
+      } catch {
+        return;
+      }
+
       const scene = new THREE.Scene();
-      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.setSize(w, h);
       renderer.setClearColor(0xFAFAFA, 1);
@@ -92,7 +90,7 @@ export function ParticleSphere() {
       const camera = new THREE.PerspectiveCamera(50, w / h, 0.1, 1000);
       camera.position.z = 32;
 
-      const dots: Dot[] = [];
+      const dots = [];
       const pivotsGroup = new THREE.Group();
       const PARTICLE_COUNT = 3500;
 
@@ -103,7 +101,6 @@ export function ParticleSphere() {
         const x = SPHERE_RADIUS * Math.sin(phi) * Math.cos(theta) * scatter;
         const y = SPHERE_RADIUS * Math.sin(phi) * Math.sin(theta) * scatter;
         const z = SPHERE_RADIUS * Math.cos(phi) * scatter;
-
         const pivot = new THREE.Group();
         pivot.position.set(x, y, z);
         const size = 0.018 + Math.random() * 0.041;
@@ -121,7 +118,6 @@ export function ParticleSphere() {
         const x = r * Math.sin(theta) * Math.cos(phi);
         const y = r * Math.sin(theta) * Math.sin(phi);
         const z = r * Math.cos(theta);
-
         const pivot = new THREE.Group();
         pivot.position.set(x, y, z);
         const size = 0.012 + Math.random() * 0.033;
@@ -137,7 +133,7 @@ export function ParticleSphere() {
       const linesMaterial = new THREE.LineBasicMaterial({
         color: LINE_COLOR, transparent: true, opacity: 0.08,
       });
-      const lineSegments: number[] = [];
+      const lineSegments = [];
       const surfaceDots = dots.slice(0, PARTICLE_COUNT);
       for (let i = 0; i < surfaceDots.length; i += 3) {
         for (let j = i + 1; j < Math.min(i + 10, surfaceDots.length); j += 3) {
@@ -154,7 +150,7 @@ export function ParticleSphere() {
       let cursorPos = new THREE.Vector3(9999, 9999, 0);
       const worldPos = new THREE.Vector3();
 
-      const onMouseMove = (event: MouseEvent) => {
+      const onMouseMove = (event) => {
         const rect = container.getBoundingClientRect();
         const ndcX = ((event.clientX - rect.left) / rect.width) * 2 - 1;
         const ndcY = -((event.clientY - rect.top) / rect.height) * 2 + 1;
@@ -164,8 +160,7 @@ export function ParticleSphere() {
         const distance = -camera.position.z / dir.z;
         cursorPos = camera.position.clone().add(dir.multiplyScalar(distance));
       };
-
-      const onTouchMove = (event: TouchEvent) => {
+      const onTouchMove = (event) => {
         const rect = container.getBoundingClientRect();
         const touch = event.touches[0];
         const ndcX = ((touch.clientX - rect.left) / rect.width) * 2 - 1;
@@ -176,17 +171,13 @@ export function ParticleSphere() {
         const distance = -camera.position.z / dir.z;
         cursorPos = camera.position.clone().add(dir.multiplyScalar(distance));
       };
-
-      const onMouseLeave = () => {
-        cursorPos = new THREE.Vector3(9999, 9999, 0);
-      };
+      const onMouseLeave = () => { cursorPos = new THREE.Vector3(9999, 9999, 0); };
 
       container.addEventListener('mousemove', onMouseMove);
       container.addEventListener('touchmove', onTouchMove, { passive: true });
       container.addEventListener('mouseleave', onMouseLeave);
 
       let autoRotY = 0;
-
       const animate = () => {
         frameId = requestAnimationFrame(animate);
         autoRotY += 0.0003;
@@ -199,7 +190,7 @@ export function ParticleSphere() {
           dot.mesh.lookAt(camera.position);
         }
 
-        const posArray = linesGeometry.attributes.position.array as Float32Array;
+        const posArray = linesGeometry.attributes.position.array;
         for (let i = 0; i < lineSegments.length; i += 2) {
           const idxA = lineSegments[i];
           const idxB = lineSegments[i + 1];
@@ -245,14 +236,12 @@ export function ParticleSphere() {
     };
 
     if (!tryInit()) {
-      ro = new ResizeObserver(() => {
-        if (tryInit()) ro?.disconnect();
-      });
+      ro = new ResizeObserver(() => { if (tryInit()) ro.disconnect(); });
       ro.observe(container);
     }
 
     return () => {
-      ro?.disconnect();
+      if (ro) ro.disconnect();
       cleanupFns.forEach(fn => fn());
     };
   }, []);

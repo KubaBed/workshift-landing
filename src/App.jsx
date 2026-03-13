@@ -5,6 +5,7 @@ import { HeroSectionV2 } from './components/HeroSectionV2';
 import { HeroSectionV3 } from './components/HeroSectionV3';
 import { HeroSectionV4 } from './components/HeroSectionV4';
 import { HeroSectionV5 } from './components/HeroSectionV5';
+import { HeroTypographic } from './components/HeroTypographic';
 import { LogoBar } from './components/LogoBar';
 import { AnimatedQuoteSection } from './components/AnimatedQuoteSection';
 import { ProblemCloudSection } from './components/ProblemCloudSection';
@@ -21,6 +22,7 @@ import { FAQSection, CTASection, Footer } from './components/FooterAndMisc';
 import { GradientDivider } from './components/ui/GradientDivider';
 
 const HERO_VARIANTS = {
+  vc: { label: 'C · Typographic', component: HeroTypographic },
   v5: { label: 'V5 · Scrollytelling', component: HeroSectionV5 },
   v1: { label: 'V1 · Three.js', component: HeroSectionV1 },
   v2: { label: 'V2 · Strips', component: HeroSectionV2 },
@@ -29,12 +31,13 @@ const HERO_VARIANTS = {
 };
 
 const SECTION_MAP = {
+  'hero-vc': HeroTypographic,
   'hero-v1': HeroSectionV1,
   'hero-v2': HeroSectionV2,
   'hero-v3': HeroSectionV3,
   'hero-v4': HeroSectionV4,
   'hero-v5': HeroSectionV5,
-  'hero': HeroSectionV5,
+  'hero': HeroTypographic,
   'logobar': LogoBar,
   'quote': AnimatedQuoteSection,
   'scatter': ScrollScatterSection,
@@ -75,7 +78,7 @@ function App() {
     return <SectionPreview sectionKey={previewSection} />;
   }
 
-  const [heroVariant, setHeroVariant] = useState('v5');
+  const [heroVariant, setHeroVariant] = useState('vc');
   const HeroComponent = HERO_VARIANTS[heroVariant].component;
 
   return (
