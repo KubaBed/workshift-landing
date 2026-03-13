@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from './ui/Button';
-
+import { Logo } from './ui/Logo';
 // -------------------------------------------------------------
 // FAQ SECTION
 // -------------------------------------------------------------
@@ -43,7 +43,7 @@ export function FAQSection() {
                                     className="w-full flex items-center justify-between py-8 text-left focus:outline-none"
                                 >
                                     <span className="text-xl md:text-2xl font-bold font-display text-navy pr-8">{faq.q}</span>
-                                    <div className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center border transition-colors ${isOpen ? 'border-navy bg-navy text-chartreuse' : 'border-slate-300 text-navy hover:bg-slate-50'}`}>
+                                    <div className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center border transition-colors ${isOpen ? 'border-navy bg-navy text-accent' : 'border-slate-300 text-navy hover:bg-slate-50'}`}>
                                         {isOpen ? (
                                             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14" /></svg>
                                         ) : (
@@ -84,7 +84,7 @@ export function CTASection() {
         <section className="py-32 bg-navy relative overflow-hidden">
 
             {/* Decorative overlay */}
-            <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-chartreuse rounded-full blur-[150px] opacity-10 -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+            <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-accent rounded-full blur-[150px] opacity-10 -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
             <div className="max-w-4xl mx-auto px-6 max-md:px-4 text-center relative z-10">
                 <h2 className="text-5xl md:text-7xl font-bold font-display tracking-tighter text-white mb-8 text-balance">
@@ -94,7 +94,7 @@ export function CTASection() {
                     Nasza 30-minutowa rozmowa diagnostyczna jest darmowa i niczego Cię nie kosztuje. Po prostu poszukamy wspólnie tzw. "wąskiego gardła".
                 </p>
                 <div className="flex flex-col items-center">
-                    <Button variant="accent" size="lg" className="w-full sm:w-auto text-lg px-10 h-16 shadow-2xl shadow-chartreuse/20">
+                    <Button variant="accent" size="lg" className="w-full sm:w-auto text-lg px-10 h-16 shadow-2xl shadow-accent/20">
                         Wyślij zapytanie o darmowy plan
                     </Button>
                     <p className="mt-6 text-sm text-slate-500 font-medium tracking-wide text-center">
@@ -116,11 +116,8 @@ export function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
 
                     <div className="md:col-span-2">
-                        <div className="flex items-center gap-2 mb-6">
-                            <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center">
-                                <div className="w-3 h-3 bg-chartreuse rounded-full" />
-                            </div>
-                            <span className="font-display font-bold text-xl text-white tracking-tight">Workshift</span>
+                        <div className="mb-6">
+                            <Logo variant="dark" size={48} />
                         </div>
                         <p className="text-slate-400 max-w-sm leading-relaxed">
                             Wdrażamy pragmatyczne innowacje AI dla ambitnych Polskich MŚP. Odzyskaj godziny tracone na rutynę.
@@ -130,10 +127,10 @@ export function Footer() {
                     <div>
                         <h4 className="text-white font-bold font-display mb-6">Sekcje</h4>
                         <ul className="space-y-4">
-                            <li><a href="#uslugi" className="text-slate-400 hover:text-chartreuse transition-colors">Usługi i Automatyzacje</a></li>
-                            <li><a href="#proces" className="text-slate-400 hover:text-chartreuse transition-colors">Nasz proces wdrożenia</a></li>
-                            <li><a href="#case-studies" className="text-slate-400 hover:text-chartreuse transition-colors">Historie Klientów</a></li>
-                            <li><a href="#!" className="text-slate-400 hover:text-chartreuse transition-colors">Newsletter AI Praktycznie</a></li>
+                            <li><a href="#uslugi" className="text-slate-400 hover:text-accent transition-colors">Usługi i Automatyzacje</a></li>
+                            <li><a href="#proces" className="text-slate-400 hover:text-accent transition-colors">Nasz proces wdrożenia</a></li>
+                            <li><a href="#case-studies" className="text-slate-400 hover:text-accent transition-colors">Historie Klientów</a></li>
+                            <li><a href="#!" className="text-slate-400 hover:text-accent transition-colors">Newsletter AI Praktycznie</a></li>
                         </ul>
                     </div>
 

@@ -48,12 +48,12 @@ export function AnimatedQuoteSection() {
         <section
             ref={containerRef}
             className="w-full relative bg-white"
-            style={{ height: '150vh' }}
+            style={{ height: '135vh' }}
         >
             {/* Sticky block: stays fixed to viewport while we scroll through the outer track */}
-            < div
+            <div
                 ref={stickyRef}
-                className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden"
+                className="sticky top-0 h-screen w-full flex flex-col justify-center items-center pb-[10vh] overflow-hidden"
             >
                 <div
                     ref={textWrapperRef}
@@ -61,7 +61,7 @@ export function AnimatedQuoteSection() {
                     style={{ fontSize: 'clamp(1.875rem, 5vw, 3.5rem)' }}
                 >
                     {wordsArray.map((word, index) => {
-                        const isGlitchWord = word.includes("automatyzować");
+                        const isGlitchWord = word.toLowerCase().includes("szumu");
 
                         return (
                             <span key={index} className="relative inline-block mr-[0.25em] mb-2 lg:mb-4">

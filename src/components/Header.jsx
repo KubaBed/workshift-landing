@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion';
 import { Button } from './ui/Button';
 import { Menu, X, Phone } from 'lucide-react';
-
+import { Logo } from './ui/Logo';
 export function Header() {
     const { scrollY } = useScroll();
     const [isScrolled, setIsScrolled] = useState(false);
@@ -42,21 +42,7 @@ export function Header() {
                 <div className="max-w-[1400px] mx-auto px-6 max-md:px-4">
                     <div className={`flex items-center justify-between rounded-full px-6 py-3 transition-colors duration-300 ${isScrolled || isMenuOpen ? 'glass-panel bg-white/80' : 'bg-transparent'}`}>
                         <div className="flex items-center gap-2 group cursor-pointer transition-transform duration-300 z-50 relative">
-                            <div className="relative inline-block font-display font-black text-2xl tracking-tighter uppercase italic leading-none">
-                                <span className="relative z-10 text-navy block" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 50%, 0 65%)' }}>WORKSHIFT</span>
-                                <span
-                                    className="absolute top-[0px] left-[5px] z-0 block transition-transform duration-300 group-hover:translate-x-1"
-                                    style={{
-                                        clipPath: 'polygon(0 65%, 100% 50%, 100% 100%, 0 100%)',
-                                        background: 'linear-gradient(90deg, var(--color-accent), var(--color-accent-rose), var(--color-accent-purple))',
-                                        WebkitBackgroundClip: 'text',
-                                        WebkitTextFillColor: 'transparent',
-                                        backgroundClip: 'text',
-                                        color: 'transparent'
-                                    }}>
-                                    WORKSHIFT
-                                </span>
-                            </div>
+                            <Logo variant="light" size={40} />
                         </div>
 
                         <nav className="hidden md:flex items-center gap-8">
