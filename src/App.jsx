@@ -4,6 +4,7 @@ import { HeroSectionV1 } from './components/HeroSectionV1';
 import { HeroSectionV2 } from './components/HeroSectionV2';
 import { HeroSectionV3 } from './components/HeroSectionV3';
 import { HeroSectionV4 } from './components/HeroSectionV4';
+import { HeroSectionV5 } from './components/HeroSectionV5';
 import { LogoBar } from './components/LogoBar';
 import { AnimatedQuoteSection } from './components/AnimatedQuoteSection';
 import { ProblemCloudSection } from './components/ProblemCloudSection';
@@ -17,8 +18,9 @@ import { TestimonialsSection } from './components/TestimonialsSection';
 import { NewsletterSection } from './components/NewsletterSection';
 import { ContactSection } from './components/ContactSection';
 import { FAQSection, CTASection, Footer } from './components/FooterAndMisc';
-
+import { GradientDivider } from './components/ui/GradientDivider';
 const HERO_VARIANTS = {
+  v5: { label: 'V5 · Scrollytelling', component: HeroSectionV5 },
   v1: { label: 'V1 · Three.js', component: HeroSectionV1 },
   v2: { label: 'V2 · Strips', component: HeroSectionV2 },
   v3: { label: 'V3 · Split', component: HeroSectionV3 },
@@ -26,7 +28,7 @@ const HERO_VARIANTS = {
 };
 
 function App() {
-  const [heroVariant, setHeroVariant] = useState('v1');
+  const [heroVariant, setHeroVariant] = useState('v5');
   const HeroComponent = HERO_VARIANTS[heroVariant].component;
 
   return (
@@ -68,17 +70,28 @@ function App() {
             <HeroComponent key={heroVariant} />
           </div>
           <LogoBar />
+          <GradientDivider />
           <AnimatedQuoteSection />
+          <GradientDivider />
           <ScrollScatterSection />
+          <GradientDivider />
           {/* <ProblemCloudSection /> */}
           <InteractiveServicesBento />
+          <GradientDivider />
           <ProcessSection />
+          <GradientDivider />
           <IndustriesSection />
+          <GradientDivider />
           <DataMetricsSection />
+          <GradientDivider />
           <AboutUsSection />
+          <GradientDivider />
           <TestimonialsSection />
+          <GradientDivider />
           <FAQSection />
+          <GradientDivider />
           <NewsletterSection />
+          <GradientDivider />
           <ContactSection />
           <CTASection />
         </main>

@@ -13,7 +13,6 @@
   --color-accent-rose: #cc7cab;
   --color-accent-violet: #d5a4e7;
   --color-accent-purple: #8530d1;
-  --color-chartreuse: #d2ff00;
 
   --container-max-w: 1400px;
 }
@@ -26,7 +25,7 @@
   }
 
   body {
-    @apply text-slate-600 bg-white font-sans antialiased selection:bg-chartreuse selection:text-navy overflow-x-hidden;
+    @apply text-slate-600 bg-white font-sans antialiased selection:bg-accent selection:text-white overflow-x-hidden;
   }
 
   h1,

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
-import { ArrowUpRight, ArrowLeft, ArrowRight, Check, Play, Pause, X } from 'lucide-react';
+import { ArrowUpRight, ArrowLeft, ArrowRight, Check, Play, Pause, X, Bot, Sparkles, Zap, Database, Cloud, Code, MessageSquare, Workflow, Layout, Box, Globe, Cpu, Layers } from 'lucide-react';
 
 // --- EFFECTS & REUSABLE WRAPPERS ---
 
@@ -1003,6 +1003,102 @@ function CollapsedCard({ service, index }) {
     );
 }
 
+function LogoCloudHeader() {
+    // Array of Lucide icons representing AI/Tech Stack
+    const techIcons = [Bot, Sparkles, Zap, Database, Cloud, Code, MessageSquare, Workflow, Layout, Box, Globe, Cpu, Layers];
+
+    // We want a large grid to animate, e.g. 9x7
+    const cols = 9;
+    const rows = 7;
+    const totalCount = cols * rows;
+
+    return (
+        <div className="w-full relative py-20 lg:py-28 mb-16 rounded-[2.5rem] lg:rounded-[3rem] bg-[#0A2540] overflow-hidden flex flex-col items-center justify-center text-center shadow-2xl">
+
+            {/* Background Grain / Noise */}
+            <div className="absolute inset-0 opacity-20 mix-blend-overlay pointer-events-none z-0" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} />
+
+            {/* Radial Gradient for depth (center brighter) */}
+            <div className="absolute inset-0 opacity-100 z-0" style={{ background: 'radial-gradient(ellipse 60% 60% at center, rgba(238, 112, 61, 0.15) 0%, transparent 100%)' }} />
+
+            {/* The Logo Cloud Grid with Movement */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-40 overflow-hidden z-0">
+                {/* Masking out the edges so the icons fade before hitting the box boundary */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,#0A2540_70%)] z-10" />
+
+                <motion.div
+                    animate={{ x: [0, -60, 0], y: [0, -40, 0] }}
+                    transition={{ repeat: Infinity, duration: 35, ease: "linear" }}
+                    className="grid gap-6 sm:gap-8 md:gap-10 min-w-max scale-[1.3]"
+                    style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
+                >
+                    {Array.from({ length: totalCount }).map((_, i) => {
+                        // Pick icon somewhat randomly based on index
+                        const IconComponent = techIcons[(i * 13) % techIcons.length];
+
+                        return (
+                            <div
+                                key={i}
+                                className="w-12 h-12 md:w-16 md:h-16 rounded-[1rem] md:rounded-[1.25rem] flex items-center justify-center border border-white/5 bg-white/5 backdrop-blur-sm shadow-sm"
+                            >
+                                <IconComponent className="w-5 h-5 md:w-6 md:h-6 text-white/30" strokeWidth={1.5} />
+                            </div>
+                        )
+                    })}
+                </motion.div>
+            </div>
+
+            {/* Center Main Logo Stack */}
+            <motion.div
+                initial={{ scale: 0.8, opacity: 0, y: 10 }}
+                whileInView={{ scale: 1, opacity: 1, y: 0 }}
+                transition={{ type: "spring", stiffness: 100, delay: 0.1, duration: 0.6 }}
+                viewport={{ once: true }}
+                className="relative z-10 w-24 h-24 md:w-32 md:h-32 rounded-3xl md:rounded-[2rem] bg-gradient-to-br from-white/10 to-transparent border border-white/10 shadow-2xl backdrop-blur-2xl flex items-center justify-center mb-8"
+            >
+                <div className="absolute inset-0 rounded-3xl md:rounded-[2rem] shadow-[inset_0_2px_4px_rgba(255,255,255,0.15)] pointer-events-none" />
+
+                {/* Isometric 3D Stack Logo */}
+                <svg width="68" height="68" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-14 h-14 md:w-20 md:h-20 drop-shadow-lg">
+                    {/* Bottom Layer (Orange) */}
+                    <g transform="translate(0, 32)">
+                        <path d="M32 6 L56 16 L32 26 L8 16 Z" fill="#ee703d" />
+                        <path d="M8 16 L32 26 L32 30 L8 20 Z" fill="#c75629" />
+                        <path d="M56 16 L32 26 L32 30 L56 20 Z" fill="#ab441c" />
+                    </g>
+                    {/* Middle Layer (Light Grey/Translucent) */}
+                    <g transform="translate(0, 16)">
+                        <path d="M32 6 L56 16 L32 26 L8 16 Z" fill="#f1f5f9" />
+                        <path d="M8 16 L32 26 L32 30 L8 20 Z" fill="#cbd5e1" />
+                        <path d="M56 16 L32 26 L32 30 L56 20 Z" fill="#94a3b8" />
+                    </g>
+                    {/* Top Layer (White) */}
+                    <g transform="translate(0, 0)">
+                        <path d="M32 6 L56 16 L32 26 L8 16 Z" fill="#ffffff" />
+                        <path d="M8 16 L32 26 L32 30 L8 20 Z" fill="#e2e8f0" />
+                        <path d="M56 16 L32 26 L32 30 L56 20 Z" fill="#cbd5e1" />
+                    </g>
+                </svg>
+            </motion.div>
+
+            {/* Typography */}
+            <motion.p
+                initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+                className="text-[11px] md:text-sm font-bold uppercase tracking-[0.25em] text-[#ee703d] mb-4 md:mb-5 relative z-10"
+            >
+                Plac Boju
+            </motion.p>
+            <motion.h2
+                initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
+                className="text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-display font-medium tracking-tight text-white leading-[1.05] relative z-10 max-w-[90%] md:max-w-2xl px-4"
+            >
+                Jedno wdrożenie.<br />
+                <span className="text-white/60">Widoczne wyniki.</span>
+            </motion.h2>
+        </div>
+    );
+}
+
 export function InteractiveServicesBento() {
     const [selectedId, setSelectedId] = useState(null);
 
@@ -1010,20 +1106,7 @@ export function InteractiveServicesBento() {
         <section className="py-24 md:py-32 bg-white relative overflow-hidden" id="uslugi">
             <div className="max-w-[1400px] mx-auto px-6 max-md:px-4">
 
-                <div className="mb-16 max-w-2xl">
-                    <motion.p
-                        initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                        className="text-xs font-bold uppercase tracking-widest text-[#ee703d] mb-4"
-                    >
-                        Plac Boju
-                    </motion.p>
-                    <motion.h2
-                        initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                        className="text-4xl md:text-5xl lg:text-6xl font-display font-bold tracking-tight text-[#0A2540] leading-[1.05]"
-                    >
-                        Jedno wdrożenie.<br />Widoczne wyniki.
-                    </motion.h2>
-                </div>
+                <LogoCloudHeader />
 
                 <div className="relative">
                     <AnimatePresence mode="wait">

@@ -44,7 +44,7 @@ export function HeroSectionV1() {
                 >
                     Wdrażamy AI, które{' '}
                     <br className="hidden md:block" />
-                    po prostu <Highlighter action="highlight" color="#d2ff00" isView={true} padding={8} animationDuration={1000}>działa</Highlighter>.
+                    po prostu <Highlighter action="highlight" color="#ee703d" isView={true} padding={8} animationDuration={1000}>działa</Highlighter>.
                 </motion.h1>
 
                 <motion.p
