@@ -13,12 +13,15 @@ A React + Vite landing page for Workshift, featuring animated sections, GSAP/Fra
 
 ## Project Structure
 - `src/` - React source files
-  - `components/` - All page section components
+  - `components/` - All page section components (Hero variants V1-V5, About, Contact, etc.)
+  - `components/ui/` - Reusable UI components (Logo, GradientDivider)
   - `App.jsx` - Main app component
   - `main.jsx` - Entry point
   - `index.css` - Global styles
 - `public/` - Static assets (images, AI icons, video)
 - `files/` - SVG assets
+- `workshift-logo-export/` - Brand logo assets (SVG, PNG in various sizes)
+- `workshift-visual-brand-bible.html` - Visual brand guide
 
 ## Development
 - Run: `npm run dev` (port 5000)
