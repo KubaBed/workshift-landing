@@ -4,5 +4,9 @@ export const modules: ModuleMap = {
   "./components/mockups/hero-variants/DarkTheater.tsx": () => import("../components/mockups/hero-variants/DarkTheater.tsx"),
   "./components/mockups/hero-variants/LiveDashboard.tsx": () => import("../components/mockups/hero-variants/LiveDashboard.tsx"),
   "./components/mockups/hero-variants/ParticleSphere.tsx": () => import("../components/mockups/hero-variants/ParticleSphere.tsx"),
+  "./components/mockups/hero-variants/ParticleSphereConfigurable.tsx": () => import("../components/mockups/hero-variants/ParticleSphereConfigurable.tsx"),
+  "./components/mockups/hero-variants/TI_ElectricCurrent.tsx": () => import("../components/mockups/hero-variants/TI_ElectricCurrent.tsx"),
+  "./components/mockups/hero-variants/TI_PolarNight.tsx": () => import("../components/mockups/hero-variants/TI_PolarNight.tsx"),
+  "./components/mockups/hero-variants/TI_WarmEarth.tsx": () => import("../components/mockups/hero-variants/TI_WarmEarth.tsx"),
   "./components/mockups/hero-variants/TypographicImpact.tsx": () => import("../components/mockups/hero-variants/TypographicImpact.tsx")
 };
