@@ -4,14 +4,9 @@ import { ParticleSphere } from "./ParticleSphere";
 const NAVY = "#0A2540";
 const ACCENT = "#ee703d";
 
-const HEADLINE_PARTS = [
-  { words: ["Wdrażamy", "AI,"], line: 1 },
-  { words: ["które", "po", "prostu"], line: 2 },
-];
-
 function WordReveal({ word, delay }: { word: string; delay: number }) {
   return (
-    <span style={{ overflow: "hidden", display: "inline-block" }}>
+    <span style={{ overflow: "hidden", display: "inline-block", verticalAlign: "bottom" }}>
       <motion.span
         initial={{ y: "110%" }}
         animate={{ y: "0%" }}
@@ -38,8 +33,6 @@ export function TypographicImpact() {
     { value: "128", desc: "e-maili obsłużonych automatycznie" },
     { value: "0 dni", desc: "przestoju przy wdrożeniu" },
   ];
-
-  let wordIndex = 0;
 
   return (
     <div
@@ -101,43 +94,47 @@ export function TypographicImpact() {
         </motion.div>
 
         {/* Headline */}
-        <div style={{ marginBottom: 20 }}>
-          {HEADLINE_PARTS.map((part, lineI) => (
-            <div key={lineI} style={{ display: "flex", flexWrap: "nowrap", gap: "0 16px", alignItems: "flex-end" }}>
-              {part.words.map((word) => {
-                const delay = 0.2 + wordIndex * 0.1;
-                wordIndex++;
-                return <WordReveal key={word + delay} word={word} delay={delay} />;
-              })}
-              {lineI === 1 && (
-                <span style={{ position: "relative", display: "inline-block" }}>
-                  <WordReveal word="działa." delay={0.2 + wordIndex * 0.1} />
-                  <motion.svg
-                    viewBox="0 0 300 16"
-                    style={{
-                      position: "absolute",
-                      bottom: -4,
-                      left: 0,
-                      width: "100%",
-                      overflow: "visible",
-                    }}
-                    aria-hidden
-                  >
-                    <motion.path
-                      d="M4 8 C50 13, 140 3, 296 8"
-                      stroke={ACCENT}
-                      strokeWidth="4.5"
-                      fill="none"
-                      strokeLinecap="round"
-                      initial={{ pathLength: 0, opacity: 0 }}
-                      animate={{ pathLength: 1, opacity: 1 }}
-                      transition={{ duration: 0.8, delay: 1.0, ease: [0.16, 1, 0.3, 1] }}
-                    />
-                  </motion.svg>
-                </span>
-              )}
-            </div>
-          ))}
+        <div style={{ marginBottom: 20, lineHeight: 0 }}>
+          {/* Line 1 */}
+          <div>
+            <WordReveal word="Wdrażamy" delay={0.2} />
+            {" "}
+            <WordReveal word="AI," delay={0.3} />
+          </div>
+          {/* Line 2 */}
+          <div>
+            <WordReveal word="które" delay={0.4} />
+            {" "}
+            <WordReveal word="po" delay={0.5} />
+            {" "}
+            <WordReveal word="prostu" delay={0.6} />
+            {" "}
+            <span style={{ position: "relative", display: "inline-block", verticalAlign: "bottom" }}>
+              <WordReveal word="działa." delay={0.7} />
+              <motion.svg
+                viewBox="0 0 300 16"
+                style={{
+                  position: "absolute",
+                  bottom: -4,
+                  left: 0,
+                  width: "100%",
+                  overflow: "visible",
+                }}
+                aria-hidden
+              >
+                <motion.path
+                  d="M4 8 C50 13, 140 3, 296 8"
+                  stroke={ACCENT}
+                  strokeWidth="4.5"
+                  fill="none"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: 1, opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 1.0, ease: [0.16, 1, 0.3, 1] }}
+                />
+              </motion.svg>
+            </span>
+          </div>
         </div>
 
         {/* Separator */}
@@ -259,20 +256,10 @@ export function TypographicImpact() {
         style={{
           flex: 1,
           position: "relative",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
           minHeight: "100vh",
         }}
       >
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.0, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          style={{ position: "absolute", inset: 0 }}
-        >
-          <ParticleSphere />
-        </motion.div>
+        <ParticleSphere />
       </div>
     </div>
   );
