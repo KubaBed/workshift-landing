@@ -19,6 +19,7 @@ import { NewsletterSection } from './components/NewsletterSection';
 import { ContactSection } from './components/ContactSection';
 import { FAQSection, CTASection, Footer } from './components/FooterAndMisc';
 import { GradientDivider } from './components/ui/GradientDivider';
+
 const HERO_VARIANTS = {
   v5: { label: 'V5 · Scrollytelling', component: HeroSectionV5 },
   v1: { label: 'V1 · Three.js', component: HeroSectionV1 },
@@ -27,7 +28,53 @@ const HERO_VARIANTS = {
   v4: { label: 'V4 · Full', component: HeroSectionV4 },
 };
 
+const SECTION_MAP = {
+  'hero-v1': HeroSectionV1,
+  'hero-v2': HeroSectionV2,
+  'hero-v3': HeroSectionV3,
+  'hero-v4': HeroSectionV4,
+  'hero-v5': HeroSectionV5,
+  'hero': HeroSectionV5,
+  'logobar': LogoBar,
+  'quote': AnimatedQuoteSection,
+  'scatter': ScrollScatterSection,
+  'services': InteractiveServicesBento,
+  'process': ProcessSection,
+  'industries': IndustriesSection,
+  'metrics': DataMetricsSection,
+  'about': AboutUsSection,
+  'testimonials': TestimonialsSection,
+  'faq': FAQSection,
+  'newsletter': NewsletterSection,
+  'contact': ContactSection,
+  'cta': CTASection,
+  'footer': Footer,
+};
+
+function SectionPreview({ sectionKey }) {
+  const Component = SECTION_MAP[sectionKey];
+  if (!Component) {
+    return (
+      <div className="flex items-center justify-center h-screen text-slate-400">
+        Sekcja „{sectionKey}" nie istnieje.
+      </div>
+    );
+  }
+  return (
+    <div className="bg-white font-sans text-slate-900 antialiased selection:bg-accent selection:text-white">
+      <Component />
+    </div>
+  );
+}
+
 function App() {
+  const params = new URLSearchParams(window.location.search);
+  const previewSection = params.get('preview');
+
+  if (previewSection) {
+    return <SectionPreview sectionKey={previewSection} />;
+  }
+
   const [heroVariant, setHeroVariant] = useState('v5');
   const HeroComponent = HERO_VARIANTS[heroVariant].component;
 
@@ -36,11 +83,8 @@ function App() {
       {/* Global Margin Lines (Stripe-inspired Editorial Grid) */}
       <div className="fixed inset-0 pointer-events-none z-0 hidden lg:flex justify-center px-6">
         <div className="w-full max-w-7xl flex relative">
-          {/* Lewa linia */}
           <div className="absolute top-0 bottom-0 left-0 w-px bg-slate-200/60" />
-          {/* Środkowa linia */}
           <div className="absolute top-0 bottom-0 left-1/2 w-px bg-slate-200/30 -translate-x-px" />
-          {/* Prawa linia */}
           <div className="absolute top-0 bottom-0 right-0 w-px bg-slate-200/60" />
         </div>
       </div>
@@ -76,7 +120,7 @@ function App() {
           <ScrollScatterSection />
           <GradientDivider />
           {/* <ProblemCloudSection /> */}
-          <InteractiveServicesBento />
+          <InteractiveServicesBento id="uslugi" />
           <GradientDivider />
           <ProcessSection />
           <GradientDivider />
