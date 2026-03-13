@@ -3,8 +3,8 @@ import * as THREE from 'three';
 
 const SPHERE_RADIUS = 12;
 const PARTICLE_COUNT = 3500;
-const REPULSION_STRENGTH = 2.5;
-const LERP_SPEED = 0.03;
+const REPULSION_STRENGTH = 6;
+const LERP_SPEED = 0.06;
 
 const NAVY = new THREE.Color(0x0A2540);
 const ACCENT_COL = new THREE.Color(0xee703d);
@@ -30,11 +30,15 @@ export function ParticleSphere() {
       initialized = true;
 
       const scene = new THREE.Scene();
-      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.setSize(w, h);
-      renderer.setClearColor(0x000000, 0);
-      container.appendChild(renderer.domElement);
+      renderer.setClearColor(0xFAFAFA, 1);
+      const canvas = renderer.domElement;
+      canvas.style.position = 'absolute';
+      canvas.style.top = '0';
+      canvas.style.left = '0';
+      container.appendChild(canvas);
 
       const camera = new THREE.PerspectiveCamera(50, w / h, 0.1, 1000);
       camera.position.z = 38;
@@ -133,7 +137,7 @@ export function ParticleSphere() {
         group.updateMatrixWorld();
 
         const cDist = Math.sqrt(cursorNDC.x * cursorNDC.x + cursorNDC.y * cursorNDC.y);
-        const logoHovered = cDist < 0.25;
+        const logoHovered = cDist < 0.45;
         linesMat.color.lerp(logoHovered ? LINE_HOVER : LINE_DEFAULT, 0.05);
         linesMat.opacity += ((logoHovered ? 0.12 : 0.06) - linesMat.opacity) * 0.05;
 
