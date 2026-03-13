@@ -47,7 +47,7 @@ export function TypographicImpact() {
         minHeight: "100vh",
         background: "#FAFAFA",
         display: "flex",
-        overflow: "visible",
+        overflow: "hidden",
         position: "relative",
         fontFamily: "'Space Grotesk', 'Inter', sans-serif",
       }}
@@ -103,14 +103,14 @@ export function TypographicImpact() {
         {/* Headline */}
         <div style={{ marginBottom: 20 }}>
           {HEADLINE_PARTS.map((part, lineI) => (
-            <div key={lineI} style={{ display: "flex", flexWrap: "nowrap", gap: "0 16px", alignItems: "baseline" }}>
+            <div key={lineI} style={{ display: "flex", flexWrap: "nowrap", gap: "0 16px", alignItems: "flex-end" }}>
               {part.words.map((word) => {
                 const delay = 0.2 + wordIndex * 0.1;
                 wordIndex++;
                 return <WordReveal key={word + delay} word={word} delay={delay} />;
               })}
               {lineI === 1 && (
-                <span style={{ position: "relative", display: "inline-block", verticalAlign: "baseline" }}>
+                <span style={{ position: "relative", display: "inline-block" }}>
                   <WordReveal word="działa." delay={0.2 + wordIndex * 0.1} />
                   <motion.svg
                     viewBox="0 0 300 16"
@@ -263,9 +263,6 @@ export function TypographicImpact() {
           alignItems: "center",
           justifyContent: "center",
           minHeight: "100vh",
-          overflow: "visible",
-          marginLeft: "-72px",
-          zIndex: 1,
         }}
       >
         <motion.div
