@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import FuzzyText from './FuzzyText';
+import GradientText from './GradientText';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -66,6 +67,7 @@ export function AnimatedQuoteSection() {
                     <div className="leading-[1.15] tracking-tight font-medium text-center md:text-left" style={{ fontSize: 'clamp(1.875rem, 5vw, 3.5rem)' }}>
                     {wordsArray.map((word, index) => {
                         const isGlitchWord = word.toLowerCase().includes("szumu");
+                        const isGradientWord = word === "MŚP" || word === "automatyzować";
 
                         return (
                             <span key={index} className="relative inline-block mr-[0.25em] mb-2 lg:mb-4">
@@ -75,16 +77,29 @@ export function AnimatedQuoteSection() {
                                         style={{ opacity: 0.15, willChange: 'opacity' }}
                                     >
                                         <FuzzyText
-                                            className="-mx-[50px]" /* Offsets the fuzzy 50px canvas side margin */
+                                            className="-mx-[50px]"
                                             baseIntensity={0.15}
                                             hoverIntensity={0.4}
                                             enableHover={true}
-                                            color="#0A2540" /* text-navy */
+                                            color="#0A2540"
                                             fontWeight={500}
-                                            fontSize="clamp(1.875rem, 5vw, 3.5rem)" /* matches container clamp */
+                                            fontSize="clamp(1.875rem, 5vw, 3.5rem)"
                                         >
                                             {word}
                                         </FuzzyText>
+                                    </span>
+                                ) : isGradientWord ? (
+                                    <span
+                                        className="quote-word"
+                                        style={{ opacity: 0.15, willChange: 'opacity' }}
+                                    >
+                                        <GradientText
+                                            colors={['#ee703d', '#cc7cab', '#8530d1']}
+                                            animationSpeed={6}
+                                            yoyo={true}
+                                        >
+                                            {word}
+                                        </GradientText>
                                     </span>
                                 ) : (
                                     <span
