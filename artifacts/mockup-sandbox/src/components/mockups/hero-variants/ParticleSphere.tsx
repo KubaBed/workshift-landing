@@ -132,6 +132,7 @@ export function ParticleSphere() {
         pivotsGroup.add(pivot);
       }
 
+      pivotsGroup.position.x = 8;
       scene.add(pivotsGroup);
 
       const linesMaterial = new THREE.LineBasicMaterial({
