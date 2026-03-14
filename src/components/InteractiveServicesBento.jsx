@@ -1062,28 +1062,27 @@ function LogoCloudHeader() {
             <div className="absolute inset-0 z-0 flex flex-col justify-center gap-2 overflow-hidden">
                 <MarqueeRow />
                 <MarqueeRow reverse />
-                <MarqueeRow />
             </div>
 
             <div className="absolute inset-0 z-[1] pointer-events-none" style={{ background: 'radial-gradient(ellipse 55% 65% at center, #FAFAFA 20%, transparent 75%)' }} />
             <div className="absolute inset-0 z-[1] pointer-events-none" style={{ background: 'linear-gradient(to right, #FAFAFA 0%, transparent 15%, transparent 85%, #FAFAFA 100%)' }} />
 
+            <motion.p
+                initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
+                className="text-[11px] md:text-sm font-bold uppercase tracking-[0.25em] text-[#ee703d] mb-4 md:mb-5 relative z-10"
+            >
+                Nasze usługi
+            </motion.p>
+
             <motion.div
                 initial={{ scale: 0.85, opacity: 0 }}
                 whileInView={{ scale: 1, opacity: 1 }}
-                transition={{ type: "spring", stiffness: 100, delay: 0.1, duration: 0.6 }}
+                transition={{ type: "spring", stiffness: 100, delay: 0.15, duration: 0.6 }}
                 viewport={{ once: true }}
                 className="relative z-10 mb-6"
             >
                 <Logo variant="light" size={56} showWordmark={true} className="justify-center" />
             </motion.div>
-
-            <motion.p
-                initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-                className="text-[11px] md:text-sm font-bold uppercase tracking-[0.25em] text-[#ee703d] mb-4 md:mb-5 relative z-10"
-            >
-                Nasze usługi
-            </motion.p>
             <motion.h2
                 initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
                 className="text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-display font-medium tracking-tight text-navy leading-[1.05] relative z-10 max-w-[90%] md:max-w-2xl px-4"
