@@ -6,7 +6,6 @@ import { HeroSectionV3 } from './components/HeroSectionV3';
 import { HeroSectionV4 } from './components/HeroSectionV4';
 import { HeroSectionV5 } from './components/HeroSectionV5';
 import { HeroTypographic } from './components/HeroTypographic';
-import { LogoBar } from './components/LogoBar';
 import { AnimatedQuoteSection } from './components/AnimatedQuoteSection';
 import { ProblemCloudSection } from './components/ProblemCloudSection';
 import { ScrollScatterSection } from './components/ScrollScatterSection';
@@ -38,7 +37,6 @@ const SECTION_MAP = {
   'hero-v4': HeroSectionV4,
   'hero-v5': HeroSectionV5,
   'hero': HeroTypographic,
-  'logobar': LogoBar,
   'quote': AnimatedQuoteSection,
   'scatter': ScrollScatterSection,
   'services': InteractiveServicesBento,
@@ -116,8 +114,6 @@ function App() {
           <div id="hero-wrapper">
             <HeroComponent key={heroVariant} />
           </div>
-          <LogoBar />
-          <GradientDivider />
           <AnimatedQuoteSection />
           <GradientDivider />
           <ScrollScatterSection />
