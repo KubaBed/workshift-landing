@@ -47,8 +47,8 @@ export function AnimatedQuoteSection() {
     return (
         <section
             ref={containerRef}
-            className="w-full relative bg-white"
-            style={{ height: '135vh' }}
+            className="w-full relative"
+            style={{ height: '135vh', background: 'linear-gradient(160deg, #FAFAFA 0%, #F4F1ED 100%)' }}
         >
             {/* Sticky block: stays fixed to viewport while we scroll through the outer track */}
             <div
@@ -57,9 +57,13 @@ export function AnimatedQuoteSection() {
             >
                 <div
                     ref={textWrapperRef}
-                    className="w-full px-6 max-w-7xl mx-auto leading-[1.15] tracking-tight font-medium text-center md:text-left font-display"
-                    style={{ fontSize: 'clamp(1.875rem, 5vw, 3.5rem)' }}
+                    className="w-full px-6 max-w-7xl mx-auto font-display"
                 >
+                    {/* Eyebrow label */}
+                    <p className="text-xs font-semibold tracking-[0.2em] uppercase text-neutral-400 mb-6 md:mb-8">
+                        — Nasza filozofia
+                    </p>
+                    <div className="leading-[1.15] tracking-tight font-medium text-center md:text-left" style={{ fontSize: 'clamp(1.875rem, 5vw, 3.5rem)' }}>
                     {wordsArray.map((word, index) => {
                         const isGlitchWord = word.toLowerCase().includes("szumu");
 
@@ -93,8 +97,9 @@ export function AnimatedQuoteSection() {
                             </span>
                         );
                     })}
+                    </div>
                 </div>
-            </div >
-        </section >
+            </div>
+        </section>
     );
 }
