@@ -3,6 +3,10 @@ import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { ArrowUpRight, ArrowLeft, ArrowRight, Check, Play, Pause, X, Zap } from 'lucide-react';
 import { Logo } from './ui/Logo';
 import anthropicLogo from '../assets/logos/anthropic.png';
+import claudeLogo from '../assets/logos/claude.png';
+import copilotLogo from '../assets/logos/copilot.png';
+import deepseekLogo from '../assets/logos/deepseek.png';
+import grokLogo from '../assets/logos/grok.png';
 import lovableLogo from '../assets/logos/lovable.png';
 import n8nLogo from '../assets/logos/n8n.png';
 import openaiLogo from '../assets/logos/openai.png';
@@ -1010,7 +1014,7 @@ function CollapsedCard({ service, index }) {
     );
 }
 
-const AI_LOGOS = [anthropicLogo, openaiLogo, n8nLogo, perplexityLogo, lovableLogo, replitLogo];
+const AI_LOGOS = [anthropicLogo, openaiLogo, n8nLogo, perplexityLogo, lovableLogo, replitLogo, claudeLogo, copilotLogo, deepseekLogo, grokLogo];
 
 function MarqueeRow({ reverse = false }) {
     const logos = [...AI_LOGOS, ...AI_LOGOS, ...AI_LOGOS, ...AI_LOGOS];
