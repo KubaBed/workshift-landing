@@ -6,7 +6,7 @@ const ACCENT = '#ee703d';
 
 function WordReveal({ word, delay }) {
   return (
-    <span style={{ overflow: 'hidden', display: 'inline-block', verticalAlign: 'bottom' }}>
+    <span style={{ overflow: 'hidden', display: 'inline-block', verticalAlign: 'bottom', paddingBottom: '0.12em', marginBottom: '-0.12em' }}>
       <motion.span
         initial={{ y: '110%' }}
         animate={{ y: '0%' }}
@@ -60,6 +60,11 @@ export function HeroTypographic() {
         }}
       />
 
+      {/* Background sphere — full bleed */}
+      <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+        <HeroParticleSphere />
+      </div>
+
       {/* Left panel — text content */}
       <div
         style={{
@@ -70,6 +75,7 @@ export function HeroTypographic() {
           padding: '48px 40px 48px 64px',
           position: 'relative',
           zIndex: 2,
+          background: 'linear-gradient(to right, #FAFAFA 78%, transparent)',
         }}
       >
         {/* Eyebrow */}
@@ -241,10 +247,6 @@ export function HeroTypographic() {
         </motion.div>
       </div>
 
-      {/* Right panel — Particle Sphere */}
-      <div style={{ flex: 1, position: 'relative', minHeight: '100vh' }}>
-        <HeroParticleSphere />
-      </div>
     </div>
   );
 }
