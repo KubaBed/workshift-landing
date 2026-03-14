@@ -116,14 +116,14 @@ function App() {
           </div>
           <AnimatedQuoteSection />
           <GradientDivider />
-          <ScrollScatterSection />
-          <GradientDivider />
           {/* <ProblemCloudSection /> */}
           <InteractiveServicesBento id="uslugi" />
           <GradientDivider />
           <ProcessSection />
           <GradientDivider />
           <IndustriesSection />
+          <GradientDivider />
+          <ScrollScatterSection />
           <GradientDivider />
           <DataMetricsSection />
           <GradientDivider />
