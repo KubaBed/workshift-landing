@@ -1,7 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
-import { ArrowUpRight, ArrowLeft, ArrowRight, Check, Play, Pause, X, Zap } from 'lucide-react';
+import { ArrowUpRight, ArrowLeft, ArrowRight, Check, Play, Pause, X, Zap, Sparkles } from 'lucide-react';
+import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import { Logo } from './ui/Logo';
+
+function cn(...inputs) {
+  return twMerge(clsx(inputs));
+}
+
+import { ThreeDMarquee } from './ui/ThreeDMarquee';
 import anthropicLogo from '../assets/logos/anthropic.png';
 import claudeLogo from '../assets/logos/claude.png';
 import copilotLogo from '../assets/logos/copilot.png';
@@ -59,14 +67,14 @@ function GlareCard({ children, className, onClick, isExpanded }) {
             <div
                 className="absolute inset-0 rounded-[2rem] transition-opacity duration-500 pointer-events-none"
                 style={{
-                    opacity: isHovered ? 1 : 0,
-                    background: `radial-gradient(
-            600px circle at ${mousePosition.x}% ${mousePosition.y}%,
-            rgba(238, 112, 61, 0.4),
-            rgba(204, 124, 171, 0.25) 40%,
-            rgba(213, 164, 231, 0.15) 60%,
-            transparent 80%
-          )`,
+                opacity: isHovered ? 1 : 0,
+                background: `radial-gradient(
+                    600px circle at ${mousePosition.x}% ${mousePosition.y}%,
+                    rgba(238, 112, 61, 0.4),
+                    rgba(204, 124, 171, 0.25) 40%,
+                    rgba(213, 164, 231, 0.15) 60%,
+                    transparent 80%
+                )`,
                 }}
             />
 
@@ -87,88 +95,117 @@ function GlareCard({ children, className, onClick, isExpanded }) {
     );
 }
 
-// --- COLLAPSED ARTIFACT PREVIEWS ---
+// ─── Orbit Hub: half-visible cropped layout (ruixen-style) ────────────────
+const ORBIT_ICONS = [
+    // Ring 1 (inner, 4 icons)
+    { label: 'Gmail',    color: '#EA4335', ring: 0, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="18" height="18"><path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg> },
+    { label: 'Slack',    color: '#4A154B', ring: 0, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="18" height="18"><path strokeLinecap="round" d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5zM9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5zM14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5zM10 9.5C10 8.67 9.33 8 8.5 8h-5C2.67 8 2 8.67 2 9.5S2.67 11 3.5 11h5c.83 0 1.5-.67 1.5-1.5z"/></svg> },
+    { label: 'Excel',    color: '#217346', ring: 0, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="18" height="18"><path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> },
+    { label: 'CRM',      color: '#0A2540', ring: 0, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="18" height="18"><path strokeLinecap="round" strokeLinejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg> },
+    // Ring 2 (mid, 5 icons)
+    { label: 'Calendar', color: '#1a73e8', ring: 1, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="16" height="16"><rect x="3" y="4" width="18" height="18" rx="2"/><path strokeLinecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg> },
+    { label: 'n8n',      color: '#ea6b00', ring: 1, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="16" height="16"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="12" r="2"/><path strokeLinecap="round" d="M7 12h10"/><circle cx="12" cy="6" r="2"/><path strokeLinecap="round" d="M12 8v4"/></svg> },
+    { label: 'Docs',     color: '#4285F4', ring: 1, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="16" height="16"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6M9 16h6M9 8h3M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/></svg> },
+    { label: 'API',      color: '#d946ef', ring: 1, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="16" height="16"><path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg> },
+    { label: 'Chat',     color: '#0ea5e9', ring: 1, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="16" height="16"><path strokeLinecap="round" strokeLinejoin="round" d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg> },
+    // Ring 3 (outer, 6 icons)
+    { label: 'Zapier',   color: '#FF4A00', ring: 2, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="14" height="14"><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> },
+    { label: 'Teams',    color: '#6264A7', ring: 2, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="14" height="14"><path strokeLinecap="round" strokeLinejoin="round" d="M17 20H7a2 2 0 01-2-2v-2a4 4 0 014-4h6a4 4 0 014 4v2a2 2 0 01-2 2z"/><circle cx="12" cy="7" r="3"/></svg> },
+    { label: 'Drive',    color: '#0F9D58', ring: 2, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="14" height="14"><path strokeLinecap="round" strokeLinejoin="round" d="M3 17l3-6 3 6M15 11l-3-6-3 6M21 17H3M9 17l6-12"/></svg> },
+    { label: 'Webhook',  color: '#6366f1', ring: 2, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="14" height="14"><circle cx="12" cy="12" r="3"/><path strokeLinecap="round" d="M12 2v4M12 18v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M2 12h4M18 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg> },
+    { label: 'Notion',   color: '#000000', ring: 2, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="14" height="14"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6M9 16h6M9 8h3M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/></svg> },
+    { label: 'Office',   color: '#D83B01', ring: 2, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="14" height="14"><path strokeLinecap="round" strokeLinejoin="round" d="M4 4h6v16H4zM14 8h6v12h-6zM14 4h6v2h-6z"/></svg> },
+];
+
+const RING_CONFIGS = [
+    { radius: 90,  speed: 12, iconSize: 34, borderW: '1.5px dashed #e2e8f0' },
+    { radius: 148, speed: 18, iconSize: 30, borderW: '1.5px dashed #e2e8f0' },
+    { radius: 210, speed: 24, iconSize: 26, borderW: '1.5px dashed #e2e8f0' },
+];
 
 function AutomationPreview() {
+    const icons = [
+        ORBIT_ICONS.filter(i => i.ring === 0),
+        ORBIT_ICONS.filter(i => i.ring === 1),
+        ORBIT_ICONS.filter(i => i.ring === 2),
+    ];
+
     return (
-        <div className="w-full h-full flex flex-col items-center justify-center pointer-events-none group-hover:scale-[1.03] transition-transform duration-500">
-            <div className="flex items-center gap-3 relative w-full justify-center">
-
-                {/* Tools Stack (Input) */}
-                <div className="flex flex-col gap-3 relative z-10">
-                    <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-center p-2">
-                        {/* Gmail-like Outline */}
-                        <svg className="w-full h-full text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                    <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-center p-2">
-                        {/* Excel/Sheets-like Outline */}
-                        <svg className="w-full h-full text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                    <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-center p-2">
-                        {/* Database/CRM Outline */}
-                        <svg className="w-full h-full text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
-                        </svg>
-                    </div>
-                </div>
-
-                {/* Animated Paths 1 */}
-                <div className="flex flex-col justify-center items-center h-full gap-8 mx-1 w-12 relative overflow-hidden">
-                    <svg width="40" height="2" className="absolute top-[18px]">
-                        <line x1="0" y1="1" x2="40" y2="1" stroke="#e2e8f0" strokeWidth="2" strokeDasharray="4 4" />
-                        <circle r="3" fill="#ee703d" className="animate-[moveDot_4s_linear_infinite]" style={{ animationDelay: '0s' }} />
-                    </svg>
-                    <svg width="40" height="2" className="absolute top-1/2 -translate-y-1/2">
-                        <line x1="0" y1="1" x2="40" y2="1" stroke="#e2e8f0" strokeWidth="2" strokeDasharray="4 4" />
-                        <circle r="3" fill="#ee703d" className="animate-[moveDot_4s_linear_infinite]" style={{ animationDelay: '1s' }} />
-                    </svg>
-                    <svg width="40" height="2" className="absolute bottom-[18px]">
-                        <line x1="0" y1="1" x2="40" y2="1" stroke="#e2e8f0" strokeWidth="2" strokeDasharray="4 4" />
-                        <circle r="3" fill="#ee703d" className="animate-[moveDot_4s_linear_infinite]" style={{ animationDelay: '2s' }} />
-                    </svg>
-                </div>
-
-                {/* Central Node (Workshift AI) */}
-                <div className="relative z-10 group-hover:scale-105 transition-transform duration-500">
-                    <div className="absolute inset-0 bg-[#ee703d]/20 blur-xl rounded-full scale-[2] animate-pulse" style={{ animationDuration: '3s' }} />
-                    <div className="w-16 h-16 rounded-2xl bg-white border-2 border-[#ee703d]/30 flex flex-col items-center justify-center text-[#ee703d] shadow-[0_0_25px_-5px_rgba(238,112,61,0.4)]">
-                        <svg className="w-6 h-6 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                        <span className="text-[9px] font-bold uppercase tracking-wider text-[#0A2540]">Workshift</span>
-                    </div>
-                </div>
-
-                {/* Animated Paths 2 */}
-                <div className="flex flex-col justify-center items-center h-full mx-1 w-12 relative overflow-hidden">
-                    <svg width="40" height="2" className="absolute top-1/2 -translate-y-1/2">
-                        <line x1="0" y1="1" x2="40" y2="1" stroke="#e2e8f0" strokeWidth="2" strokeDasharray="4 4" />
-                        <circle r="3" fill="#ee703d" className="animate-[moveDot_4s_linear_infinite]" style={{ animationDelay: '3s' }} />
-                    </svg>
-                </div>
-
-                {/* Output (Check/Done) */}
-                <div className="w-12 h-12 rounded-xl bg-[#0A2540] shadow-md flex items-center justify-center p-3 relative z-10">
-                    <svg className="w-full h-full text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                    <div className="absolute -right-1 -top-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white" />
-                </div>
-
-            </div>
-
-            <style jsx>{`
-                @keyframes moveDot {
-                    0% { cx: 0; opacity: 0; }
-                    10% { opacity: 1; }
-                    90% { opacity: 1; }
-                    100% { cx: 40; opacity: 0; }
-                }
+        <div className="w-full h-full relative overflow-hidden pointer-events-none select-none" style={{ minHeight: 200 }}>
+            <style>{`
+                @keyframes hs-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+                @keyframes ws-hub-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(238,112,61,0); } 50% { box-shadow: 0 0 28px 6px rgba(238,112,61,0.18); } }
             `}</style>
+
+            {/* Orbit system — center pushed to right edge (50% translateX) so only left half visible */}
+            <div style={{
+                position: 'absolute',
+                top: '50%', right: 0,
+                transform: 'translate(50%, -50%)',
+                width: 500, height: 500,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+                {/* Rings */}
+                {RING_CONFIGS.map((ring, ri) => (
+                    <div key={ri} style={{
+                        position: 'absolute',
+                        width: ring.radius * 2, height: ring.radius * 2,
+                        borderRadius: '50%',
+                        border: ring.borderW,
+                        animation: `hs-spin ${ring.speed}s linear infinite`,
+                        transformOrigin: 'center',
+                    }}>
+                        {icons[ri].map((item, ii) => {
+                            const angle = (ii / icons[ri].length) * (2 * Math.PI);
+                            const x = ring.radius + ring.radius * Math.cos(angle) - ring.iconSize / 2;
+                            const y = ring.radius + ring.radius * Math.sin(angle) - ring.iconSize / 2;
+                            return (
+                                <div key={item.label} style={{
+                                    position: 'absolute', left: x, top: y,
+                                    width: ring.iconSize, height: ring.iconSize,
+                                    borderRadius: '50%',
+                                    background: 'white',
+                                    border: `1px solid ${item.color}22`,
+                                    boxShadow: `0 2px 8px ${item.color}18`,
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    color: item.color,
+                                    /* counter-rotate so icon stays upright */
+                                    animation: `hs-spin ${ring.speed}s linear infinite reverse`,
+                                    transformOrigin: 'center',
+                                }}>
+                                    {item.icon}
+                                </div>
+                            );
+                        })}
+                    </div>
+                ))}
+
+                {/* Central Workshift hub */}
+                <div style={{
+                    position: 'relative', zIndex: 10,
+                    width: 72, height: 72,
+                    borderRadius: '50%',
+                    background: 'white',
+                    border: '2px solid rgba(238,112,61,0.3)',
+                    animation: 'ws-hub-pulse 3s ease-in-out infinite',
+                    display: 'flex', flexDirection: 'column',
+                    alignItems: 'center', justifyContent: 'center',
+                }}>
+                    <svg width="32" height="22" viewBox="0 0 46 28" fill="none">
+                        <rect x="0" y="0" width="28" height="7" rx="2" fill="#0A2540" opacity="0.15"/>
+                        <rect x="9" y="10.5" width="28" height="7" rx="2" fill="url(#hubGrad)"/>
+                        <rect x="0" y="21" width="28" height="7" rx="2" fill="#0A2540" opacity="0.15"/>
+                        <defs>
+                            <linearGradient id="hubGrad" x1="9" y1="14" x2="37" y2="14" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stopColor="#ee703d"/>
+                                <stop offset="50%" stopColor="#cc7cab"/>
+                                <stop offset="100%" stopColor="#8530d1"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span style={{ fontSize: 6.5, fontWeight: 700, letterSpacing: '0.08em', color: '#0A2540', marginTop: 3 }}>WORKSHIFT</span>
+                </div>
+            </div>
         </div>
     );
 }
@@ -326,108 +363,238 @@ function AuditPreview() {
     );
 }
 
+function DisplayCard({
+  className,
+  icon = <Sparkles className="w-4 h-4 text-accent" />,
+  title = "Featured",
+  description = "Discover amazing content",
+  date = "Just now",
+  iconClassName = "text-accent",
+  titleClassName = "text-accent",
+}) {
+  return (
+    <div
+      className={cn(
+        "relative flex h-36 w-[22rem] -skew-y-[8deg] select-none flex-col justify-between rounded-xl border-2 border-slate-100 bg-white/70 backdrop-blur-md px-4 py-3 transition-all duration-700 after:absolute after:-right-1 after:top-[-5%] after:h-[110%] after:w-[20rem] after:bg-gradient-to-l after:from-white/50 after:to-transparent after:content-[''] hover:border-accent/40 hover:bg-white [&>*]:flex [&>*]:items-center [&>*]:gap-2 shadow-sm",
+        className
+      )}
+    >
+      <div>
+        <span className="relative inline-block rounded-full bg-slate-50 border border-slate-100 p-2 shadow-sm">
+          {icon}
+        </span>
+        <p className={cn("text-lg font-semibold tracking-tight", titleClassName)}>{title}</p>
+      </div>
+      <p className="whitespace-nowrap text-lg text-slate-700 font-medium">{description}</p>
+      <p className="text-sm font-medium text-slate-400">{date}</p>
+    </div>
+  );
+}
+
 function TrainingPreview() {
-    return (
-        <div className="w-full flex flex-col gap-4 relative z-10 px-4 md:px-0">
-            <div className="flex flex-col gap-1 w-full bg-white p-4 rounded-xl shadow-sm border border-slate-100/60">
-                <div className="flex justify-between items-end mb-1">
-                    <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Prompt engineering</span>
-                    <span className="text-sm font-black text-[#0A2540]">85%</span>
-                </div>
-                <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                    <motion.div initial={{ width: "0%" }} whileInView={{ width: "85%" }} transition={{ duration: 1.2, ease: "easeOut" }} className="h-full bg-gradient-to-r from-accent to-accent-light rounded-full" />
-                </div>
-            </div>
+  const cards = [
+    {
+      title: "Prompt Engineering",
+      description: "Pisz instrukcje docelowe",
+      date: "Wprowadzenie",
+      icon: <Sparkles className="w-5 h-5 text-accent" />,
+      titleClassName: "text-[#0A2540]",
+      className: "[grid-area:stack] -translate-x-12 translate-y-8 hover:translate-y-2 z-30 shadow-md",
+    },
+    {
+      title: "Bezpieczeństwo AI",
+      description: "Ochrona danych firmy",
+      date: "Dobre praktyki",
+      icon: <Sparkles className="w-5 h-5 text-accent-light" />,
+      titleClassName: "text-[#0A2540]",
+      className: "[grid-area:stack] translate-x-0 translate-y-0 hover:-translate-y-6 before:absolute before:w-[100%] before:outline-1 before:rounded-xl before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-white/50 grayscale-[50%] hover:before:opacity-0 before:transition-opacity before:duration:700 hover:grayscale-0 before:left-0 before:top-0 z-20 shadow-sm",
+    },
+    {
+      title: "Narzędzia GenAI",
+      description: "Automatyzacja codziennych zadań",
+      date: "Poziom średniozaawansowany",
+      icon: <Sparkles className="w-5 h-5 text-[#0A2540]" />,
+      titleClassName: "text-[#0A2540]",
+      className: "[grid-area:stack] translate-x-12 -translate-y-8 hover:-translate-y-14 before:absolute before:w-[100%] before:outline-1 before:rounded-xl before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-white/50 grayscale-[50%] hover:before:opacity-0 before:transition-opacity before:duration:700 hover:grayscale-0 before:left-0 before:top-0 z-10 shadow-sm",
+    },
+  ];
 
-            <div className="flex flex-col gap-1 w-full bg-white p-4 rounded-xl shadow-sm border border-slate-100/60 ml-4 md:ml-8">
-                <div className="flex justify-between items-end mb-1">
-                    <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Narzędzia AI w pracy</span>
-                    <span className="text-sm font-black text-[#0A2540]">72%</span>
-                </div>
-                <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                    <motion.div initial={{ width: "0%" }} whileInView={{ width: "72%" }} transition={{ duration: 1.2, ease: "easeOut", delay: 0.1 }} className="h-full bg-gradient-to-r from-accent-light to-accent-rose rounded-full" />
-                </div>
-            </div>
-
-            <div className="flex flex-col gap-1 w-full bg-white p-4 rounded-xl shadow-sm border border-slate-100/60 ml-8 md:ml-16">
-                <div className="flex justify-between items-end mb-1">
-                    <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Automatyzacja zadań</span>
-                    <span className="text-sm font-black text-[#0A2540]">60%</span>
-                </div>
-                <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                    <motion.div initial={{ width: "0%" }} whileInView={{ width: "60%" }} transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }} className="h-full bg-gradient-to-r from-accent-rose to-accent-purple rounded-full" />
-                </div>
-            </div>
-            <p className="text-[10px] text-slate-400 font-medium text-center mt-2 group-hover:text-slate-500 transition-colors">Średni wzrost kompetencji po szkoleniu</p>
-        </div>
-    );
+  return (
+    <div className="w-full h-full flex items-center justify-center relative -mt-6">
+      <div className="grid [grid-template-areas:'stack'] place-items-center opacity-100 animate-in fade-in-0 duration-700 scale-75 md:scale-90 lg:scale-[80%] pb-12 pr-12">
+        {cards.map((cardProps, index) => (
+          <DisplayCard key={index} {...cardProps} />
+        ))}
+      </div>
+    </div>
+  );
 }
 
 function AgentPreview() {
+    // -40px broke out to fill 100% of card width.
+    // +10px on each side = phone is 75% of that (shrunk 25%).
+    const AVATAR = (
+        <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg, #ee703d, #8530d1)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="white"><path d="M8 1a3 3 0 100 6 3 3 0 000-6zM2 14s-1 0-1-1 1-4 7-4 7 3 7 4-1 1-1 1H2z" fillRule="evenodd"/></svg>
+        </div>
+    );
+    const AVATAR_SPACER = <div style={{ width: 32, height: 32, flexShrink: 0 }} />;
+
+    // Waveform bars for audio message
+    const WAVE_BARS = [4,7,12,9,14,11,8,13,10,7,11,9,13,8,5,10,12,7,9,11];
+
     return (
-        <div className="w-full max-w-sm bg-white rounded-xl shadow-lg border border-slate-200/80 overflow-hidden
-                    group-hover:-translate-y-2 group-hover:shadow-xl group-hover:scale-[1.02] transition-all duration-500 relative z-10 flex flex-col items-center">
+        <div style={{
+            position: 'absolute',
+            top: 0, left: '10px', right: '10px',  // 25% smaller: was -40px on each side
+        }}>
+            {/* iPhone body */}
+            <div style={{
+                width: '100%',
+                aspectRatio: '9 / 19.5',
+                borderRadius: 40,
+                background: '#111',
+                border: '6px solid #1c1c1e',
+                boxShadow: '0 0 0 1px #2a2a2a, inset 0 0 0 1px rgba(255,255,255,0.05), 0 28px 56px -12px rgba(0,0,0,0.45)',
+                position: 'relative',
+                overflow: 'hidden',
+            }}>
+                {/* Screen */}
+                <div style={{ position: 'absolute', inset: 0, background: '#fff' }} />
 
-            <div className="w-full px-4 py-3 border-b border-slate-100 flex items-center gap-2 bg-slate-50">
-                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                <span className="text-[11px] font-bold text-[#0A2540] uppercase tracking-wider">Agent Workshift</span>
-            </div>
-
-            <div className="w-full p-4 space-y-4 relative bg-white">
-                <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="flex justify-end">
-                    <div className="bg-slate-100/80 rounded-2xl rounded-tr-sm px-4 py-2.5 max-w-[85%] border border-slate-200/50">
-                        <p className="text-[12px] text-[#0A2540] font-medium leading-relaxed">Potrzebuję fakturę za luty.</p>
+                {/* Status bar */}
+                <div style={{
+                    position: 'absolute', top: 0, left: 0, right: 0,
+                    height: 28, background: '#fff',
+                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    padding: '0 20px', zIndex: 20,
+                }}>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: '#0A2540', fontFamily: 'Inter, system-ui', letterSpacing: '-0.02em' }}>9:41</span>
+                    <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                        <svg width="13" height="9" viewBox="0 0 14 10" fill="#0A2540"><rect x="0" y="4" width="2.5" height="6" rx="0.7"/><rect x="3.5" y="2.5" width="2.5" height="7.5" rx="0.7"/><rect x="7" y="1" width="2.5" height="9" rx="0.7"/><rect x="10.5" y="0" width="2.5" height="10" rx="0.7" opacity="0.3"/></svg>
+                        <svg width="14" height="10" viewBox="0 0 18 13" fill="#0A2540"><path d="M9 3C12.3 3 15.3 4.3 17.5 6.5L15.7 8.3C14 6.6 11.6 5.5 9 5.5S4 6.6 2.3 8.3L.5 6.5C2.7 4.3 5.7 3 9 3z" opacity="0.28"/><path d="M9 7.5c2 0 3.8.8 5.1 2.1l-1.8 1.8A4.5 4.5 0 009 10a4.5 4.5 0 00-3.3 1.4L3.9 9.6A7.4 7.4 0 019 7.5z"/><circle cx="9" cy="13" r="1.8"/></svg>
+                        <svg width="17" height="9" viewBox="0 0 24 12" fill="#0A2540"><rect x="0" y="1" width="20" height="10" rx="3" stroke="#0A2540" strokeWidth="1.3" fill="none"/><rect x="1.5" y="2.5" width="15" height="7" rx="1.5"/><path d="M21.5 4v4a2 2 0 000-4z" fill="#0A2540" opacity="0.5"/></svg>
                     </div>
-                </motion.div>
+                </div>
 
-                <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="flex justify-start">
-                    <div className="bg-gradient-to-br from-accent/5 to-accent-purple/5 rounded-2xl rounded-tl-sm px-4 py-3 max-w-[90%] border border-accent/15 shadow-sm shadow-accent/5 relative">
-                        <p className="text-[12px] text-[#0A2540] font-medium leading-relaxed">Gotowe! Wysyłam FV/02/2026 na podany adres. Kwota: <span className="font-bold">4 230 PLN</span>.</p>
-                    </div>
-                </motion.div>
+                {/* Dynamic Island */}
+                <div style={{
+                    position: 'absolute', top: 7, left: '50%', transform: 'translateX(-50%)',
+                    width: '30%', height: 18,
+                    background: '#111', borderRadius: 999, zIndex: 30,
+                }} />
 
-                <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: [1, 1, 0] }} transition={{ times: [0, 0.8, 1], duration: 1.5, delay: 0.3 }} className="flex justify-start absolute bottom-4 left-4">
-                    <div className="bg-slate-100 rounded-2xl px-3 py-2 flex gap-1 border border-slate-200/50">
-                        <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: '0ms' }} />
-                        <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: '150ms' }} />
-                        <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: '300ms' }} />
+                {/* Screen Content */}
+                <div style={{ position: 'absolute', top: 28, left: 0, right: 0, bottom: 0, overflow: 'hidden', zIndex: 10 }}>
+
+                    {/* App header bar */}
+                    <div style={{
+                        display: 'flex', alignItems: 'center', gap: 10,
+                        padding: '10px 16px',
+                        borderBottom: '1px solid #f0f4f8',
+                        background: 'rgba(255,255,255,0.97)',
+                    }}>
+                        <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg, #ee703d, #8530d1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="white"><path d="M8 1a3 3 0 100 6 3 3 0 000-6zM2 14s-1 0-1-1 1-4 7-4 7 3 7 4-1 1-1 1H2z" fillRule="evenodd"/></svg>
+                        </div>
+                        <div>
+                            <p style={{ fontSize: 13, fontWeight: 700, color: '#0A2540', margin: 0, fontFamily: 'Inter, system-ui' }}>Agent Workshift</p>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 1 }}>
+                                <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e' }} />
+                                <p style={{ fontSize: 10, color: '#64748b', margin: 0, fontFamily: 'Inter, system-ui' }}>Dostępny teraz</p>
+                            </div>
+                        </div>
                     </div>
-                </motion.div>
+
+                    {/* Chat feed */}
+                    <div style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 8, background: '#f8fafc', height: '100%', overflowY: 'hidden' }}>
+
+                        {/* Timestamp */}
+                        <div style={{ textAlign: 'center' }}>
+                            <span style={{ fontSize: 10, color: '#94a3b8', fontFamily: 'Inter, system-ui', background: '#e2e8f0', borderRadius: 99, padding: '2px 8px' }}>Dzisiaj, 14:32</span>
+                        </div>
+
+                        {/* User msg 1 */}
+                        <motion.div initial={{ opacity: 0, y: 6 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.35 }}
+                            style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                            <div style={{ background: '#0A2540', borderRadius: '16px 16px 4px 16px', padding: '8px 12px', maxWidth: '78%' }}>
+                                <p style={{ fontSize: 12, color: '#fff', fontWeight: 500, lineHeight: 1.4, margin: 0, fontFamily: 'Inter, system-ui' }}>Potrzebuję fakturę za luty dla XYZ Sp. z o.o.</p>
+                            </div>
+                        </motion.div>
+
+                        {/* Typing */}
+                        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: [1, 1, 0] }} transition={{ times: [0, 0.65, 1], duration: 1.1, delay: 0.45 }}
+                            style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', gap: 6 }}>
+                            {AVATAR}
+                            <div style={{ background: '#fff', borderRadius: '16px 16px 16px 4px', padding: '8px 12px', border: '1px solid #e2e8f0', display: 'flex', gap: 4, alignItems: 'center' }}>
+                                {[0, 150, 300].map(d => <span key={d} style={{ width: 5, height: 5, borderRadius: '50%', background: '#94a3b8', display: 'inline-block', animationDelay: `${d}ms` }} className="animate-bounce" />)}
+                            </div>
+                        </motion.div>
+
+                        {/* Agent reply 1 */}
+                        <motion.div initial={{ opacity: 0, y: 6 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.95, duration: 0.35 }}
+                            style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', gap: 6 }}>
+                            {AVATAR}
+                            <div style={{ background: '#fff', borderRadius: '16px 16px 16px 4px', padding: '8px 12px', maxWidth: '75%', border: '1px solid #e8f4e8' }}>
+                                <p style={{ fontSize: 12, color: '#0A2540', fontWeight: 500, lineHeight: 1.45, margin: 0, fontFamily: 'Inter, system-ui' }}>
+                                    Znalazłem FV/02/2026 🎉<br/>
+                                    <strong>4 230 PLN</strong> netto<br/>
+                                    <span style={{ color: '#22c55e', fontWeight: 600 }}>✓ Wysłano na jan@xyz.pl</span>
+                                </p>
+                            </div>
+                        </motion.div>
+
+                        {/* User msg 2 */}
+                        <motion.div initial={{ opacity: 0, y: 6 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 1.3, duration: 0.35 }}
+                            style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                            <div style={{ background: '#0A2540', borderRadius: '16px 16px 4px 16px', padding: '8px 12px', maxWidth: '65%' }}>
+                                <p style={{ fontSize: 12, color: '#fff', fontWeight: 500, lineHeight: 1.4, margin: 0, fontFamily: 'Inter, system-ui' }}>Świetnie! A kiedy wpłynęła płatność?</p>
+                            </div>
+                        </motion.div>
+
+                        {/* Agent — audio waveform message */}
+                        <motion.div initial={{ opacity: 0, y: 6 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 1.65, duration: 0.35 }}
+                            style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', gap: 6 }}>
+                            {AVATAR}
+                            <div style={{ background: 'linear-gradient(135deg, rgba(238,112,61,0.08), rgba(133,48,209,0.08))', borderRadius: '16px 16px 16px 4px', padding: '8px 12px', border: '1px solid rgba(133,48,209,0.15)', display: 'flex', alignItems: 'center', gap: 8 }}>
+                                {/* Play button */}
+                                <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'linear-gradient(135deg, #ee703d, #8530d1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                    <svg width="10" height="11" viewBox="0 0 10 12" fill="white"><path d="M1 1l8 5-8 5V1z"/></svg>
+                                </div>
+                                {/* Waveform */}
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 2, height: 24 }}>
+                                    {WAVE_BARS.map((h, i) => (
+                                        <div key={i} style={{ width: 2.5, height: h, background: i < 12 ? 'linear-gradient(to top, #ee703d, #8530d1)' : '#cbd5e1', borderRadius: 2, opacity: i < 12 ? 1 : 0.6 }} />
+                                    ))}
+                                </div>
+                                <span style={{ fontSize: 10, color: '#64748b', fontFamily: 'Inter, system-ui', whiteSpace: 'nowrap' }}>0:23</span>
+                            </div>
+                        </motion.div>
+
+                        {/* User final reply */}
+                        <motion.div initial={{ opacity: 0, y: 6 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 2.0, duration: 0.35 }}
+                            style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                            <div style={{ background: '#0A2540', borderRadius: '16px 16px 4px 16px', padding: '8px 12px' }}>
+                                <p style={{ fontSize: 12, color: '#fff', fontWeight: 500, lineHeight: 1.4, margin: 0, fontFamily: 'Inter, system-ui' }}>Dzięki! 👌</p>
+                            </div>
+                        </motion.div>
+
+                    </div>
+                </div>
+
+                {/* Side hardware buttons */}
+                <div style={{ position: 'absolute', left: -5, top: '18%', width: 4, height: '6%', background: '#2a2a2a', borderRadius: '2px 0 0 2px' }} />
+                <div style={{ position: 'absolute', left: -5, top: '26%', width: 4, height: '10%', background: '#2a2a2a', borderRadius: '2px 0 0 2px' }} />
+                <div style={{ position: 'absolute', left: -5, top: '38%', width: 4, height: '10%', background: '#2a2a2a', borderRadius: '2px 0 0 2px' }} />
+                <div style={{ position: 'absolute', right: -5, top: '28%', width: 4, height: '14%', background: '#2a2a2a', borderRadius: '0 2px 2px 0' }} />
             </div>
         </div>
     );
 }
-
 function CreativePreview() {
     return (
-        <div className="w-full h-full flex items-center justify-center p-4">
-            <div className="grid grid-cols-3 gap-2 w-full max-w-sm shrink-0 group-hover:scale-[1.03] transition-transform duration-500">
-                {[...Array(6)].map((_, i) => (
-                    <motion.div
-                        key={i}
-                        className="aspect-square rounded-xl bg-gradient-to-br shadow-sm overflow-hidden relative border border-white/20"
-                        style={{
-                            backgroundImage: `linear-gradient(135deg, 
-                                ${i % 2 === 0 ? 'rgba(238, 112, 61, 0.4)' : 'rgba(245, 162, 115, 0.4)'}, 
-                                ${i % 3 === 0 ? 'rgba(204, 124, 171, 0.4)' : 'rgba(133, 48, 209, 0.4)'}
-                            )`,
-                        }}
-                    >
-                        {/* Shimmer Effect */}
-                        <motion.div
-                            className="absolute inset-0 bg-white/40 skew-x-12 -translate-x-full"
-                            animate={{ translateX: ['-100%', '200%'] }}
-                            transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 1, ease: 'easeInOut', delay: i * 0.3 }}
-                        />
-                        {/* Occasional Sparkle */}
-                        {(i === 1 || i === 4) && (
-                            <div className="absolute inset-0 flex items-center justify-center opacity-50 text-white">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" /></svg>
-                            </div>
-                        )}
-                    </motion.div>
-                ))}
-            </div>
+        <div className="w-full h-full flex items-start justify-center overflow-hidden relative -mt-4">
+            <ThreeDMarquee className="w-full" />
             <ParticleBlur position="bottom-right" />
         </div>
     );
@@ -616,7 +783,7 @@ const SERVICES = [
     },
     {
         id: 'agenty',
-        title: 'Agenty AI',
+        title: 'Agenci AI',
         tagline: 'Niestrudzona pierwsza linia — 24/7, bez urlopów.',
         colSpan: 'lg:col-span-4',
         minHeight: 'min-h-[380px] lg:min-h-[420px]',
@@ -738,7 +905,7 @@ function ExtendedInnerCard({ card, index }) {
         >
             {card.type === 'features' && (
                 <div className="p-6 md:p-8 flex flex-col h-full bg-white">
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-5">{card.label}</h4>
+                    <h4 className="text-xs font-bold uppercase tracking-widest text-slate-600 mb-5">{card.label}</h4>
                     <ul className="space-y-3.5 flex-1">
                         {card.items.map((item, i) => (
                             <li key={i} className="flex items-start gap-3">
@@ -754,13 +921,13 @@ function ExtendedInnerCard({ card, index }) {
 
             {card.type === 'process' && (
                 <div className="p-6 md:p-8 flex flex-col h-full bg-white">
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-6">{card.label}</h4>
+                    <h4 className="text-xs font-bold uppercase tracking-widest text-slate-600 mb-6">{card.label}</h4>
                     <div className="flex flex-col gap-4 relative pl-3 border-l-2 border-slate-100">
                         {card.steps.map((step, i) => (
                             <div key={i} className="relative z-10 pl-4 before:absolute before:w-3 before:h-3 before:rounded-full before:bg-[#ee703d] before:-left-[23px] before:top-1.5 before:shadow-[0_0_0_4px_white]">
                                 <span className="text-[13px] font-bold text-[#ee703d] mr-1">{step.num}.</span>
                                 <span className="font-bold text-[#0A2540] text-[15px] block leading-tight mb-1">{step.title}</span>
-                                <span className="text-sm text-slate-500 leading-snug block font-medium">{step.desc}</span>
+                                <span className="text-sm text-slate-600 leading-snug block font-medium">{step.desc}</span>
                             </div>
                         ))}
                     </div>
@@ -769,10 +936,10 @@ function ExtendedInnerCard({ card, index }) {
 
             {card.type === 'stack' && (
                 <div className="p-6 md:p-8 flex flex-col h-full bg-[#f7f7f8]">
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-5">{card.label}</h4>
+                    <h4 className="text-xs font-bold uppercase tracking-widest text-slate-600 mb-5">{card.label}</h4>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3 flex-1 content-start mb-6">
                         {card.tools.map((tool, i) => (
-                            <div key={i} className="bg-white border border-slate-200/80 rounded-lg p-3 flex items-center justify-center text-sm font-bold text-slate-400 grayscale hover:grayscale-0 hover:text-navy hover:border-[#ee703d]/30 hover:shadow-sm transition-all text-center">
+                            <div key={i} className="bg-white border border-slate-200/80 rounded-lg p-3 flex items-center justify-center text-sm font-bold text-slate-600 grayscale hover:grayscale-0 hover:text-navy hover:border-[#ee703d]/30 hover:shadow-sm transition-all text-center">
                                 {tool}
                             </div>
                         ))}
@@ -785,14 +952,14 @@ function ExtendedInnerCard({ card, index }) {
                 <div className="p-6 md:p-8 flex flex-col h-full bg-white border-l-[6px] border-[#ee703d] relative">
                     <h4 className="text-[11px] font-bold uppercase tracking-widest text-[#ee703d] mb-3 bg-[#ee703d]/10 inline-block px-3 py-1 rounded-full w-max">{card.label}</h4>
                     <p className="text-xl font-display font-bold text-[#0A2540] mb-3 mt-2">{card.title}</p>
-                    <p className="text-[15px] text-slate-600 leading-relaxed font-medium flex-1">{card.content}</p>
+                    <p className="text-[15px] text-slate-700 leading-relaxed font-medium flex-1">{card.content}</p>
                     {card.beforeAfter && (
                         <div className="flex items-center gap-4 mt-6 bg-slate-50 p-4 rounded-xl border border-slate-100">
                             <div className="flex-1">
-                                <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-1">Przed wdrożeniem</div>
-                                <div className="text-lg font-bold text-slate-600 line-through decoration-slate-300">{card.beforeAfter.before}</div>
+                                <div className="text-[10px] uppercase font-bold text-slate-500 tracking-wider mb-1">Przed wdrożeniem</div>
+                                <div className="text-lg font-bold text-slate-700 line-through decoration-slate-300">{card.beforeAfter.before}</div>
                             </div>
-                            <div className="mx-2 text-slate-300"><ArrowRight size={20} /></div>
+                            <div className="mx-2 text-slate-400" aria-hidden="true"><ArrowRight size={20} /></div>
                             <div className="flex-1">
                                 <div className="text-[10px] uppercase font-bold text-[#ee703d] tracking-wider mb-1">Po algorytmizacji</div>
                                 <div className="text-xl font-black text-[#0A2540]">{card.beforeAfter.after}</div>
@@ -916,21 +1083,23 @@ function ExtendedInnerCard({ card, index }) {
 }
 
 function ExpandedServiceView({ service, onClose }) {
+    const containerRef = useRef(null);
+
     useEffect(() => {
-        const section = document.getElementById("uslugi");
-        if (section) {
-            const yOffset = -80;
-            const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
-            window.scrollTo({ top: y, behavior: 'smooth' });
+        if (containerRef.current) {
+            const el = containerRef.current;
+            const top = el.getBoundingClientRect().top + window.pageYOffset - 24;
+            window.scrollTo({ top, behavior: 'smooth' });
         }
     }, []);
 
     return (
         <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.98, y: -10 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            ref={containerRef}
+            initial={{ opacity: 0, clipPath: 'inset(8% 2% 8% 2% round 2rem)', scale: 0.97 }}
+            animate={{ opacity: 1, clipPath: 'inset(0% 0% 0% 0% round 2rem)', scale: 1 }}
+            exit={{ opacity: 0, clipPath: 'inset(8% 2% 8% 2% round 2rem)', scale: 0.97, transition: { duration: 0.3, ease: [0.55, 0.055, 0.675, 0.19] } }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
             className="w-full relative"
         >
             <button
@@ -995,7 +1164,7 @@ function CollapsedCard({ service, index }) {
             <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-gradient-to-tr from-[#f5a273]/10 to-transparent blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
             {/* Header info */}
-            <div className="flex justify-between items-start mb-6">
+            <div className="flex justify-between items-start mb-6 relative z-10">
                 <div>
                     <h3 className="text-2xl font-display font-bold text-[#0A2540] mb-2">{service.title}</h3>
                     <p className="text-sm font-medium text-slate-500 max-w-sm leading-relaxed">{service.tagline}</p>
@@ -1023,7 +1192,7 @@ function MarqueeRow({ reverse = false }) {
             <div
                 className="flex shrink-0 gap-8 md:gap-12 items-center py-4"
                 style={{
-                    animation: `${reverse ? 'marquee-reverse' : 'marquee'} 40s linear infinite`,
+                    animation: `${reverse ? 'marquee-reverse' : 'marquee'} 80s linear infinite`,
                 }}
             >
                 {logos.map((src, i) => (
@@ -1036,7 +1205,7 @@ function MarqueeRow({ reverse = false }) {
                 className="flex shrink-0 gap-8 md:gap-12 items-center py-4"
                 aria-hidden="true"
                 style={{
-                    animation: `${reverse ? 'marquee-reverse' : 'marquee'} 40s linear infinite`,
+                    animation: `${reverse ? 'marquee-reverse' : 'marquee'} 80s linear infinite`,
                 }}
             >
                 {logos.map((src, i) => (

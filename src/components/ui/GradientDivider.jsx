@@ -7,7 +7,7 @@ import React from 'react';
  */
 export function GradientDivider({ className = '' }) {
     return (
-        <div className={`w-full flex justify-center py-16 ${className}`}>
+        <div className={`w-full flex justify-center py-6 md:py-10 ${className}`} role="separator" aria-hidden="true">
             <div className="w-full max-w-[120px] h-[3px] rounded-full"
                 style={{
                     background: 'linear-gradient(90deg, #ee703d 0%, #cc7cab 50%, #8530d1 100%)',

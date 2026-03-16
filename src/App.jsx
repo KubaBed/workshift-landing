@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Retune } from 'retune';
 import { Header } from './components/Header';
 import { HeroSectionV1 } from './components/HeroSectionV1';
 import { HeroSectionV2 } from './components/HeroSectionV2';
@@ -140,6 +141,7 @@ function App() {
         </main>
 
         <Footer />
+        <Retune force />
       </div>
     </div>
   );

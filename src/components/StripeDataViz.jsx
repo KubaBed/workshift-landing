@@ -9,6 +9,7 @@ import * as THREE from 'three';
  */
 export function StripeDataViz() {
     const containerRef = useRef(null);
+    const logoRef = useRef(null);
 
     useEffect(() => {
         if (!containerRef.current) return;
@@ -35,6 +36,7 @@ export function StripeDataViz() {
         const sharedUniforms = {
             uMouse: { value: new THREE.Vector3(9999, 9999, 9999) },
             uTime: { value: 0 },
+            uLogoHover: { value: 0 },
         };
 
         // --- SCENE & CAMERA ---
@@ -129,10 +131,12 @@ export function StripeDataViz() {
             uniforms: {
                 uMouse: sharedUniforms.uMouse,
                 uTime: sharedUniforms.uTime,
+                uLogoHover: sharedUniforms.uLogoHover,
             },
             vertexShader: `
                 uniform vec3 uMouse;
                 uniform float uTime;
+                uniform float uLogoHover;
                 attribute float lineProgress;
                 varying float vProgress;
                 void main() {
@@ -152,6 +156,15 @@ export function StripeDataViz() {
                         float force = smoothstep(0.0, 1.0, 1.0 - (dist / maxDist));
                         vec3 dir = normalize(pos - uMouse);
                         pos += dir * force * 3.0;
+                    }
+
+                    // Logo hover repulsion from center
+                    float centerDist = distance(pos, vec3(0.0, 0.0, 0.0));
+                    float centerMaxDist = 35.0; 
+                    if (centerDist < centerMaxDist && uLogoHover > 0.0) {
+                        float force = smoothstep(0.0, 1.0, 1.0 - (centerDist / centerMaxDist));
+                        vec3 dir = normalize(pos - vec3(0.0, -10.0, 0.0));
+                        pos += dir * force * 15.0 * uLogoHover;
                     }
                     
                     gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
@@ -176,10 +189,12 @@ export function StripeDataViz() {
         const addRepulsionToPoints = function (shader) {
             shader.uniforms.uMouse = sharedUniforms.uMouse;
             shader.uniforms.uTime = sharedUniforms.uTime;
+            shader.uniforms.uLogoHover = sharedUniforms.uLogoHover;
             shader.vertexShader =
                 `
                 uniform vec3 uMouse;
                 uniform float uTime;
+                uniform float uLogoHover;
             \n` + shader.vertexShader;
             shader.vertexShader = shader.vertexShader.replace(
                 `#include <begin_vertex>`,
@@ -192,12 +207,22 @@ export function StripeDataViz() {
                 transformed.x += sin(swayPhase) * swayForce;
                 transformed.z += cos(swayPhase * 0.8) * swayForce;
                 
+                // Mouse repulsion
                 float dist = distance(transformed, uMouse);
                 float maxDist = 30.0;
                 if (dist < maxDist) {
                     float force = smoothstep(0.0, 1.0, 1.0 - (dist / maxDist));
                     vec3 dir = normalize(transformed - uMouse);
                     transformed += dir * force * 3.0;
+                }
+
+                // Logo hover repulsion from center
+                float centerDist = distance(transformed, vec3(0.0, 0.0, 0.0));
+                float centerMaxDist = 35.0; 
+                if (centerDist < centerMaxDist && uLogoHover > 0.0) {
+                    float force = smoothstep(0.0, 1.0, 1.0 - (centerDist / centerMaxDist));
+                    vec3 dir = normalize(transformed - vec3(0.0, -10.0, 0.0));
+                    transformed += dir * force * 15.0 * uLogoHover;
                 }
                 `
             );
@@ -232,7 +257,11 @@ export function StripeDataViz() {
         const endPointsMesh = new THREE.Points(endPointsGeometry, endPointsMaterial);
         animationGroup.add(endPointsMesh);
 
-        // --- EVENT HANDLERS ---
+        let targetLogoHover = 0;
+        
+        function onLogoEnter() { targetLogoHover = 1; }
+        function onLogoLeave() { targetLogoHover = 0; }
+
         function onMouseMove(event) {
             const rect = container.getBoundingClientRect();
             mouseVec.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
@@ -250,6 +279,11 @@ export function StripeDataViz() {
 
         window.addEventListener('resize', onResize);
         container.addEventListener('mousemove', onMouseMove);
+        
+        if (logoRef.current) {
+            logoRef.current.addEventListener('mouseenter', onLogoEnter);
+            logoRef.current.addEventListener('mouseleave', onLogoLeave);
+        }
 
         // --- ANIMATION LOOP ---
         function animate() {
@@ -274,6 +308,9 @@ export function StripeDataViz() {
             currentMouse3D.lerp(mouse3D, 0.15);
             sharedUniforms.uMouse.value.copy(currentMouse3D);
 
+            // Smooth lerp logo hover state
+            sharedUniforms.uLogoHover.value = THREE.MathUtils.lerp(sharedUniforms.uLogoHover.value, targetLogoHover, 0.1);
+
             renderer.render(scene, camera);
         }
         animate();
@@ -283,6 +320,10 @@ export function StripeDataViz() {
             window.removeEventListener('resize', onResize);
             container.removeEventListener('mousemove', onMouseMove);
             cancelAnimationFrame(animationFrameId);
+            if (logoRef.current) {
+                logoRef.current.removeEventListener('mouseenter', onLogoEnter);
+                logoRef.current.removeEventListener('mouseleave', onLogoLeave);
+            }
             if (container.contains(renderer.domElement)) {
                 container.removeChild(renderer.domElement);
             }
@@ -296,25 +337,27 @@ export function StripeDataViz() {
     }, []);
 
     return (
-        <div className="relative w-full h-full">
+        <div className="relative w-full h-full flex items-center justify-center">
             {/* Three.js canvas container — fills entire hero */}
             <div
                 ref={containerRef}
-                className="absolute inset-0"
-                style={{ zIndex: 1 }}
+                className="absolute inset-0 z-0"
             />
-            {/* Bottom glow overlay (CSS radial gradient) */}
-            <div
-                className="absolute bottom-0 left-1/2 pointer-events-none"
-                style={{
-                    transform: 'translateX(-50%)',
-                    width: '150vw',
-                    height: '55%',
-                    background:
-                        'radial-gradient(ellipse at bottom center, rgba(77, 129, 200, 0.45) 0%, rgba(77, 129, 200, 0.15) 35%, rgba(255, 255, 255, 0) 70%)',
-                    zIndex: 2,
-                }}
-            />
+            {/* Interactive Logo Center */}
+            <div 
+                ref={logoRef}
+                className="relative z-10 p-6 rounded-full bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl cursor-default transition-transform duration-500 hover:scale-105 pointer-events-auto"
+            >
+                {/* SVG implementation of the "Stack Shift" motif - tailored for StripeDataViz */}
+                <svg width={72} height={72} viewBox="0 0 92 92" fill="none" className="shrink-0 drop-shadow-md">
+                    {/* Top Layer */}
+                    <rect x="18" y="20" width="40" height="10" rx="3" fill="#635BFF" opacity="0.8" />
+                    {/* Middle Layer (Shifted right + Orange) */}
+                    <rect x="34" y="41" width="40" height="10" rx="3" fill="#ee703d" />
+                    {/* Bottom Layer */}
+                    <rect x="18" y="62" width="40" height="10" rx="3" fill="#635BFF" opacity="0.8" />
+                </svg>
+            </div>
         </div>
     );
 }
