@@ -1303,7 +1303,32 @@ export function InteractiveServicesBento() {
                     </AnimatePresence>
                 </div>
 
+                {/* Modular services note */}
+                {!selectedId && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 16 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.3 }}
+                        className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 md:p-6 rounded-2xl bg-slate-50 border border-slate-200"
+                    >
+                        <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 shrink-0 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center">
+                                <span className="text-lg">🧩</span>
+                            </div>
+                            <div>
+                                <p className="font-bold text-[#0A2540] text-sm mb-0.5">Kupujesz tylko to, czego naprawdę potrzebujesz</p>
+                                <p className="text-slate-500 text-sm font-medium">Każdą usługę możesz zamówić osobno — sam audyt, samo wdrożenie, samo szkolenie. Bez pakietów, bez nadmuchanych scope'ów.</p>
+                            </div>
+                        </div>
+                        <a href="#kontakt" className="inline-flex items-center gap-2 bg-white border border-slate-200 text-[#0A2540] px-5 py-2.5 rounded-xl font-bold text-sm shadow-sm hover:border-[#ee703d]/40 hover:bg-[#ee703d]/5 transition-all duration-200 shrink-0 whitespace-nowrap">
+                            Zapytaj o zakres →
+                        </a>
+                    </motion.div>
+                )}
+
             </div>
         </section>
     );
 }
+

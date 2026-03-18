@@ -9,7 +9,6 @@ import { HeroSectionV5 } from './components/HeroSectionV5';
 import { HeroTypographic } from './components/HeroTypographic';
 import { AnimatedQuoteSection } from './components/AnimatedQuoteSection';
 import { ProblemCloudSection } from './components/ProblemCloudSection';
-import { ScrollScatterSection } from './components/ScrollScatterSection';
 import { InteractiveServicesBento } from './components/InteractiveServicesBento';
 import { ProcessSection } from './components/ProcessSection';
 import { IndustriesSection } from './components/IndustriesSection';
@@ -123,8 +122,6 @@ function App() {
           <ProcessSection />
           <GradientDivider />
           <IndustriesSection />
-          <GradientDivider />
-          <ScrollScatterSection />
           <GradientDivider />
           <DataMetricsSection />
           <GradientDivider />
