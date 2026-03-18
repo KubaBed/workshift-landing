@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import GradientText from './GradientText';
 
 const bars = [
     {
@@ -58,7 +59,7 @@ export function DataMetricsSection() {
                 >
                     <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold font-display tracking-tight leading-[1.1] text-[#0A2540] text-balance">
                         Zwłoka kosztuje. Im dłużej czekasz,<br className="hidden md:block" />
-                        tym trudniej będzie Ci <span className="text-slate-400">dogonić resztę.</span>
+                        tym trudniej będzie Ci <GradientText colors={['#ee703d', '#cc7cab', '#8530d1']} animationSpeed={6} yoyo={true}>dogonić resztę.</GradientText>
                     </h2>
                 </motion.div>
 

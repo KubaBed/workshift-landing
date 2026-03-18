@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import GradientText from './GradientText';
 
 export function AboutUsSection() {
     return (
@@ -56,7 +57,7 @@ export function AboutUsSection() {
                             transition={{ duration: 0.8, delay: 0.2, type: "spring", stiffness: 100 }}
                         >
                             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold font-display tracking-tight text-navy mb-8 text-balance">
-                                Wiemy, o co toczy się gra, bo <span className="text-transparent bg-clip-text bg-gradient-to-r from-navy to-slate-400">sami w nią gramy.</span>
+                                Wiemy, o co toczy się gra, bo sami <GradientText colors={['#ee703d', '#cc7cab', '#8530d1']} animationSpeed={6} yoyo={true}>w nią gramy.</GradientText>
                             </h2>
 
                             <div className="space-y-6 text-lg md:text-xl text-slate-600 leading-relaxed">

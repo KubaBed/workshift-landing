@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Search, Wrench, GraduationCap, ArrowRight } from 'lucide-react';
+import GradientText from './GradientText';
 
 const processSteps = [
     {
@@ -56,16 +57,10 @@ export function ProcessSection() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ delay: 0.05 }}
-                        className="text-4xl md:text-5xl lg:text-6xl font-bold font-display tracking-tight mb-6 text-balance leading-[1.05]"
+                        className="text-4xl md:text-5xl lg:text-7xl font-bold font-display tracking-tight text-navy mb-6 text-balance"
                     >
                         Przebudowa bez burzenia.{' '}
-                        <span className="text-[#ee703d] relative inline-block">
-                            Nasz proces.
-                            <svg className="absolute -bottom-2 left-0 w-full h-3 -z-10 text-[#ee703d]/20" viewBox="0 0 300 12" fill="none" stroke="currentColor" strokeWidth="8" strokeLinecap="round">
-                                <path d="M2.5 9.5C80 -2.50001 224.5 -1 297.5 9.5" />
-                            </svg>
-                        </span>
+                        <GradientText colors={['#ee703d', '#cc7cab', '#8530d1']} animationSpeed={6} yoyo={true}>Nasz proces.</GradientText>
                     </motion.h2>
                     <p className="text-xl text-slate-500 max-w-xl leading-relaxed">
                         Zamiast rocznej transformacji cyfrowej, wprowadzamy precyzyjne zmiany w 3 etapach. Każdy ma konkretny wynik i termin. Twoja organizacja cały czas działa.
