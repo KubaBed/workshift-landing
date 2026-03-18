@@ -38,7 +38,6 @@ const SECTION_MAP = {
   'hero-v5': HeroSectionV5,
   'hero': HeroTypographic,
   'quote': AnimatedQuoteSection,
-  'scatter': ScrollScatterSection,
   'services': InteractiveServicesBento,
   'process': ProcessSection,
   'industries': IndustriesSection,
