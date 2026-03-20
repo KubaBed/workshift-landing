@@ -37,7 +37,7 @@ export function TestimonialsSection() {
                         viewport={{ once: true }}
                         className="text-4xl md:text-5xl font-bold font-display tracking-tight text-navy"
                     >
-                        Zamiast teorii. Co już <span className="text-transparent bg-clip-text bg-gradient-to-r from-chartreuse to-[#b1cc00]">zautomatyzowaliśmy.</span>
+                        Zamiast teorii. Co już <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent-rose pb-2">zautomatyzowaliśmy.</span>
                     </motion.h2>
                 </div>
 

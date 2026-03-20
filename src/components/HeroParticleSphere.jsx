@@ -146,10 +146,9 @@ export function HeroParticleSphere() {
       const linesPositions = new Float32Array(lineSegments.length * 3);
       linesGeometry.setAttribute('position', new THREE.BufferAttribute(linesPositions, 3));
       const lines = new THREE.LineSegments(linesGeometry, linesMaterial);
-      scene.add(lines);
+      pivotsGroup.add(lines);
 
       let cursorPos = new THREE.Vector3(9999, 9999, 0);
-      const worldPos = new THREE.Vector3();
 
       const onMouseMove = (event) => {
         const rect = container.getBoundingClientRect();
@@ -179,9 +178,8 @@ export function HeroParticleSphere() {
       container.addEventListener('mouseleave', onMouseLeave);
 
       let autoRotY = 0;
-      const animate = () => {
-        frameId = requestAnimationFrame(animate);
-        autoRotY += 0.0003;
+      renderer.setAnimationLoop(() => {
+        autoRotY += 0.0015;
         pivotsGroup.rotation.y = autoRotY;
         pivotsGroup.rotation.x = Math.sin(autoRotY * 0.4) * 0.1;
 
@@ -191,24 +189,8 @@ export function HeroParticleSphere() {
           dot.mesh.lookAt(camera.position);
         }
 
-        const posArray = linesGeometry.attributes.position.array;
-        for (let i = 0; i < lineSegments.length; i += 2) {
-          const idxA = lineSegments[i];
-          const idxB = lineSegments[i + 1];
-          surfaceDots[idxA].mesh.getWorldPosition(worldPos);
-          posArray[i * 3] = worldPos.x;
-          posArray[i * 3 + 1] = worldPos.y;
-          posArray[i * 3 + 2] = worldPos.z;
-          surfaceDots[idxB].mesh.getWorldPosition(worldPos);
-          posArray[(i + 1) * 3] = worldPos.x;
-          posArray[(i + 1) * 3 + 1] = worldPos.y;
-          posArray[(i + 1) * 3 + 2] = worldPos.z;
-        }
-        linesGeometry.attributes.position.needsUpdate = true;
         renderer.render(scene, camera);
-      };
-
-      animate();
+      });
 
       const onResize = () => {
         const cw = container.clientWidth;

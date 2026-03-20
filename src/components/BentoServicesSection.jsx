@@ -110,7 +110,7 @@ export function BentoServicesSection() {
                             initial={{ opacity: 0, y: 40 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.7, delay: svc.delay, type: "spring", stiffness: 100 }}
+                            transition={{ duration: 0.45, delay: svc.delay, type: "spring", stiffness: 120, damping: 20 }}
                             className={`${svc.colSpan} h-[380px] lg:h-[420px] relative group cursor-pointer perspective-[1000px]`}
                             onClick={() => toggleFlip(svc.id)}
                         >
@@ -118,7 +118,7 @@ export function BentoServicesSection() {
                             {/* Inner 3D Container performing the flip */}
                             <motion.div
                                 animate={{ rotateY: flippedCards[svc.id] ? 180 : 0 }}
-                                transition={{ duration: 0.6, type: "spring", stiffness: 150, damping: 20 }}
+                                transition={{ duration: 0.4, type: "spring", stiffness: 180, damping: 22 }}
                                 className="w-full h-full relative preserve-3d"
                                 style={{ transformStyle: "preserve-3d" }}
                             >

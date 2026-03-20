@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from 'react';
 import { Button } from './ui/Button';
 import { Logo } from './ui/Logo';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './ui/accordion';
 // -------------------------------------------------------------
 // FAQ SECTION
 // -------------------------------------------------------------
@@ -17,12 +17,34 @@ const faqs = [
     {
         q: "Od czego zacząć współpracę?",
         a: "Od pierwszej darmowej wideokonferencji. Cel? Wymieniamy się informacjami, a my projektujemy co najmniej jeden pomysł (Quick Win) do wdrożenia na już. Bez zobowiązań."
+    },
+    {
+        q: "Ile czasu trwa przeciętne wdrożenie?",
+        a: "Większość procesów, takich jak automatyzacja obsługi zapytań czy kategoryzacja dokumentów finansowych, wdrażamy i testujemy w ciągu 2 do 4 tygodni. Pierwsze efekty (Quick Wins) widzisz od razu."
+    },
+    {
+        q: "Czy automatyzacje integrują się z naszym obecnym CRM-em lub ERP?",
+        a: "Tak. Budujemy rozwiązania w oparciu o API, co pozwala spiąć ze sobą niemal każde popularne oprogramowanie (np. HubSpot, Salesforce, fakturownia, Slack, Gmail) beziinwazyjnie dla obecnej infrastruktury."
+    },
+    {
+        q: "Jak dbacie o bezpieczeństwo danych firmowych?",
+        a: "Każde rozwiązanie projektujemy w oparciu o zamknięte instancje i rygorystyczne polityki dostępu. Twoje dane dokumentowe i finansowe nigdy nie służą globalnym modelom do celów trenowania."
+    },
+    {
+        q: "Czy potrzebuję dedykowanego programisty do utrzymania systemu?",
+        a: "Nie. Konfigurujemy platformy tak, by działały autonomicznie na narzędziach no-code/low-code. Oddajemy w Twoje ręce gotowy system i zapewniamy pełne wsparcie techniczne po wdrożeniu."
+    },
+    {
+        q: "W jaki sposób mierzycie zwrot z inwestycji (ROI)?",
+        a: "Wspólnie ustalamy metryki przed startem projektu. Najczęściej mierzymy ROI poprzez ilość zaoszczędzonych roboczogodzin w miesiącu, spadek liczby błędów operacyjnych i skrócenie czasu obsługi klienta."
+    },
+    {
+        q: "Ile kosztuje utrzymanie automatyzacji po wdrożeniu?",
+        a: "Stawiamy na transparentność. Główne koszty utrzymania to podstawowe subskrypcje narzędzi (np. Make, OpenAI API), co dla kilku procesów w firmie zatrudniającej 20 osób wynosi najczęściej od 200 do 600 PLN miesięcznie zależnie od wolumenu ruchu."
     }
 ];
 
 export function FAQSection() {
-    const [openIndex, setOpenIndex] = useState(null);
-
     return (
         <section className="py-24 bg-white relative">
             <div className="max-w-4xl mx-auto px-6 max-md:px-4">
@@ -34,41 +56,18 @@ export function FAQSection() {
                 </div>
 
                 <div className="border-t border-slate-200">
-                    {faqs.map((faq, idx) => {
-                        const isOpen = openIndex === idx;
-                        return (
-                            <div key={idx} className="border-b border-slate-200">
-                                <button
-                                    onClick={() => setOpenIndex(isOpen ? null : idx)}
-                                    className="w-full flex items-center justify-between py-8 text-left focus:outline-none"
-                                >
+                    <Accordion>
+                        {faqs.map((faq, idx) => (
+                            <AccordionItem key={idx} className="border-b border-slate-200">
+                                <AccordionTrigger className="w-full flex items-center justify-between py-8 text-left focus:outline-none hover:no-underline data-[state=open]:text-accent">
                                     <span className="text-xl md:text-2xl font-bold font-display text-navy pr-8">{faq.q}</span>
-                                    <div className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center border transition-colors ${isOpen ? 'border-navy bg-navy text-accent' : 'border-slate-300 text-navy hover:bg-slate-50'}`}>
-                                        {isOpen ? (
-                                            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14" /></svg>
-                                        ) : (
-                                            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14" /></svg>
-                                        )}
-                                    </div>
-                                </button>
-                                <AnimatePresence>
-                                    {isOpen && (
-                                        <motion.div
-                                            initial={{ height: 0, opacity: 0 }}
-                                            animate={{ height: 'auto', opacity: 1 }}
-                                            exit={{ height: 0, opacity: 0 }}
-                                            transition={{ duration: 0.3, ease: 'easeInOut' }}
-                                            className="overflow-hidden"
-                                        >
-                                            <p className="pb-8 text-lg text-slate-600 leading-relaxed max-w-[65ch]">
-                                                {faq.a}
-                                            </p>
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-                            </div>
-                        );
-                    })}
+                                </AccordionTrigger>
+                                <AccordionContent className="pb-8 text-lg text-slate-600 leading-relaxed max-w-[65ch]">
+                                    {faq.a}
+                                </AccordionContent>
+                            </AccordionItem>
+                        ))}
+                    </Accordion>
                 </div>
 
             </div>

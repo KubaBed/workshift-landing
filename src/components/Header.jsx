@@ -1,26 +1,76 @@
-import React, { useState, useEffect } from 'react';
-import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
 import { Button } from './ui/Button';
 import { Menu, X, Phone } from 'lucide-react';
 import { Logo } from './ui/Logo';
+
 export function Header() {
-    const { scrollY } = useScroll();
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [renderMenu, setRenderMenu] = useState(false);
+    const headerRef = useRef(null);
+    const menuRef = useRef(null);
 
-    useMotionValueEvent(scrollY, "change", (latest) => {
-        setIsScrolled(latest > 50);
-    });
+    // Track scroll
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 50);
+        };
+        handleScroll();
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // Initial animation
+    useEffect(() => {
+        gsap.fromTo(headerRef.current, 
+            { y: -100 }, 
+            { y: 0, duration: 0.6, ease: 'back.out(1.2)' }
+        );
+    }, []);
 
     // Handle scroll lock when mobile menu is open
     useEffect(() => {
         if (isMenuOpen) {
+            setRenderMenu(true);
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = 'unset';
+            if (menuRef.current) {
+                gsap.to(menuRef.current, {
+                    opacity: 0,
+                    y: -20,
+                    duration: 0.2,
+                    onComplete: () => setRenderMenu(false)
+                });
+            } else {
+                setRenderMenu(false);
+            }
         }
         return () => { document.body.style.overflow = 'unset'; }
     }, [isMenuOpen]);
+
+    useEffect(() => {
+        if (renderMenu && isMenuOpen && menuRef.current) {
+            gsap.fromTo(menuRef.current,
+                { opacity: 0, y: -20 },
+                { opacity: 1, y: 0, duration: 0.2 }
+            );
+            
+            // Stagger links
+            const links = menuRef.current.querySelectorAll('.mobile-link');
+            gsap.fromTo(links,
+                { opacity: 0, x: -20 },
+                { opacity: 1, x: 0, duration: 0.3, stagger: 0.05, delay: 0.1 }
+            );
+            
+            const btn = menuRef.current.querySelector('.mobile-btn');
+            gsap.fromTo(btn,
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.3, delay: 0.3 }
+            );
+        }
+    }, [renderMenu, isMenuOpen]);
 
     const navLinks = [
         { name: 'Usługi', href: '#uslugi' },
@@ -32,12 +82,9 @@ export function Header() {
 
     return (
         <>
-            <motion.header
-                initial={{ y: -100 }}
-                animate={{ y: 0 }}
-                transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'py-4' : 'py-6'
-                    }`}
+            <header
+                ref={headerRef}
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'py-4' : 'py-6'}`}
             >
                 <div className="max-w-[1400px] mx-auto px-6 max-md:px-4">
                     <div className={`flex items-center justify-between rounded-full px-6 py-3 transition-colors duration-300 ${isScrolled || isMenuOpen ? 'glass-panel bg-white/80' : 'bg-transparent'}`}>
@@ -66,7 +113,7 @@ export function Header() {
                         {/* Compact icon CTA on mobile */}
                         <a
                             href="#kontakt"
-                            className="sm:hidden z-50 relative w-9 h-9 rounded-full bg-accent text-white flex items-center justify-center shadow-sm transition-transform active:scale-95"
+                            className="sm:hidden z-50 relative w-9 h-9 rounded-full bg-[#ee703d] text-white flex items-center justify-center shadow-sm transition-transform active:scale-95"
                             aria-label="Kontakt"
                         >
                             <Phone size={16} />
@@ -81,47 +128,34 @@ export function Header() {
                         </button>
                     </div>
                 </div>
-            </motion.header>
+            </header>
 
             {/* Mobile Menu Overlay */}
-            <AnimatePresence>
-                {isMenuOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.2 }}
-                        className="fixed inset-0 z-40 bg-white/95 backdrop-blur-xl flex flex-col pt-32 px-6 pb-8 md:hidden overflow-y-auto"
-                    >
-                        <nav className="flex flex-col gap-8 flex-grow">
-                            {navLinks.map((link, i) => (
-                                <motion.a
-                                    key={link.name}
-                                    href={link.href}
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: i * 0.1 + 0.1 }}
-                                    onClick={() => setIsMenuOpen(false)}
-                                    className="text-3xl font-display font-bold text-navy border-b border-slate-100 pb-4"
-                                >
-                                    {link.name}
-                                </motion.a>
-                            ))}
-                        </nav>
+            {renderMenu && (
+                <div
+                    ref={menuRef}
+                    className="fixed inset-0 z-40 bg-white/95 backdrop-blur-xl flex flex-col pt-32 px-6 pb-8 md:hidden overflow-y-auto"
+                >
+                    <nav className="flex flex-col gap-8 flex-grow">
+                        {navLinks.map((link) => (
+                            <a
+                                key={link.name}
+                                href={link.href}
+                                onClick={() => setIsMenuOpen(false)}
+                                className="mobile-link text-3xl font-display font-bold text-navy border-b border-slate-100 pb-4"
+                            >
+                                {link.name}
+                            </a>
+                        ))}
+                    </nav>
 
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.4 }}
-                            className="mt-8"
-                        >
-                            <Button variant="accent" size="lg" className="w-full text-lg shadow-xl shadow-accent/20" onClick={() => setIsMenuOpen(false)}>
-                                Porozmawiajmy o automatyzacji
-                            </Button>
-                        </motion.div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                    <div className="mt-8 mobile-btn">
+                        <Button variant="accent" size="lg" className="w-full text-lg shadow-xl shadow-[#ee703d]/20" onClick={() => setIsMenuOpen(false)}>
+                            Darmowa konsultacja
+                        </Button>
+                    </div>
+                </div>
+            )}
         </>
     );
 }

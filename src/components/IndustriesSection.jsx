@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Scale, ShoppingCart, Users, Calculator, CheckCircle2, Zap } from 'lucide-react';
+import { Scale, Users, ShoppingCart, Megaphone, CheckCircle2, Zap } from 'lucide-react';
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -17,65 +17,93 @@ const industries = [
         desc: "Błyskawiczne analizy dziesiątek umów naraz, błędoodporne przeszukiwanie orzecznictwa (\"RAG\") i półautomatyczne draftowanie opinii. Wszystko w izolowanym środowisku, bez ryzyka wycieku danych klientów.",
         metric: { value: '45+', label: 'godzin zaoszczędzonych', subtext: 'miesięcznie na researchu przez przeciętnego asystenta' },
         useCases: [
-            'Analiza ryzyk w pakietach umów NDA/B2B (red-flagging)',
-            'Własna, poufna wyszukiwarka w historii spraw i pism',
-            'Szybkie streszczenia akt wielotomowych spraw'
+            'Analiza ryzyka w umowach (red-flagging)',
+            'Inteligentny RAG (wyszukiwanie w orzecznictwie)',
+            'Automatyczne draftowanie pism procesowych',
+            'Anonimizacja danych w dokumentach (RODO)',
+            'Ekstrakcja kluczowych terminów i dat z kontraktów',
+            'Weryfikacja zgodności z aktualnymi przepisami',
+            'Automatyczne streszczanie akt wielotomowych',
+            'Klasyfikacja i tagowanie poczty przychodzącej',
+            'Generator wstępnych opinii prawnych',
+            'Monitoring zmian w legislacji (alerting)'
         ],
         theme: { text: 'text-[#ee703d]', bg: 'bg-[#ee703d]/10', border: 'border-[#ee703d]/20' },
         gradient: 'from-[#ee703d] to-[#f5a273]',
         accent: '#ee703d',
-        image: '/industry_law.png',
-    },
-    {
-        id: 'ecommerce',
-        title: "E-commerce",
-        icon: <ShoppingCart className="w-5 h-5" />,
-        tagline: 'Obsługa klienta, która (naprawdę) sprzedaje',
-        desc: "Skończ z generycznymi chatbotami. Nasi agenci znają Twój regulamin, politykę zwrotów i status przesyłek. Jeśli klient pyta o rozmiar – bot doradzi, jeśli chce zwrócić – przeprowadzi przez proces. Do tego AI pilnuje stanów magazynowych na autopilocie.",
-        metric: { value: '38%', label: 'zapytań rozwiązanych', subtext: 'bez udziału człowieka na "pierwszej linii"' },
-        useCases: [
-            'Generowane opisy produktów SEO w setkach wariantów',
-            'Obsługa BOK 24/7 połączona z systemem ERP/WMS',
-            'Dynamiczne rekomendacje koszykowe na bazie NLP'
-        ],
-        theme: { text: 'text-[#cc7cab]', bg: 'bg-[#cc7cab]/10', border: 'border-[#cc7cab]/20' },
-        gradient: 'from-[#f5a273] to-[#cc7cab]',
-        accent: '#cc7cab',
-        image: '/industry_ecommerce.png',
+        image: '/industry_law_new.png',
     },
     {
         id: 'hr',
-        title: "HR i Rekrutacja",
+        title: "Agencje Rekrutacyjne i HR",
         icon: <Users className="w-5 h-5" />,
-        tagline: 'Zatrudniaj trafniej, trać mniej czasu na screening',
-        desc: "Zdejmujemy z rekruterów to, co najbardziej żmudne. AI błyskawicznie analizuje setki CV pod kątem precyzyjnych kryteriów, umawia spotkania i symuluje ścieżki onboardingowe dla nowych pracowników.",
-        metric: { value: '60%', label: 'krótszy Time-To-Hire', subtext: 'dzięki automatycznemu parsowaniu i ocenie aplikacji' },
+        tagline: 'Skaluj rekrutację bez obniżania Candidate Experience',
+        desc: "Automatyzujemy żmudny screening CV, umawianie spotkań i komunikację z kandydatami. AI ocenia dopasowanie profilu i prowadzi wstępny wywiad, oszczędzając setki godzin pracy rekruterów każdego miesiąca.",
+        metric: { value: '15h', label: 'oszczędności na procesie', subtext: 'na każdego pomyślnie zatrudnionego kandydata' },
         useCases: [
-            'Ekstrakcja kompetencji z nieustrukturyzowanych CV',
-            'Zautomatyzowany mail-loop rekrutacyjny i feedback',
-            'Bot asystujący ("Buddy") wdrażający nowych pracowników'
+            'Automatyczny screening i ocena CV',
+            'Pre-screening i kwalifikacja przez AI',
+            'Automatyczne umawianie rozmów (synchronizacja kalendarzy)',
+            'Personalizowane kampanie sourcingowe np. LinkedIn',
+            'Podsumowania z wywiadów dla Hiring Managerów',
+            'Natychmiastowy spersonalizowany feedback dla kandydatów',
+            'Automatyzacja przygotowywania ofert pracy',
+            'Generowanie raportów o trendach na rynku pracy',
+            'Usprawniony proces Onboardingu i list kontrolnych',
+            'Automatyczne ankiety satysfakcji i zaangażowania (Pulse)'
         ],
-        theme: { text: 'text-[#d5a4e7]', bg: 'bg-[#d5a4e7]/10', border: 'border-[#d5a4e7]/20' },
-        gradient: 'from-[#cc7cab] to-[#d5a4e7]',
-        accent: '#d5a4e7',
-        image: '/industry_hr.png',
+        theme: { text: 'text-[#4f46e5]', bg: 'bg-[#4f46e5]/10', border: 'border-[#4f46e5]/20' },
+        gradient: 'from-[#4f46e5] to-[#818cf8]',
+        accent: '#4f46e5',
+        image: '/industry_hr_new.png',
     },
     {
-        id: 'finance',
-        title: "Finanse i Księgowość",
-        icon: <Calculator className="w-5 h-5" />,
-        tagline: 'Zabijamy ręczne przepisywanie (i błędy w Excelu)',
-        desc: "Automatyzacja to w księgowości absolutna podstawa. Nasze modele z 99% skutecznością czytają skany faktur (nawet krzywe i zagniecione), kategoryzują koszty pod konkretne konta w Twoim systemie i monitorują płatności bez Twojej ingerencji.",
-        metric: { value: '0', label: 'ręcznego przepisywania', subtext: 'z PDF-ów do arkuszy i systemów ERP' },
+        id: 'ecommerce',
+        title: "E-Commerce",
+        icon: <ShoppingCart className="w-5 h-5" />,
+        tagline: 'Zwiększ sprzedaż przez personalizację i świetną obsługę',
+        desc: "Od inteligentnej rekomendacji produktów, przez wsparcie obsługi zwrotów, aż po seryjne generowanie SEO opisów produktów w mgnieniu oka. Zwiększ konwersję ratując porzucone koszyki i odpowiadając na pytania 24/7.",
+        metric: { value: '25%', label: 'wyższa konwersja', subtext: 'dzięki spersonalizowanym komunikatom i obsłudze klienta' },
         useCases: [
-            'Zaawansowany OCR fakturowy połączony z workflow akceptacji',
-            'Generowanie raportów finansowych z rozproszonych źródeł',
-            'Automatyczne rozliczanie delegacji i wydatków firmowych'
+            'Zaawansowane chatboty obsługi klienta / weryfikacja statusu zamówień',
+            'Automatyczne ratowanie porzuconych koszyków z rabatami',
+            'Seryjne generowanie unikalnych opisów produktów pod SEO',
+            'Inteligentne segmentowanie klientów do kampanii mailingowych',
+            'Zautomatyzowany cross-selling i up-selling na podstawie ubiegłych zakupów',
+            'Dynamiczne zarządzanie feedem produktowym dla FB/Google Ads',
+            'Predykcja stanów magazynowych na podstawie trendów',
+            'Usprawnienie procesu zwrotów i reklamacji (RMA)',
+            'Tłumaczenia wielojęzyczne opisów dla rynków zagranicznych',
+            'Zbieranie i analiza opinii od klientów po zakupie'
         ],
-        theme: { text: 'text-[#8530d1]', bg: 'bg-[#8530d1]/10', border: 'border-[#8530d1]/20' },
-        gradient: 'from-[#d5a4e7] to-[#8530d1]',
-        accent: '#8530d1',
-        image: '/industry_finance.png',
+        theme: { text: 'text-[#10b981]', bg: 'bg-[#10b981]/10', border: 'border-[#10b981]/20' },
+        gradient: 'from-[#10b981] to-[#34d399]',
+        accent: '#10b981',
+        image: '/industry_ecommerce_new.png',
+    },
+    {
+        id: 'marketing',
+        title: "Agencje Reklamowe i Marketingowe",
+        icon: <Megaphone className="w-5 h-5" />,
+        tagline: 'Uwolnij kreatywność, zostaw powtarzalne taski automatom',
+        desc: "Zautomatyzuj raportowanie kampanii, zarządzanie budżetami i dystrybucję wariantów reklam (A/B testing). AI tworzy spersonalizowane teksty reklamowe i analizuje trendy, oddając zespołom czas na strategię.",
+        metric: { value: '3x', label: 'szybszy time-to-market kampanii', subtext: 'dzięki półautomatycznemu generowaniu kreatywnych materiałów' },
+        useCases: [
+            'Seryjne generowanie wariantów copy reklamowego (FB/Google Ads)',
+            'Automatyczne cykliczne raporty skuteczności dla klientów',
+            'Monitorowanie oraz alerty o anomaliach w budżetach (PPC)',
+            'Inteligentny research i analiza trendów w Social Mediach',
+            'Personalizacja treści na szeroką skalę (Mass Personalization)',
+            'Zautomatyzowane lejki marketingowe i Lead Nurturing',
+            'Błyskawiczne tłumaczenia i adaptacje formatów na nowe rynki',
+            'Analiza sentymentu i komentarzy pod marką (Social Listening)',
+            'Draftowanie ofert i rzuty briefów kreatywnych (RFP)',
+            'Automatyczne tagowanie i kategoryzowanie zasobów graficznych'
+        ],
+        theme: { text: 'text-[#f43f5e]', bg: 'bg-[#f43f5e]/10', border: 'border-[#f43f5e]/20' },
+        gradient: 'from-[#f43f5e] to-[#fb7185]',
+        accent: '#f43f5e',
+        image: '/industry_ads_new.png',
     }
 ];
 
@@ -202,13 +230,13 @@ export function IndustriesSection() {
                                     <div className="mt-auto">
                                         <p className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
                                             <Zap className="w-4 h-4 text-amber-500 fill-amber-500" />
-                                            Gdzie to działa najlepiej?
+                                            Co możemy zautomatyzować?
                                         </p>
-                                        <ul className="space-y-3">
+                                        <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3">
                                             {activeData.useCases.map((useCase, i) => (
-                                                <li key={i} className="flex items-start gap-3">
-                                                    <CheckCircle2 className={cn("w-5 h-5 shrink-0 mt-0.5", activeData.theme.text)} />
-                                                    <span className="text-slate-600 font-medium">{useCase}</span>
+                                                <li key={i} className="flex items-start gap-2.5 group">
+                                                    <CheckCircle2 className={cn("w-4 h-4 shrink-0 mt-0.5 opacity-60 group-hover:opacity-100 transition-opacity", activeData.theme.text)} />
+                                                    <span className="text-slate-600 font-medium text-[13px] leading-tight">{useCase}</span>
                                                 </li>
                                             ))}
                                         </ul>

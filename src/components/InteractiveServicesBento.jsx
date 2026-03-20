@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence, useInView } from 'framer-motion';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowUpRight, ArrowLeft, ArrowRight, Check, Play, Pause, X, Zap, Sparkles } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -10,6 +11,7 @@ function cn(...inputs) {
 }
 
 import { ThreeDMarquee } from './ui/ThreeDMarquee';
+import PhoneMockupCard from './PhoneMockupCard';
 import anthropicLogo from '../assets/logos/anthropic.png';
 import claudeLogo from '../assets/logos/claude.png';
 import copilotLogo from '../assets/logos/copilot.png';
@@ -54,7 +56,7 @@ function GlareCard({ children, className, onClick, isExpanded }) {
     };
 
     return (
-        <motion.div
+        <div
             ref={cardRef}
             onMouseMove={handleMouseMove}
             onMouseEnter={() => setIsHovered(true)}
@@ -91,7 +93,7 @@ function GlareCard({ children, className, onClick, isExpanded }) {
             <div className="relative bg-[#f7f7f8] rounded-[calc(2rem-1px)] h-full w-full overflow-hidden flex flex-col">
                 {children}
             </div>
-        </motion.div>
+        </div>
     );
 }
 
@@ -131,12 +133,12 @@ function AutomationPreview() {
     ];
 
     return (
-        <div className="w-full h-full relative overflow-hidden pointer-events-none select-none" style={{ minHeight: 200 }}>
+        <div className="w-full h-full relative overflow-visible pointer-events-none select-none pt-12 -mt-12" style={{ minHeight: 200 }}>
             <style>{`
                 @keyframes hs-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
                 @keyframes ws-hub-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(238,112,61,0); } 50% { box-shadow: 0 0 28px 6px rgba(238,112,61,0.18); } }
             `}</style>
-
+            
             {/* Orbit system — center pushed to right edge (50% translateX) so only left half visible */}
             <div style={{
                 position: 'absolute',
@@ -186,24 +188,13 @@ function AutomationPreview() {
                     width: 72, height: 72,
                     borderRadius: '50%',
                     background: 'white',
-                    border: '2px solid rgba(238,112,61,0.3)',
+                    border: '2px solid rgba(238,112,61,0.2)',
                     animation: 'ws-hub-pulse 3s ease-in-out infinite',
                     display: 'flex', flexDirection: 'column',
                     alignItems: 'center', justifyContent: 'center',
                 }}>
-                    <svg width="32" height="22" viewBox="0 0 46 28" fill="none">
-                        <rect x="0" y="0" width="28" height="7" rx="2" fill="#0A2540" opacity="0.15"/>
-                        <rect x="9" y="10.5" width="28" height="7" rx="2" fill="url(#hubGrad)"/>
-                        <rect x="0" y="21" width="28" height="7" rx="2" fill="#0A2540" opacity="0.15"/>
-                        <defs>
-                            <linearGradient id="hubGrad" x1="9" y1="14" x2="37" y2="14" gradientUnits="userSpaceOnUse">
-                                <stop offset="0%" stopColor="#ee703d"/>
-                                <stop offset="50%" stopColor="#cc7cab"/>
-                                <stop offset="100%" stopColor="#8530d1"/>
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                    <span style={{ fontSize: 6.5, fontWeight: 700, letterSpacing: '0.08em', color: '#0A2540', marginTop: 3 }}>WORKSHIFT</span>
+                    <Logo size={40} showWordmark={false} />
+                    <span style={{ fontSize: 7, fontWeight: 800, letterSpacing: '0.05em', color: '#0A2540', marginTop: 1, fontFamily: 'Plus Jakarta Sans' }}>WORKSHIFT</span>
                 </div>
             </div>
         </div>
@@ -370,23 +361,27 @@ function DisplayCard({
   description = "Discover amazing content",
   date = "Just now",
   iconClassName = "text-accent",
-  titleClassName = "text-accent",
+  titleClassName = "text-[#0A2540]",
 }) {
   return (
     <div
       className={cn(
-        "relative flex h-36 w-[22rem] -skew-y-[8deg] select-none flex-col justify-between rounded-xl border-2 border-slate-100 bg-white/70 backdrop-blur-md px-4 py-3 transition-all duration-700 after:absolute after:-right-1 after:top-[-5%] after:h-[110%] after:w-[20rem] after:bg-gradient-to-l after:from-white/50 after:to-transparent after:content-[''] hover:border-accent/40 hover:bg-white [&>*]:flex [&>*]:items-center [&>*]:gap-2 shadow-sm",
+        "relative flex h-32 w-64 select-none flex-col justify-between rounded-2xl border border-slate-200/60 bg-white/95 backdrop-blur-sm px-5 py-4 transition-all duration-500 hover:border-accent/40 shadow-[0_8px_30px_rgb(0,0,0,0.06)]",
         className
       )}
     >
-      <div>
-        <span className="relative inline-block rounded-full bg-slate-50 border border-slate-100 p-2 shadow-sm">
+      <div className="flex items-center gap-3">
+        <span className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-50 shadow-sm border border-slate-100">
           {icon}
         </span>
-        <p className={cn("text-lg font-semibold tracking-tight", titleClassName)}>{title}</p>
+        <p className={cn("text-sm font-semibold tracking-tight", titleClassName)}>{title}</p>
       </div>
-      <p className="whitespace-nowrap text-lg text-slate-700 font-medium">{description}</p>
-      <p className="text-sm font-medium text-slate-400">{date}</p>
+      <div className="mt-1 text-left">
+        <p className="text-[13px] text-slate-600 font-medium leading-tight">{description}</p>
+      </div>
+      <div className="mt-auto text-left">
+        <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">{date}</p>
+      </div>
     </div>
   );
 }
@@ -397,31 +392,28 @@ function TrainingPreview() {
       title: "Prompt Engineering",
       description: "Pisz instrukcje docelowe",
       date: "Wprowadzenie",
-      icon: <Sparkles className="w-5 h-5 text-accent" />,
-      titleClassName: "text-[#0A2540]",
-      className: "[grid-area:stack] -translate-x-12 translate-y-8 hover:translate-y-2 z-30 shadow-md",
+      icon: <Sparkles className="w-4 h-4 text-accent" />,
+      className: "[grid-area:stack] z-30 translate-x-0 translate-y-0 shadow-[0_8px_30px_rgb(0,0,0,0.08)] group-hover/bento:-translate-y-2 group-hover/bento:-translate-x-2 transition-all duration-500",
     },
     {
       title: "Bezpieczeństwo AI",
       description: "Ochrona danych firmy",
       date: "Dobre praktyki",
-      icon: <Sparkles className="w-5 h-5 text-accent-light" />,
-      titleClassName: "text-[#0A2540]",
-      className: "[grid-area:stack] translate-x-0 translate-y-0 hover:-translate-y-6 before:absolute before:w-[100%] before:outline-1 before:rounded-xl before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-white/50 grayscale-[50%] hover:before:opacity-0 before:transition-opacity before:duration:700 hover:grayscale-0 before:left-0 before:top-0 z-20 shadow-sm",
+      icon: <Sparkles className="w-4 h-4 text-accent-light" />,
+      className: "[grid-area:stack] z-20 translate-x-4 -translate-y-6 opacity-90 shadow-md group-hover/bento:translate-x-6 group-hover/bento:-translate-y-8 group-hover/bento:opacity-100 transition-all duration-500 group-hover/bento:rotate-2",
     },
     {
       title: "Narzędzia GenAI",
-      description: "Automatyzacja codziennych zadań",
-      date: "Poziom średniozaawansowany",
-      icon: <Sparkles className="w-5 h-5 text-[#0A2540]" />,
-      titleClassName: "text-[#0A2540]",
-      className: "[grid-area:stack] translate-x-12 -translate-y-8 hover:-translate-y-14 before:absolute before:w-[100%] before:outline-1 before:rounded-xl before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-white/50 grayscale-[50%] hover:before:opacity-0 before:transition-opacity before:duration:700 hover:grayscale-0 before:left-0 before:top-0 z-10 shadow-sm",
+      description: "Automatyzacja zadań",
+      date: "Poziom średnio.",
+      icon: <Sparkles className="w-4 h-4 text-slate-400" />,
+      className: "[grid-area:stack] z-10 translate-x-8 -translate-y-12 opacity-80 shadow-sm group-hover/bento:translate-x-12 group-hover/bento:-translate-y-14 group-hover/bento:opacity-100 transition-all duration-500 group-hover/bento:rotate-3",
     },
   ];
 
   return (
-    <div className="w-full h-full flex items-center justify-center relative -mt-6">
-      <div className="grid [grid-template-areas:'stack'] place-items-center opacity-100 animate-in fade-in-0 duration-700 scale-75 md:scale-90 lg:scale-[80%] pb-12 pr-12">
+    <div className="w-full h-full flex items-center justify-center relative mt-8 pr-8">
+      <div className="grid [grid-template-areas:'stack'] place-items-center">
         {cards.map((cardProps, index) => (
           <DisplayCard key={index} {...cardProps} />
         ))}
@@ -431,6 +423,27 @@ function TrainingPreview() {
 }
 
 function AgentPreview() {
+    const containerRef = useRef(null);
+    useEffect(() => {
+        gsap.registerPlugin(ScrollTrigger);
+        let ctx = gsap.context(() => {
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: "top 85%",
+                }
+            });
+            tl.fromTo(".gsap-chat-1", { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.35 })
+              .fromTo(".gsap-chat-typing", { opacity: 0 }, { opacity: 1, duration: 0.4 }, "+=0.1")
+              .to(".gsap-chat-typing", { opacity: 0, duration: 0.2 }, "+=0.3")
+              .fromTo(".gsap-chat-2", { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.35 })
+              .fromTo(".gsap-chat-3", { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.35 }, "+=0.3")
+              .fromTo(".gsap-chat-4", { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.35 }, "+=0.3")
+              .fromTo(".gsap-chat-5", { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.35 }, "+=0.3");
+        }, containerRef);
+        return () => ctx.revert();
+    }, []);
+
     // -40px broke out to fill 100% of card width.
     // +10px on each side = phone is 75% of that (shrunk 25%).
     const AVATAR = (
@@ -444,55 +457,17 @@ function AgentPreview() {
     const WAVE_BARS = [4,7,12,9,14,11,8,13,10,7,11,9,13,8,5,10,12,7,9,11];
 
     return (
-        <div style={{
-            position: 'absolute',
-            top: 0, left: '10px', right: '10px',  // 25% smaller: was -40px on each side
-        }}>
-            {/* iPhone body */}
-            <div style={{
-                width: '100%',
-                aspectRatio: '9 / 19.5',
-                borderRadius: 40,
-                background: '#111',
-                border: '6px solid #1c1c1e',
-                boxShadow: '0 0 0 1px #2a2a2a, inset 0 0 0 1px rgba(255,255,255,0.05), 0 28px 56px -12px rgba(0,0,0,0.45)',
-                position: 'relative',
-                overflow: 'hidden',
-            }}>
-                {/* Screen */}
-                <div style={{ position: 'absolute', inset: 0, background: '#fff' }} />
-
-                {/* Status bar */}
-                <div style={{
-                    position: 'absolute', top: 0, left: 0, right: 0,
-                    height: 28, background: '#fff',
-                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                    padding: '0 20px', zIndex: 20,
-                }}>
-                    <span style={{ fontSize: 11, fontWeight: 700, color: '#0A2540', fontFamily: 'Inter, system-ui', letterSpacing: '-0.02em' }}>9:41</span>
-                    <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-                        <svg width="13" height="9" viewBox="0 0 14 10" fill="#0A2540"><rect x="0" y="4" width="2.5" height="6" rx="0.7"/><rect x="3.5" y="2.5" width="2.5" height="7.5" rx="0.7"/><rect x="7" y="1" width="2.5" height="9" rx="0.7"/><rect x="10.5" y="0" width="2.5" height="10" rx="0.7" opacity="0.3"/></svg>
-                        <svg width="14" height="10" viewBox="0 0 18 13" fill="#0A2540"><path d="M9 3C12.3 3 15.3 4.3 17.5 6.5L15.7 8.3C14 6.6 11.6 5.5 9 5.5S4 6.6 2.3 8.3L.5 6.5C2.7 4.3 5.7 3 9 3z" opacity="0.28"/><path d="M9 7.5c2 0 3.8.8 5.1 2.1l-1.8 1.8A4.5 4.5 0 009 10a4.5 4.5 0 00-3.3 1.4L3.9 9.6A7.4 7.4 0 019 7.5z"/><circle cx="9" cy="13" r="1.8"/></svg>
-                        <svg width="17" height="9" viewBox="0 0 24 12" fill="#0A2540"><rect x="0" y="1" width="20" height="10" rx="3" stroke="#0A2540" strokeWidth="1.3" fill="none"/><rect x="1.5" y="2.5" width="15" height="7" rx="1.5"/><path d="M21.5 4v4a2 2 0 000-4z" fill="#0A2540" opacity="0.5"/></svg>
-                    </div>
-                </div>
-
-                {/* Dynamic Island */}
-                <div style={{
-                    position: 'absolute', top: 7, left: '50%', transform: 'translateX(-50%)',
-                    width: '30%', height: 18,
-                    background: '#111', borderRadius: 999, zIndex: 30,
-                }} />
-
-                {/* Screen Content */}
-                <div style={{ position: 'absolute', top: 28, left: 0, right: 0, bottom: 0, overflow: 'hidden', zIndex: 10 }}>
-
+        <div ref={containerRef} className="w-full h-full flex items-start justify-center pt-6 px-4">
+            <PhoneMockupCard className="shadow-2xl">
+                <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', margin: '-24px -24px -64px -24px' }}>
                     {/* App header bar */}
                     <div style={{
                         display: 'flex', alignItems: 'center', gap: 10,
-                        padding: '10px 16px',
+                        padding: '16px 16px 10px',
                         borderBottom: '1px solid #f0f4f8',
                         background: 'rgba(255,255,255,0.97)',
+                        borderTopLeftRadius: '24px',
+                        borderTopRightRadius: '24px',
                     }}>
                         <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg, #ee703d, #8530d1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="white"><path d="M8 1a3 3 0 100 6 3 3 0 000-6zM2 14s-1 0-1-1 1-4 7-4 7 3 7 4-1 1-1 1H2z" fillRule="evenodd"/></svg>
@@ -507,33 +482,29 @@ function AgentPreview() {
                     </div>
 
                     {/* Chat feed */}
-                    <div style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 8, background: '#f8fafc', height: '100%', overflowY: 'hidden' }}>
-
+                    <div style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 8, background: '#f8fafc', height: '100%', overflowY: 'hidden', paddingBottom: '32px' }}>
                         {/* Timestamp */}
                         <div style={{ textAlign: 'center' }}>
                             <span style={{ fontSize: 10, color: '#94a3b8', fontFamily: 'Inter, system-ui', background: '#e2e8f0', borderRadius: 99, padding: '2px 8px' }}>Dzisiaj, 14:32</span>
                         </div>
 
                         {/* User msg 1 */}
-                        <motion.div initial={{ opacity: 0, y: 6 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.35 }}
-                            style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                        <div className="gsap-chat-1" style={{ display: 'flex', justifyContent: 'flex-end', opacity: 0 }}>
                             <div style={{ background: '#0A2540', borderRadius: '16px 16px 4px 16px', padding: '8px 12px', maxWidth: '78%' }}>
                                 <p style={{ fontSize: 12, color: '#fff', fontWeight: 500, lineHeight: 1.4, margin: 0, fontFamily: 'Inter, system-ui' }}>Potrzebuję fakturę za luty dla XYZ Sp. z o.o.</p>
                             </div>
-                        </motion.div>
+                        </div>
 
                         {/* Typing */}
-                        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: [1, 1, 0] }} transition={{ times: [0, 0.65, 1], duration: 1.1, delay: 0.45 }}
-                            style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', gap: 6 }}>
+                        <div className="gsap-chat-typing" style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', gap: 6, opacity: 0 }}>
                             {AVATAR}
                             <div style={{ background: '#fff', borderRadius: '16px 16px 16px 4px', padding: '8px 12px', border: '1px solid #e2e8f0', display: 'flex', gap: 4, alignItems: 'center' }}>
                                 {[0, 150, 300].map(d => <span key={d} style={{ width: 5, height: 5, borderRadius: '50%', background: '#94a3b8', display: 'inline-block', animationDelay: `${d}ms` }} className="animate-bounce" />)}
                             </div>
-                        </motion.div>
+                        </div>
 
                         {/* Agent reply 1 */}
-                        <motion.div initial={{ opacity: 0, y: 6 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.95, duration: 0.35 }}
-                            style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', gap: 6 }}>
+                        <div className="gsap-chat-2" style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', gap: 6, opacity: 0 }}>
                             {AVATAR}
                             <div style={{ background: '#fff', borderRadius: '16px 16px 16px 4px', padding: '8px 12px', maxWidth: '75%', border: '1px solid #e8f4e8' }}>
                                 <p style={{ fontSize: 12, color: '#0A2540', fontWeight: 500, lineHeight: 1.45, margin: 0, fontFamily: 'Inter, system-ui' }}>
@@ -542,19 +513,17 @@ function AgentPreview() {
                                     <span style={{ color: '#22c55e', fontWeight: 600 }}>✓ Wysłano na jan@xyz.pl</span>
                                 </p>
                             </div>
-                        </motion.div>
+                        </div>
 
                         {/* User msg 2 */}
-                        <motion.div initial={{ opacity: 0, y: 6 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 1.3, duration: 0.35 }}
-                            style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                        <div className="gsap-chat-3" style={{ display: 'flex', justifyContent: 'flex-end', opacity: 0 }}>
                             <div style={{ background: '#0A2540', borderRadius: '16px 16px 4px 16px', padding: '8px 12px', maxWidth: '65%' }}>
                                 <p style={{ fontSize: 12, color: '#fff', fontWeight: 500, lineHeight: 1.4, margin: 0, fontFamily: 'Inter, system-ui' }}>Świetnie! A kiedy wpłynęła płatność?</p>
                             </div>
-                        </motion.div>
+                        </div>
 
                         {/* Agent — audio waveform message */}
-                        <motion.div initial={{ opacity: 0, y: 6 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 1.65, duration: 0.35 }}
-                            style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', gap: 6 }}>
+                        <div className="gsap-chat-4" style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', gap: 6, opacity: 0 }}>
                             {AVATAR}
                             <div style={{ background: 'linear-gradient(135deg, rgba(238,112,61,0.08), rgba(133,48,209,0.08))', borderRadius: '16px 16px 16px 4px', padding: '8px 12px', border: '1px solid rgba(133,48,209,0.15)', display: 'flex', alignItems: 'center', gap: 8 }}>
                                 {/* Play button */}
@@ -569,25 +538,18 @@ function AgentPreview() {
                                 </div>
                                 <span style={{ fontSize: 10, color: '#64748b', fontFamily: 'Inter, system-ui', whiteSpace: 'nowrap' }}>0:23</span>
                             </div>
-                        </motion.div>
+                        </div>
 
                         {/* User final reply */}
-                        <motion.div initial={{ opacity: 0, y: 6 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 2.0, duration: 0.35 }}
-                            style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                        <div className="gsap-chat-5" style={{ display: 'flex', justifyContent: 'flex-end', opacity: 0 }}>
                             <div style={{ background: '#0A2540', borderRadius: '16px 16px 4px 16px', padding: '8px 12px' }}>
                                 <p style={{ fontSize: 12, color: '#fff', fontWeight: 500, lineHeight: 1.4, margin: 0, fontFamily: 'Inter, system-ui' }}>Dzięki! 👌</p>
                             </div>
-                        </motion.div>
+                        </div>
 
                     </div>
                 </div>
-
-                {/* Side hardware buttons */}
-                <div style={{ position: 'absolute', left: -5, top: '18%', width: 4, height: '6%', background: '#2a2a2a', borderRadius: '2px 0 0 2px' }} />
-                <div style={{ position: 'absolute', left: -5, top: '26%', width: 4, height: '10%', background: '#2a2a2a', borderRadius: '2px 0 0 2px' }} />
-                <div style={{ position: 'absolute', left: -5, top: '38%', width: 4, height: '10%', background: '#2a2a2a', borderRadius: '2px 0 0 2px' }} />
-                <div style={{ position: 'absolute', right: -5, top: '28%', width: 4, height: '14%', background: '#2a2a2a', borderRadius: '0 2px 2px 0' }} />
-            </div>
+            </PhoneMockupCard>
         </div>
     );
 }
@@ -607,14 +569,14 @@ const SERVICES = [
         id: 'automatyzacja',
         title: 'Automatyzacja procesów',
         tagline: 'Łączymy Twoje narzędzia w jeden workflow. Bez ręcznego przepisywania.',
-        colSpan: 'lg:col-span-7',
+        colSpan: 'lg:col-span-6',
         minHeight: 'min-h-[420px] lg:min-h-[480px]',
         Preview: AutomationPreview,
 
         categoryTag: 'Nasza flagowa usługa',
         expandedTitle: 'Twoje narzędzia, jeden płynny przepływ.',
-        expandedDescription: 'Zamiast ręcznie kopiować dane z maila do arkusza, z arkusza do CRM-a, a z CRM-a do systemu fakturowego — budujemy automatyczny pipeline, który robi to za Ciebie. Używamy n8n, Make i dedykowanych skryptów, które wpinają się w to, jak już pracujesz. Bez zmiany przyzwyczajeń, bez wdrażania nowego "systemu". Po prostu — dane płyną same.',
-        heroMetric: { value: '10h+', label: 'oszczędności na pracowniku tygodniowo — średnia z naszych wdrożeń', subtext: 'Przy zespole 5-osobowym to 200h+ miesięcznie.' },
+        expandedDescription: 'Zamiast ręcznie kopiować dane z maila do arkusza, z arkusza do CRM-a, a z CRM-a do systemu fakturowego - budujemy automatyczny pipeline, który robi to za Ciebie. Używamy n8n, Make i dedykowanych skryptów, które wpinają się w to, jak już pracujesz. Bez zmiany przyzwyczajeń, bez wdrażania nowego "systemu". Po prostu - dane płyną same.',
+        heroMetric: { value: '10h+', label: 'oszczędności na pracowniku tygodniowo - średnia z naszych wdrożeń', subtext: 'Przy zespole 5-osobowym to 200h+ miesięcznie.' },
 
         innerCards: [
             {
@@ -622,7 +584,7 @@ const SERVICES = [
                 colSpan: 'lg:col-span-4',
                 label: 'Co automatyzujemy',
                 items: [
-                    'Obieg faktur — od maila do księgowości',
+                    'Obieg faktur - od maila do księgowości',
                     'Synchronizacja CRM ↔ mail ↔ kalendarz',
                     'Generowanie raportów z danych rozproszonych w narzędziach',
                     'Powiadomienia i eskalacje (np. niezapłacona faktura → alert dla CFO)',
@@ -657,7 +619,7 @@ const SERVICES = [
                 type: 'cta',
                 colSpan: 'lg:col-span-4',
                 headline: 'Zautomatyzuj pierwszy proces',
-                subline: 'Bezpłatna diagnoza — pokażemy Quick Win w 30 minut.',
+                subline: 'Bezpłatna diagnoza - pokażemy Quick Win w 30 minut.',
                 ctaLabel: 'Umów rozmowę',
             },
         ],
@@ -665,14 +627,14 @@ const SERVICES = [
     {
         id: 'audyt',
         title: 'Audyt i Strategia AI',
-        tagline: 'Powiemy Ci gdzie tracisz czas — zanim napiszemy jedną linijkę kodu.',
-        colSpan: 'lg:col-span-5',
+        tagline: 'Powiemy Ci gdzie tracisz czas - zanim napiszemy jedną linijkę kodu.',
+        colSpan: 'lg:col-span-6',
         minHeight: 'min-h-[420px] lg:min-h-[480px]',
         Preview: AuditPreview,
 
         categoryTag: 'Krok pierwszy',
-        expandedTitle: 'Zanim zaczniemy budować — musimy wiedzieć, co budować.',
-        expandedDescription: 'Nie sprzedajemy technologii na ślepo. Najpierw siadamy z Tobą na 30-minutową diagnozę, mapujemy jak wyglądają Twoje procesy, rozmawiamy z zespołem, i wskazujemy 2-3 miejsca, gdzie automatyzacja da najszybszy, policzalny zwrot. Bez tego kroku — reszta to strzały w ciemno.',
+        expandedTitle: 'Zanim zaczniemy budować - musimy wiedzieć, co budować.',
+        expandedDescription: 'Nie sprzedajemy technologii na ślepo. Najpierw siadamy z Tobą na 30-minutową diagnozę, mapujemy jak wyglądają Twoje procesy, rozmawiamy z zespołem, i wskazujemy 2-3 miejsca, gdzie automatyzacja da najszybszy, policzalny zwrot. Bez tego kroku - reszta to strzały w ciemno.',
         heroMetric: { value: '32%', label: 'średni potencjał oszczędności czasu, który identyfikujemy u klientów MŚP', subtext: 'U niektórych firm to 50+ godzin miesięcznie.' },
 
         innerCards: [
@@ -683,7 +645,7 @@ const SERVICES = [
                 items: [
                     'Mapę przepływu pracy Twojej firmy (workflow diagram)',
                     'Listę zidentyfikowanych wąskich gardeł z priorytetyzacją',
-                    'Szacunek ROI — ile czasu / pieniędzy odzyskasz per automatyzacja',
+                    'Szacunek ROI - ile czasu / pieniędzy odzyskasz per automatyzacja',
                     'Roadmapę: co wdrożyć najpierw, co może poczekać',
                 ],
             },
@@ -703,7 +665,7 @@ const SERVICES = [
                 label: 'Co najczęściej znajdujemy u klientów',
                 cards: [
                     { icon: '🕐', title: 'Ręczne przepisywanie danych', desc: 'Pracownicy kopiują te same dane między 3-4 narzędziami. Często 5-8h/tydzień.' },
-                    { icon: '📧', title: 'Chaos w skrzynkach', desc: 'Zlecenia, faktury, pytania klientów — wszystko w jednym inboxie, bez filtrów.' },
+                    { icon: '📧', title: 'Chaos w skrzynkach', desc: 'Zlecenia, faktury, pytania klientów - wszystko w jednym inboxie, bez filtrów.' },
                     { icon: '📊', title: 'Raporty robione ręcznie', desc: 'Comiesięczne zestawienia składane z 5 źródeł w arkuszu. 2 dni pracy.' }
                 ]
             },
@@ -726,8 +688,8 @@ const SERVICES = [
 
         categoryTag: 'Rozwój zespołu',
         expandedTitle: 'Twój zespół nie boi się AI. Po prostu nikt im nie pokazał, jak korzystać.',
-        expandedDescription: 'Nie robimy wykładów. Robimy warsztaty, na których Twój zespół pracuje na SWOICH danych, w SWOICH narzędziach. Po jednym dniu — wiedzą jak promptować, jak zautomatyzować powtarzalną robotę, i jak AI wbudować w swój dzień pracy. Bez teoretyzowania.',
-        heroMetric: { value: '2-3x', label: 'wzrost produktywności pracownika po szkoleniu — raportowany przez naszych klientów' },
+        expandedDescription: 'Nie robimy wykładów. Robimy warsztaty, na których Twój zespół pracuje na SWOICH danych, w SWOICH narzędziach. Po jednym dniu - wiedzą jak promptować, jak zautomatyzować powtarzalną robotę, i jak AI wbudować w swój dzień pracy. Bez teoretyzowania.',
+        heroMetric: { value: '2-3x', label: 'wzrost produktywności pracownika po szkoleniu - raportowany przez naszych klientów' },
 
         innerCards: [
             {
@@ -769,7 +731,7 @@ const SERVICES = [
                 points: [
                     { title: 'Na Twoich danych', desc: 'Nie uczymy na abstrakcyjnych przykładach. Bierzemy TWOJE maile, TWOJE arkusze, TWOJE procesy.' },
                     { title: 'Efekt od razu', desc: 'Po warsztacie każdy bierze do ręki 2-3 własne prompty, które od jutra oszczędzają mu konkretny czas.' },
-                    { title: 'Nie zostawiamy samych', desc: '30 dni wsparcia po ukończeniu szkolenia. Pytania, problemy, fine-tuning — jesteśmy dostępni.' },
+                    { title: 'Nie zostawiamy samych', desc: '30 dni wsparcia po ukończeniu szkolenia. Pytania, problemy, fine-tuning - jesteśmy dostępni.' },
                 ]
             },
             {
@@ -784,15 +746,15 @@ const SERVICES = [
     {
         id: 'agenty',
         title: 'Agenci AI',
-        tagline: 'Niestrudzona pierwsza linia — 24/7, bez urlopów.',
+        tagline: 'Niestrudzona pierwsza linia - 24/7, bez urlopów.',
         colSpan: 'lg:col-span-4',
         minHeight: 'min-h-[380px] lg:min-h-[420px]',
         Preview: AgentPreview,
 
         categoryTag: 'Automatyzacja komunikacji',
-        expandedTitle: 'Agent, który rozwiązuje — nie przekierowuje.',
-        expandedDescription: 'Budujemy boty, które działają na Twoich danych, respektują Twoje procedury i rozwiązują prawdziwe problemy klientów. Nie chodzi o chatbota, który mówi "przekierowuję do konsultanta". Chodzi o agenta, który odpowiada, wystawia, wysyła — i dopiero gdy nie wie, eskaluje do człowieka.',
-        heroMetric: { value: '40%', label: 'zapytań rozwiązanych autonomicznie — bez udziału człowieka' },
+        expandedTitle: 'Agent, który rozwiązuje - nie przekierowuje.',
+        expandedDescription: 'Budujemy boty, które działają na Twoich danych, respektują Twoje procedury i rozwiązują prawdziwe problemy klientów. Nie chodzi o chatbota, który mówi "przekierowuję do konsultanta". Chodzi o agenta, który odpowiada, wystawia, wysyła - i dopiero gdy nie wie, eskaluje do człowieka.',
+        heroMetric: { value: '40%', label: 'zapytań rozwiązanych autonomicznie - bez udziału człowieka' },
 
         innerCards: [
             {
@@ -802,7 +764,7 @@ const SERVICES = [
                 items: [
                     'Chatbot na stronę / Messenger / WhatsApp',
                     'Voicebot do obsługi linii telefonicznej',
-                    'Email bot — kategoryzacja, odpowiedzi, forwarding',
+                    'Email bot - kategoryzacja, odpowiedzi, forwarding',
                     'Wewnętrzny asystent wiedzy firmowej'
                 ],
             },
@@ -812,7 +774,7 @@ const SERVICES = [
                 label: 'Jak to działa',
                 items: [
                     'Trenujemy agenta na Twoich FAQ i procedurach',
-                    'Korzysta z bazy wiedzy (RAG) — zero halucynacji',
+                    'Korzysta z bazy wiedzy (RAG) - zero halucynacji',
                     'Monitoring w czasie rzeczywistym w dashboardzie',
                     'Agent uczy się z feedbacku ewaluując rozmowy'
                 ],
@@ -834,7 +796,7 @@ const SERVICES = [
                 type: 'cta',
                 colSpan: 'lg:col-span-4',
                 headline: 'Zbuduj swojego agenta',
-                subline: 'Od prototypu do działającego bota — 2-4 tygodnie.',
+                subline: 'Od prototypu do działającego bota - 2-4 tygodnie.',
                 ctaLabel: 'Porozmawiajmy',
             },
         ],
@@ -849,7 +811,7 @@ const SERVICES = [
 
         categoryTag: 'Content i Visual',
         expandedTitle: 'Skaluj produkcję kreacji, bez działu grafików.',
-        expandedDescription: 'Zastępujemy drogie sesje zdjęciowe i tygodnie czekania na grafika dedykowanymi pipeline\'ami generatywnymi. Tworzysz brief, a my dostarczamy setki wariantów spójnych z Twoim brandbookiem — packshoty, reklamy social, wideo. W dni, nie w miesiące.',
+        expandedDescription: 'Zastępujemy drogie sesje zdjęciowe i tygodnie czekania na grafika dedykowanymi pipeline\'ami generatywnymi. Tworzysz brief, a my dostarczamy setki wariantów spójnych z Twoim brandbookiem - packshoty, reklamy social, wideo. W dni, nie w miesiące.',
         heroMetric: { value: 'Dni', label: 'zamiast miesięcy produkcji kreacji reklamowych', subtext: 'Średnio 10x szybciej niż tradycyjny proces agencji.' },
 
         innerCards: [
@@ -891,15 +853,28 @@ const SERVICES = [
 
 // --- UNIVERSAL INNER CARDS RENDERER FOR EXPANDED VIEW ---
 function ExtendedInnerCard({ card, index }) {
+    const elRef = useRef(null);
+    useEffect(() => {
+        gsap.fromTo(elRef.current, 
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.4, delay: 0.15 + index * 0.08, ease: "power2.out" }
+        );
+        
+        if (card.type === 'timeline' && elRef.current) {
+             gsap.fromTo(elRef.current.querySelectorAll('.gsap-timeline-step'),
+                { opacity: 0, scale: 0.8 },
+                { opacity: 1, scale: 1, duration: 0.4, stagger: 0.1, delay: 0.2, ease: "back.out(1.5)" }
+             );
+        }
+    }, [index, card.type]);
+
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.15 + index * 0.08 }}
+        <div
+            ref={elRef}
             className={`
           ${card.colSpan || 'lg:col-span-1'}
           bg-[#f7f7f8] rounded-2xl border border-slate-200/60 
-          overflow-hidden flex flex-col min-h-[140px]
+          overflow-hidden flex flex-col min-h-[140px] opacity-0
           ${card.type === 'cta' ? 'lg:row-span-2 min-h-full' : ''}
         `}
         >
@@ -975,11 +950,11 @@ function ExtendedInnerCard({ card, index }) {
                     <div className="flex w-full mt-4 justify-between items-start relative z-10 px-2 lg:px-8">
                         <div className="absolute left-6 right-6 lg:left-12 lg:right-12 top-2 h-0.5 bg-slate-200 -z-10" />
                         {card.steps.map((step, i) => (
-                            <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + (i * 0.1) }} key={i} className="flex flex-col items-center max-w-[120px] text-center gap-3">
+                            <div key={i} className="gsap-timeline-step flex flex-col items-center max-w-[120px] text-center gap-3 opacity-0">
                                 <div className={`w-4 h-4 rounded-full border-[3px] border-[#f7f7f8] shadow-sm ${i === 2 ? 'bg-[#ee703d] scale-125' : 'bg-slate-300'}`} />
                                 <div className="font-bold text-[#0A2540] text-sm mt-1">{step.title}</div>
                                 <div className="text-[11px] font-medium text-slate-500 leading-snug">{step.desc}</div>
-                            </motion.div>
+                            </div>
                         ))}
                     </div>
                 </div>
@@ -1078,29 +1053,30 @@ function ExtendedInnerCard({ card, index }) {
                     </a>
                 </div>
             )}
-        </motion.div>
+        </div>
     );
 }
 
 function ExpandedServiceView({ service, onClose }) {
     const containerRef = useRef(null);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (containerRef.current) {
             const el = containerRef.current;
             const top = el.getBoundingClientRect().top + window.pageYOffset - 24;
             window.scrollTo({ top, behavior: 'smooth' });
+
+            gsap.fromTo(el, 
+                { opacity: 0, clipPath: 'inset(8% 2% 8% 2% round 2rem)', scale: 0.97 },
+                { opacity: 1, clipPath: 'inset(0% 0% 0% 0% round 2rem)', scale: 1, duration: 0.55, ease: "power3.out" }
+            );
         }
     }, []);
 
     return (
-        <motion.div
+        <div
             ref={containerRef}
-            initial={{ opacity: 0, clipPath: 'inset(8% 2% 8% 2% round 2rem)', scale: 0.97 }}
-            animate={{ opacity: 1, clipPath: 'inset(0% 0% 0% 0% round 2rem)', scale: 1 }}
-            exit={{ opacity: 0, clipPath: 'inset(8% 2% 8% 2% round 2rem)', scale: 0.97, transition: { duration: 0.3, ease: [0.55, 0.055, 0.675, 0.19] } }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full relative"
+            className="w-full relative opacity-0"
         >
             <button
                 onClick={onClose}
@@ -1132,7 +1108,7 @@ function ExpandedServiceView({ service, onClose }) {
 
                         <div className="lg:col-span-5 flex items-center justify-start lg:justify-end">
                             <div className="text-left lg:text-right border-l-[3px] lg:border-l-0 lg:border-r-[3px] border-[#ee703d] pl-6 lg:pl-0 lg:pr-6 py-2 bg-gradient-to-r lg:bg-gradient-to-l from-slate-50 to-transparent pr-8 lg:pl-12 rounded-r-2xl lg:rounded-r-none lg:rounded-l-2xl">
-                                <div className="text-5xl md:text-7xl font-display font-black text-[#0A2540] tracking-tighter mb-2 bg-clip-text text-transparent bg-gradient-to-br from-[#0A2540] to-slate-600">
+                                <div className="text-5xl md:text-7xl font-display font-black text-[#0A2540] tracking-tighter mb-2 bg-clip-text text-transparent bg-gradient-to-br from-[#0A2540] to-slate-600 pb-2">
                                     {service.heroMetric.value}
                                 </div>
                                 <p className="text-xs text-slate-500 font-bold uppercase tracking-wider max-w-[180px] lg:ml-auto leading-tight mb-2">{service.heroMetric.label}</p>
@@ -1150,13 +1126,13 @@ function ExpandedServiceView({ service, onClose }) {
 
                 </div>
             </GlareCard>
-        </motion.div>
+        </div>
     );
 }
 
 // --- MAIN GRID EXPORT ---
 
-function CollapsedCard({ service, index }) {
+function CollapsedCard({ service }) {
     return (
         <div className="flex flex-col h-full bg-white relative overflow-hidden p-8 md:p-10 group-hover:bg-[#f7f7f8]/50 transition-colors duration-500">
             {/* Background elements */}
@@ -1219,8 +1195,24 @@ function MarqueeRow({ reverse = false }) {
 }
 
 function LogoCloudHeader() {
+    const containerRef = useRef(null);
+    useEffect(() => {
+        gsap.registerPlugin(ScrollTrigger);
+        let ctx = gsap.context(() => {
+            gsap.fromTo(".gsap-header-el", 
+                { opacity: 0, y: 15 }, 
+                { opacity: 1, y: 0, duration: 0.6, stagger: 0.15, ease: "power2.out", scrollTrigger: { trigger: containerRef.current, start: "top 80%" } }
+            );
+            gsap.fromTo(".gsap-header-logo", 
+                { opacity: 0, scale: 0.85 }, 
+                { opacity: 1, scale: 1, duration: 0.6, delay: 0.15, ease: "back.out(1.5)", scrollTrigger: { trigger: containerRef.current, start: "top 80%" } }
+            );
+        }, containerRef);
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <div className="w-full relative py-20 lg:py-28 mb-16 rounded-[2.5rem] lg:rounded-[3rem] bg-[#FAFAFA] overflow-hidden flex flex-col items-center justify-center text-center">
+        <div ref={containerRef} className="w-full relative py-20 lg:py-28 mb-16 rounded-[2.5rem] lg:rounded-[3rem] bg-[#FAFAFA] overflow-hidden flex flex-col items-center justify-center text-center">
             <style>{`
                 @keyframes marquee {
                     0% { transform: translateX(0); }
@@ -1240,78 +1232,80 @@ function LogoCloudHeader() {
             <div className="absolute inset-0 z-[1] pointer-events-none" style={{ background: 'radial-gradient(ellipse 55% 65% at center, #FAFAFA 20%, transparent 75%)' }} />
             <div className="absolute inset-0 z-[1] pointer-events-none" style={{ background: 'linear-gradient(to right, #FAFAFA 0%, transparent 15%, transparent 85%, #FAFAFA 100%)' }} />
 
-            <motion.p
-                initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-                className="text-[11px] md:text-sm font-bold uppercase tracking-[0.25em] text-[#ee703d] mb-4 md:mb-5 relative z-10"
-            >
+            <p className="gsap-header-el text-[11px] md:text-sm font-bold uppercase tracking-[0.25em] text-[#ee703d] mb-4 md:mb-5 relative z-10 opacity-0">
                 Nasze usługi
-            </motion.p>
+            </p>
 
-            <motion.div
-                initial={{ scale: 0.85, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
-                transition={{ type: "spring", stiffness: 100, delay: 0.15, duration: 0.6 }}
-                viewport={{ once: true }}
-                className="relative z-10 mb-6"
-            >
+            <div className="gsap-header-logo relative z-10 mb-6 opacity-0">
                 <Logo variant="light" size={56} showWordmark={true} className="justify-center" />
-            </motion.div>
-            <motion.h2
-                initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
-                className="text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-display font-medium tracking-tight text-navy leading-[1.05] relative z-10 max-w-[90%] md:max-w-2xl px-4"
-            >
-                Co możemy dla Ciebie zrobić
-            </motion.h2>
+            </div>
+            
+            <h2 className="gsap-header-el text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-display font-medium tracking-tight text-navy leading-[1.05] relative z-10 max-w-[90%] md:max-w-2xl px-4 opacity-0">
+                Co możemy dla Ciebie zrobić?
+            </h2>
         </div>
     );
 }
 
 export function InteractiveServicesBento() {
     const [selectedId, setSelectedId] = useState(null);
+    const containerRef = useRef(null);
+
+    useLayoutEffect(() => {
+        gsap.registerPlugin(ScrollTrigger);
+        let ctx = gsap.context(() => {
+            gsap.fromTo(".gsap-modular-note", 
+                { opacity: 0, y: 16 }, 
+                { opacity: 1, y: 0, duration: 0.5, delay: 0.3, scrollTrigger: { trigger: ".gsap-modular-note", start: "top 90%" } }
+            );
+        }, containerRef);
+        return () => ctx.revert();
+    }, []);
+
+    // Fade in grid on mount/unmount/change
+    useLayoutEffect(() => {
+        if (!selectedId && containerRef.current) {
+            gsap.fromTo(".gsap-bento-grid", 
+                { opacity: 0 }, 
+                { opacity: 1, duration: 0.4 }
+            );
+        }
+    }, [selectedId]);
 
     return (
-        <section className="py-24 md:py-32 bg-white relative overflow-hidden" id="uslugi">
+        <section className="py-24 md:py-32 bg-white relative overflow-hidden" id="uslugi" ref={containerRef}>
             <div className="max-w-[1400px] mx-auto px-6 max-md:px-4">
 
                 <LogoCloudHeader />
 
                 <div className="relative">
-                    <AnimatePresence mode="wait">
-                        {selectedId ? (
-                            <ExpandedServiceView
-                                key={selectedId}
-                                service={SERVICES.find(s => s.id === selectedId)}
-                                onClose={() => setSelectedId(null)}
-                            />
-                        ) : (
-                            <motion.div
-                                key="grid"
-                                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, transition: { duration: 0.2 } }}
-                                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 lg:gap-5"
-                            >
-                                {SERVICES.map((service, idx) => (
-                                    <GlareCard
-                                        key={service.id}
-                                        onClick={() => setSelectedId(service.id)}
-                                        className={`${service.colSpan} ${service.minHeight}`}
-                                    >
-                                        <CollapsedCard service={service} index={idx} />
-                                    </GlareCard>
-                                ))}
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                    {selectedId ? (
+                        <ExpandedServiceView
+                            key={selectedId}
+                            service={SERVICES.find(s => s.id === selectedId)}
+                            onClose={() => setSelectedId(null)}
+                        />
+                    ) : (
+                        <div
+                            key="grid"
+                            className="gsap-bento-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 lg:gap-5"
+                        >
+                            {SERVICES.map((service, idx) => (
+                                <GlareCard
+                                    key={service.id}
+                                    onClick={() => setSelectedId(service.id)}
+                                    className={`${service.colSpan} ${service.minHeight}`}
+                                >
+                                    <CollapsedCard service={service} index={idx} />
+                                </GlareCard>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 {/* Modular services note */}
                 {!selectedId && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 16 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.3 }}
-                        className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 md:p-6 rounded-2xl bg-slate-50 border border-slate-200"
-                    >
+                    <div className="gsap-modular-note opacity-0 mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 md:p-6 rounded-2xl bg-slate-50 border border-slate-200">
                         <div className="flex items-center gap-4">
                             <div className="w-10 h-10 shrink-0 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center">
                                 <span className="text-lg">🧩</span>
@@ -1324,7 +1318,7 @@ export function InteractiveServicesBento() {
                         <a href="#kontakt" className="inline-flex items-center gap-2 bg-white border border-slate-200 text-[#0A2540] px-5 py-2.5 rounded-xl font-bold text-sm shadow-sm hover:border-[#ee703d]/40 hover:bg-[#ee703d]/5 transition-all duration-200 shrink-0 whitespace-nowrap">
                             Zapytaj o zakres →
                         </a>
-                    </motion.div>
+                    </div>
                 )}
 
             </div>

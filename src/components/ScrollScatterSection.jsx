@@ -7,7 +7,7 @@ gsap.registerPlugin(ScrollTrigger);
 const EMAILS = [
     {
         from: 'Anna Kowalska',
-        subject: 'Re: Faktura FV/03/2026 — proszę o korektę',
+        subject: 'Re: Faktura FV/03/2026 - proszę o korektę',
         preview: 'Cześć, w załączniku poprawiona faktura. Proszę o weryfikację kwoty netto, bo...',
         time: '9:41',
         unread: true,
@@ -16,7 +16,7 @@ const EMAILS = [
         category: 'faktura',
     },
     {
-        from: 'Klient — Marcin Nowak',
+        from: 'Klient - Marcin Nowak',
         subject: 'PILNE: Gdzie jest moje zamówienie #4891?',
         preview: 'Dzień dobry, zamówiłem 3 dni temu i nadal nie dostałem potwierdzenia wysyłki...',
         time: '9:38',
@@ -43,7 +43,7 @@ const EMAILS = [
     },
     {
         from: 'Karolina (księgowość)',
-        subject: 'Brakujące faktury za luty — PROSZĘ O PILNĄ ODPOWIEDŹ',
+        subject: 'Brakujące faktury za luty - PROSZĘ O PILNĄ ODPOWIEDŹ',
         preview: 'Hej, potrzebuję jeszcze 3 faktur kosztowych za luty do zamknięcia miesiąca...',
         time: '8:47',
         unread: true,
@@ -66,8 +66,8 @@ const EMAILS = [
         category: 'system',
     },
     {
-        from: 'Klient — Ewa Jabłońska',
-        subject: 'Reklamacja — uszkodzony produkt',
+        from: 'Klient - Ewa Jabłońska',
+        subject: 'Reklamacja - uszkodzony produkt',
         preview: 'Witam, otrzymałam paczkę i niestety jeden z produktów jest uszkodzony. Załączam zdjęcia...',
         time: 'wczoraj',
         unread: true,
@@ -85,7 +85,7 @@ const EMAILS = [
     },
     {
         from: 'Tomek (handlowiec)',
-        subject: 'Fw: Zapytanie ofertowe — hurtowa dostawa',
+        subject: 'Fw: Zapytanie ofertowe - hurtowa dostawa',
         preview: 'Szefie, przekazuję zapytanie od nowego klienta. Mówi, że potrzebuje wycenę do piątku...',
         time: 'wczoraj',
         unread: true,
@@ -307,7 +307,7 @@ export function ScrollScatterSection() {
                                             {email.subject}
                                         </span>
                                         <span className="hidden lg:inline text-xs text-slate-400 truncate flex-1 opacity-80 pl-1 shrink-0">
-                                            — {email.preview}
+                                            - {email.preview}
                                         </span>
                                     </div>
 

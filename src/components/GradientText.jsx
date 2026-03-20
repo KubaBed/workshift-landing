@@ -1,5 +1,5 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
-import { motion, useMotionValue, useAnimationFrame, useTransform } from 'framer-motion';
+import { useState, useCallback } from 'react';
+import { motion } from 'framer-motion';
 
 export default function GradientText({
   children,
@@ -12,55 +12,6 @@ export default function GradientText({
   yoyo = true
 }) {
   const [isPaused, setIsPaused] = useState(false);
-  const progress = useMotionValue(0);
-  const elapsedRef = useRef(0);
-  const lastTimeRef = useRef(null);
-
-  const animationDuration = animationSpeed * 1000;
-
-  useAnimationFrame(time => {
-    if (isPaused) {
-      lastTimeRef.current = null;
-      return;
-    }
-
-    if (lastTimeRef.current === null) {
-      lastTimeRef.current = time;
-      return;
-    }
-
-    const deltaTime = time - lastTimeRef.current;
-    lastTimeRef.current = time;
-    elapsedRef.current += deltaTime;
-
-    if (yoyo) {
-      const fullCycle = animationDuration * 2;
-      const cycleTime = elapsedRef.current % fullCycle;
-
-      if (cycleTime < animationDuration) {
-        progress.set((cycleTime / animationDuration) * 100);
-      } else {
-        progress.set(100 - ((cycleTime - animationDuration) / animationDuration) * 100);
-      }
-    } else {
-      progress.set((elapsedRef.current / animationDuration) * 100);
-    }
-  });
-
-  useEffect(() => {
-    elapsedRef.current = 0;
-    progress.set(0);
-  }, [animationSpeed, progress, yoyo]);
-
-  const backgroundPosition = useTransform(progress, p => {
-    if (direction === 'horizontal') {
-      return `${p}% 50%`;
-    } else if (direction === 'vertical') {
-      return `50% ${p}%`;
-    } else {
-      return `${p}% 50%`;
-    }
-  });
 
   const handleMouseEnter = useCallback(() => {
     if (pauseOnHover) setIsPaused(true);
@@ -80,16 +31,19 @@ export default function GradientText({
     backgroundRepeat: 'repeat'
   };
 
+  const bgPositionStart = direction === 'horizontal' ? '0% 50%' : direction === 'vertical' ? '50% 0%' : '0% 50%';
+  const bgPositionEnd = direction === 'horizontal' ? '100% 50%' : direction === 'vertical' ? '50% 100%' : '100% 50%';
+
   return (
     <motion.span
-      className={`relative inline-flex items-center overflow-hidden cursor-pointer ${showBorder ? 'py-1 px-2 rounded-[1.25rem]' : ''} ${className}`}
+      className={`relative inline-flex items-center cursor-pointer ${showBorder ? 'py-1 px-2 rounded-[1.25rem]' : ''} ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       {showBorder && (
         <motion.span
           className="absolute inset-0 z-0 pointer-events-none rounded-[1.25rem]"
-          style={{ ...gradientStyle, backgroundPosition }}
+          style={{ ...gradientStyle, backgroundPosition: bgPositionStart }}
         >
           <span
             className="absolute bg-black rounded-[1.25rem] z-[-1]"
@@ -104,8 +58,8 @@ export default function GradientText({
         </motion.span>
       )}
       <motion.span
-        className="inline-block relative text-transparent bg-clip-text"
-        style={{ ...gradientStyle, backgroundPosition, WebkitBackgroundClip: 'text' }}
+        className="inline-block relative text-transparent bg-clip-text pb-2"
+        style={{ ...gradientStyle, WebkitBackgroundClip: 'text', backgroundPosition: bgPositionStart }}
       >
         {children}
       </motion.span>
