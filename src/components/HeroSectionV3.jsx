@@ -53,15 +53,15 @@ export function HeroSectionV3() {
                     >
                         <a
                             href="#kontakt"
-                            className="group relative inline-flex items-center justify-center overflow-hidden rounded-full font-semibold text-base transition-all duration-300 cursor-pointer"
+                            className="group relative inline-flex items-center justify-center overflow-hidden rounded-full font-semibold text-base transition-all duration-300 cursor-pointer w-full sm:w-auto"
                             style={{
                                 padding: '16px 36px',
-                                backgroundColor: '#1653D4',
+                                backgroundColor: 'var(--color-accent, #ee703d)',
                                 color: '#ffffff',
-                                boxShadow: '0 4px 24px rgba(22, 83, 212, 0.35)',
+                                boxShadow: '0 4px 24px rgba(238, 112, 61, 0.3)',
                             }}
                         >
-                            <span className="absolute inset-0 rounded-full transition-transform duration-500 ease-out origin-left scale-x-0 group-hover:scale-x-100" style={{ backgroundColor: '#0e3fb0' }} />
+                            <span className="absolute inset-0 rounded-full transition-transform duration-500 ease-out origin-left scale-x-0 group-hover:scale-x-100" style={{ backgroundColor: '#d4622f' }} />
                             <span className="relative z-10 flex items-center gap-2">
                                 <span className="transition-transform duration-300 xl:group-hover:-translate-x-1">
                                     Rozpocznij współpracę

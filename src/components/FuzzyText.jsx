@@ -29,6 +29,7 @@ const FuzzyText = ({
         let glitchTimeoutId;
         let glitchEndTimeoutId;
         let clickTimeoutId;
+        let observer;
         const canvas = canvasRef.current;
         if (!canvas) return;
 
@@ -136,6 +137,12 @@ const FuzzyText = ({
             let lastFrameTime = 0;
             const frameDuration = 1000 / fps;
 
+            let isVisible = true;
+            observer = new IntersectionObserver((entries) => {
+                isVisible = entries[0].isIntersecting;
+            });
+            observer.observe(canvas);
+
             const startGlitchLoop = () => {
                 if (!glitchMode || isCancelled) return;
                 glitchTimeoutId = setTimeout(() => {
@@ -153,8 +160,12 @@ const FuzzyText = ({
             const run = timestamp => {
                 if (isCancelled) return;
 
+                // Always request next frame, but only do heavy work if visible
+                animationFrameId = window.requestAnimationFrame(run);
+
+                if (!isVisible) return; // Paused while off-screen
+
                 if (timestamp - lastFrameTime < frameDuration) {
-                    animationFrameId = window.requestAnimationFrame(run);
                     return;
                 }
                 lastFrameTime = timestamp;
@@ -280,6 +291,9 @@ const FuzzyText = ({
             clearTimeout(glitchTimeoutId);
             clearTimeout(glitchEndTimeoutId);
             clearTimeout(clickTimeoutId);
+            if (observer) {
+                observer.disconnect();
+            }
             if (canvas && canvas.cleanupFuzzyText) {
                 canvas.cleanupFuzzyText();
             }

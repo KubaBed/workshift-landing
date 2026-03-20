@@ -107,19 +107,19 @@ function HeroCTAButtonV1() {
     return (
         <motion.a
             href="#kontakt"
-            className="group relative inline-flex items-center justify-center overflow-hidden rounded-sm font-semibold text-base transition-all duration-300 cursor-pointer"
+            className="group relative inline-flex items-center justify-center overflow-hidden rounded-full font-semibold text-base transition-all duration-300 cursor-pointer w-full sm:w-auto"
             style={{
                 padding: '16px 36px',
-                backgroundColor: '#0A2540', // Navy button from mockup
+                backgroundColor: 'var(--color-accent, #ee703d)',
                 color: '#ffffff',
-                boxShadow: '0 4px 20px rgba(10, 37, 64, 0.2)',
+                boxShadow: '0 4px 24px rgba(238, 112, 61, 0.3)',
             }}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
         >
             <span
-                className="absolute inset-0 rounded-sm transition-transform duration-500 ease-out origin-left scale-x-0 group-hover:scale-x-100"
-                style={{ backgroundColor: '#133a63' }}
+                className="absolute inset-0 rounded-full transition-transform duration-500 ease-out origin-left scale-x-0 group-hover:scale-x-100"
+                style={{ backgroundColor: '#d4622f' }}
             />
             <span className="relative z-10 flex items-center gap-2">
                 <span className="transition-transform duration-300 group-hover:-translate-x-1">

@@ -165,7 +165,7 @@ export function HeroTypographic() {
           }}
         >
           Pomożemy przebić się przez szum. Konkretne wyniki, bez rewolucji
-          — odzyskaj czas na budowanie firmy, resztę zautomatyzujemy.
+          - odzyskaj czas na budowanie firmy, resztę zautomatyzujemy.
         </motion.p>
 
         {/* CTA */}

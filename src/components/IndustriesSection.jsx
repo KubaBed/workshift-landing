@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Scale, ShoppingCart, Users, Calculator, CheckCircle2, Zap } from 'lucide-react';
+import { Scale, Factory, Stethoscope, Building2, CheckCircle2, Zap } from 'lucide-react';
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -17,65 +17,93 @@ const industries = [
         desc: "Błyskawiczne analizy dziesiątek umów naraz, błędoodporne przeszukiwanie orzecznictwa (\"RAG\") i półautomatyczne draftowanie opinii. Wszystko w izolowanym środowisku, bez ryzyka wycieku danych klientów.",
         metric: { value: '45+', label: 'godzin zaoszczędzonych', subtext: 'miesięcznie na researchu przez przeciętnego asystenta' },
         useCases: [
-            'Analiza ryzyk w pakietach umów NDA/B2B (red-flagging)',
-            'Własna, poufna wyszukiwarka w historii spraw i pism',
-            'Szybkie streszczenia akt wielotomowych spraw'
+            'Analiza ryzyka w umowach (red-flagging)',
+            'Inteligentny RAG (wyszukiwanie w orzecznictwie)',
+            'Automatyczne draftowanie pism procesowych',
+            'Anonimizacja danych w dokumentach (RODO)',
+            'Ekstrakcja kluczowych terminów i dat z kontraktów',
+            'Weryfikacja zgodności z aktualnymi przepisami',
+            'Automatyczne streszczanie akt wielotomowych',
+            'Klasyfikacja i tagowanie poczty przychodzącej',
+            'Generator wstępnych opinii prawnych',
+            'Monitoring zmian w legislacji (alerting)'
         ],
         theme: { text: 'text-[#ee703d]', bg: 'bg-[#ee703d]/10', border: 'border-[#ee703d]/20' },
         gradient: 'from-[#ee703d] to-[#f5a273]',
         accent: '#ee703d',
-        image: '/industry_law.png',
+        image: '/industry_law_new.png',
     },
     {
-        id: 'ecommerce',
-        title: "E-commerce",
-        icon: <ShoppingCart className="w-5 h-5" />,
-        tagline: 'Obsługa klienta, która (naprawdę) sprzedaje',
-        desc: "Skończ z generycznymi chatbotami. Nasi agenci znają Twój regulamin, politykę zwrotów i status przesyłek. Jeśli klient pyta o rozmiar – bot doradzi, jeśli chce zwrócić – przeprowadzi przez proces. Do tego AI pilnuje stanów magazynowych na autopilocie.",
-        metric: { value: '38%', label: 'zapytań rozwiązanych', subtext: 'bez udziału człowieka na "pierwszej linii"' },
+        id: 'manufacturing',
+        title: "Produkcja i Przemysł",
+        icon: <Factory className="w-5 h-5" />,
+        tagline: 'Maksymalna wydajność dzięki inteligentnej automatyzacji',
+        desc: "Optymalizujemy łańcuchy dostaw, monitorujemy parametry pracy maszyn w czasie rzeczywistym i automatyzujemy raportowanie produkcji. AI przewiduje awarie (Predictive Maintenance) zanim one wystąpią.",
+        metric: { value: '30%', label: 'wzrostu OEE', subtext: 'dzięki lepszemu planowaniu i mniejszej liczbie przestojów' },
         useCases: [
-            'Generowane opisy produktów SEO w setkach wariantów',
-            'Obsługa BOK 24/7 połączona z systemem ERP/WMS',
-            'Dynamiczne rekomendacje koszykowe na bazie NLP'
+            'Predictive Maintenance (monitoring maszyn)',
+            'Automatyczne raportowanie produkcji (ERP)',
+            'Optymalizacja zapasów magazynowych (AI)',
+            'Analiza jakości obrazu (QC Vision AI)',
+            'Dynamiczne planowanie harmonogramu produkcji',
+            'Automatyzacja zamówień surowców',
+            'Monitorowanie zużycia energii i mediów',
+            'Asystent techniczny dla operatorów maszyn',
+            'Analiza wąskich gardeł w procesie (Bottlenecks)',
+            'Cyfrowe bliźniaki procesów produkcyjnych'
         ],
         theme: { text: 'text-[#cc7cab]', bg: 'bg-[#cc7cab]/10', border: 'border-[#cc7cab]/20' },
         gradient: 'from-[#f5a273] to-[#cc7cab]',
         accent: '#cc7cab',
-        image: '/industry_ecommerce.png',
+        image: '/industry_manufacturing_new.png',
     },
     {
-        id: 'hr',
-        title: "HR i Rekrutacja",
-        icon: <Users className="w-5 h-5" />,
-        tagline: 'Zatrudniaj trafniej, trać mniej czasu na screening',
-        desc: "Zdejmujemy z rekruterów to, co najbardziej żmudne. AI błyskawicznie analizuje setki CV pod kątem precyzyjnych kryteriów, umawia spotkania i symuluje ścieżki onboardingowe dla nowych pracowników.",
-        metric: { value: '60%', label: 'krótszy Time-To-Hire', subtext: 'dzięki automatycznemu parsowaniu i ocenie aplikacji' },
+        id: 'healthcare',
+        title: "Ochrona Zdrowia",
+        icon: <Stethoscope className="w-5 h-5" />,
+        tagline: 'Więcej czasu dla pacjenta, zero żmudnej biurokracji',
+        desc: "Automatyzujemy obieg dokumentacji medycznej, planowanie wizyt i analizę wyników badań. AI wspiera lekarzy w szybkim researchu literatury i automatyzuje wypisywanie powtarzalnych zaświadczeń.",
+        metric: { value: '2.5h', label: 'wolnego czasu dziennie', subtext: 'dla personelu dzięki automatyzacji dokumentacji' },
         useCases: [
-            'Ekstrakcja kompetencji z nieustrukturyzowanych CV',
-            'Zautomatyzowany mail-loop rekrutacyjny i feedback',
-            'Bot asystujący ("Buddy") wdrażający nowych pracowników'
+            'Automatyczne transkrypcje wywiadów lekarskich',
+            'Inteligentny system rezerwacji i przypomnień',
+            'Wstępna analiza wyników badań (screening)',
+            'Zarządzanie elektroniczną dokumentacją (EDM)',
+            'Monitoring stanów leków i materiałów',
+            'Automatyczna kategoryzacja skierowań',
+            'Asystent pacjenta (FAQ i przygotowanie do wizyty)',
+            'Billing i automatyczne rozliczenia z NFZ/Ubezpieczalnią',
+            'Analiza interakcji lekowych na bazie historii',
+            'Usprawnienie procesu wypisów i recept'
         ],
         theme: { text: 'text-[#d5a4e7]', bg: 'bg-[#d5a4e7]/10', border: 'border-[#d5a4e7]/20' },
         gradient: 'from-[#cc7cab] to-[#d5a4e7]',
         accent: '#d5a4e7',
-        image: '/industry_hr.png',
+        image: '/industry_healthcare_new.png',
     },
     {
-        id: 'finance',
-        title: "Finanse i Księgowość",
-        icon: <Calculator className="w-5 h-5" />,
-        tagline: 'Zabijamy ręczne przepisywanie (i błędy w Excelu)',
-        desc: "Automatyzacja to w księgowości absolutna podstawa. Nasze modele z 99% skutecznością czytają skany faktur (nawet krzywe i zagniecione), kategoryzują koszty pod konkretne konta w Twoim systemie i monitorują płatności bez Twojej ingerencji.",
-        metric: { value: '0', label: 'ręcznego przepisywania', subtext: 'z PDF-ów do arkuszy i systemów ERP' },
+        id: 'property',
+        title: "Nieruchomości",
+        icon: <Building2 className="w-5 h-5" />,
+        tagline: 'Skaluj portfel bez zwiększania kosztów operacyjnych',
+        desc: "Od automatycznej wyceny mieszkań, przez monitoring cen rynkowych, aż po inteligentne zarządzanie najmem. Nasze systemy automatycznie analizują księgi wieczyste i draftują umowy najmu w sekundy.",
+        metric: { value: '85%', label: 'szybsza analiza ofert', subtext: 'dzięki automatycznemu filtrowaniu i weryfikacji' },
         useCases: [
-            'Zaawansowany OCR fakturowy połączony z workflow akceptacji',
-            'Generowanie raportów finansowych z rozproszonych źródeł',
-            'Automatyczne rozliczanie delegacji i wydatków firmowych'
+            'Automatyczna analiza KW i statusu prawnego',
+            'Webscraping i monitoring cen konkurencji',
+            'Generator ofert sprzedaży (copywriting AI)',
+            'Obsługa zgłoszeń od najemców (Ticketing)',
+            'Automatyczna windykacja czynszów',
+            'Weryfikacja wiarygodności najemców',
+            'Analiza rentowności inwestycji (ROI)',
+            'Zarządzanie mediami i rozliczeniami liczników',
+            'Draftowanie umów najmu i sprzedaży',
+            'Inteligentne kategoryzowanie leadów (CRM)'
         ],
         theme: { text: 'text-[#8530d1]', bg: 'bg-[#8530d1]/10', border: 'border-[#8530d1]/20' },
         gradient: 'from-[#d5a4e7] to-[#8530d1]',
         accent: '#8530d1',
-        image: '/industry_finance.png',
+        image: '/industry_property_new.png',
     }
 ];
 
@@ -202,13 +230,13 @@ export function IndustriesSection() {
                                     <div className="mt-auto">
                                         <p className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
                                             <Zap className="w-4 h-4 text-amber-500 fill-amber-500" />
-                                            Gdzie to działa najlepiej?
+                                            Co możemy zautomatyzować?
                                         </p>
-                                        <ul className="space-y-3">
+                                        <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3">
                                             {activeData.useCases.map((useCase, i) => (
-                                                <li key={i} className="flex items-start gap-3">
-                                                    <CheckCircle2 className={cn("w-5 h-5 shrink-0 mt-0.5", activeData.theme.text)} />
-                                                    <span className="text-slate-600 font-medium">{useCase}</span>
+                                                <li key={i} className="flex items-start gap-2.5 group">
+                                                    <CheckCircle2 className={cn("w-4 h-4 shrink-0 mt-0.5 opacity-60 group-hover:opacity-100 transition-opacity", activeData.theme.text)} />
+                                                    <span className="text-slate-600 font-medium text-[13px] leading-tight">{useCase}</span>
                                                 </li>
                                             ))}
                                         </ul>

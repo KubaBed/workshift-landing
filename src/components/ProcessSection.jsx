@@ -10,7 +10,7 @@ const processSteps = [
         icon: <Search className="w-6 h-6" />,
         title: "Analiza i Strategia",
         tagline: "Najpierw słuchamy, potem projektujemy",
-        desc: "Analizujemy Twoje procesy od środka. Razem identyfikujemy \"wąskie gardła\" i miejsca największych strat czasu. Na koniec dostajesz konkretny raport z rekomendacjami i docelowy plan automatyzacji — bez żargonu, bez slajdów do szuflady.",
+        desc: "Analizujemy Twoje procesy od środka. Razem identyfikujemy \"wąskie gardła\" i miejsca największych strat czasu. Na koniec dostajesz konkretny raport z rekomendacjami i docelowy plan automatyzacji - bez żargonu, bez slajdów do szuflady.",
         detail: "Audyt procesów · Mapowanie workflow · Ocena ROI"
     },
     {
@@ -28,7 +28,7 @@ const processSteps = [
         icon: <GraduationCap className="w-6 h-6" />,
         title: "Szkolenia i Wsparcie",
         tagline: "Zostawiamy wiedzę, nie zależność",
-        desc: "Szkolimy Twój zespół tak, żeby naprawdę potrafiło korzystać z nowych narzędzi — i w razie potrzeby modyfikować je samodzielnie. Jesteśmy dostępni, kiedy coś przestaje działać lub chcesz pójść o krok dalej.",
+        desc: "Szkolimy Twój zespół tak, żeby naprawdę potrafiło korzystać z nowych narzędzi - i w razie potrzeby modyfikować je samodzielnie. Jesteśmy dostępni, kiedy coś przestaje działać lub chcesz pójść o krok dalej.",
         detail: "Szkolenia praktyczne · Dokumentacja · Support SLA"
     }
 ];

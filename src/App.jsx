@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Settings, X } from 'lucide-react';
 import { Retune } from 'retune';
 import { Header } from './components/Header';
 import { HeroSectionV1 } from './components/HeroSectionV1';
@@ -76,6 +77,7 @@ function App() {
   }
 
   const [heroVariant, setHeroVariant] = useState('vc');
+  const [showSwitcher, setShowSwitcher] = useState(false);
   const HeroComponent = HERO_VARIANTS[heroVariant].component;
 
   return (
@@ -93,20 +95,37 @@ function App() {
         <Header />
 
         {/* Hero variant switcher — floating toolbar */}
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[999] flex items-center gap-1 bg-white/90 backdrop-blur-md rounded-full px-2 py-1.5 shadow-lg border border-slate-200/60">
-          <span className="text-xs text-slate-400 font-medium px-2">Hero:</span>
-          {Object.entries(HERO_VARIANTS).map(([key, { label }]) => (
-            <button
-              key={key}
-              onClick={() => setHeroVariant(key)}
-              className={`px-3 py-1 text-xs font-semibold rounded-full transition-all duration-200 cursor-pointer ${heroVariant === key
-                ? 'bg-accent text-white shadow-sm'
-                : 'text-slate-600 hover:bg-slate-100'
-                }`}
-            >
-              {label}
-            </button>
-          ))}
+        <div className="fixed bottom-6 right-6 z-[999] flex flex-col items-end gap-2">
+          {showSwitcher && (
+            <div className="flex flex-col gap-1 bg-white/90 backdrop-blur-md rounded-2xl p-2 shadow-xl border border-slate-200/60 transition-all duration-300 origin-bottom-right">
+              <div className="flex items-center justify-between px-2 mb-1">
+                <span className="text-xs text-slate-400 font-bold tracking-wider uppercase">Hero Variant</span>
+                <button onClick={() => setShowSwitcher(false)} className="text-slate-400 hover:text-slate-600">
+                  <X size={14} />
+                </button>
+              </div>
+              {Object.entries(HERO_VARIANTS).map(([key, { label }]) => (
+                <button
+                  key={key}
+                  onClick={() => setHeroVariant(key)}
+                  className={`px-3 py-1.5 min-w-[140px] text-left text-xs font-semibold rounded-xl transition-all duration-200 cursor-pointer ${heroVariant === key
+                    ? 'bg-accent text-white shadow-sm'
+                    : 'text-slate-600 hover:bg-slate-100'
+                    }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          )}
+          <button
+            onClick={() => setShowSwitcher(!showSwitcher)}
+            className={`p-3 rounded-full shadow-lg transition-all duration-300 ${showSwitcher ? 'bg-slate-800 text-white' : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200/60'
+              }`}
+            aria-label="Toggle Hero Switcher"
+          >
+            <Settings size={20} className={showSwitcher ? 'rotate-90 transition-transform duration-300' : 'transition-transform duration-300'} />
+          </button>
         </div>
 
         <main>
@@ -114,24 +133,15 @@ function App() {
             <HeroComponent key={heroVariant} />
           </div>
           <AnimatedQuoteSection />
-          <GradientDivider />
           {/* <ProblemCloudSection /> */}
           <InteractiveServicesBento id="uslugi" />
-          <GradientDivider />
           <ProcessSection />
-          <GradientDivider />
           <IndustriesSection />
-          <GradientDivider />
           <DataMetricsSection />
-          <GradientDivider />
           <AboutUsSection />
-          <GradientDivider />
           <TestimonialsSection />
-          <GradientDivider />
           <FAQSection />
-          <GradientDivider />
           <NewsletterSection />
-          <GradientDivider />
           <ContactSection />
           <CTASection />
         </main>

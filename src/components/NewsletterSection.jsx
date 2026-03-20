@@ -74,10 +74,10 @@ export function NewsletterSection() {
                                 className="group block p-8 rounded-3xl bg-white border border-slate-200 shadow-sm hover:shadow-xl hover:border-slate-300 transition-all duration-300"
                             >
                                 <div className="flex justify-between items-center mb-16">
-                                    <span className="text-xs font-bold uppercase tracking-widest text-chartreuse bg-navy px-3 py-1 rounded-full">{article.tag}</span>
+                                    <span className="text-xs font-bold uppercase tracking-widest text-[#ee703d] bg-navy px-3 py-1 rounded-full">{article.tag}</span>
                                     <svg className="w-5 h-5 text-slate-400 group-hover:text-navy transition-colors group-hover:translate-x-1 group-hover:-translate-y-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M7 17l9.2-9.2M17 17V7H7" /></svg>
                                 </div>
-                                <h3 className="text-xl font-bold font-display text-navy mb-4 leading-snug group-hover:text-chartreuse group-hover:bg-navy group-hover:px-1 group-hover:-mx-1 box-decoration-clone transition-colors">
+                                <h3 className="text-xl font-bold font-display text-navy mb-4 leading-snug group-hover:text-[#ee703d] group-hover:bg-navy group-hover:px-1 group-hover:-mx-1 box-decoration-clone transition-colors">
                                     {article.title}
                                 </h3>
                                 <p className="text-sm font-medium text-slate-500">{article.time}</p>

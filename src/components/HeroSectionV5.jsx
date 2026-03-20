@@ -61,26 +61,26 @@ export function HeroSectionV5() {
                 >
                     <svg width="240" height="240" viewBox="0 0 92 92" fill="none" className="overflow-visible">
                         {/* Top Layer */}
-                        <motion.rect
-                            x="26" y="41" width="40" height="10" rx="3" fill="#0A2540"
+                        <motion.polygon
+                            points="26,51 30,41 70,41 66,51" fill="#0A2540"
                             style={{ y: topBlockY, opacity: outerOpacity }}
                         />
 
                         {/* Middle Layer (Solid Base) */}
-                        <motion.rect
-                            x="26" y="41" width="40" height="10" rx="3" fill="#0A2540"
+                        <motion.polygon
+                            points="26,51 30,41 70,41 66,51" fill="#0A2540"
                             style={{ x: midBlockX, opacity: solidMidOpacity }}
                         />
 
                         {/* Middle Layer (Gradient Overlay, fades in as it shifts) */}
-                        <motion.rect
-                            x="26" y="41" width="40" height="10" rx="3" fill="url(#hero-bg-grad)"
+                        <motion.polygon
+                            points="26,51 30,41 70,41 66,51" fill="url(#hero-bg-grad)"
                             style={{ x: midBlockX, opacity: gradOpacity }}
                         />
 
                         {/* Bottom Layer */}
-                        <motion.rect
-                            x="26" y="41" width="40" height="10" rx="3" fill="#0A2540"
+                        <motion.polygon
+                            points="26,51 30,41 70,41 66,51" fill="#0A2540"
                             style={{ y: bottomBlockY, opacity: outerOpacity }}
                         />
 
@@ -104,7 +104,7 @@ export function HeroSectionV5() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
                 >
-                    <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] tracking-tighter leading-[1.08] text-navy font-medium mb-8 text-balance mx-auto">
+                    <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-[5rem] tracking-tighter leading-[1.1] text-navy font-medium mb-8 text-balance mx-auto">
                         Wdrażamy AI, które{' '}
                         <br className="hidden md:block" />
                         układa procesy i po prostu <Highlighter action="highlight" color="#ee703d" isView={true} padding={8} animationDuration={1000}>działa</Highlighter>.
@@ -156,7 +156,7 @@ function HeroCTAButton() {
     return (
         <motion.a
             href="#kontakt"
-            className="group relative inline-flex items-center justify-center overflow-hidden rounded-sm font-semibold text-sm sm:text-base transition-all duration-300 cursor-pointer w-full sm:w-auto"
+            className="group relative inline-flex items-center justify-center overflow-hidden rounded-full font-semibold text-sm sm:text-base transition-all duration-300 cursor-pointer w-full sm:w-auto"
             style={{
                 padding: '16px 36px',
                 backgroundColor: 'var(--color-accent)',
@@ -167,7 +167,7 @@ function HeroCTAButton() {
             whileTap={{ scale: 0.97 }}
         >
             <span
-                className="absolute inset-0 rounded-sm transition-transform duration-500 ease-out origin-left scale-x-0 group-hover:scale-x-100"
+                className="absolute inset-0 rounded-full transition-transform duration-500 ease-out origin-left scale-x-0 group-hover:scale-x-100"
                 style={{ backgroundColor: '#d4622f' }}
             />
             <span className="relative z-10 flex items-center justify-center gap-2 w-full">

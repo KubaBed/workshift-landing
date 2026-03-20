@@ -11,7 +11,7 @@ export function AnimatedQuoteSection() {
     const stickyRef = useRef(null);
     const textWrapperRef = useRef(null);
 
-    const rawText = "Jesteśmy zespołem konsultantów AI. Pomagamy sektorowi MŚP automatyzować kluczowe procesy biznesowe – bez paraliżowania codziennej pracy firmy i bez zbędnego szumu.";
+    const rawText = "Jesteśmy zespołem konsultantów AI. Pomagamy sektorowi MŚP automatyzować kluczowe procesy biznesowe - bez paraliżowania codziennej pracy firmy i bez zbędnego szumu.";
     const wordsArray = rawText.split(" ");
 
     useEffect(() => {
@@ -62,7 +62,7 @@ export function AnimatedQuoteSection() {
                 >
                     {/* Eyebrow label */}
                     <p className="text-xs font-semibold tracking-[0.2em] uppercase text-neutral-400 mb-6 md:mb-8">
-                        — Nasza filozofia
+                        - Nasza filozofia
                     </p>
                     <div className="leading-[1.15] tracking-tight font-medium text-center md:text-left" style={{ fontSize: 'clamp(1.875rem, 5vw, 3.5rem)' }}>
                     {wordsArray.map((word, index) => {

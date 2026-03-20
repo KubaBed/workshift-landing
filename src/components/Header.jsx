@@ -35,7 +35,7 @@ export function Header() {
             <motion.header
                 initial={{ y: -100 }}
                 animate={{ y: 0 }}
-                transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                transition={{ type: "spring", duration: 0.4, bounce: 0.1 }}
                 className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'py-4' : 'py-6'
                     }`}
             >
@@ -100,7 +100,7 @@ export function Header() {
                                     href={link.href}
                                     initial={{ opacity: 0, x: -20 }}
                                     animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: i * 0.1 + 0.1 }}
+                                    transition={{ delay: i * 0.04 + 0.05 }}
                                     onClick={() => setIsMenuOpen(false)}
                                     className="text-3xl font-display font-bold text-navy border-b border-slate-100 pb-4"
                                 >

@@ -76,9 +76,9 @@ export function DataMetricsSection() {
                             </div>
 
                             {/* Growing bar track */}
-                            <div className="flex-1 relative h-[2px] bg-black/10">
+                            <div className="flex-1 relative h-1.5 bg-black/10 rounded-full">
                                 <motion.div
-                                    className="absolute left-0 top-0 h-full bg-[#111] origin-left"
+                                    className="absolute left-0 top-0 h-full bg-[#111] origin-left rounded-full"
                                     initial={{ scaleX: 0 }}
                                     animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
                                     transition={{

@@ -5,7 +5,7 @@ import { annotate } from "rough-notation";
 export function Highlighter({
     children,
     action = "highlight",
-    color = "#d2ff00", // Defaulting to Chartreuse from branding
+    color = "#ee703d", // Brand Accent
     strokeWidth = 2,
     animationDuration = 600,
     iterations = 2,
