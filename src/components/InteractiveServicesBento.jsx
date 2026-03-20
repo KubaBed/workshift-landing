@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence, useInView } from 'framer-motion';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowUpRight, ArrowLeft, ArrowRight, Check, Play, Pause, X, Zap, Sparkles } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -55,7 +56,7 @@ function GlareCard({ children, className, onClick, isExpanded }) {
     };
 
     return (
-        <motion.div
+        <div
             ref={cardRef}
             onMouseMove={handleMouseMove}
             onMouseEnter={() => setIsHovered(true)}
@@ -92,7 +93,7 @@ function GlareCard({ children, className, onClick, isExpanded }) {
             <div className="relative bg-[#f7f7f8] rounded-[calc(2rem-1px)] h-full w-full overflow-hidden flex flex-col">
                 {children}
             </div>
-        </motion.div>
+        </div>
     );
 }
 
@@ -422,6 +423,27 @@ function TrainingPreview() {
 }
 
 function AgentPreview() {
+    const containerRef = useRef(null);
+    useEffect(() => {
+        gsap.registerPlugin(ScrollTrigger);
+        let ctx = gsap.context(() => {
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: "top 85%",
+                }
+            });
+            tl.fromTo(".gsap-chat-1", { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.35 })
+              .fromTo(".gsap-chat-typing", { opacity: 0 }, { opacity: 1, duration: 0.4 }, "+=0.1")
+              .to(".gsap-chat-typing", { opacity: 0, duration: 0.2 }, "+=0.3")
+              .fromTo(".gsap-chat-2", { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.35 })
+              .fromTo(".gsap-chat-3", { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.35 }, "+=0.3")
+              .fromTo(".gsap-chat-4", { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.35 }, "+=0.3")
+              .fromTo(".gsap-chat-5", { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.35 }, "+=0.3");
+        }, containerRef);
+        return () => ctx.revert();
+    }, []);
+
     // -40px broke out to fill 100% of card width.
     // +10px on each side = phone is 75% of that (shrunk 25%).
     const AVATAR = (
@@ -435,7 +457,7 @@ function AgentPreview() {
     const WAVE_BARS = [4,7,12,9,14,11,8,13,10,7,11,9,13,8,5,10,12,7,9,11];
 
     return (
-        <div className="w-full h-full flex items-start justify-center pt-6 px-4">
+        <div ref={containerRef} className="w-full h-full flex items-start justify-center pt-6 px-4">
             <PhoneMockupCard className="shadow-2xl">
                 <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', margin: '-24px -24px -64px -24px' }}>
                     {/* App header bar */}
@@ -467,25 +489,22 @@ function AgentPreview() {
                         </div>
 
                         {/* User msg 1 */}
-                        <motion.div initial={{ opacity: 0, y: 6 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.35 }}
-                            style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                        <div className="gsap-chat-1" style={{ display: 'flex', justifyContent: 'flex-end', opacity: 0 }}>
                             <div style={{ background: '#0A2540', borderRadius: '16px 16px 4px 16px', padding: '8px 12px', maxWidth: '78%' }}>
                                 <p style={{ fontSize: 12, color: '#fff', fontWeight: 500, lineHeight: 1.4, margin: 0, fontFamily: 'Inter, system-ui' }}>Potrzebuję fakturę za luty dla XYZ Sp. z o.o.</p>
                             </div>
-                        </motion.div>
+                        </div>
 
                         {/* Typing */}
-                        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: [1, 1, 0] }} transition={{ times: [0, 0.65, 1], duration: 1.1, delay: 0.45 }}
-                            style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', gap: 6 }}>
+                        <div className="gsap-chat-typing" style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', gap: 6, opacity: 0 }}>
                             {AVATAR}
                             <div style={{ background: '#fff', borderRadius: '16px 16px 16px 4px', padding: '8px 12px', border: '1px solid #e2e8f0', display: 'flex', gap: 4, alignItems: 'center' }}>
                                 {[0, 150, 300].map(d => <span key={d} style={{ width: 5, height: 5, borderRadius: '50%', background: '#94a3b8', display: 'inline-block', animationDelay: `${d}ms` }} className="animate-bounce" />)}
                             </div>
-                        </motion.div>
+                        </div>
 
                         {/* Agent reply 1 */}
-                        <motion.div initial={{ opacity: 0, y: 6 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.95, duration: 0.35 }}
-                            style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', gap: 6 }}>
+                        <div className="gsap-chat-2" style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', gap: 6, opacity: 0 }}>
                             {AVATAR}
                             <div style={{ background: '#fff', borderRadius: '16px 16px 16px 4px', padding: '8px 12px', maxWidth: '75%', border: '1px solid #e8f4e8' }}>
                                 <p style={{ fontSize: 12, color: '#0A2540', fontWeight: 500, lineHeight: 1.45, margin: 0, fontFamily: 'Inter, system-ui' }}>
@@ -494,19 +513,17 @@ function AgentPreview() {
                                     <span style={{ color: '#22c55e', fontWeight: 600 }}>✓ Wysłano na jan@xyz.pl</span>
                                 </p>
                             </div>
-                        </motion.div>
+                        </div>
 
                         {/* User msg 2 */}
-                        <motion.div initial={{ opacity: 0, y: 6 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 1.3, duration: 0.35 }}
-                            style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                        <div className="gsap-chat-3" style={{ display: 'flex', justifyContent: 'flex-end', opacity: 0 }}>
                             <div style={{ background: '#0A2540', borderRadius: '16px 16px 4px 16px', padding: '8px 12px', maxWidth: '65%' }}>
                                 <p style={{ fontSize: 12, color: '#fff', fontWeight: 500, lineHeight: 1.4, margin: 0, fontFamily: 'Inter, system-ui' }}>Świetnie! A kiedy wpłynęła płatność?</p>
                             </div>
-                        </motion.div>
+                        </div>
 
                         {/* Agent — audio waveform message */}
-                        <motion.div initial={{ opacity: 0, y: 6 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 1.65, duration: 0.35 }}
-                            style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', gap: 6 }}>
+                        <div className="gsap-chat-4" style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', gap: 6, opacity: 0 }}>
                             {AVATAR}
                             <div style={{ background: 'linear-gradient(135deg, rgba(238,112,61,0.08), rgba(133,48,209,0.08))', borderRadius: '16px 16px 16px 4px', padding: '8px 12px', border: '1px solid rgba(133,48,209,0.15)', display: 'flex', alignItems: 'center', gap: 8 }}>
                                 {/* Play button */}
@@ -521,15 +538,14 @@ function AgentPreview() {
                                 </div>
                                 <span style={{ fontSize: 10, color: '#64748b', fontFamily: 'Inter, system-ui', whiteSpace: 'nowrap' }}>0:23</span>
                             </div>
-                        </motion.div>
+                        </div>
 
                         {/* User final reply */}
-                        <motion.div initial={{ opacity: 0, y: 6 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 2.0, duration: 0.35 }}
-                            style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                        <div className="gsap-chat-5" style={{ display: 'flex', justifyContent: 'flex-end', opacity: 0 }}>
                             <div style={{ background: '#0A2540', borderRadius: '16px 16px 4px 16px', padding: '8px 12px' }}>
                                 <p style={{ fontSize: 12, color: '#fff', fontWeight: 500, lineHeight: 1.4, margin: 0, fontFamily: 'Inter, system-ui' }}>Dzięki! 👌</p>
                             </div>
-                        </motion.div>
+                        </div>
 
                     </div>
                 </div>
@@ -837,15 +853,28 @@ const SERVICES = [
 
 // --- UNIVERSAL INNER CARDS RENDERER FOR EXPANDED VIEW ---
 function ExtendedInnerCard({ card, index }) {
+    const elRef = useRef(null);
+    useEffect(() => {
+        gsap.fromTo(elRef.current, 
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.4, delay: 0.15 + index * 0.08, ease: "power2.out" }
+        );
+        
+        if (card.type === 'timeline' && elRef.current) {
+             gsap.fromTo(elRef.current.querySelectorAll('.gsap-timeline-step'),
+                { opacity: 0, scale: 0.8 },
+                { opacity: 1, scale: 1, duration: 0.4, stagger: 0.1, delay: 0.2, ease: "back.out(1.5)" }
+             );
+        }
+    }, [index, card.type]);
+
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.15 + index * 0.08 }}
+        <div
+            ref={elRef}
             className={`
           ${card.colSpan || 'lg:col-span-1'}
           bg-[#f7f7f8] rounded-2xl border border-slate-200/60 
-          overflow-hidden flex flex-col min-h-[140px]
+          overflow-hidden flex flex-col min-h-[140px] opacity-0
           ${card.type === 'cta' ? 'lg:row-span-2 min-h-full' : ''}
         `}
         >
@@ -921,11 +950,11 @@ function ExtendedInnerCard({ card, index }) {
                     <div className="flex w-full mt-4 justify-between items-start relative z-10 px-2 lg:px-8">
                         <div className="absolute left-6 right-6 lg:left-12 lg:right-12 top-2 h-0.5 bg-slate-200 -z-10" />
                         {card.steps.map((step, i) => (
-                            <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + (i * 0.1) }} key={i} className="flex flex-col items-center max-w-[120px] text-center gap-3">
+                            <div key={i} className="gsap-timeline-step flex flex-col items-center max-w-[120px] text-center gap-3 opacity-0">
                                 <div className={`w-4 h-4 rounded-full border-[3px] border-[#f7f7f8] shadow-sm ${i === 2 ? 'bg-[#ee703d] scale-125' : 'bg-slate-300'}`} />
                                 <div className="font-bold text-[#0A2540] text-sm mt-1">{step.title}</div>
                                 <div className="text-[11px] font-medium text-slate-500 leading-snug">{step.desc}</div>
-                            </motion.div>
+                            </div>
                         ))}
                     </div>
                 </div>
@@ -1024,29 +1053,30 @@ function ExtendedInnerCard({ card, index }) {
                     </a>
                 </div>
             )}
-        </motion.div>
+        </div>
     );
 }
 
 function ExpandedServiceView({ service, onClose }) {
     const containerRef = useRef(null);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (containerRef.current) {
             const el = containerRef.current;
             const top = el.getBoundingClientRect().top + window.pageYOffset - 24;
             window.scrollTo({ top, behavior: 'smooth' });
+
+            gsap.fromTo(el, 
+                { opacity: 0, clipPath: 'inset(8% 2% 8% 2% round 2rem)', scale: 0.97 },
+                { opacity: 1, clipPath: 'inset(0% 0% 0% 0% round 2rem)', scale: 1, duration: 0.55, ease: "power3.out" }
+            );
         }
     }, []);
 
     return (
-        <motion.div
+        <div
             ref={containerRef}
-            initial={{ opacity: 0, clipPath: 'inset(8% 2% 8% 2% round 2rem)', scale: 0.97 }}
-            animate={{ opacity: 1, clipPath: 'inset(0% 0% 0% 0% round 2rem)', scale: 1 }}
-            exit={{ opacity: 0, clipPath: 'inset(8% 2% 8% 2% round 2rem)', scale: 0.97, transition: { duration: 0.3, ease: [0.55, 0.055, 0.675, 0.19] } }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full relative"
+            className="w-full relative opacity-0"
         >
             <button
                 onClick={onClose}
@@ -1096,13 +1126,13 @@ function ExpandedServiceView({ service, onClose }) {
 
                 </div>
             </GlareCard>
-        </motion.div>
+        </div>
     );
 }
 
 // --- MAIN GRID EXPORT ---
 
-function CollapsedCard({ service, index }) {
+function CollapsedCard({ service }) {
     return (
         <div className="flex flex-col h-full bg-white relative overflow-hidden p-8 md:p-10 group-hover:bg-[#f7f7f8]/50 transition-colors duration-500">
             {/* Background elements */}
@@ -1165,8 +1195,24 @@ function MarqueeRow({ reverse = false }) {
 }
 
 function LogoCloudHeader() {
+    const containerRef = useRef(null);
+    useEffect(() => {
+        gsap.registerPlugin(ScrollTrigger);
+        let ctx = gsap.context(() => {
+            gsap.fromTo(".gsap-header-el", 
+                { opacity: 0, y: 15 }, 
+                { opacity: 1, y: 0, duration: 0.6, stagger: 0.15, ease: "power2.out", scrollTrigger: { trigger: containerRef.current, start: "top 80%" } }
+            );
+            gsap.fromTo(".gsap-header-logo", 
+                { opacity: 0, scale: 0.85 }, 
+                { opacity: 1, scale: 1, duration: 0.6, delay: 0.15, ease: "back.out(1.5)", scrollTrigger: { trigger: containerRef.current, start: "top 80%" } }
+            );
+        }, containerRef);
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <div className="w-full relative py-20 lg:py-28 mb-16 rounded-[2.5rem] lg:rounded-[3rem] bg-[#FAFAFA] overflow-hidden flex flex-col items-center justify-center text-center">
+        <div ref={containerRef} className="w-full relative py-20 lg:py-28 mb-16 rounded-[2.5rem] lg:rounded-[3rem] bg-[#FAFAFA] overflow-hidden flex flex-col items-center justify-center text-center">
             <style>{`
                 @keyframes marquee {
                     0% { transform: translateX(0); }
@@ -1186,78 +1232,80 @@ function LogoCloudHeader() {
             <div className="absolute inset-0 z-[1] pointer-events-none" style={{ background: 'radial-gradient(ellipse 55% 65% at center, #FAFAFA 20%, transparent 75%)' }} />
             <div className="absolute inset-0 z-[1] pointer-events-none" style={{ background: 'linear-gradient(to right, #FAFAFA 0%, transparent 15%, transparent 85%, #FAFAFA 100%)' }} />
 
-            <motion.p
-                initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-                className="text-[11px] md:text-sm font-bold uppercase tracking-[0.25em] text-[#ee703d] mb-4 md:mb-5 relative z-10"
-            >
+            <p className="gsap-header-el text-[11px] md:text-sm font-bold uppercase tracking-[0.25em] text-[#ee703d] mb-4 md:mb-5 relative z-10 opacity-0">
                 Nasze usługi
-            </motion.p>
+            </p>
 
-            <motion.div
-                initial={{ scale: 0.85, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
-                transition={{ type: "spring", stiffness: 100, delay: 0.15, duration: 0.6 }}
-                viewport={{ once: true }}
-                className="relative z-10 mb-6"
-            >
+            <div className="gsap-header-logo relative z-10 mb-6 opacity-0">
                 <Logo variant="light" size={56} showWordmark={true} className="justify-center" />
-            </motion.div>
-            <motion.h2
-                initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
-                className="text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-display font-medium tracking-tight text-navy leading-[1.05] relative z-10 max-w-[90%] md:max-w-2xl px-4"
-            >
+            </div>
+            
+            <h2 className="gsap-header-el text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-display font-medium tracking-tight text-navy leading-[1.05] relative z-10 max-w-[90%] md:max-w-2xl px-4 opacity-0">
                 Co możemy dla Ciebie zrobić?
-            </motion.h2>
+            </h2>
         </div>
     );
 }
 
 export function InteractiveServicesBento() {
     const [selectedId, setSelectedId] = useState(null);
+    const containerRef = useRef(null);
+
+    useLayoutEffect(() => {
+        gsap.registerPlugin(ScrollTrigger);
+        let ctx = gsap.context(() => {
+            gsap.fromTo(".gsap-modular-note", 
+                { opacity: 0, y: 16 }, 
+                { opacity: 1, y: 0, duration: 0.5, delay: 0.3, scrollTrigger: { trigger: ".gsap-modular-note", start: "top 90%" } }
+            );
+        }, containerRef);
+        return () => ctx.revert();
+    }, []);
+
+    // Fade in grid on mount/unmount/change
+    useLayoutEffect(() => {
+        if (!selectedId && containerRef.current) {
+            gsap.fromTo(".gsap-bento-grid", 
+                { opacity: 0 }, 
+                { opacity: 1, duration: 0.4 }
+            );
+        }
+    }, [selectedId]);
 
     return (
-        <section className="py-24 md:py-32 bg-white relative overflow-hidden" id="uslugi">
+        <section className="py-24 md:py-32 bg-white relative overflow-hidden" id="uslugi" ref={containerRef}>
             <div className="max-w-[1400px] mx-auto px-6 max-md:px-4">
 
                 <LogoCloudHeader />
 
                 <div className="relative">
-                    <AnimatePresence mode="wait">
-                        {selectedId ? (
-                            <ExpandedServiceView
-                                key={selectedId}
-                                service={SERVICES.find(s => s.id === selectedId)}
-                                onClose={() => setSelectedId(null)}
-                            />
-                        ) : (
-                            <motion.div
-                                key="grid"
-                                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, transition: { duration: 0.2 } }}
-                                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 lg:gap-5"
-                            >
-                                {SERVICES.map((service, idx) => (
-                                    <GlareCard
-                                        key={service.id}
-                                        onClick={() => setSelectedId(service.id)}
-                                        className={`${service.colSpan} ${service.minHeight}`}
-                                    >
-                                        <CollapsedCard service={service} index={idx} />
-                                    </GlareCard>
-                                ))}
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                    {selectedId ? (
+                        <ExpandedServiceView
+                            key={selectedId}
+                            service={SERVICES.find(s => s.id === selectedId)}
+                            onClose={() => setSelectedId(null)}
+                        />
+                    ) : (
+                        <div
+                            key="grid"
+                            className="gsap-bento-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 lg:gap-5"
+                        >
+                            {SERVICES.map((service, idx) => (
+                                <GlareCard
+                                    key={service.id}
+                                    onClick={() => setSelectedId(service.id)}
+                                    className={`${service.colSpan} ${service.minHeight}`}
+                                >
+                                    <CollapsedCard service={service} index={idx} />
+                                </GlareCard>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 {/* Modular services note */}
                 {!selectedId && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 16 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.3 }}
-                        className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 md:p-6 rounded-2xl bg-slate-50 border border-slate-200"
-                    >
+                    <div className="gsap-modular-note opacity-0 mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 md:p-6 rounded-2xl bg-slate-50 border border-slate-200">
                         <div className="flex items-center gap-4">
                             <div className="w-10 h-10 shrink-0 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center">
                                 <span className="text-lg">🧩</span>
@@ -1270,7 +1318,7 @@ export function InteractiveServicesBento() {
                         <a href="#kontakt" className="inline-flex items-center gap-2 bg-white border border-slate-200 text-[#0A2540] px-5 py-2.5 rounded-xl font-bold text-sm shadow-sm hover:border-[#ee703d]/40 hover:bg-[#ee703d]/5 transition-all duration-200 shrink-0 whitespace-nowrap">
                             Zapytaj o zakres →
                         </a>
-                    </motion.div>
+                    </div>
                 )}
 
             </div>

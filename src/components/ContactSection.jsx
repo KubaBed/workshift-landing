@@ -1,16 +1,61 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Button } from './ui/Button';
+import { Input } from './ui/input';
+import { Textarea } from './ui/textarea';
 import { Send, CheckCircle, Clock, Shield } from 'lucide-react';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export function ContactSection() {
     const [submitted, setSubmitted] = useState(false);
+    const sectionRef = useRef(null);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         setSubmitted(true);
         // TODO: integrate with backend / email service
     };
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            gsap.fromTo(
+                ".contact-animate-left",
+                { opacity: 0, y: 20 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.6,
+                    stagger: 0.1,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top 75%",
+                        once: true
+                    }
+                }
+            );
+
+            gsap.fromTo(
+                ".contact-animate-right",
+                { opacity: 0, y: 30 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    ease: "back.out(1.2)",
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top 75%",
+                        once: true
+                    }
+                }
+            );
+        }, sectionRef);
+
+        return () => ctx.revert();
+    }, []);
 
     const trustSignals = [
         { icon: Clock, text: 'Odpowiadamy w ciągu 24h' },
@@ -19,7 +64,7 @@ export function ContactSection() {
     ];
 
     return (
-        <section id="kontakt" className="py-24 md:py-32 bg-navy relative overflow-hidden">
+        <section ref={sectionRef} id="kontakt" className="py-24 md:py-32 bg-navy relative overflow-hidden">
 
             {/* Decorative glow */}
             <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-accent rounded-full blur-[200px] opacity-[0.06] translate-y-1/2 -translate-x-1/3 pointer-events-none" />
@@ -29,49 +74,27 @@ export function ContactSection() {
 
                     {/* Left — Copy + trust signals */}
                     <div>
-                        <motion.h2
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            className="text-4xl md:text-5xl lg:text-6xl font-bold font-display tracking-tight text-white mb-6 text-balance"
-                        >
+                        <h2 className="contact-animate-left opacity-0 text-4xl md:text-5xl lg:text-6xl font-bold font-display tracking-tight text-white mb-6 text-balance">
                             Porozmawiajmy o{' '}
                             <span className="text-chartreuse">Twoich procesach.</span>
-                        </motion.h2>
+                        </h2>
 
-                        <motion.p
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.1 }}
-                            className="text-lg text-slate-400 leading-relaxed mb-10 max-w-md"
-                        >
+                        <p className="contact-animate-left opacity-0 text-lg text-slate-400 leading-relaxed mb-10 max-w-md">
                             Wyślij krótką wiadomość, a my odezwiemy się z darmowym planem automatyzacji dopasowanym do Twojej firmy.
-                        </motion.p>
+                        </p>
 
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.2 }}
-                            className="flex flex-col gap-4"
-                        >
+                        <div className="contact-animate-left opacity-0 flex flex-col gap-4">
                             {trustSignals.map((signal, idx) => (
                                 <div key={idx} className="flex items-center gap-3">
                                     <signal.icon size={18} className="text-chartreuse shrink-0" />
                                     <span className="text-sm font-medium text-slate-300">{signal.text}</span>
                                 </div>
                             ))}
-                        </motion.div>
+                        </div>
                     </div>
 
                     {/* Right — Form */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.15, type: 'spring', stiffness: 100 }}
-                    >
+                    <div className="contact-animate-right opacity-0">
                         {submitted ? (
                             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-10 md:p-12 text-center">
                                 <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-chartreuse/20 flex items-center justify-center">
@@ -90,24 +113,24 @@ export function ContactSection() {
                                         <label htmlFor="contact-name" className="block text-sm font-medium text-slate-300 mb-2">
                                             Imię <span className="text-accent">*</span>
                                         </label>
-                                        <input
+                                        <Input
                                             id="contact-name"
                                             type="text"
                                             required
                                             placeholder="Jan"
-                                            className="w-full h-12 px-4 rounded-lg bg-white/10 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-chartreuse/40 focus:border-chartreuse/40 transition-all text-sm"
+                                            className="w-full h-12 px-4 rounded-lg bg-white/10 border-white/10 text-white placeholder:text-slate-500 focus-visible:ring-chartreuse/40 focus-visible:border-chartreuse/40 text-sm"
                                         />
                                     </div>
                                     <div>
                                         <label htmlFor="contact-email" className="block text-sm font-medium text-slate-300 mb-2">
                                             Email <span className="text-accent">*</span>
                                         </label>
-                                        <input
+                                        <Input
                                             id="contact-email"
                                             type="email"
                                             required
                                             placeholder="jan@firma.pl"
-                                            className="w-full h-12 px-4 rounded-lg bg-white/10 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-chartreuse/40 focus:border-chartreuse/40 transition-all text-sm"
+                                            className="w-full h-12 px-4 rounded-lg bg-white/10 border-white/10 text-white placeholder:text-slate-500 focus-visible:ring-chartreuse/40 focus-visible:border-chartreuse/40 text-sm"
                                         />
                                     </div>
                                 </div>
@@ -116,11 +139,11 @@ export function ContactSection() {
                                     <label htmlFor="contact-company" className="block text-sm font-medium text-slate-300 mb-2">
                                         Firma <span className="text-slate-500 text-xs">(opcjonalnie)</span>
                                     </label>
-                                    <input
+                                    <Input
                                         id="contact-company"
                                         type="text"
                                         placeholder="Nazwa Twojej firmy"
-                                        className="w-full h-12 px-4 rounded-lg bg-white/10 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-chartreuse/40 focus:border-chartreuse/40 transition-all text-sm"
+                                        className="w-full h-12 px-4 rounded-lg bg-white/10 border-white/10 text-white placeholder:text-slate-500 focus-visible:ring-chartreuse/40 focus-visible:border-chartreuse/40 text-sm"
                                     />
                                 </div>
 
@@ -128,12 +151,12 @@ export function ContactSection() {
                                     <label htmlFor="contact-message" className="block text-sm font-medium text-slate-300 mb-2">
                                         Wiadomość <span className="text-accent">*</span>
                                     </label>
-                                    <textarea
+                                    <Textarea
                                         id="contact-message"
                                         required
                                         rows={4}
                                         placeholder="Opisz krótko, jakie procesy chciałbyś zautomatyzować..."
-                                        className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-chartreuse/40 focus:border-chartreuse/40 transition-all text-sm resize-none"
+                                        className="w-full px-4 py-3 rounded-lg bg-white/10 border-white/10 text-white placeholder:text-slate-500 focus-visible:ring-chartreuse/40 focus-visible:border-chartreuse/40 text-sm resize-none"
                                     />
                                 </div>
 
@@ -152,7 +175,7 @@ export function ContactSection() {
                                 </p>
                             </form>
                         )}
-                    </motion.div>
+                    </div>
 
                 </div>
             </div>
