@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import GradientText from './GradientText';
+import jakubPhoto from '../Jakub-Bednarz.png';
 
 export function AboutUsSection() {
     return (
@@ -30,7 +31,7 @@ export function AboutUsSection() {
                         >
                             {/* Founder Image Placeholder */}
                                 <img
-                                    src="/src/Jakub-Bednarz.png"
+                                    src={jakubPhoto}
                                     alt="Jakub Bednarz - Founder"
                                     className="w-full h-full object-cover transition-all duration-700"
                                 />

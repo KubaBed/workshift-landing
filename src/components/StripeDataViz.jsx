@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
+import { isWebGLSupported } from '../utils/webgl';
 
 /**
  * Interactive Three.js data visualization — ported from user's Gemini Pro build.
@@ -8,10 +9,16 @@ import * as THREE from 'three';
  * Color: #635BFF (Stripe purple). White/transparent background.
  */
 export function StripeDataViz() {
+    const [supported, setSupported] = useState(true);
     const containerRef = useRef(null);
     const logoRef = useRef(null);
 
     useEffect(() => {
+        if (!isWebGLSupported()) {
+            setSupported(false);
+            return;
+        }
+
         if (!containerRef.current) return;
         const container = containerRef.current;
 
@@ -62,7 +69,19 @@ export function StripeDataViz() {
         scene.add(animationGroup);
 
         // --- RENDERER ---
-        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        let renderer;
+        try {
+            renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            if (!renderer.getContext()) {
+                renderer.dispose();
+                setSupported(false);
+                return;
+            }
+        } catch {
+            setSupported(false);
+            return;
+        }
+
         renderer.setSize(container.clientWidth, container.clientHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         container.appendChild(renderer.domElement);
@@ -269,7 +288,7 @@ export function StripeDataViz() {
         }
 
         function onResize() {
-            if (!container) return;
+            if (!containerRef.current) return;
             const w = container.clientWidth;
             const h = container.clientHeight;
             camera.aspect = w / h;
@@ -338,11 +357,32 @@ export function StripeDataViz() {
 
     return (
         <div className="relative w-full h-full flex items-center justify-center">
+            {/* Fallback glow when WebGL is not supported */}
+            {!supported && (
+                <div className="absolute inset-0 z-0 flex items-center justify-center">
+                    <div 
+                        className="w-64 h-64 bg-[#635BFF]/10 rounded-full blur-[60px]"
+                        style={{
+                            animation: 'pulse-glow 4s infinite ease-in-out'
+                        }}
+                    />
+                    <style>{`
+                        @keyframes pulse-glow {
+                            0%, 100% { transform: scale(1); opacity: 0.5; }
+                            50% { transform: scale(1.2); opacity: 0.8; }
+                        }
+                    `}</style>
+                </div>
+            )}
+            
             {/* Three.js canvas container — fills entire hero */}
-            <div
-                ref={containerRef}
-                className="absolute inset-0 z-0"
-            />
+            {supported && (
+                <div
+                    ref={containerRef}
+                    className="absolute inset-0 z-0"
+                />
+            )}
+            
             {/* Interactive Logo Center */}
             <div 
                 ref={logoRef}

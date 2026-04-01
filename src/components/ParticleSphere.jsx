@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
+import { isWebGLSupported } from '../utils/webgl'
 
 const SPHERE_RADIUS = 12
 const AVOIDANCE_DISTANCE = 4
@@ -50,15 +51,67 @@ function controlMovement(dot) {
     if (dot.lerpFactor < 1) dot.lerpFactor += LERP_SPEED
 }
 
+function SphereFallback() {
+    return (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+            {/* A static CSS representation of a particle sphere */}
+            <div className="relative w-72 h-72 border border-indigo-500/10 rounded-full flex items-center justify-center">
+                <div className="absolute inset-4 border border-indigo-500/5 rounded-full" />
+                <div className="absolute inset-12 border border-indigo-500/5 rounded-full" />
+                <div className="absolute inset-24 border border-indigo-500/5 rounded-full" />
+                
+                {/* Simple floating particles */}
+                {[...Array(16)].map((_, i) => (
+                    <div 
+                        key={i}
+                        className="absolute w-2 h-2 bg-indigo-500/20 rounded-full blur-[1px]"
+                        style={{
+                            top: `${50 + 40 * Math.sin(i * Math.PI / 8)}%`,
+                            left: `${50 + 40 * Math.cos(i * Math.PI / 8)}%`,
+                            animation: `float-particle ${Math.random() * 5 + 5}s infinite ease-in-out`,
+                            animationDelay: `${Math.random() * -5}s`
+                        }}
+                    />
+                ))}
+                
+                <style>{`
+                    @keyframes float-particle {
+                        0%, 100% { transform: scale(1) translate(0, 0); opacity: 0.2; }
+                        50% { transform: scale(1.5) translate(10px, -10px); opacity: 0.4; }
+                    }
+                `}</style>
+            </div>
+        </div>
+    )
+}
+
 export function ParticleSphere() {
+    const [supported, setSupported] = useState(true)
     const containerRef = useRef(null)
 
     useEffect(() => {
+        if (!isWebGLSupported()) {
+            setSupported(false)
+            return
+        }
+
         const container = containerRef.current
         if (!container) return
 
+        let renderer;
+        try {
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+            if (!renderer.getContext()) {
+                renderer.dispose();
+                setSupported(false);
+                return;
+            }
+        } catch {
+            setSupported(false);
+            return;
+        }
+
         const scene = new THREE.Scene()
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
         renderer.setSize(container.clientWidth, container.clientHeight)
         renderer.setClearColor(0x000000, 0)
@@ -71,7 +124,7 @@ export function ParticleSphere() {
 
         const dots = []
         const pivotsGroup = new THREE.Group()
-        const PARTICLE_COUNT = 1800 // Zmniejszono z 3500 dla lepszej wydajności
+        const PARTICLE_COUNT = 1800 
 
         for (let i = 0; i < PARTICLE_COUNT; i++) {
             const phi = Math.acos(1 - (2 * (i + 0.5)) / PARTICLE_COUNT)
@@ -91,7 +144,7 @@ export function ParticleSphere() {
             pivotsGroup.add(pivot)
         }
 
-        for (let i = 0; i < 400; i++) { // Zmniejszono z 800
+        for (let i = 0; i < 400; i++) { 
             const r = Math.random() * SPHERE_RADIUS * 0.75
             const phi = Math.random() * Math.PI * 2
             const theta = Math.random() * Math.PI
@@ -116,7 +169,7 @@ export function ParticleSphere() {
         })
         const lineSegments = []
         const surfaceDots = dots.slice(0, PARTICLE_COUNT)
-        for (let i = 0; i < surfaceDots.length; i += 4) { // Zmniejszona gęstość linii (co 4 kropka)
+        for (let i = 0; i < surfaceDots.length; i += 4) { 
             for (let j = i + 1; j < Math.min(i + 12, surfaceDots.length); j += 4) {
                 const dist = surfaceDots[i].pivot.position.distanceTo(surfaceDots[j].pivot.position)
                 if (dist < 3.0) lineSegments.push(i, j) 
@@ -124,7 +177,6 @@ export function ParticleSphere() {
         }
         const linesGeometry = new THREE.BufferGeometry()
         const linesPositions = new Float32Array(lineSegments.length * 3)
-        // Inicjalizacja pozycji linii (pozostają w lokalnych koordynatach grupy!)
         for (let i = 0; i < lineSegments.length; i += 2) {
             const idxA = lineSegments[i]
             const idxB = lineSegments[i + 1]
@@ -140,8 +192,6 @@ export function ParticleSphere() {
         linesGeometry.setAttribute('position', new THREE.BufferAttribute(linesPositions, 3))
         const lines = new THREE.LineSegments(linesGeometry, linesMaterial)
         
-        // Krytyczna optymalizacja: dodajemy linie do obracającej się grupy zamiast na scenę. 
-        // Dzięki temu nie musimy przeliczać ich koordynatów globalnych co klatkę!
         pivotsGroup.add(lines)
 
         let cursorPos = new THREE.Vector3(9999, 9999, 0)
@@ -178,7 +228,6 @@ export function ParticleSphere() {
         container.addEventListener('mouseleave', onMouseLeave)
 
         let autoRotY = 0
-        const worldPos = new THREE.Vector3()
         let frameId
 
         const animate = () => {
@@ -192,13 +241,6 @@ export function ParticleSphere() {
                 controlMovement(dot)
                 dot.mesh.lookAt(camera.position)
             }
-            // Optymalizacja: aktualizuj linie rzadziej (np. co 2 klatki) lub tylko widoczne
-            // W tym przypadku line segments i tak używają tylko surfaceDots które mają stałe pozycje w grupie
-            // więc mesh.getWorldPosition jest kosztowne. Ograniczmy aktualizacje.
-            // Poniższa pętla jest bardzo ciężka, jeśli działa co klatkę dla tysięcy segmentów.
-            
-            // Ponieważ punkty pivot w grupie obracają się razem, możemy w ogóle usunąć aktualizację linii co klatkę
-            // jeśli dodamy 'lines' bezpośrednio do 'pivotsGroup' zamiast do 'scene'!
             
             renderer.render(scene, camera)
         }
@@ -224,6 +266,8 @@ export function ParticleSphere() {
             if (container.contains(renderer.domElement)) container.removeChild(renderer.domElement)
         }
     }, [])
+
+    if (!supported) return <SphereFallback />
 
     return (
         <div

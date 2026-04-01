@@ -31,7 +31,7 @@ export function AnimatedQuoteSection() {
 
         // The Ultimate Scroll Text effect: Fade in words smoothly with an overlapping stagger.
         tl.fromTo(words,
-            { opacity: 0.15 },
+            { opacity: 0.22 },
             {
                 opacity: 1,
                 stagger: 0.1,
@@ -49,7 +49,7 @@ export function AnimatedQuoteSection() {
         <section
             ref={containerRef}
             className="w-full relative"
-            style={{ height: '135vh', background: 'linear-gradient(160deg, #FAFAFA 0%, #F4F1ED 100%)' }}
+            style={{ height: '120vh', background: 'linear-gradient(160deg, #FAFAFA 0%, #F4F1ED 100%)' }}
         >
             {/* Sticky block: stays fixed to viewport while we scroll through the outer track */}
             <div
@@ -74,7 +74,7 @@ export function AnimatedQuoteSection() {
                                 {isGlitchWord ? (
                                     <span
                                         className="quote-word relative inline-flex items-center justify-center translate-y-[-10%]"
-                                        style={{ opacity: 0.15, willChange: 'opacity' }}
+                                        style={{ opacity: 0.22, willChange: 'opacity' }}
                                     >
                                         <FuzzyText
                                             className="-mx-[50px]"
@@ -91,20 +91,14 @@ export function AnimatedQuoteSection() {
                                 ) : isGradientWord ? (
                                     <span
                                         className="quote-word"
-                                        style={{ opacity: 0.15, willChange: 'opacity' }}
+                                        style={{ opacity: 0.22, willChange: 'opacity', color: '#C67B4B', fontWeight: 600 }}
                                     >
-                                        <GradientText
-                                            colors={['#ee703d', '#cc7cab', '#8530d1']}
-                                            animationSpeed={6}
-                                            yoyo={true}
-                                        >
-                                            {word}
-                                        </GradientText>
+                                        {word}
                                     </span>
                                 ) : (
                                     <span
                                         className="quote-word text-navy"
-                                        style={{ opacity: 0.15, willChange: 'opacity' }}
+                                        style={{ opacity: 0.22, willChange: 'opacity' }}
                                     >
                                         {word}
                                     </span>

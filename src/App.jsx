@@ -1,15 +1,7 @@
-import React, { useState } from 'react';
-import { Settings, X } from 'lucide-react';
-import { Retune } from 'retune';
+import React from 'react';
 import { Header } from './components/Header';
-import { HeroSectionV1 } from './components/HeroSectionV1';
-import { HeroSectionV2 } from './components/HeroSectionV2';
-import { HeroSectionV3 } from './components/HeroSectionV3';
-import { HeroSectionV4 } from './components/HeroSectionV4';
-import { HeroSectionV5 } from './components/HeroSectionV5';
 import { HeroTypographic } from './components/HeroTypographic';
 import { AnimatedQuoteSection } from './components/AnimatedQuoteSection';
-import { ProblemCloudSection } from './components/ProblemCloudSection';
 import { InteractiveServicesBento } from './components/InteractiveServicesBento';
 import { ProcessSection } from './components/ProcessSection';
 import { IndustriesSection } from './components/IndustriesSection';
@@ -19,24 +11,8 @@ import { TestimonialsSection } from './components/TestimonialsSection';
 import { NewsletterSection } from './components/NewsletterSection';
 import { ContactSection } from './components/ContactSection';
 import { FAQSection, CTASection, Footer } from './components/FooterAndMisc';
-import { GradientDivider } from './components/ui/GradientDivider';
-
-const HERO_VARIANTS = {
-  vc: { label: 'C · Typographic', component: HeroTypographic },
-  v5: { label: 'V5 · Scrollytelling', component: HeroSectionV5 },
-  v1: { label: 'V1 · Three.js', component: HeroSectionV1 },
-  v2: { label: 'V2 · Strips', component: HeroSectionV2 },
-  v3: { label: 'V3 · Split', component: HeroSectionV3 },
-  v4: { label: 'V4 · Full', component: HeroSectionV4 },
-};
 
 const SECTION_MAP = {
-  'hero-vc': HeroTypographic,
-  'hero-v1': HeroSectionV1,
-  'hero-v2': HeroSectionV2,
-  'hero-v3': HeroSectionV3,
-  'hero-v4': HeroSectionV4,
-  'hero-v5': HeroSectionV5,
   'hero': HeroTypographic,
   'quote': AnimatedQuoteSection,
   'services': InteractiveServicesBento,
@@ -76,10 +52,6 @@ function App() {
     return <SectionPreview sectionKey={previewSection} />;
   }
 
-  const [heroVariant, setHeroVariant] = useState('vc');
-  const [showSwitcher, setShowSwitcher] = useState(false);
-  const HeroComponent = HERO_VARIANTS[heroVariant].component;
-
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900 scroll-smooth selection:bg-accent selection:text-white relative">
       {/* Global Margin Lines (Stripe-inspired Editorial Grid) */}
@@ -94,46 +66,9 @@ function App() {
       <div className="relative z-10 w-full flex flex-col">
         <Header />
 
-        {/* Hero variant switcher — floating toolbar */}
-        <div className="fixed bottom-6 right-6 z-[999] flex flex-col items-end gap-2">
-          {showSwitcher && (
-            <div className="flex flex-col gap-1 bg-white/90 backdrop-blur-md rounded-2xl p-2 shadow-xl border border-slate-200/60 transition-all duration-300 origin-bottom-right">
-              <div className="flex items-center justify-between px-2 mb-1">
-                <span className="text-xs text-slate-400 font-bold tracking-wider uppercase">Hero Variant</span>
-                <button onClick={() => setShowSwitcher(false)} className="text-slate-400 hover:text-slate-600">
-                  <X size={14} />
-                </button>
-              </div>
-              {Object.entries(HERO_VARIANTS).map(([key, { label }]) => (
-                <button
-                  key={key}
-                  onClick={() => setHeroVariant(key)}
-                  className={`px-3 py-1.5 min-w-[140px] text-left text-xs font-semibold rounded-xl transition-all duration-200 cursor-pointer ${heroVariant === key
-                    ? 'bg-accent text-white shadow-sm'
-                    : 'text-slate-600 hover:bg-slate-100'
-                    }`}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          )}
-          <button
-            onClick={() => setShowSwitcher(!showSwitcher)}
-            className={`p-3 rounded-full shadow-lg transition-all duration-300 ${showSwitcher ? 'bg-slate-800 text-white' : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200/60'
-              }`}
-            aria-label="Toggle Hero Switcher"
-          >
-            <Settings size={20} className={showSwitcher ? 'rotate-90 transition-transform duration-300' : 'transition-transform duration-300'} />
-          </button>
-        </div>
-
         <main>
-          <div id="hero-wrapper">
-            <HeroComponent key={heroVariant} />
-          </div>
+          <HeroTypographic />
           <AnimatedQuoteSection />
-          {/* <ProblemCloudSection /> */}
           <InteractiveServicesBento id="uslugi" />
           <ProcessSection />
           <IndustriesSection />
@@ -147,7 +82,6 @@ function App() {
         </main>
 
         <Footer />
-        <Retune force />
       </div>
     </div>
   );

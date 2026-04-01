@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
+import { isWebGLSupported } from '../utils/webgl';
 
 const SPHERE_RADIUS = 9.6;
 const AVOIDANCE_DISTANCE = 4;
@@ -53,10 +54,55 @@ function controlMovement(dot) {
   if (dot.lerpFactor < 1) dot.lerpFactor += LERP_SPEED;
 }
 
+function HeroFallback() {
+  return (
+    <div style={{
+      position: 'absolute',
+      inset: 0,
+      background: 'radial-gradient(circle at 75% 50%, #FAFAFA 0%, #F5F5F7 100%)',
+      overflow: 'hidden',
+      zIndex: 0
+    }}>
+      {/* Subtle floating particles using CSS to maintain visual continuity */}
+      {[...Array(30)].map((_, i) => (
+        <div
+          key={i}
+          style={{
+            position: 'absolute',
+            width: Math.random() * 12 + 6,
+            height: Math.random() * 12 + 6,
+            background: i % 4 === 0 ? '#ee703d' : i % 4 === 1 ? '#8530d1' : i % 4 === 2 ? '#cc7cab' : '#0A2540',
+            borderRadius: '50%',
+            opacity: 0.08,
+            left: `${50 + Math.random() * 45}%`, // Cluster near the right where the sphere would be
+            top: `${Math.random() * 100}%`,
+            filter: 'blur(3px)',
+            animation: `float-hero ${Math.random() * 15 + 15}s infinite ease-in-out`,
+            animationDelay: `${Math.random() * -20}s`
+          }}
+        />
+      ))}
+      <style>{`
+        @keyframes float-hero {
+          0%, 100% { transform: translateY(0) translateX(0); }
+          33% { transform: translateY(-60px) translateX(30px); }
+          66% { transform: translateY(20px) translateX(-40px); }
+        }
+      `}</style>
+    </div>
+  );
+}
+
 export function HeroParticleSphere() {
+  const [supported, setSupported] = useState(true);
   const containerRef = useRef(null);
 
   useEffect(() => {
+    if (!isWebGLSupported()) {
+      setSupported(false);
+      return;
+    }
+
     const container = containerRef.current;
     if (!container) return;
 
@@ -72,8 +118,13 @@ export function HeroParticleSphere() {
       let renderer;
       try {
         renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-        if (!renderer.getContext()) { renderer.dispose(); return; }
+        if (!renderer.getContext()) { 
+          renderer.dispose(); 
+          setSupported(false);
+          return; 
+        }
       } catch {
+        setSupported(false);
         return;
       }
 
@@ -228,6 +279,8 @@ export function HeroParticleSphere() {
       cleanupFns.forEach(fn => fn());
     };
   }, []);
+
+  if (!supported) return <HeroFallback />;
 
   return (
     <div
