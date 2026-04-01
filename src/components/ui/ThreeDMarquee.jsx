@@ -11,18 +11,18 @@ function cn(...inputs) {
 }
 
 export const defaultCreativeImages = [
-    'https://pyengguphcmeqlelpozr.supabase.co/storage/v1/object/public/images/becane.webp',
-    'https://pyengguphcmeqlelpozr.supabase.co/storage/v1/object/public/images/chdartmaker--1-.webp',
-    'https://pyengguphcmeqlelpozr.supabase.co/storage/v1/object/public/images/www-instituteofhealth-com-.webp',
-    'https://pyengguphcmeqlelpozr.supabase.co/storage/v1/object/public/images/wadeandleta-com-.webp',
-    'https://pyengguphcmeqlelpozr.supabase.co/storage/v1/object/public/images/felixpeault.webp',
-    'https://pyengguphcmeqlelpozr.supabase.co/storage/v1/object/public/images/1820productions.webp',
-    'https://pyengguphcmeqlelpozr.supabase.co/storage/v1/object/public/images/emilie.webp',
-    'https://pyengguphcmeqlelpozr.supabase.co/storage/v1/object/public/images/telhaclarke.webp',
-    'https://pyengguphcmeqlelpozr.supabase.co/storage/v1/object/public/images/jonasreymondin.webp',
-    'https://pyengguphcmeqlelpozr.supabase.co/storage/v1/object/public/images/www-anima-ai.webp',
-    'https://pyengguphcmeqlelpozr.supabase.co/storage/v1/object/public/images/dulcedo-com-.webp',
-    'https://pyengguphcmeqlelpozr.supabase.co/storage/v1/object/public/images/15thplus.webp',
+    'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?q=80&w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?q=80&w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1534450257448-692518eabcff?q=80&w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1583394838336-acd977736f90?q=80&w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1629198688000-71f23e745b6e?q=80&w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1515562141207-7a8efcb0ce74?q=80&w=400&h=300&fit=crop',
 ];
 
 export function ThreeDMarquee({ images = defaultCreativeImages, className, columns = 2 }) {
