@@ -31,9 +31,10 @@ export function AboutUsSection() {
                         >
                             {/* Founder Image Placeholder */}
                                 <img
-                                    src={jakubPhoto}
-                                    alt="Jakub Bednarz - Founder"
-                                    className="w-full h-full object-cover transition-all duration-700"
+                                        src={jakubPhoto}
+                                        alt="Workshift Founder"
+                                        loading="lazy"
+                                        className="w-full h-full object-cover relative z-10 grayscale hover:grayscale-0 transition-all duration-500 scale-110"
                                 />
 
                                 {/* Overlay Glass Badge */}
@@ -76,7 +77,7 @@ export function AboutUsSection() {
                             {/* Signature or neat visual element */}
                             <div className="mt-12 flex items-center gap-6">
                                 <div className="h-[2px] w-16 bg-accent" />
-                                <span className="font-display text-2xl font-bold text-navy italic opacity-50 font-jakarta">Workshift</span>
+                                <span className="font-display text-2xl font-bold text-navy italic opacity-50">Workshift</span>
                             </div>
 
                         </motion.div>
