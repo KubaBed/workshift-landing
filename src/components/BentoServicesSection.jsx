@@ -85,7 +85,7 @@ export function BentoServicesSection() {
     };
 
     return (
-        <section id="uslugi" className="relative py-32 bg-alabaster overflow-hidden">
+        <section id="uslugi" className="relative py-20 lg:py-32 bg-alabaster overflow-hidden">
             <div className="max-w-[1400px] mx-auto px-6 max-md:px-4">
 
                 <div className="mb-20 max-w-2xl">

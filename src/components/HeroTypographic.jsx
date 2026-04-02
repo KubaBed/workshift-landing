@@ -1,5 +1,10 @@
 import { motion } from 'framer-motion';
 import { HeroParticleSphere } from './HeroParticleSphere';
+import logo1 from '../assets/partners/logo1.png';
+import logo2 from '../assets/partners/logo2.png';
+import logo3 from '../assets/partners/logo3.png';
+import logo4 from '../assets/partners/logo4.png';
+import logo5 from '../assets/partners/logo5.png';
 
 const NAVY = '#0A2540';
 const ACCENT = '#ee703d';
@@ -36,12 +41,9 @@ export function HeroTypographic() {
 
   return (
     <div
+      className="min-h-screen flex flex-col lg:flex-row overflow-hidden relative"
       style={{
-        minHeight: '100vh',
         background: '#FAFAFA',
-        display: 'flex',
-        overflow: 'hidden',
-        position: 'relative',
         fontFamily: "'Satoshi', sans-serif",
       }}
     >
@@ -61,20 +63,14 @@ export function HeroTypographic() {
       />
 
       {/* Background sphere — full bleed */}
-      <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+      <div className="hidden lg:block" style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
         <HeroParticleSphere />
       </div>
 
       {/* Left panel — text content */}
       <div
+        className="w-full lg:w-[52%] lg:flex-shrink-0 flex flex-col justify-center px-6 py-24 md:px-10 lg:px-16 lg:py-12 relative z-[2]"
         style={{
-          flex: '0 0 52%',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          padding: '48px 40px 48px 64px',
-          position: 'relative',
-          zIndex: 2,
           background: 'linear-gradient(to right, #FAFAFA 78%, transparent)',
         }}
       >
@@ -224,26 +220,43 @@ export function HeroTypographic() {
           </a>
         </motion.div>
 
-        {/* Stats */}
+        {/* Trusted By Marquee */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1.35 }}
-          style={{ display: 'flex', gap: 32, flexWrap: 'wrap' }}
+          className="mt-4"
         >
-          {stats.map((s, i) => (
-            <div key={i} style={{ maxWidth: 160 }}>
-              <div style={{
-                fontSize: 24, fontWeight: 800, color: NAVY,
-                letterSpacing: '-0.02em', lineHeight: 1, marginBottom: 4,
-              }}>
-                {s.value}
-              </div>
-              <div style={{ fontSize: 12, color: '#94a3b8', fontWeight: 500, lineHeight: 1.4 }}>
-                {s.desc}
-              </div>
-            </div>
-          ))}
+          <div style={{ fontSize: 11, color: '#94a3b8', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 12 }}>
+            Zaufali nam
+          </div>
+          <div 
+            style={{ 
+              overflow: 'hidden', 
+              width: '100%', 
+              position: 'relative', 
+              // Fade out edges
+              maskImage: 'linear-gradient(to right, transparent, black 5%, black 95%, transparent)',
+              WebkitMaskImage: 'linear-gradient(to right, transparent, black 5%, black 95%, transparent)'
+            }}
+          >
+            <motion.div
+              style={{ display: 'flex', gap: 48, width: 'max-content', alignItems: 'center' }}
+              animate={{ x: ['0%', '-50%'] }}
+              transition={{ duration: 20, ease: 'linear', repeat: Infinity }}
+            >
+              {/* Duplicated array to create a seamless loop */}
+              {[logo1, logo2, logo3, logo4, logo5, logo1, logo2, logo3, logo4, logo5].map((logo, i) => (
+                <img 
+                  key={i} 
+                  src={logo} 
+                  alt="Trusted Company Logo" 
+                  className="h-7 md:h-8 object-contain opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-300" 
+                  style={{ mixBlendMode: 'multiply' }}
+                />
+              ))}
+            </motion.div>
+          </div>
         </motion.div>
       </div>
 

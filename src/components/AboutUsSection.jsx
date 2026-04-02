@@ -5,7 +5,7 @@ import jakubPhoto from '../Jakub-Bednarz.png';
 
 export function AboutUsSection() {
     return (
-        <section id="o-nas" className="py-32 bg-slate-50 relative overflow-hidden">
+        <section id="o-nas" className="py-20 lg:py-32 bg-slate-50 relative overflow-hidden">
 
             <div className="max-w-[1400px] mx-auto px-6 max-md:px-4">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">

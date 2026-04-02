@@ -704,7 +704,7 @@ const SERVICES = [
         title: 'Agenci AI',
         tagline: 'Niestrudzona pierwsza linia - 24/7, bez urlopów.',
         colSpan: 'lg:col-span-4',
-        minHeight: 'min-h-[380px] lg:min-h-[420px]',
+        minHeight: 'min-h-[520px] lg:min-h-[420px]',
         Preview: AgentPreview,
 
         categoryTag: 'Automatyzacja komunikacji',

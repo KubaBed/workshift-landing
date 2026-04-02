@@ -69,7 +69,7 @@ export function DataMetricsSection() {
                         <div key={idx} className="relative py-5 md:py-6 flex items-center gap-4 group">
 
                             {/* Left label column */}
-                            <div className="w-[30%] md:w-[28%] shrink-0 flex items-center gap-2 md:gap-3">
+                            <div className="w-[110px] md:w-[28%] shrink-0 flex items-center gap-2 md:gap-3">
                                 <span className="font-mono text-[10px] md:text-xs font-bold text-slate-400 tracking-widest shrink-0">{bar.num}</span>
                                 <span className="text-[11px] md:text-xs font-bold text-slate-500 uppercase tracking-widest leading-tight hidden sm:block">{bar.label} <strong className="text-[#111]">{bar.highlight}</strong></span>
                                 <span className="text-[11px] font-bold text-[#111] uppercase tracking-widest leading-tight sm:hidden">{bar.highlight}</span>
@@ -109,8 +109,8 @@ export function DataMetricsSection() {
                             </div>
 
                             {/* Right label */}
-                            <div className="w-[10%] md:w-[12%] shrink-0 text-right">
-                                <span className="font-mono text-[10px] md:text-xs font-bold text-slate-400 tracking-widest">{bar.suffix}</span>
+                            <div className="w-[75px] md:w-[12%] shrink-0 text-right overflow-hidden">
+                                <span className="font-mono text-[9px] md:text-xs font-bold text-slate-400 tracking-widest truncate block">{bar.suffix}</span>
                             </div>
 
                         </div>

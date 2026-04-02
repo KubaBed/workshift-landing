@@ -73,7 +73,7 @@ export function AnimatedQuoteSection() {
                             <span key={index} className="relative inline-block mr-[0.25em] mb-2 lg:mb-4">
                                 {isGlitchWord ? (
                                     <span
-                                        className="quote-word relative inline-flex items-center justify-center translate-y-[-10%]"
+                                        className="quote-word relative inline-flex items-center justify-center"
                                         style={{ opacity: 0.22, willChange: 'opacity' }}
                                     >
                                         <FuzzyText

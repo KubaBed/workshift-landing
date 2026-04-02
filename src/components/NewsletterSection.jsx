@@ -67,6 +67,23 @@ export function NewsletterSection() {
         }
     };
 
+    // Exit Intent Popup
+    useEffect(() => {
+        const handleMouseOut = (e) => {
+            // Trigger only on desktop and if mouse leaves top of the viewport
+            if (window.innerWidth >= 1024 && e.clientY <= 0) {
+                const hasSeen = sessionStorage.getItem('exitIntentShown');
+                if (!hasSeen && !isModalOpen) {
+                    setIsModalOpen(true);
+                    sessionStorage.setItem('exitIntentShown', 'true');
+                }
+            }
+        };
+
+        document.addEventListener('mouseout', handleMouseOut);
+        return () => document.removeEventListener('mouseout', handleMouseOut);
+    }, [isModalOpen]);
+
     useEffect(() => {
         const ctx = gsap.context(() => {
             gsap.fromTo(
@@ -165,29 +182,29 @@ export function NewsletterSection() {
                             initial={{ opacity: 0, scale: 0.95, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl bg-white rounded-3xl shadow-2xl z-[101] overflow-hidden flex flex-col md:flex-row max-h-[90vh]"
+                            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%-2rem)] max-w-4xl bg-white rounded-3xl shadow-2xl z-[101] overflow-y-auto flex flex-col md:flex-row max-h-[90vh]"
                         >
                             {/* Left Side: Image & Value Prop */}
-                            <div className="w-full md:w-1/2 relative bg-black p-10 flex flex-col justify-between overflow-hidden text-white min-h-[300px] md:min-h-[500px]">
+                            <div className="w-full md:w-1/2 relative bg-black p-6 md:p-10 flex flex-col justify-between overflow-hidden text-white min-h-[200px] md:min-h-[500px]">
                                 {/* Uploaded Background Image */}
                                 <div className="absolute inset-0 z-0 bg-cover bg-[center_top]" style={{ backgroundImage: `url(${newsletterBg})` }}></div>
                                 {/* Gradient overlay to keep text readable and possibly mask baked text */}
                                 <div className="absolute inset-x-0 bottom-0 h-2/3 z-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
                                 <div className="absolute inset-0 z-0 bg-black/20"></div>
 
-                                <div className="relative z-10 flex-1 flex flex-col justify-end items-center text-center pb-8">
+                                <div className="relative z-10 flex-1 flex flex-col justify-end items-center text-center pb-4">
                                     <h3 className="text-5xl md:text-6xl font-bold font-display tracking-tight drop-shadow-xl text-white">Let's connect</h3>
                                 </div>
                                 
-                                <div className="relative z-10 pt-6 pb-2 border-t border-white/20 flex justify-center text-center">
-                                    <p className="text-white/80 text-sm md:text-base leading-relaxed max-w-xs drop-shadow-md">
-                                        Bądź na bieżąco z najnowszymi automatyzacjami. Zero teorii, sami praktycy.
+                                <div className="relative z-10 pt-6 pb-2 border-t border-white/20 flex justify-center text-center lg:px-4">
+                                    <p className="text-white/90 text-sm md:text-base leading-relaxed max-w-sm drop-shadow-md">
+                                        Otrzymuj regularne porady i wskazówki ze świata AI. Raz w tygodniu. Bez zadnego spamu.
                                     </p>
                                 </div>
                             </div>
 
                             {/* Right Side: Form */}
-                            <div className="w-full md:w-1/2 bg-white p-10 flex flex-col justify-center relative">
+                            <div className="w-full md:w-1/2 bg-white p-6 md:p-10 flex flex-col justify-center relative">
                                 <button onClick={() => setIsModalOpen(false)} className="absolute top-6 right-6 p-2 rounded-full hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-600">
                                     <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
                                 </button>

@@ -140,7 +140,7 @@ export function ProblemCloudSection() {
 
             {/* The Revealed Message Center */}
             <div ref={textRevealRef} className="relative z-20 max-w-4xl mx-auto px-6 text-center">
-                <h2 className="text-5xl md:text-7xl font-bold font-display tracking-tighter text-navy mb-8">
+                <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold font-display tracking-tighter text-navy mb-8">
                     I wcale <span className="text-terra bg-terra/10 px-4 py-1 -mx-2 rounded-xl inline-block -rotate-2 border border-terra/20">nie musisz</span> tego robić.
                 </h2>
                 <p className="text-xl md:text-2xl text-slate-600 leading-relaxed max-w-[65ch] mx-auto text-balance font-medium">
