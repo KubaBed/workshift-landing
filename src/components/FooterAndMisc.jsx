@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from './ui/Button';
 import { Logo } from './ui/Logo';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './ui/accordion';
+import { motion, AnimatePresence } from 'framer-motion';
 // -------------------------------------------------------------
 // FAQ SECTION
 // -------------------------------------------------------------
@@ -79,8 +80,11 @@ export function FAQSection() {
 // FINAL CTA SECTION
 // -------------------------------------------------------------
 export function CTASection() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     return (
-        <section className="py-32 bg-navy relative overflow-hidden">
+        <>
+        <section id="darmowa-konsultacja" className="py-32 bg-navy relative overflow-hidden">
 
             {/* Decorative overlay */}
             <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-accent rounded-full blur-[150px] opacity-10 -translate-y-1/2 translate-x-1/2 pointer-events-none" />
@@ -93,15 +97,55 @@ export function CTASection() {
                     Nasza 30-minutowa rozmowa diagnostyczna jest darmowa i niczego Cię nie kosztuje. Po prostu poszukamy wspólnie tzw. "wąskiego gardła".
                 </p>
                 <div className="flex flex-col items-center">
-                    <Button variant="accent" size="lg" className="w-full sm:w-auto text-lg px-10 h-16 shadow-2xl shadow-accent/20">
-                        Wyślij zapytanie o darmowy plan
+                    <Button onClick={() => setIsModalOpen(true)} variant="accent" size="lg" className="w-full sm:w-auto text-lg px-10 h-16 shadow-2xl shadow-accent/20 transition-transform active:scale-95">
+                        Wybierz termin darmowej konsultacji
                     </Button>
                     <p className="mt-6 text-sm text-slate-500 font-medium tracking-wide text-center">
-                        Skontaktujemy się z Tobą w ciągu 24h by dobrać pasujący termin.
+                        Zarezerwuj czas od razu w naszym kalendarzu.
                     </p>
                 </div>
             </div>
         </section>
+
+        <AnimatePresence>
+            {isModalOpen && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setIsModalOpen(false)}
+                        className="absolute inset-0 bg-navy/80 backdrop-blur-sm cursor-pointer"
+                    />
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                        className="relative w-full max-w-4xl max-h-[90vh] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col z-10"
+                    >
+                        <div className="flex justify-between items-center p-5 border-b border-slate-100 bg-white">
+                            <h3 className="text-lg font-bold font-display text-navy">Wybierz termin: Darmowa Konsultacja</h3>
+                            <button onClick={() => setIsModalOpen(false)} className="p-2 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors text-slate-500 hover:text-navy cursor-pointer" aria-label="Zamknij">
+                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                        </div>
+                        <div className="flex-1 w-full bg-slate-50 overflow-auto relative min-h-[500px] md:min-h-[600px]">
+                            {/* Loader behind iframe */}
+                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
+                            </div>
+                            <iframe 
+                                src="https://calendar.app.google/djYy2maXAivipcSH6" 
+                                className="relative z-10 w-full h-full border-0 bg-transparent"
+                                title="Kuba Bednarczyk - Kalendarz Spotkań"
+                            />
+                        </div>
+                    </motion.div>
+                </div>
+            )}
+        </AnimatePresence>
+        </>
     );
 }
 

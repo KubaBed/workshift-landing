@@ -35,86 +35,83 @@ const processSteps = [
 
 export function ProcessSection() {
     return (
-        <section id="proces" className="py-32 bg-white text-navy relative overflow-hidden">
-
-            {/* Subtle Background Pattern */}
-            <div className="absolute inset-0 opacity-[0.025] pointer-events-none"
-                style={{ backgroundImage: 'linear-gradient(rgba(28,30,33,1) 1px, transparent 1px), linear-gradient(90deg, rgba(28,30,33,1) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-
-            <div className="max-w-[1400px] mx-auto px-6 max-md:px-4 relative z-10">
-
-                {/* Header */}
-                <div className="mb-16 md:mb-20 max-w-2xl">
+        <section id="proces" className="py-24 md:py-32 bg-white text-slate-900 border-t border-slate-100 relative overflow-hidden">
+            <div className="max-w-[1400px] mx-auto px-6 max-md:px-4">
+                {/* Minimalistyczny Header */}
+                <div className="mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8">
+                    <div className="max-w-3xl">
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="inline-flex items-center gap-2 mb-4"
+                        >
+                            <span className="h-px w-6 bg-[#ee703d]" />
+                            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#ee703d]">Jak pracujemy</span>
+                        </motion.div>
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="text-4xl md:text-5xl lg:text-6xl font-display tracking-tight text-slate-900 font-bold text-balance"
+                        >
+                            Przebudowa bez burzenia.{' '}
+                            <span className="text-slate-500 font-medium">Nasz proces.</span>
+                        </motion.h2>
+                    </div>
                     <motion.p
-                        initial={{ opacity: 0, y: 10 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="text-[11px] md:text-sm font-bold uppercase tracking-[0.25em] text-[#ee703d] mb-4"
-                    >
-                        Jak pracujemy
-                    </motion.p>
-                    <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-4xl md:text-5xl lg:text-7xl font-bold font-display tracking-tight text-navy mb-6 text-balance"
+                        className="text-lg text-slate-500 max-w-md leading-relaxed md:pb-2"
                     >
-                        Przebudowa bez burzenia.{' '}
-                        <GradientText colors={['#ee703d', '#cc7cab', '#8530d1']} animationSpeed={6} yoyo={true}>Nasz proces.</GradientText>
-                    </motion.h2>
-                    <p className="text-xl text-slate-500 max-w-xl leading-relaxed">
-                        Zamiast rocznej transformacji cyfrowej, wprowadzamy precyzyjne zmiany w 3 etapach. Każdy ma konkretny wynik i termin. Twoja organizacja cały czas działa.
-                    </p>
+                        Zamiast rocznej transformacji cyfrowej, wprowadzamy precyzyjne zmiany w 3 etapach. Twoja organizacja cały czas działa.
+                    </motion.p>
                 </div>
 
-                {/* Horizontal Tiles */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4 lg:gap-5 relative">
-
-                    {/* Desktop connecting line through the step numbers */}
-                    <div className="hidden md:block absolute top-[2.95rem] left-[calc(33.33%/2)] right-[calc(33.33%/2)] h-px bg-gradient-to-r from-slate-200 via-[#ee703d]/30 to-slate-200 -z-0" />
+                {/* Czysty Grid Krokow (Cult UI / Tailark style) */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+                    <div className="hidden md:block absolute top-[28px] left-[16.66%] right-[16.66%] h-px bg-slate-200 -z-10" />
 
                     {processSteps.map((step, idx) => (
                         <motion.div
                             key={idx}
-                            initial={{ opacity: 0, y: 40 }}
+                            initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-80px" }}
-                            transition={{ duration: 0.55, delay: idx * 0.12, type: "spring", stiffness: 90 }}
-                            className="relative flex flex-col rounded-[2rem] border border-slate-200 bg-[#FAFAFA] hover:bg-white hover:border-slate-300 hover:shadow-[0_8px_40px_-12px_rgba(0,0,0,0.08)] transition-all duration-500 group overflow-hidden"
+                            viewport={{ once: true, margin: "-40px" }}
+                            transition={{ duration: 0.5, delay: idx * 0.1 }}
+                            className="flex flex-col relative bg-white"
                         >
-                            {/* Hover accent glow */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-[#ee703d]/0 to-[#f5a273]/0 group-hover:from-[#ee703d]/[0.03] group-hover:to-[#f5a273]/[0.05] transition-all duration-700 pointer-events-none rounded-[2rem]" />
-
-                            {/* Top strip with step number and time badge */}
-                            <div className="flex items-center justify-between px-8 pt-8 pb-0 relative z-10">
-                                <div className="relative z-10 w-12 h-12 rounded-xl bg-white border border-slate-200 shadow-sm flex flex-col items-center justify-center group-hover:border-[#ee703d]/30 group-hover:shadow-[0_0_0_4px_rgba(238,112,61,0.06)] transition-all duration-300">
-                                    <span className="font-mono text-xl font-bold text-[#0A2540]">{step.num}</span>
+                            {/* Header karty */}
+                            <div className="flex items-center justify-between mb-8">
+                                <div className="w-14 h-14 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-center text-slate-700 relative z-10">
+                                    {/* Maly akcent nr kroku w rogu */}
+                                    <span className="absolute -top-2 -right-2 w-6 h-6 rounded-md bg-[#ee703d] text-white flex items-center justify-center text-[10px] font-bold shadow-sm">
+                                        {step.num}
+                                    </span>
+                                    {React.cloneElement(step.icon, { className: 'w-6 h-6 stroke-[1.5]' })}
                                 </div>
-                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-500 shadow-sm">
+                                <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-100 text-[11px] font-semibold text-slate-600">
                                     {step.time}
                                 </span>
                             </div>
 
-                            {/* Icon */}
-                            <div className="px-8 pt-8 pb-0 relative z-10">
-                                <div className="w-12 h-12 rounded-xl bg-[#ee703d]/10 border border-[#ee703d]/20 flex items-center justify-center text-[#ee703d] mb-5 group-hover:scale-110 group-hover:bg-[#ee703d]/15 transition-all duration-300">
-                                    {step.icon}
-                                </div>
-                                <h3 className="text-2xl font-bold font-display text-[#0A2540] mb-1 tracking-tight">{step.title}</h3>
-                                <p className="text-sm font-semibold text-[#ee703d] mb-5">{step.tagline}</p>
-                            </div>
-
-                            {/* Divider */}
-                            <div className="mx-8 h-px bg-slate-100 mb-6" />
-
-                            {/* Body */}
-                            <div className="px-8 pb-8 flex-1 flex flex-col relative z-10">
-                                <p className="text-[15px] text-slate-600 leading-relaxed font-medium flex-1 mb-6">
+                            {/* Treść */}
+                            <div>
+                                <h3 className="text-xl font-bold font-display text-slate-900 tracking-tight mb-2">
+                                    {step.title}
+                                </h3>
+                                <p className="text-[13px] font-semibold text-[#ee703d] mb-4">
+                                    {step.tagline}
+                                </p>
+                                <p className="text-[15px] text-slate-500 leading-relaxed mb-6">
                                     {step.desc}
                                 </p>
-                                <div className="flex flex-wrap gap-2 mt-auto">
+                                
+                                {/* Tagi Shadcn Style */}
+                                <div className="flex flex-wrap gap-2">
                                     {step.detail.split(' · ').map((tag, i) => (
-                                        <span key={i} className="px-3 py-1 rounded-full text-[11px] font-bold bg-white border border-slate-200 text-slate-500 uppercase tracking-wide">
+                                        <span key={i} className="px-2.5 py-1 rounded-md bg-white border border-slate-200 text-slate-500 text-[11px] font-medium tracking-wide">
                                             {tag}
                                         </span>
                                     ))}
@@ -124,27 +121,29 @@ export function ProcessSection() {
                     ))}
                 </div>
 
-                {/* Footer CTA strip */}
+                {/* Modern CTA Footer */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: 0.5 }}
-                    className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-6 p-6 md:p-8 rounded-[1.5rem] bg-[#0A2540] border border-white/5"
+                    className="mt-20 md:mt-24 p-8 md:p-10 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden"
                 >
-                    <div>
-                        <p className="font-bold text-white text-lg mb-1">Brzmi jak plan? Zacznijmy od rozmowy.</p>
-                        <p className="text-slate-400 text-sm font-medium">Bezpłatna konsultacja. Konkretna rozmowa o Twoich procesach.</p>
+                    {/* Subtle grid pattern over black */}
+                    <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+                    <div className="absolute -left-32 -top-32 w-64 h-64 bg-[#ee703d] rounded-full blur-[100px] opacity-20 pointer-events-none" />
+
+                    <div className="relative z-10 text-center md:text-left">
+                        <h4 className="text-xl md:text-2xl font-bold font-display text-white mb-2 tracking-tight">Gotowy na pierwszy krok?</h4>
+                        <p className="text-slate-400 text-[15px] max-w-md">Rozmowa konsultacyjna zajmie 30 minut. Przyjrzymy się Twoim procesom bez budowania zobowiązań.</p>
                     </div>
                     <a
-                        href="#kontakt"
-                        className="inline-flex items-center gap-2 bg-[#ee703d] hover:bg-[#d96030] text-white px-8 py-4 rounded-xl font-bold text-sm shadow-lg hover:shadow-[0_8px_20px_-5px_rgba(238,112,61,0.5)] transition-all duration-300 shrink-0 hover:-translate-y-0.5"
+                        href="#darmowa-konsultacja"
+                        className="relative z-10 inline-flex items-center gap-2 bg-white text-slate-900 hover:bg-slate-100 px-6 py-3.5 rounded-xl font-semibold text-[14px] transition-colors shrink-0"
                     >
-                        Umów bezpłatną konsultację
-                        <ArrowRight size={16} />
+                        Sprawdź wolne terminy
+                        <ArrowRight size={16} className="text-[#ee703d]" />
                     </a>
                 </motion.div>
-
             </div>
         </section>
     );

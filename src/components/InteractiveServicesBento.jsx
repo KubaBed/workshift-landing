@@ -43,56 +43,12 @@ function ParticleBlur({ position }) {
 }
 
 function GlareCard({ children, className, onClick, isExpanded }) {
-    const cardRef = useRef(null);
-    const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
-    const [isHovered, setIsHovered] = useState(false);
-
-    const handleMouseMove = (e) => {
-        if (!cardRef.current || isExpanded) return;
-        const rect = cardRef.current.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
-        setMousePosition({ x, y });
-    };
-
     return (
         <div
-            ref={cardRef}
-            onMouseMove={handleMouseMove}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => { setIsHovered(false); setMousePosition({ x: 50, y: 50 }); }}
             onClick={onClick}
-            className={`relative ${!isExpanded ? 'cursor-pointer' : ''} group ${className}`}
-            style={{ padding: '1px' }}
+            className={`relative ${!isExpanded ? 'cursor-pointer hover:shadow-md hover:border-slate-300' : ''} bg-white border border-slate-200 shadow-sm rounded-2xl overflow-hidden flex flex-col transition-all duration-300 ${className}`}
         >
-            {/* Gradient border layer */}
-            <div
-                className="absolute inset-0 rounded-[2rem] transition-opacity duration-500 pointer-events-none"
-                style={{
-                opacity: isHovered ? 1 : 0,
-                background: `radial-gradient(
-                    600px circle at ${mousePosition.x}% ${mousePosition.y}%,
-                    rgba(238, 112, 61, 0.4),
-                    rgba(204, 124, 171, 0.25) 40%,
-                    rgba(213, 164, 231, 0.15) 60%,
-                    transparent 80%
-                )`,
-                }}
-            />
-
-            {/* Static subtle border */}
-            <div
-                className="absolute inset-0 rounded-[2rem] pointer-events-none transition-opacity duration-500"
-                style={{
-                    opacity: isHovered ? 0 : 1,
-                    border: '1px solid rgba(226, 232, 240, 0.6)',
-                }}
-            />
-
-            {/* Inner card content */}
-            <div className="relative bg-[#f7f7f8] rounded-[calc(2rem-1px)] h-full w-full overflow-hidden flex flex-col">
-                {children}
-            </div>
+            {children}
         </div>
     );
 }

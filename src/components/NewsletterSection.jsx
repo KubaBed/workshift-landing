@@ -1,8 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from './ui/Button';
 import { Input } from './ui/input';
+import newsletterBg from '../assets/newsletter-bg.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,6 +23,49 @@ const articles = [
 
 export function NewsletterSection() {
     const sectionRef = useRef(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [privacyAccepted, setPrivacyAccepted] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [status, setStatus] = useState(null);
+
+    const handleSubscribe = async (e) => {
+        e.preventDefault();
+        if (!privacyAccepted) return;
+        
+        setIsSubmitting(true);
+        setStatus(null);
+        
+        try {
+            // Bezpośredni kontakt z API Brevo
+            const response = await fetch('https://api.brevo.com/v3/contacts', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'api-key': import.meta.env.VITE_BREVO_API_KEY
+                },
+                body: JSON.stringify({
+                    email: email,
+                    attributes: { FIRSTNAME: name },
+                    listIds: [2], // UPDATE: ID Twojej listy w Brevo
+                    updateEnabled: true
+                })
+            });
+
+            if (response.ok) {
+                setStatus('success');
+                setTimeout(() => setIsModalOpen(false), 2000);
+            } else {
+                setStatus('error');
+            }
+        } catch (error) {
+            setStatus('error');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
     useEffect(() => {
         const ctx = gsap.context(() => {
@@ -76,24 +121,14 @@ export function NewsletterSection() {
                             Dołącz do czytelników naszego newslettera "AI Praktycznie". Co dwa tygodnie dzielimy się jednym procesem, który zautomatyzowaliśmy, podając użyte narzędzia i wygenerowane oszczędności. Zero teoretyzowania.
                         </p>
 
-                        <form
-                            className="newsletter-animate opacity-0 flex flex-col sm:flex-row gap-4"
-                            onSubmit={(e) => e.preventDefault()}
-                        >
-                            <Input
-                                type="email"
-                                required
-                                placeholder="Twój adres e-mail"
-                                className="flex-1 h-14 px-6 rounded-full border-slate-300 bg-white text-navy focus-visible:ring-navy shadow-sm text-base"
-                            />
-                            <Button type="submit" size="lg" className="shrink-0 w-full sm:w-auto">
-                                Zapisz mnie
+                        <div className="newsletter-animate opacity-0 pt-2">
+                            <Button onClick={() => setIsModalOpen(true)} size="lg" className="w-full sm:w-auto h-14 px-8 text-base shadow-lg shadow-navy/10 hover:shadow-xl transition-all">
+                                Zapisz się do newslettera
                             </Button>
-                        </form>
-                        <p className="newsletter-animate opacity-0 text-xs text-slate-400 mt-4 px-4 font-medium">Brak spamu. Wypisujesz się jednym kliknięciem.</p>
+                        </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 relative z-10">
                         {articles.map((article, idx) => (
                             <a
                                 href="#!"
@@ -114,6 +149,111 @@ export function NewsletterSection() {
 
                 </div>
             </div>
+
+            {/* Brevo Newsletter Modal */}
+            <AnimatePresence>
+                {isModalOpen && (
+                    <>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsModalOpen(false)}
+                            className="fixed inset-0 bg-navy/40 backdrop-blur-sm z-[100]"
+                        />
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl bg-white rounded-3xl shadow-2xl z-[101] overflow-hidden flex flex-col md:flex-row max-h-[90vh]"
+                        >
+                            {/* Left Side: Image & Value Prop */}
+                            <div className="w-full md:w-1/2 relative bg-black p-10 flex flex-col justify-between overflow-hidden text-white min-h-[300px] md:min-h-[500px]">
+                                {/* Uploaded Background Image */}
+                                <div className="absolute inset-0 z-0 bg-cover bg-[center_top]" style={{ backgroundImage: `url(${newsletterBg})` }}></div>
+                                {/* Gradient overlay to keep text readable and possibly mask baked text */}
+                                <div className="absolute inset-x-0 bottom-0 h-2/3 z-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
+                                <div className="absolute inset-0 z-0 bg-black/20"></div>
+
+                                <div className="relative z-10 flex-1 flex flex-col justify-end items-center text-center pb-8">
+                                    <h3 className="text-5xl md:text-6xl font-bold font-display tracking-tight drop-shadow-xl text-white">Let's connect</h3>
+                                </div>
+                                
+                                <div className="relative z-10 pt-6 pb-2 border-t border-white/20 flex justify-center text-center">
+                                    <p className="text-white/80 text-sm md:text-base leading-relaxed max-w-xs drop-shadow-md">
+                                        Bądź na bieżąco z najnowszymi automatyzacjami. Zero teorii, sami praktycy.
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Right Side: Form */}
+                            <div className="w-full md:w-1/2 bg-white p-10 flex flex-col justify-center relative">
+                                <button onClick={() => setIsModalOpen(false)} className="absolute top-6 right-6 p-2 rounded-full hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-600">
+                                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                                </button>
+                                
+                                <h4 className="text-2xl font-bold text-navy mb-2 font-display">Zapisz się</h4>
+                                <p className="text-slate-500 mb-8 font-medium">Wypełnij poniższe dane, aby dołączyć.</p>
+
+                                <form onSubmit={handleSubscribe} className="space-y-5">
+                                    <div className="space-y-1.5">
+                                        <label className="text-sm font-bold text-slate-700 ml-1">Imię</label>
+                                        <Input
+                                            type="text"
+                                            required
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                            placeholder="Twoje imię"
+                                            className="h-12 bg-slate-50 border-slate-200 focus-visible:ring-accent"
+                                        />
+                                    </div>
+                                    <div className="space-y-1.5">
+                                        <label className="text-sm font-bold text-slate-700 ml-1">Adres e-mail</label>
+                                        <Input
+                                            type="email"
+                                            required
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            placeholder="Twój adres e-mail"
+                                            className="h-12 bg-slate-50 border-slate-200 focus-visible:ring-accent"
+                                        />
+                                    </div>
+                                    
+                                    <div className="flex items-start gap-3 mt-6">
+                                        <input
+                                            type="checkbox"
+                                            id="privacy"
+                                            required
+                                            checked={privacyAccepted}
+                                            onChange={(e) => setPrivacyAccepted(e.target.checked)}
+                                            className="mt-1 w-4 h-4 rounded border-slate-300 text-navy focus:ring-navy"
+                                        />
+                                        <label htmlFor="privacy" className="text-xs text-slate-500 leading-relaxed">
+                                            Akceptuję <a href="#" className="underline hover:text-navy">Politykę Prywatności</a> i wyrażam zgodę na otrzymywanie materiałów promocyjnych.
+                                        </label>
+                                    </div>
+
+                                    <Button 
+                                        type="submit" 
+                                        size="lg" 
+                                        disabled={isSubmitting || !privacyAccepted}
+                                        className="w-full h-12 text-base mt-4 shadow-md disabled:opacity-70 disabled:cursor-not-allowed"
+                                        style={{ backgroundColor: status === 'success' ? '#10b981' : undefined }}
+                                    >
+                                        {status === 'success' ? 'Zapisano pomyślnie!' : (isSubmitting ? 'Zapisywanie...' : 'Dołącz do newslettera')}
+                                    </Button>
+
+                                    {status === 'error' && (
+                                        <p className="text-sm text-red-500 text-center font-medium mt-2">
+                                            Wystąpił błąd. Spróbuj ponownie lub sprawdź klucz API.
+                                        </p>
+                                    )}
+                                </form>
+                            </div>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
         </section>
     );
 }

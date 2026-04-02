@@ -176,7 +176,7 @@ export function HeroTypographic() {
           style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 40 }}
         >
           <a
-            href="#kontakt"
+            href="#darmowa-konsultacja"
             style={{
               display: 'inline-flex',
               alignItems: 'center',

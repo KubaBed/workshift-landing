@@ -105,14 +105,14 @@ export function Header() {
                         </nav>
 
                         {/* Full CTA on sm+ */}
-                        <a href="#kontakt">
+                        <a href="#darmowa-konsultacja">
                             <Button variant="accent" size="sm" className="hidden sm:flex z-50 relative">
                                 Darmowa konsultacja
                             </Button>
                         </a>
                         {/* Compact icon CTA on mobile */}
                         <a
-                            href="#kontakt"
+                            href="#darmowa-konsultacja"
                             className="sm:hidden z-50 relative w-9 h-9 rounded-full bg-[#ee703d] text-white flex items-center justify-center shadow-sm transition-transform active:scale-95"
                             aria-label="Kontakt"
                         >

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import tymoteuszImg from '../assets/tymoteusz-madry-400.jpg';
-import zuzannaImg from '../assets/zuzanna-wozniak-400.jpg';
-import bogdanImg from '../assets/bogdan-dzudzewicz-400.jpg';
+import tymoteuszImg from '../assets/tymoteusz-madry-highres.jpg';
+import zuzannaImg from '../assets/zuzanna-wozniak-highres.jpg';
+import bogdanImg from '../assets/bogdan-dzudzewicz-highres.jpg';
 
 const testimonials = [
     {
@@ -48,11 +48,11 @@ function Panel({ testimonial, isActive, onClick }) {
             aria-label={`Opinia: ${testimonial.name}`}
             className={`
                 relative overflow-hidden cursor-pointer
-                rounded-[1.75rem] outline-none
+                rounded-2xl border border-slate-200 bg-white outline-none
                 transition-shadow duration-500
                 ${isActive
-                    ? 'shadow-[0_20px_60px_-15px_rgba(0,0,0,0.18)]'
-                    : 'shadow-[0_4px_20px_-8px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_32px_-10px_rgba(0,0,0,0.12)]'
+                    ? 'shadow-lg'
+                    : 'shadow-sm hover:shadow-md'
                 }
             `}
             style={{
@@ -64,12 +64,9 @@ function Panel({ testimonial, isActive, onClick }) {
             {/* ═══ EXPANDED STATE: split layout ═══ */}
             {isActive && (
                 <>
-                    {/* Left: gradient bg + content */}
+                    {/* Left: solid white bg */}
                     <div
-                        className="absolute inset-0"
-                        style={{
-                            background: `linear-gradient(135deg, ${testimonial.accentColor}12 0%, ${testimonial.accentColor}06 50%, transparent 100%)`,
-                        }}
+                        className="absolute inset-0 bg-white"
                     />
 
                     {/* Right: photo column */}
@@ -217,9 +214,9 @@ function MobileCard({ testimonial }) {
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className={`
-                    w-full relative overflow-hidden rounded-2xl cursor-pointer outline-none
+                    w-full relative overflow-hidden rounded-2xl cursor-pointer outline-none border border-slate-200 bg-white
                     transition-shadow duration-300
-                    ${isOpen ? 'shadow-[0_12px_40px_-10px_rgba(0,0,0,0.15)]' : 'shadow-[0_4px_16px_-6px_rgba(0,0,0,0.08)]'}
+                    ${isOpen ? 'shadow-md' : 'shadow-sm hover:shadow-md'}
                 `}
             >
                 {/* Photo / gradient bg */}
@@ -332,7 +329,7 @@ export function TestimonialsSection() {
                         className="text-3xl md:text-5xl font-bold font-display tracking-tight text-navy"
                     >
                         Zamiast teorii. Co już{' '}
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent-rose">
+                        <span className="text-slate-500 font-light italic pr-2">
                             zautomatyzowaliśmy.
                         </span>
                     </motion.h2>

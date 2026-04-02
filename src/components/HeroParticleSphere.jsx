@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+/* eslint-disable react-hooks/purity */
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { isWebGLSupported } from '../utils/webgl';
 
@@ -55,6 +56,18 @@ function controlMovement(dot) {
 }
 
 function HeroFallback() {
+  const particles = React.useMemo(() => {
+    return [...Array(30)].map((_, i) => ({
+      width: Math.random() * 12 + 6,
+      height: Math.random() * 12 + 6,
+      background: i % 4 === 0 ? '#ee703d' : i % 4 === 1 ? '#8530d1' : i % 4 === 2 ? '#cc7cab' : '#0A2540',
+      left: `${50 + Math.random() * 45}%`,
+      top: `${Math.random() * 100}%`,
+      animationDuration: `${Math.random() * 15 + 15}s`,
+      animationDelay: `${Math.random() * -20}s`
+    }));
+  }, []);
+
   return (
     <div style={{
       position: 'absolute',
@@ -64,21 +77,21 @@ function HeroFallback() {
       zIndex: 0
     }}>
       {/* Subtle floating particles using CSS to maintain visual continuity */}
-      {[...Array(30)].map((_, i) => (
+      {particles.map((p, i) => (
         <div
           key={i}
           style={{
             position: 'absolute',
-            width: Math.random() * 12 + 6,
-            height: Math.random() * 12 + 6,
-            background: i % 4 === 0 ? '#ee703d' : i % 4 === 1 ? '#8530d1' : i % 4 === 2 ? '#cc7cab' : '#0A2540',
+            width: p.width,
+            height: p.height,
+            background: p.background,
             borderRadius: '50%',
             opacity: 0.08,
-            left: `${50 + Math.random() * 45}%`, // Cluster near the right where the sphere would be
-            top: `${Math.random() * 100}%`,
+            left: p.left, // Cluster near the right where the sphere would be
+            top: p.top,
             filter: 'blur(3px)',
-            animation: `float-hero ${Math.random() * 15 + 15}s infinite ease-in-out`,
-            animationDelay: `${Math.random() * -20}s`
+            animation: `float-hero ${p.animationDuration} infinite ease-in-out`,
+            animationDelay: p.animationDelay
           }}
         />
       ))}
@@ -99,7 +112,7 @@ export function HeroParticleSphere() {
 
   useEffect(() => {
     if (!isWebGLSupported()) {
-      setSupported(false);
+      setTimeout(() => setSupported(false), 0);
       return;
     }
 
@@ -120,11 +133,11 @@ export function HeroParticleSphere() {
         renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
         if (!renderer.getContext()) { 
           renderer.dispose(); 
-          setSupported(false);
+          setTimeout(() => setSupported(false), 0);
           return; 
         }
       } catch {
-        setSupported(false);
+        setTimeout(() => setSupported(false), 0);
         return;
       }
 

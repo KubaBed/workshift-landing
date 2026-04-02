@@ -72,9 +72,9 @@ function App() {
           <InteractiveServicesBento id="uslugi" />
           <ProcessSection />
           <IndustriesSection />
+          <TestimonialsSection />
           <DataMetricsSection />
           <AboutUsSection />
-          <TestimonialsSection />
           <FAQSection />
           <NewsletterSection />
           <ContactSection />
