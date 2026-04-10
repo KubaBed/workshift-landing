@@ -5,7 +5,7 @@ import { annotate } from "rough-notation";
 export function Highlighter({
     children,
     action = "highlight",
-    color = "#ee703d", // Brand Accent
+    color = "#9CE069", // Brand Accent
     strokeWidth = 2,
     animationDuration = 600,
     iterations = 2,

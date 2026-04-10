@@ -49,7 +49,7 @@ export function AnimatedQuoteSection() {
         <section
             ref={containerRef}
             className="w-full relative"
-            style={{ height: '120vh', background: 'linear-gradient(160deg, #FAFAFA 0%, #F4F1ED 100%)' }}
+            style={{ height: '120vh', background: 'linear-gradient(160deg, #E6E8DD 0%, #dfe1d5 100%)' }}
         >
             {/* Sticky block: stays fixed to viewport while we scroll through the outer track */}
             <div
@@ -61,10 +61,10 @@ export function AnimatedQuoteSection() {
                     className="w-full px-6 max-w-7xl mx-auto font-display"
                 >
                     {/* Eyebrow label */}
-                    <p className="text-xs font-semibold tracking-[0.2em] uppercase text-neutral-400 mb-6 md:mb-8">
-                        - Nasza filozofia
+                    <p className="font-mono text-xs tracking-wider uppercase text-muted-dark mb-6 md:mb-8">
+                        — Nasza filozofia
                     </p>
-                    <div className="leading-[1.15] tracking-tight font-medium text-center md:text-left" style={{ fontSize: 'clamp(1.875rem, 5vw, 3.5rem)' }}>
+                    <div className="leading-[1.15] tracking-tight font-normal text-center md:text-left" style={{ fontSize: 'clamp(1.875rem, 5vw, 3.5rem)' }}>
                     {wordsArray.map((word, index) => {
                         const isGlitchWord = word.toLowerCase().includes("szumu");
                         const isGradientWord = word === "MŚP" || word === "automatyzować";
@@ -81,8 +81,8 @@ export function AnimatedQuoteSection() {
                                             baseIntensity={0.15}
                                             hoverIntensity={0.4}
                                             enableHover={true}
-                                            color="#0A2540"
-                                            fontWeight={500}
+                                            color="#000000"
+                                            fontWeight={400}
                                             fontSize="clamp(1.875rem, 5vw, 3.5rem)"
                                         >
                                             {word}
@@ -90,14 +90,13 @@ export function AnimatedQuoteSection() {
                                     </span>
                                 ) : isGradientWord ? (
                                     <span
-                                        className="quote-word"
-                                        style={{ opacity: 0.22, willChange: 'opacity', color: '#C67B4B', fontWeight: 600 }}
+                                        style={{ opacity: 0.22, willChange: 'opacity', color: '#9CE069', fontWeight: 500 }}
                                     >
                                         {word}
                                     </span>
                                 ) : (
                                     <span
-                                        className="quote-word text-navy"
+                                        className="quote-word text-black"
                                         style={{ opacity: 0.22, willChange: 'opacity' }}
                                     >
                                         {word}

@@ -28,9 +28,9 @@ const industries = [
             'Generator wstępnych opinii prawnych',
             'Monitoring zmian w legislacji (alerting)'
         ],
-        theme: { text: 'text-[#ee703d]', bg: 'bg-[#ee703d]/10', border: 'border-[#ee703d]/20' },
-        gradient: 'from-[#ee703d] to-[#f5a273]',
-        accent: '#ee703d',
+        theme: { text: 'text-black', bg: 'bg-lime/20', border: 'border-lime/30' },
+        gradient: 'from-lime to-[#b8e88a]',
+        accent: '#9CE069',
         image: '/industry_law_new.png',
     },
     {
@@ -125,7 +125,7 @@ function IndustryImagePanel({ activeData }) {
                 <img
                     src={activeData.image}
                     alt={`${activeData.title} AI Platform`}
-                    className="w-full max-w-[480px] rounded-2xl shadow-2xl object-cover border border-white/60"
+                    className="w-full max-w-[480px] rounded-[10px] shadow-2xl object-cover border border-black/10"
                     style={{ maxHeight: '420px', objectPosition: 'top' }}
                 />
             </motion.div>
@@ -138,7 +138,7 @@ export function IndustriesSection() {
     const activeData = industries[activeIndex];
 
     return (
-        <section className="py-24 md:py-32 bg-slate-50 relative overflow-hidden">
+        <section className="py-24 md:py-32 bg-sage relative overflow-hidden">
             <div className="max-w-[1400px] mx-auto px-6 max-md:px-4 relative z-10">
 
                 {/* Header */}
@@ -147,11 +147,11 @@ export function IndustriesSection() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-3xl md:text-5xl font-bold font-display tracking-tight text-[#0A2540] mb-6"
+                        className="text-3xl md:text-5xl font-display tracking-tight text-black mb-6"
                     >
                         Rozwiązania dopasowane do Twojej branży
                     </motion.h2>
-                    <p className="text-lg text-slate-500 font-medium">
+                    <p className="text-lg text-muted-dark">
                         Zautomatyzujemy to co powtarzalne, żebyś mógł skupić się na tym co ważne.
                     </p>
                 </div>
@@ -167,18 +167,18 @@ export function IndustriesSection() {
                                 className={cn(
                                     "relative px-5 py-3 rounded-full flex items-center gap-2 font-semibold text-sm transition-all duration-300",
                                     isActive 
-                                    ? "bg-[#0A2540] text-white shadow-lg shadow-slate-300/50" 
-                                    : "bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:bg-slate-50"
+                                    ? "bg-black text-white shadow-lg" 
+                                    : "bg-white text-muted-dark border border-black/10 hover:border-black/20 hover:bg-white/80"
                                 )}
                             >
                                 {isActive && (
                                     <motion.div 
                                         layoutId="activeTabPill" 
-                                        className="absolute inset-0 bg-[#0A2540] rounded-full -z-10" 
+                                        className="absolute inset-0 bg-black rounded-full -z-10" 
                                         transition={{ type: "spring", stiffness: 300, damping: 30 }}
                                     />
                                 )}
-                                <span className={cn("relative z-10", isActive ? "text-white" : "text-slate-400")}>
+                                <span className={cn("relative z-10", isActive ? "text-white" : "text-muted-light")}>
                                     {item.icon}
                                 </span>
                                 <span className="relative z-10">{item.title}</span>
@@ -188,7 +188,7 @@ export function IndustriesSection() {
                 </div>
 
                 {/* Main Content Area (Bento-like Container) */}
-                <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] overflow-hidden">
+                <div className="bg-white rounded-[10px] border border-black/10 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] overflow-hidden">
                     <div className="grid grid-cols-1 lg:grid-cols-2">
                         
                         {/* Left Content Column */}
@@ -202,25 +202,25 @@ export function IndustriesSection() {
                                     transition={{ duration: 0.3, ease: 'easeOut' }}
                                     className="flex flex-col h-full"
                                 >
-                                    <h3 className="text-2xl md:text-3xl font-display font-bold tracking-tight text-[#0A2540] mb-4">
+                                    <h3 className="text-2xl md:text-3xl font-display tracking-tight text-black mb-4">
                                         {activeData.tagline}
                                     </h3>
-                                    <p className="text-slate-500 text-lg leading-relaxed mb-8">
+                                    <p className="text-muted-dark text-lg leading-relaxed mb-8">
                                         {activeData.desc}
                                     </p>
 
                                     {/* Metric Highlight Box */}
-                                    <div className={cn("rounded-2xl p-6 border flex items-center gap-6 mb-8", activeData.theme.bg, activeData.theme.border)}>
+                                    <div className={cn("rounded-[10px] p-6 border flex items-center gap-6 mb-8", activeData.theme.bg, activeData.theme.border)}>
                                         <div className="flex-shrink-0">
                                             <span className={cn("block text-4xl font-black tracking-tighter", activeData.theme.text)}>
                                                 {activeData.metric.value}
                                             </span>
                                         </div>
                                         <div>
-                                            <span className="block font-bold text-slate-700 text-sm uppercase tracking-wider mb-0.5">
+                                            <span className="block font-semibold text-black/70 text-sm uppercase tracking-wider mb-0.5">
                                                 {activeData.metric.label}
                                             </span>
-                                            <span className="block text-slate-500 text-sm">
+                                            <span className="block text-muted-dark text-sm">
                                                 {activeData.metric.subtext}
                                             </span>
                                         </div>
@@ -228,15 +228,15 @@ export function IndustriesSection() {
 
                                     {/* Use Cases List */}
                                     <div className="mt-auto">
-                                        <p className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
-                                            <Zap className="w-4 h-4 text-amber-500 fill-amber-500" />
+                                        <p className="font-semibold text-black mb-4 flex items-center gap-2">
+                                            <Zap className="w-4 h-4 text-lime fill-lime" />
                                             Co możemy zautomatyzować?
                                         </p>
                                         <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3">
                                             {activeData.useCases.map((useCase, i) => (
                                                 <li key={i} className="flex items-start gap-2.5 group">
                                                     <CheckCircle2 className={cn("w-4 h-4 shrink-0 mt-0.5 opacity-60 group-hover:opacity-100 transition-opacity", activeData.theme.text)} />
-                                                    <span className="text-slate-600 font-medium text-[13px] leading-tight">{useCase}</span>
+                                                    <span className="text-muted-dark font-medium text-[13px] leading-tight">{useCase}</span>
                                                 </li>
                                             ))}
                                         </ul>
@@ -247,7 +247,7 @@ export function IndustriesSection() {
                         </div>
 
                         {/* Right Visual Column */}
-                        <div className="bg-slate-50/50 border-l border-slate-100 relative overflow-hidden">
+                        <div className="bg-sage/30 border-l border-black/5 relative overflow-hidden">
                             <AnimatePresence mode="wait">
                                 <IndustryImagePanel activeData={activeData} key={`visual-${activeData.id}`} />
                             </AnimatePresence>
@@ -258,8 +258,8 @@ export function IndustriesSection() {
 
                 {/* Footer Disclaimer */}
                 <div className="mt-8 text-center">
-                     <p className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200">
-                        Twojej branży nie ma na liście? <span className="font-bold text-[#0A2540] ml-1">Zbudujemy dedykowany proces.</span>
+                     <p className="inline-flex items-center gap-2 text-sm font-medium text-muted-dark bg-white px-4 py-2 rounded-full shadow-sm border border-black/10">
+                        Twojej branży nie ma na liście? <span className="font-bold text-black ml-1">Zbudujemy dedykowany proces.</span>
                      </p>
                 </div>
 

@@ -64,30 +64,30 @@ export function ContactSection() {
     ];
 
     return (
-        <section ref={sectionRef} id="kontakt" className="py-24 md:py-32 bg-navy relative overflow-hidden">
+        <section ref={sectionRef} id="kontakt" className="py-24 md:py-32 bg-black relative overflow-hidden">
 
             {/* Decorative glow */}
-            <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-accent rounded-full blur-[200px] opacity-[0.06] translate-y-1/2 -translate-x-1/3 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-lime rounded-full blur-[200px] opacity-[0.06] translate-y-1/2 -translate-x-1/3 pointer-events-none" />
 
             <div className="max-w-[1400px] mx-auto px-6 max-md:px-4 relative z-10">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
 
                     {/* Left — Copy + trust signals */}
                     <div>
-                        <h2 className="contact-animate-left opacity-0 text-4xl md:text-5xl lg:text-6xl font-bold font-display tracking-tight text-white mb-6 text-balance">
+                        <h2 className="contact-animate-left opacity-0 text-4xl md:text-5xl lg:text-6xl font-display tracking-tight text-white mb-6 text-balance">
                             Porozmawiajmy o{' '}
-                            <span className="text-chartreuse">Twoich procesach.</span>
+                            <span className="text-lime">Twoich procesach.</span>
                         </h2>
 
-                        <p className="contact-animate-left opacity-0 text-lg text-slate-400 leading-relaxed mb-10 max-w-md">
+                        <p className="contact-animate-left opacity-0 text-lg text-white/50 leading-relaxed mb-10 max-w-md">
                             Wyślij krótką wiadomość, a my odezwiemy się z darmowym planem automatyzacji dopasowanym do Twojej firmy.
                         </p>
 
                         <div className="contact-animate-left opacity-0 flex flex-col gap-4">
                             {trustSignals.map((signal, idx) => (
                                 <div key={idx} className="flex items-center gap-3">
-                                    <signal.icon size={18} className="text-chartreuse shrink-0" />
-                                    <span className="text-sm font-medium text-slate-300">{signal.text}</span>
+                                    <signal.icon size={18} className="text-lime shrink-0" />
+                                    <span className="text-sm font-medium text-white/60">{signal.text}</span>
                                 </div>
                             ))}
                         </div>
@@ -96,41 +96,41 @@ export function ContactSection() {
                     {/* Right — Form */}
                     <div className="contact-animate-right opacity-0">
                         {submitted ? (
-                            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-10 md:p-12 text-center">
-                                <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-chartreuse/20 flex items-center justify-center">
-                                    <CheckCircle size={32} className="text-chartreuse" />
+                            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[10px] p-10 md:p-12 text-center">
+                                <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-lime/20 flex items-center justify-center">
+                                    <CheckCircle size={32} className="text-lime" />
                                 </div>
-                                <h3 className="text-2xl font-bold font-display text-white mb-3">Dziękujemy!</h3>
-                                <p className="text-slate-400">Odezwiemy się w ciągu 24 godzin z propozycją terminu i wstępnym planem.</p>
+                                <h3 className="text-2xl font-display text-white mb-3">Dziękujemy!</h3>
+                                <p className="text-white/50">Odezwiemy się w ciągu 24 godzin z propozycją terminu i wstępnym planem.</p>
                             </div>
                         ) : (
                             <form
                                 onSubmit={handleSubmit}
-                                className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 md:p-10 space-y-5"
+                                className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[10px] p-8 md:p-10 space-y-5"
                             >
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                     <div>
                                         <label htmlFor="contact-name" className="block text-sm font-medium text-slate-300 mb-2">
-                                            Imię <span className="text-accent">*</span>
+                                            Imię <span className="text-lime">*</span>
                                         </label>
                                         <Input
                                             id="contact-name"
                                             type="text"
                                             required
                                             placeholder="Jan"
-                                            className="w-full h-12 px-4 rounded-lg bg-white/10 border-white/10 text-white placeholder:text-slate-500 focus-visible:ring-chartreuse/40 focus-visible:border-chartreuse/40 text-sm"
+                                            className="w-full h-12 px-4 rounded-[10px] bg-white/10 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-lime/40 focus-visible:border-lime/40 text-sm"
                                         />
                                     </div>
                                     <div>
                                         <label htmlFor="contact-email" className="block text-sm font-medium text-slate-300 mb-2">
-                                            Email <span className="text-accent">*</span>
+                                            Email <span className="text-lime">*</span>
                                         </label>
                                         <Input
                                             id="contact-email"
                                             type="email"
                                             required
                                             placeholder="jan@firma.pl"
-                                            className="w-full h-12 px-4 rounded-lg bg-white/10 border-white/10 text-white placeholder:text-slate-500 focus-visible:ring-chartreuse/40 focus-visible:border-chartreuse/40 text-sm"
+                                            className="w-full h-12 px-4 rounded-[10px] bg-white/10 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-lime/40 focus-visible:border-lime/40 text-sm"
                                         />
                                     </div>
                                 </div>
@@ -143,20 +143,20 @@ export function ContactSection() {
                                         id="contact-company"
                                         type="text"
                                         placeholder="Nazwa Twojej firmy"
-                                        className="w-full h-12 px-4 rounded-lg bg-white/10 border-white/10 text-white placeholder:text-slate-500 focus-visible:ring-chartreuse/40 focus-visible:border-chartreuse/40 text-sm"
+                                        className="w-full h-12 px-4 rounded-[10px] bg-white/10 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-lime/40 focus-visible:border-lime/40 text-sm"
                                     />
                                 </div>
 
                                 <div>
                                     <label htmlFor="contact-message" className="block text-sm font-medium text-slate-300 mb-2">
-                                        Wiadomość <span className="text-accent">*</span>
+                                        Wiadomość <span className="text-lime">*</span>
                                     </label>
                                     <Textarea
                                         id="contact-message"
                                         required
                                         rows={4}
                                         placeholder="Opisz krótko, jakie procesy chciałbyś zautomatyzować..."
-                                        className="w-full px-4 py-3 rounded-lg bg-white/10 border-white/10 text-white placeholder:text-slate-500 focus-visible:ring-chartreuse/40 focus-visible:border-chartreuse/40 text-sm resize-none"
+                                        className="w-full px-4 py-3 rounded-[10px] bg-white/10 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-lime/40 focus-visible:border-lime/40 text-sm resize-none"
                                     />
                                 </div>
 
@@ -170,7 +170,7 @@ export function ContactSection() {
                                     Wyślij zapytanie
                                 </Button>
 
-                                <p className="text-xs text-slate-500 text-center">
+                                <p className="text-xs text-white/30 text-center">
                                     Wysyłając formularz zgadzasz się z naszą Polityką Prywatności.
                                 </p>
                             </form>

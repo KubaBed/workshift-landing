@@ -42,7 +42,7 @@ export function DataMetricsSection() {
     const isInView = useInView(ref, { once: true, margin: '-80px' });
 
     return (
-        <section className="py-28 md:py-36 bg-[#f0f0ec] text-[#111] relative overflow-hidden" ref={ref}>
+        <section className="py-28 md:py-36 bg-sage text-black relative overflow-hidden" ref={ref}>
 
             {/* Subtle grid lines */}
             <div className="absolute inset-0 opacity-[0.035] pointer-events-none"
@@ -57,9 +57,9 @@ export function DataMetricsSection() {
                     transition={{ duration: 0.7, ease: 'easeOut' }}
                     className="mb-16 md:mb-24 max-w-4xl"
                 >
-                    <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold font-display tracking-tight leading-[1.1] text-[#0A2540] text-balance">
+                    <h2 className="text-4xl md:text-5xl lg:text-7xl font-display tracking-tight leading-[1.1] text-black text-balance">
                         Zwłoka kosztuje. Im dłużej czekasz,<br className="hidden md:block" />
-                        tym trudniej będzie Ci <GradientText colors={['#ee703d', '#cc7cab', '#8530d1']} animationSpeed={6} yoyo={true}>dogonić resztę.</GradientText>
+                        tym trudniej będzie Ci <GradientText colors={['#9CE069', '#E6E8DD', '#7bc44a']} animationSpeed={6} yoyo={true}>dogonić resztę.</GradientText>
                     </h2>
                 </motion.div>
 
@@ -70,15 +70,15 @@ export function DataMetricsSection() {
 
                             {/* Left label column */}
                             <div className="w-[110px] md:w-[28%] shrink-0 flex items-center gap-2 md:gap-3">
-                                <span className="font-mono text-[10px] md:text-xs font-bold text-slate-400 tracking-widest shrink-0">{bar.num}</span>
-                                <span className="text-[11px] md:text-xs font-bold text-slate-500 uppercase tracking-widest leading-tight hidden sm:block">{bar.label} <strong className="text-[#111]">{bar.highlight}</strong></span>
-                                <span className="text-[11px] font-bold text-[#111] uppercase tracking-widest leading-tight sm:hidden">{bar.highlight}</span>
+                                <span className="font-mono text-[10px] md:text-xs text-muted-light tracking-widest shrink-0">{bar.num}</span>
+                                <span className="text-[11px] md:text-xs font-semibold text-muted-dark uppercase tracking-widest leading-tight hidden sm:block">{bar.label} <strong className="text-black">{bar.highlight}</strong></span>
+                                <span className="text-[11px] font-semibold text-black uppercase tracking-widest leading-tight sm:hidden">{bar.highlight}</span>
                             </div>
 
                             {/* Growing bar track */}
                             <div className="flex-1 relative h-1.5 bg-black/10 rounded-full">
                                 <motion.div
-                                    className="absolute left-0 top-0 h-full bg-[#111] origin-left rounded-full"
+                                    className="absolute left-0 top-0 h-full bg-black origin-left rounded-full"
                                     initial={{ scaleX: 0 }}
                                     animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
                                     transition={{
@@ -102,7 +102,7 @@ export function DataMetricsSection() {
                                         stiffness: 200,
                                     }}
                                 >
-                                    <div className="-translate-x-1/2 bg-[#111] text-white text-xs md:text-sm font-black px-3 py-1.5 md:px-4 md:py-2 rounded-full shadow-md whitespace-nowrap">
+                                    <div className="-translate-x-1/2 bg-black text-white text-xs md:text-sm font-semibold font-mono px-3 py-1.5 md:px-4 md:py-2 rounded-full shadow-md whitespace-nowrap">
                                         {bar.value}
                                     </div>
                                 </motion.div>
@@ -110,7 +110,7 @@ export function DataMetricsSection() {
 
                             {/* Right label */}
                             <div className="w-[75px] md:w-[12%] shrink-0 text-right overflow-hidden">
-                                <span className="font-mono text-[9px] md:text-xs font-bold text-slate-400 tracking-widest truncate block">{bar.suffix}</span>
+                                <span className="font-mono text-[9px] md:text-xs text-muted-light tracking-widest truncate block">{bar.suffix}</span>
                             </div>
 
                         </div>
@@ -119,7 +119,7 @@ export function DataMetricsSection() {
 
                 {/* Footer note */}
                 <motion.p
-                    className="mt-10 text-sm text-slate-500 font-medium max-w-lg"
+                    className="mt-10 text-sm text-muted-dark max-w-lg"
                     initial={{ opacity: 0 }}
                     animate={isInView ? { opacity: 1 } : {}}
                     transition={{ delay: 1.5, duration: 0.6 }}

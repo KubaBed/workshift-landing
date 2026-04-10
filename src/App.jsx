@@ -38,7 +38,7 @@ function SectionPreview({ sectionKey }) {
     );
   }
   return (
-    <div className="bg-white font-sans text-slate-900 antialiased selection:bg-accent selection:text-white">
+    <div className="bg-sage font-sans text-black antialiased selection:bg-lime selection:text-black">
       <Component />
     </div>
   );
@@ -53,13 +53,13 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-white font-sans text-slate-900 scroll-smooth selection:bg-accent selection:text-white relative">
-      {/* Global Margin Lines (Stripe-inspired Editorial Grid) */}
-      <div className="fixed inset-0 pointer-events-none z-0 hidden lg:flex justify-center px-6">
-        <div className="w-full max-w-7xl flex relative">
-          <div className="absolute top-0 bottom-0 left-0 w-px bg-slate-200/60" />
-          <div className="absolute top-0 bottom-0 left-1/2 w-px bg-slate-200/30 -translate-x-px" />
-          <div className="absolute top-0 bottom-0 right-0 w-px bg-slate-200/60" />
+    <div className="min-h-screen bg-sage font-sans text-black scroll-smooth selection:bg-lime selection:text-black relative">
+      {/* Global Margin Lines (Rendani Editorial Grid) */}
+      <div className="fixed inset-0 pointer-events-none z-0 hidden lg:flex justify-center px-5">
+        <div className="w-full max-w-[1320px] flex relative">
+          <div className="absolute top-0 bottom-0 left-0 w-px bg-black/5" />
+          <div className="absolute top-0 bottom-0 left-1/2 w-px bg-black/3 -translate-x-px" />
+          <div className="absolute top-0 bottom-0 right-0 w-px bg-black/5" />
         </div>
       </div>
 
