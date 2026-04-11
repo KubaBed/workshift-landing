@@ -18,4 +18,17 @@ export default defineConfig({
     host: '0.0.0.0',
     allowedHosts: true,
   },
+  build: {
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-three': ['three'],
+          'vendor-motion': ['framer-motion'],
+          'vendor-gsap': ['gsap'],
+          'vendor-react': ['react', 'react-dom'],
+        },
+      },
+    },
+  },
 })

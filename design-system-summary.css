@@ -1,0 +1,83 @@
+/* ==========================================================================
+   WORKSHIFT - DESIGN SYSTEM REFERENCE
+   ========================================================================== 
+   Ten plik służy wyłącznie jako dokumentacja/referencja obecnego Design Systemu.
+   Faktyczne reguły są kompilowane z src/index.css przy użyciu Tailwind CSS v4.
+   ========================================================================== */
+
+/* 1. TYPOGRAFIA
+   -------------------------------------------------------------------------- */
+:root {
+  /* Główny krój pisma dla nagłówków i tekstów (czysty, nowoczesny sans-serif) */
+  --font-sans: "Satoshi", system-ui, sans-serif;
+  --font-display: "Satoshi", system-ui, sans-serif;
+}
+
+/* 2. GŁÓWNA PALETA KOLORÓW (Mistral/SaaS B2B Aesthetic)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Tła i szkielet (Light mode dominuje) */
+  --color-alabaster: #FFFFFF;
+  --color-navy: #0A2540;
+  --color-navy-dark: #071B2E;
+
+  /* Zasadniczy kolor akcentujący (Primary CTA, Highlight) */
+  --color-accent: #ee703d; /* Burnt Orange */
+
+  /* Kolory wspierające (Gradienty, subtelne akcenty, rozświetlenia) */
+  --color-accent-light: #f5a273; /* Light Orange */
+  --color-accent-rose: #cc7cab;  /* Rose */
+  --color-accent-violet: #d5a4e7;/* Violet */
+  --color-accent-purple: #8530d1;/* Purple */
+}
+
+/* 3. SHADCN UI ZMIENNE (Konwersja na OKLCH dla nowoczesnych przestrzeni barw)
+   -------------------------------------------------------------------------- */
+:root {
+  --background: oklch(1 0 0);          /* Główny background: Czysta biel */
+  --foreground: oklch(0.145 0 0);      /* Główny tekst: Bardzo ciemny odcień (prawie czarny) */
+  
+  --primary: oklch(0.205 0 0);         /* Elementy główne w UI: Ciemne */
+  --primary-foreground: oklch(0.985 0 0); /* Tekst na primary: Czysta biel */
+  
+  --muted: oklch(0.97 0 0);            /* Zgaszone tła: Jasny szary/off-white */
+  --muted-foreground: oklch(0.556 0 0);/* Zgaszony tekst: Szary */
+  
+  --border: oklch(0.922 0 0);          /* Subtelne obramowania */
+  --ring: oklch(0.708 0 0);            /* Focus ring na inputach/buttonach */
+  
+  /* Kształt: Base radius dla guzików i inputów (B2B Square-ish look) */
+  --radius: 0.625rem; /* 10px */
+}
+
+/* 4. KLUCZOWE KLASY UŻYTKOWE (Tailwind CSS Utilities)
+   -------------------------------------------------------------------------- */
+
+/* Tło z efektem "szronionego" szkła (Liquid Glass Refraction), jasne */
+.glass-panel {
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(24px); /* blur-xl */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.04), /* Delikatny zewnętrzny cień dla głębi */
+    inset 0 1px 0 rgba(255, 255, 255, 0.4); /* Subtelny połysk od góry */
+}
+
+/* Tło z efektem "szronionego" szkła dla ciemnych motywów */
+.glass-panel-dark {
+  background-color: rgba(7, 27, 46, 0.7); /* oparty na navy-dark */
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.2), 
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Hack do ukrywania paska przewijania (np. karuzele, scroll-area) */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;    /* Firefox */
+}

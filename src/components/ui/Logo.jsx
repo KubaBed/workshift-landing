@@ -13,26 +13,24 @@ import React from 'react';
 export function Logo({ variant = 'light', showWordmark = true, className = '', size = 36 }) {
     const isDark = variant === 'dark';
 
-    // In a light environment (white bg), we want navy text and dark opacities.
-    // In a dark environment (navy bg), we want white text and light opacities.
-    const textColorClass = isDark ? 'text-white' : 'text-navy';
+    // Rendani uses solid black for text instead of navy
+    const textColorClass = isDark ? 'text-white' : 'text-black';
 
     return (
         <div className={`flex items-center gap-3 ${className}`}>
             {/* SVG implementation of the "C1 Parallelogram" motif */}
             <svg width={size} height={size} viewBox="0 0 512 512" fill="none" className="shrink-0 overflow-visible">
                 <defs>
-                    {/* Top/Bottom Layer Gradient (Subtle) */}
+                    {/* Top/Bottom Layer Gradient (Subtle Rendani darks) */}
                     <linearGradient id="ss-logo-bg-grad" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
-                        <stop offset="0%" stopColor="#f5a273" stopOpacity="0.12" />
-                        <stop offset="100%" stopColor="#d5a4e7" stopOpacity="0.10" />
+                        <stop offset="0%" stopColor="#000000" stopOpacity="0.15" />
+                        <stop offset="100%" stopColor="#000000" stopOpacity="0.05" />
                     </linearGradient>
 
-                    {/* Middle Layer Brand Gradient: Orange (#ee703d) -> Rose (#cc7cab) -> Violet (#8530d1) */}
+                    {/* Middle Layer Brand Gradient: Rendani Lime */}
                     <linearGradient id="ss-logo-grad" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
-                        <stop offset="0%" stopColor="#ee703d" />
-                        <stop offset="50%" stopColor="#cc7cab" />
-                        <stop offset="100%" stopColor="#8530d1" />
+                        <stop offset="0%" stopColor="#9CE069" />
+                        <stop offset="100%" stopColor="#81c44e" />
                     </linearGradient>
                 </defs>
 
@@ -46,10 +44,9 @@ export function Logo({ variant = 'light', showWordmark = true, className = '', s
                 <polygon points="141,333 371,333 333,397 103,397" fill="url(#ss-logo-bg-grad)" />
             </svg>
 
-            {/* Wordmark in Plus Jakarta Sans */}
+            {/* Wordmark in Inter (inherited from body/font-display) */}
             {showWordmark && (
-                <span className={`font-bold tracking-tight text-xl ${textColorClass}`} style={{ 
-                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                <span className={`font-bold font-display tracking-tight text-xl ${textColorClass}`} style={{ 
                     letterSpacing: '-0.04em' 
                 }}>
                     Workshift

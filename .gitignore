@@ -25,3 +25,9 @@ dist-ssr
 files.zip
 dist/
 pre-shadcn-backup.zip
+
+# Secrets
+public/config.env.php
+.env
+.env.*
+!.env.example

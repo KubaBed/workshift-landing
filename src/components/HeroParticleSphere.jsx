@@ -9,17 +9,14 @@ const AVOIDANCE_FACTOR = -0.3;
 const LERP_SPEED = 0.02;
 
 const PALETTE = [
-  new THREE.Color(0x0A2540),
-  new THREE.Color(0x0A2540),
-  new THREE.Color(0x0A2540),
-  new THREE.Color(0x0A2540),
-  new THREE.Color(0x0A2540),
-  new THREE.Color(0xee703d),
-  new THREE.Color(0xee703d),
-  new THREE.Color(0x8530d1),
-  new THREE.Color(0xcc7cab),
+  new THREE.Color(0x000000), // Black
+  new THREE.Color(0x000000),
+  new THREE.Color(0x000000),
+  new THREE.Color(0x9CE069), // Lime
+  new THREE.Color(0x9CE069),
+  new THREE.Color(0x595959), // Muted Dark
 ];
-const LINE_COLOR = new THREE.Color(0x0A2540);
+const LINE_COLOR = new THREE.Color(0x000000);
 
 function createDot(pivot, size, opacity) {
   const color = PALETTE[Math.floor(Math.random() * PALETTE.length)];
@@ -60,7 +57,7 @@ function HeroFallback() {
     return [...Array(30)].map((_, i) => ({
       width: Math.random() * 12 + 6,
       height: Math.random() * 12 + 6,
-      background: i % 4 === 0 ? '#ee703d' : i % 4 === 1 ? '#8530d1' : i % 4 === 2 ? '#cc7cab' : '#0A2540',
+      background: i % 3 === 0 ? '#9CE069' : i % 3 === 1 ? '#000000' : '#595959',
       left: `${50 + Math.random() * 45}%`,
       top: `${Math.random() * 100}%`,
       animationDuration: `${Math.random() * 15 + 15}s`,
@@ -144,7 +141,7 @@ export function HeroParticleSphere() {
       const scene = new THREE.Scene();
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.setSize(w, h);
-      renderer.setClearColor(0xFAFAFA, 1);
+      renderer.setClearColor(0xE6E8DD, 1); // Sage background
       const canvas = renderer.domElement;
       canvas.style.position = 'absolute';
       canvas.style.top = '0';
@@ -156,7 +153,7 @@ export function HeroParticleSphere() {
 
       const dots = [];
       const pivotsGroup = new THREE.Group();
-      const PARTICLE_COUNT = 3500;
+      const PARTICLE_COUNT = 1800;
 
       for (let i = 0; i < PARTICLE_COUNT; i++) {
         const phi = Math.acos(1 - (2 * (i + 0.5)) / PARTICLE_COUNT);
@@ -175,7 +172,7 @@ export function HeroParticleSphere() {
         pivotsGroup.add(pivot);
       }
 
-      for (let i = 0; i < 800; i++) {
+      for (let i = 0; i < 400; i++) {
         const r = Math.random() * SPHERE_RADIUS * 0.75;
         const phi = Math.random() * Math.PI * 2;
         const theta = Math.random() * Math.PI;

@@ -38,30 +38,35 @@ export function NewsletterSection() {
         setStatus(null);
         
         try {
-            // Bezpośredni kontakt z API Brevo
-            const response = await fetch('https://api.brevo.com/v3/contacts', {
+            // Zmieniono na skrypt backendowy by chronić API KEY przed leakiem w przeglądarce
+            const payload = {
+                name: name,
+                email: email,
+                listId: 2 // UPDATE: ID Twojej listy w Brevo
+            };
+
+            const response = await fetch('/subscribe_newsletter.php', {
                 method: 'POST',
                 headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'api-key': import.meta.env.VITE_BREVO_API_KEY
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    email: email,
-                    attributes: { FIRSTNAME: name },
-                    listIds: [2], // UPDATE: ID Twojej listy w Brevo
-                    updateEnabled: true
-                })
+                body: JSON.stringify(payload)
             });
 
-            if (response.ok) {
+            if (response.ok || window.location.hostname === "localhost") {
                 setStatus('success');
                 setTimeout(() => setIsModalOpen(false), 2000);
             } else {
                 setStatus('error');
             }
         } catch (error) {
-            setStatus('error');
+            if (window.location.hostname === "localhost") {
+                 console.log("Mockowanie powidzenia newslettera na Localhost (Brak silnika PHP)");
+                 setStatus('success');
+                 setTimeout(() => setIsModalOpen(false), 2000);
+            } else {
+                 setStatus('error');
+            }
         } finally {
             setIsSubmitting(false);
         }
@@ -125,21 +130,21 @@ export function NewsletterSection() {
     }, []);
 
     return (
-        <section ref={sectionRef} className="py-24 bg-slate-50 relative border-t border-slate-200">
+        <section ref={sectionRef} className="py-24 bg-sage relative border-t border-black/5">
             <div className="max-w-[1400px] mx-auto px-6 max-md:px-4">
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
                     <div className="max-w-xl">
-                        <h2 className="newsletter-animate opacity-0 text-4xl md:text-5xl font-bold font-display tracking-tight text-navy mb-6">
+                        <h2 className="newsletter-animate opacity-0 text-4xl md:text-5xl font-display tracking-tight text-black mb-6">
                             Nie chcesz kupować od razu? Pozwól nam udowodnić, że wiemy o czym mówimy.
                         </h2>
-                        <p className="newsletter-animate opacity-0 text-lg text-slate-600 mb-10 leading-relaxed">
+                        <p className="newsletter-animate opacity-0 text-lg text-muted-dark mb-10 leading-relaxed">
                             Dołącz do czytelników naszego newslettera "AI Praktycznie". Co dwa tygodnie dzielimy się jednym procesem, który zautomatyzowaliśmy, podając użyte narzędzia i wygenerowane oszczędności. Zero teoretyzowania.
                         </p>
 
                         <div className="newsletter-animate opacity-0 pt-2">
-                            <Button onClick={() => setIsModalOpen(true)} size="lg" className="w-full sm:w-auto h-14 px-8 text-base shadow-lg shadow-navy/10 hover:shadow-xl transition-all">
+                            <Button onClick={() => setIsModalOpen(true)} size="lg" className="w-full sm:w-auto h-14 px-8 text-base shadow-lg shadow-black/10 hover:shadow-xl transition-all">
                                 Zapisz się do newslettera
                             </Button>
                         </div>
@@ -150,16 +155,16 @@ export function NewsletterSection() {
                             <a
                                 href="#!"
                                 key={idx}
-                                className="article-animate opacity-0 group block p-8 rounded-3xl bg-white border border-slate-200 shadow-sm hover:shadow-xl hover:border-slate-300 transition-all duration-300"
+                                className="article-animate opacity-0 group block p-8 rounded-[10px] bg-white border border-black/10 shadow-sm hover:shadow-xl hover:border-black/15 transition-all duration-300"
                             >
                                 <div className="flex justify-between items-center mb-16">
-                                    <span className="text-xs font-bold uppercase tracking-widest text-[#ee703d] bg-navy px-3 py-1 rounded-full">{article.tag}</span>
-                                    <svg className="w-5 h-5 text-slate-400 group-hover:text-navy transition-colors group-hover:translate-x-1 group-hover:-translate-y-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M7 17l9.2-9.2M17 17V7H7" /></svg>
+                                    <span className="font-mono text-xs uppercase tracking-wider text-black bg-lime px-3 py-1 rounded-full">{article.tag}</span>
+                                    <svg className="w-5 h-5 text-muted-light group-hover:text-black transition-colors group-hover:translate-x-1 group-hover:-translate-y-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M7 17l9.2-9.2M17 17V7H7" /></svg>
                                 </div>
-                                <h3 className="text-xl font-bold font-display text-navy mb-4 leading-snug group-hover:text-[#ee703d] group-hover:bg-navy group-hover:px-1 group-hover:-mx-1 box-decoration-clone transition-colors">
+                                <h3 className="text-xl font-display text-black mb-4 leading-snug group-hover:text-lime transition-colors">
                                     {article.title}
                                 </h3>
-                                <p className="text-sm font-medium text-slate-500">{article.time}</p>
+                                <p className="text-sm font-mono text-muted-dark">{article.time}</p>
                             </a>
                         ))}
                     </div>
@@ -176,13 +181,13 @@ export function NewsletterSection() {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setIsModalOpen(false)}
-                            className="fixed inset-0 bg-navy/40 backdrop-blur-sm z-[100]"
+                            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100]"
                         />
                         <motion.div
                             initial={{ opacity: 0, scale: 0.95, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%-2rem)] max-w-4xl bg-white rounded-3xl shadow-2xl z-[101] overflow-y-auto flex flex-col md:flex-row max-h-[90vh]"
+                            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%-2rem)] max-w-4xl bg-white rounded-[10px] shadow-2xl z-[101] overflow-y-auto flex flex-col md:flex-row max-h-[90vh]"
                         >
                             {/* Left Side: Image & Value Prop */}
                             <div className="w-full md:w-1/2 relative bg-black p-6 md:p-10 flex flex-col justify-between overflow-hidden text-white min-h-[200px] md:min-h-[500px]">
@@ -193,46 +198,46 @@ export function NewsletterSection() {
                                 <div className="absolute inset-0 z-0 bg-black/20"></div>
 
                                 <div className="relative z-10 flex-1 flex flex-col justify-end items-center text-center pb-4">
-                                    <h3 className="text-5xl md:text-6xl font-bold font-display tracking-tight drop-shadow-xl text-white">Let's connect</h3>
+                                    <h3 className="text-5xl md:text-6xl font-display tracking-tight drop-shadow-xl text-white">Let's connect</h3>
                                 </div>
                                 
                                 <div className="relative z-10 pt-6 pb-2 border-t border-white/20 flex justify-center text-center lg:px-4">
                                     <p className="text-white/90 text-sm md:text-base leading-relaxed max-w-sm drop-shadow-md">
-                                        Otrzymuj regularne porady i wskazówki ze świata AI. Raz w tygodniu. Bez zadnego spamu.
+                                        Co dwa tygodnie: jeden zautomatyzowany proces z konkretnymi narzędziami, porady wdrożeniowe, promocje na narzędzia AI, darmowe alternatywy i sposoby jak samemu wdrażać automatyzacje. Bez żadnego spamu.
                                     </p>
                                 </div>
                             </div>
 
                             {/* Right Side: Form */}
                             <div className="w-full md:w-1/2 bg-white p-6 md:p-10 flex flex-col justify-center relative">
-                                <button onClick={() => setIsModalOpen(false)} className="absolute top-6 right-6 p-2 rounded-full hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-600">
+                                <button onClick={() => setIsModalOpen(false)} className="absolute top-6 right-6 p-2 rounded-full hover:bg-sage transition-colors text-muted-light hover:text-black">
                                     <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
                                 </button>
                                 
-                                <h4 className="text-2xl font-bold text-navy mb-2 font-display">Zapisz się</h4>
-                                <p className="text-slate-500 mb-8 font-medium">Wypełnij poniższe dane, aby dołączyć.</p>
+                                <h4 className="text-2xl font-display text-black mb-2">Zapisz się</h4>
+                                <p className="text-muted-dark mb-8">Wypełnij poniższe dane, aby dołączyć.</p>
 
                                 <form onSubmit={handleSubscribe} className="space-y-5">
                                     <div className="space-y-1.5">
-                                        <label className="text-sm font-bold text-slate-700 ml-1">Imię</label>
+                                        <label className="text-sm font-medium text-black ml-1">Imię</label>
                                         <Input
                                             type="text"
                                             required
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
                                             placeholder="Twoje imię"
-                                            className="h-12 bg-slate-50 border-slate-200 focus-visible:ring-accent"
+                                            className="h-12 bg-sage border-black/10 focus-visible:ring-lime"
                                         />
                                     </div>
                                     <div className="space-y-1.5">
-                                        <label className="text-sm font-bold text-slate-700 ml-1">Adres e-mail</label>
+                                        <label className="text-sm font-medium text-black ml-1">Adres e-mail</label>
                                         <Input
                                             type="email"
                                             required
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                             placeholder="Twój adres e-mail"
-                                            className="h-12 bg-slate-50 border-slate-200 focus-visible:ring-accent"
+                                            className="h-12 bg-sage border-black/10 focus-visible:ring-lime"
                                         />
                                     </div>
                                     
@@ -243,10 +248,10 @@ export function NewsletterSection() {
                                             required
                                             checked={privacyAccepted}
                                             onChange={(e) => setPrivacyAccepted(e.target.checked)}
-                                            className="mt-1 w-4 h-4 rounded border-slate-300 text-navy focus:ring-navy"
+                                            className="mt-1 w-4 h-4 rounded border-black/20 text-black focus:ring-lime"
                                         />
-                                        <label htmlFor="privacy" className="text-xs text-slate-500 leading-relaxed">
-                                            Akceptuję <a href="#" className="underline hover:text-navy">Politykę Prywatności</a> i wyrażam zgodę na otrzymywanie materiałów promocyjnych.
+                                        <label htmlFor="privacy" className="text-xs text-muted-dark leading-relaxed">
+                                            Akceptuję <a href="#" className="underline hover:text-black">Politykę Prywatności</a> i wyrażam zgodę na otrzymywanie materiałów promocyjnych.
                                         </label>
                                     </div>
 

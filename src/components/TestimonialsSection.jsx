@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Floating } from './animations/Floating';
 import tymoteuszImg from '../assets/tymoteusz-madry-highres.jpg';
 import zuzannaImg from '../assets/zuzanna-wozniak-highres.jpg';
 import bogdanImg from '../assets/bogdan-dzudzewicz-highres.jpg';
@@ -12,7 +13,7 @@ const testimonials = [
         title: "Partner",
         company: "Mądry Maśliński Law & Consulting",
         avatar: tymoteuszImg,
-        accentColor: '#ee703d',
+        accentColor: '#9CE069',
         tags: ["AI w kancelarii", "Automatyzacja notatek", "Custom Chat"],
     },
     {
@@ -47,8 +48,8 @@ function Panel({ testimonial, isActive, onClick }) {
             aria-expanded={isActive}
             aria-label={`Opinia: ${testimonial.name}`}
             className={`
-                relative overflow-hidden cursor-pointer
-                rounded-2xl border border-slate-200 bg-white outline-none
+                relative overflow-hidden cursor-pointer w-full h-full
+                rounded-[10px] border border-black/10 bg-white outline-none
                 transition-shadow duration-500
                 ${isActive
                     ? 'shadow-lg'
@@ -56,7 +57,6 @@ function Panel({ testimonial, isActive, onClick }) {
                 }
             `}
             style={{
-                flex: isActive ? 5 : 1,
                 height: '520px',
             }}
             transition={{ layout: { duration: 0.6, ease: [0.32, 0.72, 0, 1] } }}
@@ -106,7 +106,7 @@ function Panel({ testimonial, isActive, onClick }) {
                                     <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
                                 </svg>
 
-                                <p className="text-slate-700 text-base md:text-[17px] leading-[1.7] mb-6">
+                                <p className="text-muted-dark text-base md:text-[17px] leading-[1.7] mb-6">
                                     {testimonial.quote}
                                 </p>
 
@@ -132,11 +132,11 @@ function Panel({ testimonial, isActive, onClick }) {
                                 {/* Author */}
                                 <div className="flex items-center gap-3 pt-4 border-t" style={{ borderColor: `${testimonial.accentColor}15` }}>
                                     <div className="w-11 h-11 rounded-full overflow-hidden border-2 shrink-0" style={{ borderColor: `${testimonial.accentColor}30` }}>
-                                        <img src={testimonial.avatar} alt="" className="w-full h-full object-cover object-top" />
+                                        <img src={testimonial.avatar} alt="" className="w-full h-full object-cover object-top" loading="lazy" />
                                     </div>
                                     <div>
-                                        <h4 className="font-bold font-display text-navy text-[15px]">{testimonial.name}</h4>
-                                        <p className="text-sm text-slate-500">{testimonial.title}, {testimonial.company}</p>
+                                        <h4 className="font-semibold font-display text-black text-[15px]">{testimonial.name}</h4>
+                                        <p className="text-sm text-muted-dark">{testimonial.title}, {testimonial.company}</p>
                                     </div>
                                 </div>
                             </motion.div>
@@ -149,11 +149,8 @@ function Panel({ testimonial, isActive, onClick }) {
             {!isActive && (
                 <>
                     {testimonial.avatar ? (
-                        <img
-                            src={testimonial.avatar}
-                            alt={testimonial.name}
-                            className="absolute inset-0 w-full h-full object-cover object-top"
                             style={{ filter: 'brightness(0.85)' }}
+                            loading="lazy"
                         />
                     ) : (
                         <div
@@ -188,7 +185,7 @@ function Panel({ testimonial, isActive, onClick }) {
                                 <img src={testimonial.avatar} alt="" className="w-full h-full object-cover object-top" />
                             </div>
                             <div className="min-w-0">
-                                <h4 className="font-bold font-display text-white text-sm truncate">{testimonial.name}</h4>
+                                <h4 className="font-semibold font-display text-white text-sm truncate">{testimonial.name}</h4>
                                 <p className="text-xs text-white/60 truncate">{testimonial.company}</p>
                             </div>
                         </div>
@@ -209,12 +206,12 @@ function MobileCard({ testimonial }) {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="rounded-2xl overflow-hidden"
+            className="rounded-[10px] overflow-hidden"
         >
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className={`
-                    w-full relative overflow-hidden rounded-2xl cursor-pointer outline-none border border-slate-200 bg-white
+                    w-full relative overflow-hidden rounded-[10px] cursor-pointer outline-none border border-black/10 bg-white
                     transition-shadow duration-300
                     ${isOpen ? 'shadow-md' : 'shadow-sm hover:shadow-md'}
                 `}
@@ -243,7 +240,7 @@ function MobileCard({ testimonial }) {
                         }}
                     />
                     <div className="absolute bottom-0 left-0 right-0 p-5 text-left">
-                        <h4 className="font-bold font-display text-white text-lg">{testimonial.name}</h4>
+                        <h4 className="font-semibold font-display text-white text-lg">{testimonial.name}</h4>
                         <p className="text-sm text-white/70">{testimonial.title}, {testimonial.company}</p>
                     </div>
                     {/* Expand indicator */}
@@ -270,11 +267,11 @@ function MobileCard({ testimonial }) {
                         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                         className="overflow-hidden"
                     >
-                        <div className="p-6 bg-white border border-slate-100 border-t-0 rounded-b-2xl">
+                        <div className="p-6 bg-white border border-black/5 border-t-0 rounded-b-[10px]">
                             <svg className="w-6 h-6 mb-3" style={{ color: `${testimonial.accentColor}40` }} fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
                             </svg>
-                            <p className={`text-slate-600 leading-relaxed mb-4 ${isPlaceholder ? 'italic text-slate-400' : ''}`}>
+                            <p className={`text-muted-dark leading-relaxed mb-4 ${isPlaceholder ? 'italic text-muted-light' : ''}`}>
                                 {testimonial.quote}
                             </p>
                             {testimonial.tags && (
@@ -317,7 +314,7 @@ export function TestimonialsSection() {
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-sm font-semibold tracking-widest uppercase text-accent mb-4"
+                        className="font-mono text-xs uppercase tracking-wider text-lime mb-4"
                     >
                         Referencje
                     </motion.p>
@@ -326,10 +323,10 @@ export function TestimonialsSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.05 }}
-                        className="text-3xl md:text-5xl font-bold font-display tracking-tight text-navy"
+                        className="text-3xl md:text-5xl font-display tracking-tight text-black"
                     >
                         Zamiast teorii. Co już{' '}
-                        <span className="text-slate-500 font-light italic pr-2">
+                        <span className="text-muted-dark font-light italic pr-2">
                             zautomatyzowaliśmy.
                         </span>
                     </motion.h2>
@@ -338,9 +335,9 @@ export function TestimonialsSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.1 }}
-                        className="mt-4 text-lg text-slate-500 max-w-xl"
+                        className="mt-4 text-lg text-muted-dark max-w-xl"
                     >
-                        Realne wyniki u naszych klientów — bez marketingowych pustosłowi.
+                        Realne wyniki. Realni ludzie. Zero marketingowego bełkotu.
                     </motion.p>
                 </div>
 
@@ -353,21 +350,36 @@ export function TestimonialsSection() {
                     className="hidden md:flex gap-4 w-full"
                 >
                     {testimonials.map((testimonial, index) => (
-                        <Panel
+                        <motion.div
                             key={testimonial.id}
-                            testimonial={testimonial}
-                            isActive={activeIndex === index}
-                            onClick={() => setActiveIndex(index)}
-                            index={index}
-                            totalCount={testimonials.length}
-                        />
+                            layout
+                            className="flex"
+                            style={{ flex: activeIndex === index ? 5 : 1 }}
+                            transition={{ layout: { duration: 0.6, ease: [0.32, 0.72, 0, 1] } }}
+                        >
+                            <Floating 
+                                duration={10 + index * 2}
+                                amplitude={6}
+                                rotation={0.5}
+                                className="flex w-full h-full"
+                            >
+                                <Panel
+                                    testimonial={testimonial}
+                                    isActive={activeIndex === index}
+                                    onClick={() => setActiveIndex(index)}
+                                    // Remove index and totalCount since they are not used in Panel
+                                />
+                            </Floating>
+                        </motion.div>
                     ))}
                 </motion.div>
 
                 {/* Mobile: Stacked cards with accordion */}
                 <div className="md:hidden flex flex-col gap-4">
-                    {testimonials.map((testimonial) => (
-                        <MobileCard key={testimonial.id} testimonial={testimonial} />
+                    {testimonials.map((testimonial, index) => (
+                        <Floating key={testimonial.id} duration={8 + index} amplitude={8} rotation={1}>
+                            <MobileCard testimonial={testimonial} />
+                        </Floating>
                     ))}
                 </div>
 

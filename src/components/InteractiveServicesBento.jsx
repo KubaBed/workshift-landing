@@ -5,6 +5,7 @@ import { ArrowUpRight, ArrowLeft, ArrowRight, Check, Play, Pause, X, Zap, Sparkl
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Logo } from './ui/Logo';
+import { Floating } from './animations/Floating';
 
 function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -35,9 +36,9 @@ function ParticleBlur({ position }) {
 
     return (
         <div className={`absolute ${positions[position]} w-56 h-56 pointer-events-none z-0 opacity-30`}>
-            <div className="absolute inset-0 rounded-full bg-[#ee703d]/25 blur-3xl" />
-            <div className="absolute inset-4 rounded-full bg-[#d5a4e7]/20 blur-2xl translate-x-4" />
-            <div className="absolute inset-8 rounded-full bg-[#cc7cab]/20 blur-xl -translate-x-2 translate-y-2" />
+            <div className="absolute inset-0 rounded-full bg-lime/25 blur-3xl" />
+            <div className="absolute inset-4 rounded-full bg-lime/15 blur-2xl translate-x-4" />
+            <div className="absolute inset-8 rounded-full bg-lime/20 blur-xl -translate-x-2 translate-y-2" />
         </div>
     );
 }
@@ -46,7 +47,7 @@ function GlareCard({ children, className, onClick, isExpanded }) {
     return (
         <div
             onClick={onClick}
-            className={`relative ${!isExpanded ? 'cursor-pointer hover:shadow-md hover:border-slate-300' : ''} bg-white border border-slate-200 shadow-sm rounded-2xl overflow-hidden flex flex-col transition-all duration-300 ${className}`}
+            className={`relative ${!isExpanded ? 'cursor-pointer hover:shadow-md hover:border-black/15' : ''} bg-white border border-black/10 shadow-sm rounded-[10px] overflow-hidden flex flex-col transition-all duration-300 ${className}`}
         >
             {children}
         </div>
@@ -59,7 +60,7 @@ const ORBIT_ICONS = [
     { label: 'Gmail',    color: '#EA4335', ring: 0, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="18" height="18"><path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg> },
     { label: 'Slack',    color: '#4A154B', ring: 0, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="18" height="18"><path strokeLinecap="round" d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5zM9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5zM14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5zM10 9.5C10 8.67 9.33 8 8.5 8h-5C2.67 8 2 8.67 2 9.5S2.67 11 3.5 11h5c.83 0 1.5-.67 1.5-1.5z"/></svg> },
     { label: 'Excel',    color: '#217346', ring: 0, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="18" height="18"><path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> },
-    { label: 'CRM',      color: '#0A2540', ring: 0, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="18" height="18"><path strokeLinecap="round" strokeLinejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg> },
+    { label: 'CRM',      color: '#000', ring: 0, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="18" height="18"><path strokeLinecap="round" strokeLinejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg> },
     // Ring 2 (mid, 5 icons)
     { label: 'Calendar', color: '#1a73e8', ring: 1, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="16" height="16"><rect x="3" y="4" width="18" height="18" rx="2"/><path strokeLinecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg> },
     { label: 'n8n',      color: '#ea6b00', ring: 1, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="16" height="16"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="12" r="2"/><path strokeLinecap="round" d="M7 12h10"/><circle cx="12" cy="6" r="2"/><path strokeLinecap="round" d="M12 8v4"/></svg> },
@@ -76,9 +77,9 @@ const ORBIT_ICONS = [
 ];
 
 const RING_CONFIGS = [
-    { radius: 90,  speed: 12, iconSize: 34, borderW: '1.5px dashed #e2e8f0' },
-    { radius: 148, speed: 18, iconSize: 30, borderW: '1.5px dashed #e2e8f0' },
-    { radius: 210, speed: 24, iconSize: 26, borderW: '1.5px dashed #e2e8f0' },
+    { radius: 90,  speed: 12, iconSize: 34, borderW: '1.5px dashed rgba(0,0,0,0.1)' },
+    { radius: 148, speed: 18, iconSize: 30, borderW: '1.5px dashed rgba(0,0,0,0.1)' },
+    { radius: 210, speed: 24, iconSize: 26, borderW: '1.5px dashed rgba(0,0,0,0.1)' },
 ];
 
 function AutomationPreview() {
@@ -112,6 +113,7 @@ function AutomationPreview() {
                         border: ring.borderW,
                         animation: `hs-spin ${ring.speed}s linear infinite`,
                         transformOrigin: 'center',
+                        willChange: 'transform',
                     }}>
                         {icons[ri].map((item, ii) => {
                             const angle = (ii / icons[ri].length) * (2 * Math.PI);
@@ -130,6 +132,7 @@ function AutomationPreview() {
                                     /* counter-rotate so icon stays upright */
                                     animation: `hs-spin ${ring.speed}s linear infinite reverse`,
                                     transformOrigin: 'center',
+                                    willChange: 'transform',
                                 }}>
                                     {item.icon}
                                 </div>
@@ -144,13 +147,14 @@ function AutomationPreview() {
                     width: 72, height: 72,
                     borderRadius: '50%',
                     background: 'white',
-                    border: '2px solid rgba(238,112,61,0.2)',
+                    border: '2px solid rgba(156,224,105,0.3)',
                     animation: 'ws-hub-pulse 3s ease-in-out infinite',
+                    willChange: 'transform, box-shadow',
                     display: 'flex', flexDirection: 'column',
                     alignItems: 'center', justifyContent: 'center',
                 }}>
                     <Logo size={40} showWordmark={false} />
-                    <span style={{ fontSize: 7, fontWeight: 800, letterSpacing: '0.05em', color: '#0A2540', marginTop: 1, fontFamily: 'Plus Jakarta Sans' }}>WORKSHIFT</span>
+                    <span style={{ fontSize: 7, fontWeight: 800, letterSpacing: '0.05em', color: '#000', marginTop: 1, fontFamily: 'Inter' }}>WORKSHIFT</span>
                 </div>
             </div>
         </div>
@@ -158,7 +162,7 @@ function AutomationPreview() {
 }
 
 function AuditPreview() {
-    const mainColor = '#ee703d';
+    const mainColor = '#9CE069';
     const secondaryColor = '#d5a4e7';
 
     // Bar data: default state and hover state
@@ -187,7 +191,7 @@ function AuditPreview() {
 
     return (
         <div className="relative w-full max-w-[356px] h-[220px] md:h-[240px] overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-lg
-                        group-hover:shadow-xl group-hover:scale-[1.02] transition-all duration-500">
+                        group-hover:shadow-xl group-hover:scale-[1.02] transition-all duration-500 will-change-transform">
 
             {/* Grid overlay */}
             <div
@@ -220,11 +224,11 @@ function AuditPreview() {
             <div className="absolute top-3 left-3 z-[9] flex items-center gap-1.5 transition-opacity duration-300 group-hover:opacity-0">
                 <div className="flex items-center rounded-full border border-slate-200 bg-white/60 px-2 py-0.5 backdrop-blur-sm">
                     <div className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: mainColor }} />
-                    <span className="ml-1.5 text-[10px] font-bold text-[#0A2540]">+32%</span>
+                    <span className="ml-1.5 text-[10px] font-bold text-black">+32%</span>
                 </div>
                 <div className="flex items-center rounded-full border border-slate-200 bg-white/60 px-2 py-0.5 backdrop-blur-sm">
                     <div className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: secondaryColor }} />
-                    <span className="ml-1.5 text-[10px] font-bold text-[#0A2540]">+18,7%</span>
+                    <span className="ml-1.5 text-[10px] font-bold text-black">+18,7%</span>
                 </div>
             </div>
 
@@ -236,7 +240,7 @@ function AuditPreview() {
                                 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
                     <div className="flex items-center gap-2 mb-0.5">
                         <div className="h-2 w-2 rounded-full" style={{ backgroundColor: mainColor }} />
-                        <p className="text-xs font-bold text-[#0A2540]">Potencjał oszczędności</p>
+                        <p className="text-xs font-bold text-black">Potencjał oszczędności</p>
                     </div>
                     <p className="text-[11px] text-slate-500 font-medium">Zidentyfikowaliśmy 32% czasu do odzyskania.</p>
                 </div>
@@ -317,7 +321,7 @@ function DisplayCard({
   description = "Discover amazing content",
   date = "Just now",
   iconClassName = "text-accent",
-  titleClassName = "text-[#0A2540]",
+  titleClassName = "text-black",
 }) {
   return (
     <div
@@ -371,7 +375,15 @@ function TrainingPreview() {
     <div className="w-full h-full flex items-center justify-center relative mt-8 pr-8">
       <div className="grid [grid-template-areas:'stack'] place-items-center">
         {cards.map((cardProps, index) => (
-          <DisplayCard key={index} {...cardProps} />
+          <Floating 
+            key={index} 
+            duration={4 + index} 
+            amplitude={10 + index * 5} 
+            delay={index * 0.5}
+            className="[grid-area:stack]"
+          >
+            <DisplayCard {...cardProps} />
+          </Floating>
         ))}
       </div>
     </div>
@@ -403,7 +415,7 @@ function AgentPreview() {
     // -40px broke out to fill 100% of card width.
     // +10px on each side = phone is 75% of that (shrunk 25%).
     const AVATAR = (
-        <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg, #ee703d, #8530d1)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg, #9CE069, #7ab84e)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="14" height="14" viewBox="0 0 16 16" fill="white"><path d="M8 1a3 3 0 100 6 3 3 0 000-6zM2 14s-1 0-1-1 1-4 7-4 7 3 7 4-1 1-1 1H2z" fillRule="evenodd"/></svg>
         </div>
     );
@@ -414,98 +426,100 @@ function AgentPreview() {
 
     return (
         <div ref={containerRef} className="w-full h-full flex items-start justify-center pt-6 px-4">
-            <PhoneMockupCard className="shadow-2xl">
-                <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', margin: '-24px -24px -64px -24px' }}>
-                    {/* App header bar */}
-                    <div style={{
-                        display: 'flex', alignItems: 'center', gap: 10,
-                        padding: '16px 16px 10px',
-                        borderBottom: '1px solid #f0f4f8',
-                        background: 'rgba(255,255,255,0.97)',
-                        borderTopLeftRadius: '24px',
-                        borderTopRightRadius: '24px',
-                    }}>
-                        <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg, #ee703d, #8530d1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="white"><path d="M8 1a3 3 0 100 6 3 3 0 000-6zM2 14s-1 0-1-1 1-4 7-4 7 3 7 4-1 1-1 1H2z" fillRule="evenodd"/></svg>
-                        </div>
-                        <div>
-                            <p style={{ fontSize: 13, fontWeight: 700, color: '#0A2540', margin: 0, fontFamily: 'Inter, system-ui' }}>Agent Workshift</p>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 1 }}>
-                                <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e' }} />
-                                <p style={{ fontSize: 10, color: '#64748b', margin: 0, fontFamily: 'Inter, system-ui' }}>Dostępny teraz</p>
+            <Floating duration={6} amplitude={12} rotationRange={2}>
+                <PhoneMockupCard className="shadow-2xl will-change-transform">
+                    <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', margin: '-24px -24px -64px -24px' }}>
+                        {/* App header bar */}
+                        <div style={{
+                            display: 'flex', alignItems: 'center', gap: 10,
+                            padding: '16px 16px 10px',
+                            borderBottom: '1px solid #f0f4f8',
+                            background: 'rgba(255,255,255,0.97)',
+                            borderTopLeftRadius: '24px',
+                            borderTopRightRadius: '24px',
+                        }}>
+                            <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg, #9CE069, #7ab84e)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="white"><path d="M8 1a3 3 0 100 6 3 3 0 000-6zM2 14s-1 0-1-1 1-4 7-4 7 3 7 4-1 1-1 1H2z" fillRule="evenodd"/></svg>
                             </div>
+                            <div>
+                                <p style={{ fontSize: 13, fontWeight: 700, color: '#000', margin: 0, fontFamily: 'Inter, system-ui' }}>Agent Workshift</p>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 1 }}>
+                                    <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e' }} />
+                                    <p style={{ fontSize: 10, color: '#64748b', margin: 0, fontFamily: 'Inter, system-ui' }}>Dostępny teraz</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Chat feed */}
+                        <div style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 8, background: '#f8fafc', height: '100%', overflowY: 'hidden', paddingBottom: '32px' }}>
+                            {/* Timestamp */}
+                            <div style={{ textAlign: 'center' }}>
+                                <span style={{ fontSize: 10, color: '#94a3b8', fontFamily: 'Inter, system-ui', background: '#e2e8f0', borderRadius: 99, padding: '2px 8px' }}>Dzisiaj, 14:32</span>
+                            </div>
+
+                            {/* User msg 1 */}
+                            <div className="gsap-chat-1" style={{ display: 'flex', justifyContent: 'flex-end', opacity: 0 }}>
+                                <div style={{ background: '#000', borderRadius: '16px 16px 4px 16px', padding: '8px 12px', maxWidth: '78%' }}>
+                                    <p style={{ fontSize: 12, color: '#fff', fontWeight: 500, lineHeight: 1.4, margin: 0, fontFamily: 'Inter, system-ui' }}>Potrzebuję fakturę za luty dla XYZ Sp. z o.o.</p>
+                                </div>
+                            </div>
+
+                            {/* Typing */}
+                            <div className="gsap-chat-typing" style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', gap: 6, opacity: 0 }}>
+                                {AVATAR}
+                                <div style={{ background: '#fff', borderRadius: '16px 16px 16px 4px', padding: '8px 12px', border: '1px solid #e2e8f0', display: 'flex', gap: 4, alignItems: 'center' }}>
+                                    {[0, 150, 300].map(d => <span key={d} style={{ width: 5, height: 5, borderRadius: '50%', background: '#94a3b8', display: 'inline-block', animationDelay: `${d}ms` }} className="animate-bounce" />)}
+                                </div>
+                            </div>
+
+                            {/* Agent reply 1 */}
+                            <div className="gsap-chat-2" style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', gap: 6, opacity: 0 }}>
+                                {AVATAR}
+                                <div style={{ background: '#fff', borderRadius: '16px 16px 16px 4px', padding: '8px 12px', maxWidth: '75%', border: '1px solid #e8f4e8' }}>
+                                    <p style={{ fontSize: 12, color: '#000', fontWeight: 500, lineHeight: 1.45, margin: 0, fontFamily: 'Inter, system-ui' }}>
+                                        Znalazłem FV/02/2026 🎉<br/>
+                                        <strong>4 230 PLN</strong> netto<br/>
+                                        <span style={{ color: '#22c55e', fontWeight: 600 }}>✓ Wysłano na jan@xyz.pl</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* User msg 2 */}
+                            <div className="gsap-chat-3" style={{ display: 'flex', justifyContent: 'flex-end', opacity: 0 }}>
+                                <div style={{ background: '#000', borderRadius: '16px 16px 4px 16px', padding: '8px 12px', maxWidth: '65%' }}>
+                                    <p style={{ fontSize: 12, color: '#fff', fontWeight: 500, lineHeight: 1.4, margin: 0, fontFamily: 'Inter, system-ui' }}>Świetnie! A kiedy wpłynęła płatność?</p>
+                                </div>
+                            </div>
+
+                            {/* Agent — audio waveform message */}
+                            <div className="gsap-chat-4" style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', gap: 6, opacity: 0 }}>
+                                {AVATAR}
+                                <div style={{ background: 'linear-gradient(135deg, rgba(238,112,61,0.08), rgba(133,48,209,0.08))', borderRadius: '16px 16px 16px 4px', padding: '8px 12px', border: '1px solid rgba(133,48,209,0.15)', display: 'flex', alignItems: 'center', gap: 8 }}>
+                                    {/* Play button */}
+                                    <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'linear-gradient(135deg, #9CE069, #7ab84e)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                        <svg width="10" height="11" viewBox="0 0 10 12" fill="white"><path d="M1 1l8 5-8 5V1z"/></svg>
+                                    </div>
+                                    {/* Waveform */}
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 2, height: 24 }}>
+                                        {WAVE_BARS.map((h, i) => (
+                                            <div key={i} style={{ width: 2.5, height: h, background: i < 12 ? 'linear-gradient(to top, #9CE069, #7ab84e)' : '#cbd5e1', borderRadius: 2, opacity: i < 12 ? 1 : 0.6 }} />
+                                        ))}
+                                    </div>
+                                    <span style={{ fontSize: 10, color: '#64748b', fontFamily: 'Inter, system-ui', whiteSpace: 'nowrap' }}>0:23</span>
+                                </div>
+                            </div>
+
+                            {/* User final reply */}
+                            <div className="gsap-chat-5" style={{ display: 'flex', justifyContent: 'flex-end', opacity: 0 }}>
+                                <div style={{ background: '#000', borderRadius: '16px 16px 4px 16px', padding: '8px 12px' }}>
+                                    <p style={{ fontSize: 12, color: '#fff', fontWeight: 500, lineHeight: 1.4, margin: 0, fontFamily: 'Inter, system-ui' }}>Dzięki! 👌</p>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-
-                    {/* Chat feed */}
-                    <div style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 8, background: '#f8fafc', height: '100%', overflowY: 'hidden', paddingBottom: '32px' }}>
-                        {/* Timestamp */}
-                        <div style={{ textAlign: 'center' }}>
-                            <span style={{ fontSize: 10, color: '#94a3b8', fontFamily: 'Inter, system-ui', background: '#e2e8f0', borderRadius: 99, padding: '2px 8px' }}>Dzisiaj, 14:32</span>
-                        </div>
-
-                        {/* User msg 1 */}
-                        <div className="gsap-chat-1" style={{ display: 'flex', justifyContent: 'flex-end', opacity: 0 }}>
-                            <div style={{ background: '#0A2540', borderRadius: '16px 16px 4px 16px', padding: '8px 12px', maxWidth: '78%' }}>
-                                <p style={{ fontSize: 12, color: '#fff', fontWeight: 500, lineHeight: 1.4, margin: 0, fontFamily: 'Inter, system-ui' }}>Potrzebuję fakturę za luty dla XYZ Sp. z o.o.</p>
-                            </div>
-                        </div>
-
-                        {/* Typing */}
-                        <div className="gsap-chat-typing" style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', gap: 6, opacity: 0 }}>
-                            {AVATAR}
-                            <div style={{ background: '#fff', borderRadius: '16px 16px 16px 4px', padding: '8px 12px', border: '1px solid #e2e8f0', display: 'flex', gap: 4, alignItems: 'center' }}>
-                                {[0, 150, 300].map(d => <span key={d} style={{ width: 5, height: 5, borderRadius: '50%', background: '#94a3b8', display: 'inline-block', animationDelay: `${d}ms` }} className="animate-bounce" />)}
-                            </div>
-                        </div>
-
-                        {/* Agent reply 1 */}
-                        <div className="gsap-chat-2" style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', gap: 6, opacity: 0 }}>
-                            {AVATAR}
-                            <div style={{ background: '#fff', borderRadius: '16px 16px 16px 4px', padding: '8px 12px', maxWidth: '75%', border: '1px solid #e8f4e8' }}>
-                                <p style={{ fontSize: 12, color: '#0A2540', fontWeight: 500, lineHeight: 1.45, margin: 0, fontFamily: 'Inter, system-ui' }}>
-                                    Znalazłem FV/02/2026 🎉<br/>
-                                    <strong>4 230 PLN</strong> netto<br/>
-                                    <span style={{ color: '#22c55e', fontWeight: 600 }}>✓ Wysłano na jan@xyz.pl</span>
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* User msg 2 */}
-                        <div className="gsap-chat-3" style={{ display: 'flex', justifyContent: 'flex-end', opacity: 0 }}>
-                            <div style={{ background: '#0A2540', borderRadius: '16px 16px 4px 16px', padding: '8px 12px', maxWidth: '65%' }}>
-                                <p style={{ fontSize: 12, color: '#fff', fontWeight: 500, lineHeight: 1.4, margin: 0, fontFamily: 'Inter, system-ui' }}>Świetnie! A kiedy wpłynęła płatność?</p>
-                            </div>
-                        </div>
-
-                        {/* Agent — audio waveform message */}
-                        <div className="gsap-chat-4" style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', gap: 6, opacity: 0 }}>
-                            {AVATAR}
-                            <div style={{ background: 'linear-gradient(135deg, rgba(238,112,61,0.08), rgba(133,48,209,0.08))', borderRadius: '16px 16px 16px 4px', padding: '8px 12px', border: '1px solid rgba(133,48,209,0.15)', display: 'flex', alignItems: 'center', gap: 8 }}>
-                                {/* Play button */}
-                                <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'linear-gradient(135deg, #ee703d, #8530d1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                                    <svg width="10" height="11" viewBox="0 0 10 12" fill="white"><path d="M1 1l8 5-8 5V1z"/></svg>
-                                </div>
-                                {/* Waveform */}
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 2, height: 24 }}>
-                                    {WAVE_BARS.map((h, i) => (
-                                        <div key={i} style={{ width: 2.5, height: h, background: i < 12 ? 'linear-gradient(to top, #ee703d, #8530d1)' : '#cbd5e1', borderRadius: 2, opacity: i < 12 ? 1 : 0.6 }} />
-                                    ))}
-                                </div>
-                                <span style={{ fontSize: 10, color: '#64748b', fontFamily: 'Inter, system-ui', whiteSpace: 'nowrap' }}>0:23</span>
-                            </div>
-                        </div>
-
-                        {/* User final reply */}
-                        <div className="gsap-chat-5" style={{ display: 'flex', justifyContent: 'flex-end', opacity: 0 }}>
-                            <div style={{ background: '#0A2540', borderRadius: '16px 16px 4px 16px', padding: '8px 12px' }}>
-                                <p style={{ fontSize: 12, color: '#fff', fontWeight: 500, lineHeight: 1.4, margin: 0, fontFamily: 'Inter, system-ui' }}>Dzięki! 👌</p>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </PhoneMockupCard>
+                </PhoneMockupCard>
+            </Floating>
         </div>
     );
 }
@@ -524,7 +538,7 @@ const SERVICES = [
     {
         id: 'automatyzacja',
         title: 'Automatyzacja procesów',
-        tagline: 'Łączymy Twoje narzędzia w jeden workflow. Bez ręcznego przepisywania.',
+        tagline: 'Twój zespół odzyskuje 10h+ na każdego pracownika. Pracujcie, a maszyna wpisuje sama.',
         colSpan: 'lg:col-span-6',
         minHeight: 'min-h-[420px] lg:min-h-[480px]',
         Preview: AutomationPreview,
@@ -637,7 +651,7 @@ const SERVICES = [
     {
         id: 'szkolenia',
         title: 'Szkolenia AI',
-        tagline: 'Twój zespół zacznie używać AI jutro, nie za pół roku.',
+        tagline: 'Zbuduj zespół operacyjny odporny na przyszłość. Praktyczny warsztat, odwracający opór przed AI w chęć do pracy.',
         colSpan: 'lg:col-span-4',
         minHeight: 'min-h-[380px] lg:min-h-[420px]',
         Preview: TrainingPreview,
@@ -702,7 +716,7 @@ const SERVICES = [
     {
         id: 'agenty',
         title: 'Agenci AI',
-        tagline: 'Niestrudzona pierwsza linia - 24/7, bez urlopów.',
+        tagline: 'Rozwiąż problem wypalenia personelu i obsługuj klientów o 3 w nocy, bez błędów i spóźnień.',
         colSpan: 'lg:col-span-4',
         minHeight: 'min-h-[520px] lg:min-h-[420px]',
         Preview: AgentPreview,
@@ -760,7 +774,7 @@ const SERVICES = [
     {
         id: 'kreacje',
         title: 'Kreacje reklamowe AI',
-        tagline: 'Setki kreacji. Dni zamiast miesięcy.',
+        tagline: 'Zastąp drogą agencję pipeline\'m. Dni ucinamy do godzin, budżety zmniejszamy o połowę.',
         colSpan: 'lg:col-span-4',
         minHeight: 'min-h-[380px] lg:min-h-[420px]',
         Preview: CreativePreview,
@@ -829,21 +843,21 @@ function ExtendedInnerCard({ card, index }) {
             ref={elRef}
             className={`
           ${card.colSpan || 'lg:col-span-1'}
-          bg-[#f7f7f8] rounded-2xl border border-slate-200/60 
+          bg-sage rounded-[10px] border border-black/5 
           overflow-hidden flex flex-col min-h-[140px] opacity-0
           ${card.type === 'cta' ? 'lg:row-span-2 min-h-full' : ''}
         `}
         >
             {card.type === 'features' && (
                 <div className="p-6 md:p-8 flex flex-col h-full bg-white">
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-slate-600 mb-5">{card.label}</h4>
+                    <h4 className="text-xs font-mono uppercase tracking-widest text-muted-dark mb-5">{card.label}</h4>
                     <ul className="space-y-3.5 flex-1">
                         {card.items.map((item, i) => (
                             <li key={i} className="flex items-start gap-3">
-                                <div className="w-5 h-5 rounded-md bg-[#ee703d]/10 flex items-center justify-center shrink-0 mt-0.5 border border-[#ee703d]/20">
-                                    <Check size={12} className="text-[#ee703d] stroke-[3]" />
+                                <div className="w-5 h-5 rounded-md bg-lime/20 flex items-center justify-center shrink-0 mt-0.5 border border-lime/30">
+                                    <Check size={12} className="text-black stroke-[3]" />
                                 </div>
-                                <span className="text-sm md:text-[15px] text-[#0A2540] font-medium leading-[1.4] relative top-[1px]">{item}</span>
+                                <span className="text-sm md:text-[15px] text-black font-medium leading-[1.4] relative top-[1px]">{item}</span>
                             </li>
                         ))}
                     </ul>
@@ -852,13 +866,13 @@ function ExtendedInnerCard({ card, index }) {
 
             {card.type === 'process' && (
                 <div className="p-6 md:p-8 flex flex-col h-full bg-white">
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-slate-600 mb-6">{card.label}</h4>
-                    <div className="flex flex-col gap-4 relative pl-3 border-l-2 border-slate-100">
+                    <h4 className="text-xs font-mono uppercase tracking-widest text-muted-dark mb-6">{card.label}</h4>
+                    <div className="flex flex-col gap-4 relative pl-3 border-l-2 border-black/10">
                         {card.steps.map((step, i) => (
-                            <div key={i} className="relative z-10 pl-4 before:absolute before:w-3 before:h-3 before:rounded-full before:bg-[#ee703d] before:-left-[23px] before:top-1.5 before:shadow-[0_0_0_4px_white]">
-                                <span className="text-[13px] font-bold text-[#ee703d] mr-1">{step.num}.</span>
-                                <span className="font-bold text-[#0A2540] text-[15px] block leading-tight mb-1">{step.title}</span>
-                                <span className="text-sm text-slate-600 leading-snug block font-medium">{step.desc}</span>
+                            <div key={i} className="relative z-10 pl-4 before:absolute before:w-3 before:h-3 before:rounded-full before:bg-lime before:-left-[23px] before:top-1.5 before:shadow-[0_0_0_4px_white]">
+                                <span className="text-[13px] font-mono font-bold text-black/50 mr-1">{step.num}.</span>
+                                <span className="font-medium text-black text-[15px] block leading-tight mb-1">{step.title}</span>
+                                <span className="text-sm text-muted-dark leading-snug block">{step.desc}</span>
                             </div>
                         ))}
                     </div>
@@ -866,34 +880,34 @@ function ExtendedInnerCard({ card, index }) {
             )}
 
             {card.type === 'stack' && (
-                <div className="p-6 md:p-8 flex flex-col h-full bg-[#f7f7f8]">
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-slate-600 mb-5">{card.label}</h4>
+                <div className="p-6 md:p-8 flex flex-col h-full bg-sage">
+                    <h4 className="text-xs font-mono uppercase tracking-widest text-muted-dark mb-5">{card.label}</h4>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3 flex-1 content-start mb-6">
                         {card.tools.map((tool, i) => (
-                            <div key={i} className="bg-white border border-slate-200/80 rounded-lg p-3 flex items-center justify-center text-sm font-bold text-slate-600 grayscale hover:grayscale-0 hover:text-navy hover:border-[#ee703d]/30 hover:shadow-sm transition-all text-center">
+                            <div key={i} className="bg-white border border-black/10 rounded-[10px] p-3 flex items-center justify-center text-sm font-medium text-black grayscale hover:grayscale-0 hover:text-black hover:border-lime/40 hover:shadow-sm transition-all text-center">
                                 {tool}
                             </div>
                         ))}
                     </div>
-                    {card.subtitle && <p className="text-[13px] text-slate-500 font-medium">✨ {card.subtitle}</p>}
+                    {card.subtitle && <p className="text-[13px] text-muted-dark font-mono">✨ {card.subtitle}</p>}
                 </div>
             )}
 
             {card.type === 'case' && (
-                <div className="p-6 md:p-8 flex flex-col h-full bg-white border-l-[6px] border-[#ee703d] relative">
-                    <h4 className="text-[11px] font-bold uppercase tracking-widest text-[#ee703d] mb-3 bg-[#ee703d]/10 inline-block px-3 py-1 rounded-full w-max">{card.label}</h4>
-                    <p className="text-xl font-display font-bold text-[#0A2540] mb-3 mt-2">{card.title}</p>
-                    <p className="text-[15px] text-slate-700 leading-relaxed font-medium flex-1">{card.content}</p>
+                <div className="p-6 md:p-8 flex flex-col h-full bg-white border-l-[6px] border-lime relative">
+                    <h4 className="text-[11px] font-mono uppercase tracking-widest text-black mb-3 bg-lime/20 inline-block px-3 py-1 rounded-full w-max">{card.label}</h4>
+                    <p className="text-xl font-display text-black mb-3 mt-2">{card.title}</p>
+                    <p className="text-[15px] text-muted-dark leading-relaxed font-medium flex-1">{card.content}</p>
                     {card.beforeAfter && (
-                        <div className="flex items-center gap-4 mt-6 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                        <div className="flex items-center gap-4 mt-6 bg-sage p-4 rounded-[10px] border border-black/5">
                             <div className="flex-1">
-                                <div className="text-[10px] uppercase font-bold text-slate-500 tracking-wider mb-1">Przed wdrożeniem</div>
-                                <div className="text-lg font-bold text-slate-700 line-through decoration-slate-300">{card.beforeAfter.before}</div>
+                                <div className="text-[10px] uppercase font-mono text-muted-light tracking-wider mb-1">Przed wdrożeniem</div>
+                                <div className="text-lg font-medium text-muted-dark line-through decoration-black/20">{card.beforeAfter.before}</div>
                             </div>
-                            <div className="mx-2 text-slate-400" aria-hidden="true"><ArrowRight size={20} /></div>
+                            <div className="mx-2 text-muted-light" aria-hidden="true"><ArrowRight size={20} /></div>
                             <div className="flex-1">
-                                <div className="text-[10px] uppercase font-bold text-[#ee703d] tracking-wider mb-1">Po algorytmizacji</div>
-                                <div className="text-xl font-black text-[#0A2540]">{card.beforeAfter.after}</div>
+                                <div className="text-[10px] uppercase font-mono text-black tracking-wider mb-1">Po algorytmizacji</div>
+                                <div className="text-xl font-black text-black">{card.beforeAfter.after}</div>
                             </div>
                         </div>
                     )}
@@ -901,15 +915,15 @@ function ExtendedInnerCard({ card, index }) {
             )}
 
             {card.type === 'timeline' && (
-                <div className="p-6 md:p-8 flex flex-col h-full bg-[#f7f7f8] relative overflow-hidden">
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-8">{card.label}</h4>
+                <div className="p-6 md:p-8 flex flex-col h-full bg-sage relative overflow-hidden">
+                    <h4 className="text-xs font-mono uppercase tracking-widest text-muted-dark mb-8">{card.label}</h4>
                     <div className="flex w-full mt-4 justify-between items-start relative z-10 px-2 lg:px-8">
-                        <div className="absolute left-6 right-6 lg:left-12 lg:right-12 top-2 h-0.5 bg-slate-200 -z-10" />
+                        <div className="absolute left-6 right-6 lg:left-12 lg:right-12 top-2 h-0.5 bg-black/10 -z-10" />
                         {card.steps.map((step, i) => (
                             <div key={i} className="gsap-timeline-step flex flex-col items-center max-w-[120px] text-center gap-3 opacity-0">
-                                <div className={`w-4 h-4 rounded-full border-[3px] border-[#f7f7f8] shadow-sm ${i === 2 ? 'bg-[#ee703d] scale-125' : 'bg-slate-300'}`} />
-                                <div className="font-bold text-[#0A2540] text-sm mt-1">{step.title}</div>
-                                <div className="text-[11px] font-medium text-slate-500 leading-snug">{step.desc}</div>
+                                <div className={`w-4 h-4 rounded-full border-[3px] border-sage shadow-sm ${i === 2 ? 'bg-lime scale-125' : 'bg-black/20'}`} />
+                                <div className="font-medium text-black text-sm mt-1">{step.title}</div>
+                                <div className="text-[11px] font-mono text-muted-dark leading-snug">{step.desc}</div>
                             </div>
                         ))}
                     </div>
@@ -921,9 +935,9 @@ function ExtendedInnerCard({ card, index }) {
                     <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-5">{card.label}</h4>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         {card.cards.map((insight, i) => (
-                            <div key={i} className="p-4 rounded-xl border border-slate-100 bg-slate-50 flex flex-col">
+                            <div key={i} className="p-4 rounded-xl border border-black/5 bg-sage flex flex-col">
                                 <div className="text-2xl mb-3 bg-white w-10 h-10 rounded-lg flex items-center justify-center shadow-sm border border-slate-200/50">{insight.icon}</div>
-                                <div className="font-bold text-[#0A2540] text-sm mb-2">{insight.title}</div>
+                                <div className="font-bold text-black text-sm mb-2">{insight.title}</div>
                                 <div className="text-[13px] text-slate-500 leading-relaxed font-medium">{insight.desc}</div>
                             </div>
                         ))}
@@ -936,10 +950,10 @@ function ExtendedInnerCard({ card, index }) {
                     <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-5">{card.label}</h4>
                     <div className="flex flex-col gap-3">
                         {card.roles.map((role, i) => (
-                            <div key={i} className="flex items-start gap-4 p-3 rounded-lg border border-slate-100 bg-slate-50 hover:border-[#ee703d]/20 hover:bg-[#ee703d]/5 transition-colors">
+                            <div key={i} className="flex items-start gap-4 p-3 rounded-lg border border-black/5 bg-sage hover:border-lime/30 hover:bg-lime/10 transition-colors">
                                 <div className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center font-bold text-slate-400 border border-slate-200 shrink-0">{(i + 1)}</div>
                                 <div className="mt-0.5">
-                                    <div className="font-bold text-[#0A2540] text-sm leading-none mb-1">{role.title}</div>
+                                    <div className="font-bold text-black text-sm leading-none mb-1">{role.title}</div>
                                     <div className="text-[12px] text-slate-500 font-medium">{role.desc}</div>
                                 </div>
                             </div>
@@ -949,14 +963,14 @@ function ExtendedInnerCard({ card, index }) {
             )}
 
             {card.type === 'usp' && (
-                <div className="p-6 md:p-8 flex flex-col h-full bg-[#0A2540] text-white relative overflow-hidden">
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-white/50 mb-6 relative z-10">{card.label}</h4>
+                <div className="p-6 md:p-8 flex flex-col h-full bg-black text-white relative overflow-hidden">
+                    <h4 className="text-xs font-mono uppercase tracking-widest text-white/50 mb-6 relative z-10">{card.label}</h4>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
                         {card.points.map((pt, i) => (
                             <div key={i} className="flex flex-col">
-                                <div className="w-8 h-1 bg-gradient-to-r from-accent via-accent-rose to-accent-purple rounded-full mb-4" />
-                                <div className="text-base font-bold text-white mb-2">{pt.title}</div>
-                                <div className="text-[13px] font-medium text-slate-300 leading-relaxed opacity-80">{pt.desc}</div>
+                                <div className="w-8 h-1 bg-lime rounded-full mb-4" />
+                                <div className="text-base font-medium text-white mb-2">{pt.title}</div>
+                                <div className="text-[13px] text-white/60 leading-relaxed">{pt.desc}</div>
                             </div>
                         ))}
                     </div>
@@ -968,7 +982,7 @@ function ExtendedInnerCard({ card, index }) {
                     <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-5">{card.label}</h4>
                     <div className="flex flex-wrap gap-2">
                         {card.badges.map((badge, i) => (
-                            <span key={i} className="px-3 py-1.5 bg-slate-50 border border-slate-200 text-[#0A2540] text-xs font-bold rounded-lg shadow-sm">{badge}</span>
+                            <span key={i} className="px-3 py-1.5 bg-sage border border-black/5 text-black text-xs font-bold rounded-lg shadow-sm">{badge}</span>
                         ))}
                     </div>
                 </div>
@@ -986,7 +1000,7 @@ function ExtendedInnerCard({ card, index }) {
                         <div className="p-5 rounded-2xl bg-gradient-to-br from-accent/5 to-transparent border border-accent/20 shadow-sm flex flex-col relative overflow-hidden">
                             <div className="absolute top-0 right-0 p-4 opacity-5"><Zap size={100} /></div>
                             <div className="text-[11px] font-bold uppercase tracking-wider text-accent mb-2">{card.after.title}</div>
-                            <p className="text-sm font-medium text-[#0A2540] mb-6 flex-1 relative z-10">{card.after.desc}</p>
+                            <p className="text-sm font-medium text-black mb-6 flex-1 relative z-10">{card.after.desc}</p>
                             <div className="inline-block mt-auto bg-gradient-to-r from-accent to-accent-purple text-white font-bold px-4 py-1.5 rounded-md text-sm shadow-md w-max self-start relative z-10">Tylko {card.after.highlight.toLowerCase()}</div>
                         </div>
                     </div>
@@ -996,15 +1010,15 @@ function ExtendedInnerCard({ card, index }) {
 
             {card.type === 'cta' && (
                 <div className="p-8 md:p-10 flex flex-col justify-center items-center h-full text-center 
-                          bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-[#0A2540] relative overflow-hidden group">
-                    <div className="absolute inset-0 opacity-80" style={{ background: 'radial-gradient(120% 120% at 50% 100%, rgba(238, 112, 61, 0.4) 0%, transparent 60%)' }} />
+                          bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-black relative overflow-hidden group">
+                    <div className="absolute inset-0 opacity-80" style={{ background: 'radial-gradient(120% 120% at 50% 100%, rgba(156, 224, 105, 0.3) 0%, transparent 60%)' }} />
                     <div className="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-6 relative z-10 backdrop-blur-sm shadow-xl">
-                        <ArrowRight size={24} className="text-[#ee703d] mix-blend-screen" />
+                        <ArrowRight size={24} className="text-lime mix-blend-screen" />
                     </div>
-                    <h4 className="text-2xl lg:text-3xl font-display font-bold text-white mb-4 relative z-10 leading-[1.1]">{card.headline}</h4>
-                    <p className="text-sm font-medium text-white/70 mb-10 max-w-[240px] relative z-10">{card.subline}</p>
-                    <a href="#kontakt" className="inline-flex items-center gap-2 bg-white text-[#0A2540] px-8 py-4 
-                                         rounded-xl font-bold text-sm shadow-[0_4px_20px_-5px_rgba(255,255,255,0.4)] group-hover:shadow-[0_10px_30px_-5px_rgba(255,255,255,0.4)] group-hover:-translate-y-1 transition-all duration-300 relative z-10 w-full justify-center">
+                    <h4 className="text-2xl lg:text-3xl font-display text-white mb-4 relative z-10 leading-[1.1]">{card.headline}</h4>
+                    <p className="text-sm text-white/60 mb-10 max-w-[240px] relative z-10">{card.subline}</p>
+                    <a href="#kontakt" className="inline-flex items-center gap-2 bg-lime text-black px-8 py-4 
+                                         rounded-[10px] font-medium text-sm shadow-[0_4px_20px_-5px_rgba(156,224,105,0.4)] group-hover:shadow-[0_10px_30px_-5px_rgba(156,224,105,0.4)] group-hover:-translate-y-1 transition-all duration-300 relative z-10 w-full justify-center">
                         {card.ctaLabel}
                     </a>
                 </div>
@@ -1036,9 +1050,9 @@ function ExpandedServiceView({ service, onClose }) {
         >
             <button
                 onClick={onClose}
-                className="mb-8 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-widest text-slate-400 hover:text-navy transition-colors group/back px-2"
+                className="mb-8 inline-flex items-center gap-2 text-[12px] font-mono uppercase tracking-widest text-muted-dark hover:text-black transition-colors group/back px-2"
             >
-                <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover/back:bg-slate-200 transition-colors border border-slate-200/50">
+                <div className="w-8 h-8 rounded-full bg-sage flex items-center justify-center group-hover/back:bg-sage/80 transition-colors border border-black/5">
                     <ArrowLeft size={14} className="group-hover/back:-translate-x-1 transition-transform" />
                 </div>
                 Wróć do usług
@@ -1050,25 +1064,25 @@ function ExpandedServiceView({ service, onClose }) {
                     {/* Rząd 1: Header + Metric */}
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 mb-8 lg:mb-12">
                         <div className="lg:col-span-7">
-                            <p className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#ee703d] mb-5 bg-[#ee703d]/10 px-3 py-1.5 rounded-md border border-[#ee703d]/20">
-                                <span className="w-1.5 h-1.5 rounded-full bg-[#ee703d] animate-pulse" />
+                            <p className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-black mb-5 bg-lime/20 px-3 py-1.5 rounded-md border border-lime/30">
+                                <span className="w-1.5 h-1.5 rounded-full bg-lime animate-pulse" />
                                 {service.categoryTag}
                             </p>
-                            <h3 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-[#0A2540] mb-6 tracking-tight leading-[1.05] text-balance">
+                            <h3 className="text-3xl md:text-4xl lg:text-5xl font-display text-black mb-6 tracking-tight leading-[1.05] text-balance">
                                 {service.expandedTitle}
                             </h3>
-                            <p className="text-lg md:text-[19px] text-slate-500 font-medium leading-[1.6] max-w-2xl text-balance">
+                            <p className="text-lg md:text-[19px] text-muted-dark leading-[1.6] max-w-2xl text-balance">
                                 {service.expandedDescription}
                             </p>
                         </div>
 
                         <div className="lg:col-span-5 flex items-center justify-start lg:justify-end">
-                            <div className="text-left lg:text-right border-l-[3px] lg:border-l-0 lg:border-r-[3px] border-[#ee703d] pl-6 lg:pl-0 lg:pr-6 py-2 bg-gradient-to-r lg:bg-gradient-to-l from-slate-50 to-transparent pr-8 lg:pl-12 rounded-r-2xl lg:rounded-r-none lg:rounded-l-2xl">
-                                <div className="text-5xl md:text-7xl font-display font-black text-[#0A2540] tracking-tighter mb-2 bg-clip-text text-transparent bg-gradient-to-br from-[#0A2540] to-slate-600 pb-2">
+                            <div className="text-left lg:text-right border-l-[3px] lg:border-l-0 lg:border-r-[3px] border-lime pl-6 lg:pl-0 lg:pr-6 py-2 bg-gradient-to-r lg:bg-gradient-to-l from-sage to-transparent pr-8 lg:pl-12 rounded-r-[10px] lg:rounded-r-none lg:rounded-l-[10px]">
+                                <div className="text-5xl md:text-7xl font-display font-black text-black tracking-tighter mb-2 pb-2">
                                     {service.heroMetric.value}
                                 </div>
-                                <p className="text-xs text-slate-500 font-bold uppercase tracking-wider max-w-[180px] lg:ml-auto leading-tight mb-2">{service.heroMetric.label}</p>
-                                {service.heroMetric.subtext && <p className="text-[11px] font-medium text-slate-400 italic max-w-[150px] lg:ml-auto leading-tight">{service.heroMetric.subtext}</p>}
+                                <p className="text-xs text-muted-dark font-mono uppercase tracking-wider max-w-[180px] lg:ml-auto leading-tight mb-2">{service.heroMetric.label}</p>
+                                {service.heroMetric.subtext && <p className="text-[11px] font-mono text-muted-light italic max-w-[150px] lg:ml-auto leading-tight">{service.heroMetric.subtext}</p>}
                             </div>
                         </div>
                     </div>
@@ -1090,20 +1104,20 @@ function ExpandedServiceView({ service, onClose }) {
 
 function CollapsedCard({ service }) {
     return (
-        <div className="flex flex-col h-full bg-white relative overflow-hidden p-8 md:p-10 group-hover:bg-[#f7f7f8]/50 transition-colors duration-500">
+        <div className="flex flex-col h-full bg-white relative overflow-hidden p-8 md:p-10 group-hover:bg-sage/50 transition-colors duration-500">
             {/* Background elements */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#f7f7f8] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-bl-full" />
-            <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-gradient-to-tr from-[#f5a273]/10 to-transparent blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-sage to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-bl-full" />
+            <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-gradient-to-tr from-lime/10 to-transparent blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
             {/* Header info */}
             <div className="flex justify-between items-start mb-6 relative z-10">
                 <div>
-                    <h3 className="text-2xl font-display font-bold text-[#0A2540] mb-2">{service.title}</h3>
-                    <p className="text-sm font-medium text-slate-500 max-w-sm leading-relaxed">{service.tagline}</p>
+                    <h3 className="text-2xl font-display text-black mb-2">{service.title}</h3>
+                    <p className="text-sm text-muted-dark max-w-sm leading-relaxed">{service.tagline}</p>
                 </div>
 
-                <div className="w-10 h-10 rounded-full bg-slate-50 border border-slate-200/50 flex items-center justify-center shrink-0 group-hover:bg-[#ee703d]/10 group-hover:border-[#ee703d]/20 group-hover:scale-110 transition-all duration-300">
-                    <ArrowUpRight size={18} className="text-slate-400 group-hover:text-[#ee703d] transition-colors" />
+                <div className="w-10 h-10 rounded-full bg-sage border border-black/5 flex items-center justify-center shrink-0 group-hover:bg-lime/20 group-hover:border-lime/30 group-hover:scale-110 transition-all duration-300">
+                    <ArrowUpRight size={18} className="text-muted-dark group-hover:text-black transition-colors" />
                 </div>
             </div>
 
@@ -1129,7 +1143,7 @@ function MarqueeRow({ reverse = false }) {
             >
                 {logos.map((src, i) => (
                     <div key={i} className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl flex items-center justify-center border border-slate-200/60 bg-white/60 shrink-0">
-                        <img src={src} alt="" className="w-6 h-6 md:w-8 md:h-8 object-contain" style={{ filter: 'grayscale(1)', opacity: 0.22 }} />
+                        <img src={src} alt="" className="w-6 h-6 md:w-8 md:h-8 object-contain" style={{ filter: 'grayscale(1)', opacity: 0.22 }} loading="lazy" />
                     </div>
                 ))}
             </div>
@@ -1142,7 +1156,7 @@ function MarqueeRow({ reverse = false }) {
             >
                 {logos.map((src, i) => (
                     <div key={`dup-${i}`} className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl flex items-center justify-center border border-slate-200/60 bg-white/60 shrink-0">
-                        <img src={src} alt="" className="w-6 h-6 md:w-8 md:h-8 object-contain" style={{ filter: 'grayscale(1)', opacity: 0.22 }} />
+                        <img src={src} alt="" className="w-6 h-6 md:w-8 md:h-8 object-contain" style={{ filter: 'grayscale(1)', opacity: 0.22 }} loading="lazy" />
                     </div>
                 ))}
             </div>
@@ -1168,7 +1182,7 @@ function LogoCloudHeader() {
     }, []);
 
     return (
-        <div ref={containerRef} className="w-full relative py-20 lg:py-28 mb-16 rounded-[2.5rem] lg:rounded-[3rem] bg-[#FAFAFA] overflow-hidden flex flex-col items-center justify-center text-center">
+        <div ref={containerRef} className="w-full relative py-20 lg:py-28 mb-16 rounded-[2rem] bg-sage overflow-hidden flex flex-col items-center justify-center text-center">
             <style>{`
                 @keyframes marquee {
                     0% { transform: translateX(0); }
@@ -1185,10 +1199,10 @@ function LogoCloudHeader() {
                 <MarqueeRow reverse />
             </div>
 
-            <div className="absolute inset-0 z-[1] pointer-events-none" style={{ background: 'radial-gradient(ellipse 55% 65% at center, #FAFAFA 20%, transparent 75%)' }} />
-            <div className="absolute inset-0 z-[1] pointer-events-none" style={{ background: 'linear-gradient(to right, #FAFAFA 0%, transparent 15%, transparent 85%, #FAFAFA 100%)' }} />
+            <div className="absolute inset-0 z-[1] pointer-events-none" style={{ background: 'radial-gradient(ellipse 55% 65% at center, #E6E8DD 20%, transparent 75%)' }} />
+            <div className="absolute inset-0 z-[1] pointer-events-none" style={{ background: 'linear-gradient(to right, #E6E8DD 0%, transparent 15%, transparent 85%, #E6E8DD 100%)' }} />
 
-            <p className="gsap-header-el text-[11px] md:text-sm font-bold uppercase tracking-[0.25em] text-[#ee703d] mb-4 md:mb-5 relative z-10 opacity-0">
+            <p className="gsap-header-el text-[11px] md:text-sm font-mono uppercase tracking-[0.25em] text-black mb-4 md:mb-5 relative z-10 opacity-0">
                 Nasze usługi
             </p>
 
@@ -1196,7 +1210,7 @@ function LogoCloudHeader() {
                 <Logo variant="light" size={56} showWordmark={true} className="justify-center" />
             </div>
             
-            <h2 className="gsap-header-el text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-display font-medium tracking-tight text-navy leading-[1.05] relative z-10 max-w-[90%] md:max-w-2xl px-4 opacity-0">
+            <h2 className="gsap-header-el text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-display tracking-tight text-black leading-[1.05] relative z-10 max-w-[90%] md:max-w-2xl px-4 opacity-0">
                 Co możemy dla Ciebie zrobić?
             </h2>
         </div>
@@ -1261,17 +1275,17 @@ export function InteractiveServicesBento() {
 
                 {/* Modular services note */}
                 {!selectedId && (
-                    <div className="gsap-modular-note opacity-0 mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 md:p-6 rounded-2xl bg-slate-50 border border-slate-200">
+                    <div className="gsap-modular-note opacity-0 mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 md:p-6 rounded-[10px] bg-sage border border-black/5">
                         <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 shrink-0 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center">
+                            <div className="w-10 h-10 shrink-0 rounded-full bg-white border border-black/10 shadow-sm flex items-center justify-center">
                                 <span className="text-lg">🧩</span>
                             </div>
                             <div>
-                                <p className="font-bold text-[#0A2540] text-sm mb-0.5">Kupujesz tylko to, czego naprawdę potrzebujesz</p>
-                                <p className="text-slate-500 text-sm font-medium">Każdą usługę możesz zamówić osobno — sam audyt, samo wdrożenie, samo szkolenie. Bez pakietów, bez nadmuchanych scope'ów.</p>
+                                <p className="font-medium text-black text-sm mb-0.5">Kupujesz tylko to, czego naprawdę potrzebujesz</p>
+                                <p className="text-muted-dark text-sm">Każdą usługę możesz zamówić osobno — sam audyt, samo wdrożenie, samo szkolenie. Bez pakietów, bez nadmuchanych scope'ów.</p>
                             </div>
                         </div>
-                        <a href="#kontakt" className="inline-flex items-center gap-2 bg-white border border-slate-200 text-[#0A2540] px-5 py-2.5 rounded-xl font-bold text-sm shadow-sm hover:border-[#ee703d]/40 hover:bg-[#ee703d]/5 transition-all duration-200 shrink-0 whitespace-nowrap">
+                        <a href="#kontakt" className="inline-flex items-center gap-2 bg-white border border-black/10 text-black px-5 py-2.5 rounded-[10px] font-medium text-sm shadow-sm hover:border-lime/40 hover:bg-lime/10 transition-all duration-200 shrink-0 whitespace-nowrap">
                             Zapytaj o zakres →
                         </a>
                     </div>

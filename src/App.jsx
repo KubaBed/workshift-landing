@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Header } from './components/Header';
 import { HeroTypographic } from './components/HeroTypographic';
 import { AnimatedQuoteSection } from './components/AnimatedQuoteSection';
 import { InteractiveServicesBento } from './components/InteractiveServicesBento';
-import { ProcessSection } from './components/ProcessSection';
-import { IndustriesSection } from './components/IndustriesSection';
-import { DataMetricsSection } from './components/DataMetricsSection';
-import { AboutUsSection } from './components/AboutUsSection';
-import { TestimonialsSection } from './components/TestimonialsSection';
-import { NewsletterSection } from './components/NewsletterSection';
-import { ContactSection } from './components/ContactSection';
-import { FAQSection, CTASection, Footer } from './components/FooterAndMisc';
+
+// Below-the-fold: lazy-loaded for faster initial paint
+const ProcessSection = lazy(() => import('./components/ProcessSection').then(m => ({ default: m.ProcessSection })));
+const IndustriesSection = lazy(() => import('./components/IndustriesSection').then(m => ({ default: m.IndustriesSection })));
+const DataMetricsSection = lazy(() => import('./components/DataMetricsSection').then(m => ({ default: m.DataMetricsSection })));
+const AboutUsSection = lazy(() => import('./components/AboutUsSection').then(m => ({ default: m.AboutUsSection })));
+const TestimonialsSection = lazy(() => import('./components/TestimonialsSection').then(m => ({ default: m.TestimonialsSection })));
+const NewsletterSection = lazy(() => import('./components/NewsletterSection').then(m => ({ default: m.NewsletterSection })));
+const ContactSection = lazy(() => import('./components/ContactSection').then(m => ({ default: m.ContactSection })));
+const FooterAndMiscModule = () => import('./components/FooterAndMisc');
+const FAQSection = lazy(() => FooterAndMiscModule().then(m => ({ default: m.FAQSection })));
+const CTASection = lazy(() => FooterAndMiscModule().then(m => ({ default: m.CTASection })));
+const Footer = lazy(() => FooterAndMiscModule().then(m => ({ default: m.Footer })));
 
 const SECTION_MAP = {
   'hero': HeroTypographic,
@@ -38,7 +43,7 @@ function SectionPreview({ sectionKey }) {
     );
   }
   return (
-    <div className="bg-white font-sans text-slate-900 antialiased selection:bg-accent selection:text-white">
+    <div className="bg-sage font-sans text-black antialiased selection:bg-lime selection:text-black">
       <Component />
     </div>
   );
@@ -53,13 +58,13 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-white font-sans text-slate-900 scroll-smooth selection:bg-accent selection:text-white relative">
-      {/* Global Margin Lines (Stripe-inspired Editorial Grid) */}
-      <div className="fixed inset-0 pointer-events-none z-0 hidden lg:flex justify-center px-6">
-        <div className="w-full max-w-7xl flex relative">
-          <div className="absolute top-0 bottom-0 left-0 w-px bg-slate-200/60" />
-          <div className="absolute top-0 bottom-0 left-1/2 w-px bg-slate-200/30 -translate-x-px" />
-          <div className="absolute top-0 bottom-0 right-0 w-px bg-slate-200/60" />
+    <div className="min-h-screen bg-sage font-sans text-black antialiased selection:bg-lime selection:text-black relative">
+      {/* Global Margin Lines (Rendani Editorial Grid) */}
+      <div className="fixed inset-0 pointer-events-none z-0 hidden lg:flex justify-center px-5">
+        <div className="w-full max-w-[1320px] flex relative">
+          <div className="absolute top-0 bottom-0 left-0 w-px bg-black/5" />
+          <div className="absolute top-0 bottom-0 left-1/2 w-px bg-black/3 -translate-x-px" />
+          <div className="absolute top-0 bottom-0 right-0 w-px bg-black/5" />
         </div>
       </div>
 
@@ -67,21 +72,28 @@ function App() {
         <Header />
 
         <main>
+          {/* Above-fold: eager-loaded */}
           <HeroTypographic />
           <AnimatedQuoteSection />
           <InteractiveServicesBento id="uslugi" />
-          <ProcessSection />
-          <IndustriesSection />
-          <TestimonialsSection />
-          <DataMetricsSection />
-          <AboutUsSection />
-          <FAQSection />
-          <NewsletterSection />
-          <ContactSection />
-          <CTASection />
+
+          {/* Below-fold: lazy-loaded for faster initial paint */}
+          <Suspense fallback={null}>
+            <ProcessSection />
+            <IndustriesSection />
+            <TestimonialsSection />
+            <DataMetricsSection />
+            <AboutUsSection />
+            <FAQSection />
+            <NewsletterSection />
+            <ContactSection />
+            <CTASection />
+          </Suspense>
         </main>
 
-        <Footer />
+        <Suspense fallback={null}>
+          <Footer />
+        </Suspense>
       </div>
     </div>
   );
