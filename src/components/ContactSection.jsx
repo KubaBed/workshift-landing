@@ -108,7 +108,7 @@ export function ContactSection() {
             <div className="max-w-[1400px] mx-auto px-6 max-md:px-4 relative z-10">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
 
-                    {/* Left — Copy + trust signals */}
+                    {/* Left - Copy + trust signals */}
                     <div>
                         <h2 className="contact-animate-left opacity-0 text-4xl md:text-5xl lg:text-6xl font-display tracking-tight text-white mb-6 text-balance">
                             Porozmawiajmy o{' '}
@@ -116,7 +116,7 @@ export function ContactSection() {
                         </h2>
 
                         <p className="contact-animate-left opacity-0 text-lg text-white/50 leading-relaxed mb-10 max-w-md">
-                            Opisz krótko swój problem. W ciągu 24h odzywamy się ze wstępnym planem automatyzacji — za darmo, bez zobowiązań.
+                            Opisz krótko swój problem. W ciągu 24h odzywamy się ze wstępnym planem automatyzacji - za darmo, bez zobowiązań.
                         </p>
 
                         <div className="contact-animate-left opacity-0 flex flex-col gap-4">
@@ -129,7 +129,7 @@ export function ContactSection() {
                         </div>
                     </div>
 
-                    {/* Right — Form */}
+                    {/* Right - Form */}
                     <div className="contact-animate-right opacity-0">
                         {submitted ? (
                             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[10px] p-10 md:p-12 text-center">
@@ -204,7 +204,7 @@ export function ContactSection() {
                                         className="w-full text-base gap-2"
                                     >
                                         <Send size={16} />
-                                        {isSubmitting ? "Wysyłanie..." : "Wyślij — odpowiemy w 24h"}
+                                        {isSubmitting ? "Wysyłanie..." : "Wyślij - odpowiemy w 24h"}
                                     </Button>
 
                                     {error && (

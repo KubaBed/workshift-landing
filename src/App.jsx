@@ -3,6 +3,7 @@ import { Header } from './components/Header';
 import { HeroTypographic } from './components/HeroTypographic';
 import { AnimatedQuoteSection } from './components/AnimatedQuoteSection';
 import { InteractiveServicesBento } from './components/InteractiveServicesBento';
+import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 
 // Below-the-fold: lazy-loaded for faster initial paint
 const ProcessSection = lazy(() => import('./components/ProcessSection').then(m => ({ default: m.ProcessSection })));
@@ -94,6 +95,8 @@ function App() {
         <Suspense fallback={null}>
           <Footer />
         </Suspense>
+
+        <FloatingWhatsApp />
       </div>
     </div>
   );

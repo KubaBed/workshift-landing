@@ -23,7 +23,7 @@ const item = {
 
 export default function PhoneMockupCard({
   title = "Craft",
-  bodyText = "Interfaces shaped by spatial intention — where every surface, shadow, and transition exists with purpose.",
+  bodyText = "Interfaces shaped by spatial intention - where every surface, shadow, and transition exists with purpose.",
   highlight = "spatial intention",
   secondaryText = "Typography that breathes. Motion that guides. Surfaces that know the light.",
   metrics = [
@@ -76,7 +76,7 @@ export default function PhoneMockupCard({
             boxShadow: "inset 0 0 0 0.5px rgba(0,0,0,0.1)",
           }}
         >
-          {/* status bar + dynamic island — single row */}
+          {/* status bar + dynamic island - single row */}
           <div className="relative flex items-center justify-center px-7 pb-1 pt-3">
             <span className="absolute left-7 text-[12px] font-semibold leading-none text-neutral-800 dark:text-neutral-200">
               9:41

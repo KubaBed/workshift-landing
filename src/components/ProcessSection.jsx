@@ -64,7 +64,7 @@ export function ProcessSection() {
                         viewport={{ once: true }}
                         className="text-lg text-muted-dark max-w-md leading-relaxed md:pb-2"
                     >
-                        Żadnej "rocznej transformacji cyfrowej". 3 etapy, 4 tygodnie — i Twoja firma cały czas normalnie pracuje.
+                        Żadnej "rocznej transformacji cyfrowej". 3 etapy, 4 tygodnie - i Twoja firma cały czas normalnie pracuje.
                     </motion.p>
                 </div>
 

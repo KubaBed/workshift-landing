@@ -64,7 +64,7 @@ export function AnimatedQuoteSection() {
                 >
                     {/* Eyebrow label */}
                     <p className="font-mono text-xs tracking-wider uppercase text-muted-dark mb-6 md:mb-8">
-                        — Nasza filozofia
+                        - Nasza filozofia
                     </p>
                     <div className="leading-[1.15] tracking-tight font-normal text-center md:text-left" style={{ fontSize: 'clamp(1.875rem, 5vw, 3.5rem)' }}>
                     {wordsArray.map((word, index) => {

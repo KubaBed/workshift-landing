@@ -46,7 +46,7 @@ const faqs = [
     },
     {
         q: "Czy mogę zobaczyć demo zanim się zdecyduję?",
-        a: "Tak — każda konsultacja zawiera prezentację procesu na żywo. Pokazujemy realne workflow, nie slajdy."
+        a: "Tak - każda konsultacja zawiera prezentację procesu na żywo. Pokazujemy realne workflow, nie slajdy."
     }
 ];
 
@@ -108,7 +108,7 @@ export function CTASection() {
                         Wybierz termin darmowej konsultacji
                     </Button>
                     <p className="mt-6 text-sm text-white/40 font-mono tracking-wide text-center">
-                        Wybierasz termin sam(a) — bez presji i bez telefonów.
+                        Wybierasz termin sam(a) - bez presji i bez telefonów.
                     </p>
                 </div>
             </div>

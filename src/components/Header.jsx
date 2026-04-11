@@ -63,14 +63,14 @@ export function Header() {
                         </nav>
 
                         {/* Full CTA on sm+ */}
-                        <a href="#darmowa-konsultacja">
+                        <a href="#kontakt">
                             <Button variant="accent" size="sm" className="hidden sm:flex z-50 relative">
-                                Darmowa konsultacja
+                                Kontakt
                             </Button>
                         </a>
                         {/* Compact icon CTA on mobile */}
                         <a
-                            href="#darmowa-konsultacja"
+                            href="#kontakt"
                             className="sm:hidden z-50 relative w-9 h-9 rounded-full bg-lime text-black flex items-center justify-center shadow-sm transition-transform active:scale-95"
                             aria-label="Kontakt"
                         >
@@ -120,9 +120,11 @@ export function Header() {
                             transition={{ duration: 0.3, delay: 0.3 }}
                             className="mt-8"
                         >
-                            <Button variant="accent" size="lg" className="w-full text-lg" onClick={() => setIsMenuOpen(false)}>
-                                Darmowa konsultacja
-                            </Button>
+                            <a href="#kontakt" onClick={() => setIsMenuOpen(false)}>
+                                <Button variant="accent" size="lg" className="w-full text-lg">
+                                    Kontakt
+                                </Button>
+                            </a>
                         </motion.div>
                     </motion.div>
                 )}

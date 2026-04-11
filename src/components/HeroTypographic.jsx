@@ -45,26 +45,26 @@ export function HeroTypographic() {
         }}
       />
 
-      {/* Background sphere — full bleed (left as-is per decision) */}
+      {/* Background sphere - full bleed (left as-is per decision) */}
       <div className="hidden lg:block" style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
         <HeroParticleSphere />
       </div>
 
-      {/* Left panel — text content */}
+      {/* Left panel - text content */}
       <div
         className="w-full lg:w-[52%] lg:flex-shrink-0 flex flex-col justify-center px-5 py-24 md:px-10 lg:px-16 lg:py-12 relative z-[2]"
         style={{
           background: 'linear-gradient(to right, #E6E8DD 78%, transparent)',
         }}
       >
-        {/* Eyebrow — Rendani section label pattern */}
+        {/* Eyebrow - Rendani section label pattern */}
         <FadeUp delay={0.1}>
           <span className="font-mono text-xs uppercase tracking-wider text-black mb-8 inline-block">
             AI Consulting dla MŚP
           </span>
         </FadeUp>
 
-        {/* Headline — Rendani style: normal weight, tight tracking */}
+        {/* Headline - Rendani style: normal weight, tight tracking */}
         <div style={{ marginBottom: 20 }}>
           <TextReveal
             text="Wdrażamy AI, które po prostu działa."
@@ -106,26 +106,36 @@ export function HeroTypographic() {
           </p>
         </FadeUp>
 
-        {/* CTA — Rendani pill button pattern */}
+        {/* CTA - Rendani pill button pattern */}
         <FadeUp delay={0.7}>
-          <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 40 }}>
-            <a
-              href="#kontakt"
-              className="inline-flex items-center gap-2 bg-black rounded-full py-2 pr-2 pl-4 text-white text-xs font-medium w-fit hover:bg-black/90 transition-all duration-300 active:scale-95 group shadow-lg"
-            >
-              Darmowa konsultacja
-              <span className="w-7 h-7 rounded-full bg-lime flex items-center justify-center transition-transform group-hover:translate-x-1 group-hover:-translate-y-1">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="black" strokeWidth="2">
-                  <path d="M4 10L10 4M10 4H5M10 4V9" />
-                </svg>
-              </span>
-            </a>
-            <a
-              href="#uslugi"
-              className="text-xs font-medium text-muted-dark flex items-center gap-1 opacity-60 hover:opacity-100 transition-opacity"
-            >
-              Zobacz usługi ↓
-            </a>
+          <div className="flex flex-col gap-6 mb-10">
+            <div className="flex items-center gap-6">
+              <a
+                href="#kontakt"
+                className="inline-flex items-center gap-2 bg-black rounded-full py-2 pr-2 pl-4 text-white text-xs font-medium w-fit hover:bg-black/90 transition-all duration-300 active:scale-95 group shadow-lg"
+              >
+                Kontakt
+                <span className="w-7 h-7 rounded-full bg-lime flex items-center justify-center transition-transform group-hover:translate-x-1 group-hover:-translate-y-1">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="black" strokeWidth="2">
+                    <path d="M4 10L10 4M10 4H5M10 4V9" />
+                  </svg>
+                </span>
+              </a>
+              <a
+                href="#uslugi"
+                className="text-xs font-medium text-black flex items-center gap-1 hover:opacity-100 transition-opacity font-semibold"
+              >
+                Zobacz usługi ↓
+              </a>
+            </div>
+
+            {/* Phone & WhatsApp inline conversion */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 text-sm">
+              <p className="text-muted-dark flex items-center gap-2">
+                <span className="opacity-60">Wolisz porozmawiać? Zadzwoń:</span>
+                <a href="tel:+48796186067" className="font-bold text-black hover:text-lime transition-colors">+48 796 186 067</a>
+              </p>
+            </div>
           </div>
         </FadeUp>
 
@@ -150,20 +160,13 @@ export function HeroTypographic() {
                 transition={{ duration: 20, ease: 'linear', repeat: Infinity }}
               >
                 {[logo1, logo2, logo3, logo4, logo5, logo1, logo2, logo3, logo4, logo5].map((logo, i) => (
-                  <Floating 
-                    key={i} 
-                    amplitude={4} 
-                    duration={3 + (i % 3)} 
-                    delay={i * 0.2} 
-                    rotation={i % 2 === 0 ? 2 : -2}
-                  >
-                    <img
-                      src={logo}
-                      alt="Trusted Company Logo"
-                      className="h-6 md:h-7 object-contain opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-300"
-                      style={{ mixBlendMode: 'multiply' }}
-                    />
-                  </Floating>
+                  <img
+                    key={i}
+                    src={logo}
+                    alt="Trusted Company Logo"
+                    className="h-6 md:h-7 object-contain opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                    style={{ mixBlendMode: 'multiply' }}
+                  />
                 ))}
               </motion.div>
             </div>

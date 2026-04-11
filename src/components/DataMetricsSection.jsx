@@ -23,7 +23,7 @@ const bars = [
     {
         num: '03/',
         label: 'Procesy, które',
-        highlight: 'DAŁOBY SIĘ ZAUTOMATYZOWAĆ DZIŚ',
+        highlight: 'DO ZAUTOMATYZOWANIA DZIŚ',
         suffix: '/MOŻLIWOŚCI',
         value: '+66%',
         pct: 66,
@@ -59,8 +59,8 @@ export function DataMetricsSection() {
                     className="mb-16 md:mb-24 max-w-4xl"
                 >
                     <h2 className="text-4xl md:text-5xl lg:text-7xl font-display tracking-tight leading-[1.1] text-black text-balance">
-                        Przepaść rośnie każdego miesiąca. Konkurencja z AI pracuje szybciej,<br className="hidden md:block" />
-                        błędy ludzkie <GradientText colors={['#9CE069', '#E6E8DD', '#7bc44a']} animationSpeed={6} yoyo={true}>kosztują zbyt dużo.</GradientText>
+                        Zwłoka kosztuje. Im dłużej czekasz,<br className="hidden md:block" />
+                        tym trudniej będzie Ci <GradientText colors={['#9CE069', '#7bc44a']} animationSpeed={6} yoyo={true}>dogonić resztę.</GradientText>
                     </h2>
                 </motion.div>
 
@@ -70,10 +70,10 @@ export function DataMetricsSection() {
                         <div key={idx} className="relative py-5 md:py-6 flex items-center gap-4 group">
 
                             {/* Left label column */}
-                            <div className="w-[110px] md:w-[28%] shrink-0 flex items-center gap-2 md:gap-3">
-                                <span className="font-mono text-[10px] md:text-xs text-muted-light tracking-widest shrink-0">{bar.num}</span>
+                            <div className="w-[125px] md:w-[28%] shrink-0 flex items-center gap-2 md:gap-3">
+                                <span className="font-mono text-[9px] md:text-xs text-muted-light tracking-widest shrink-0">{bar.num}</span>
                                 <span className="text-[11px] md:text-xs font-semibold text-muted-dark uppercase tracking-widest leading-tight hidden sm:block">{bar.label} <strong className="text-black">{bar.highlight}</strong></span>
-                                <span className="text-[11px] font-semibold text-black uppercase tracking-widest leading-tight sm:hidden">{bar.highlight}</span>
+                                <span className="text-[10px] font-semibold text-black uppercase tracking-widest leading-tight sm:hidden">{bar.highlight}</span>
                             </div>
 
                             {/* Growing bar track */}

@@ -153,7 +153,7 @@ export function ScrollScatterSection() {
                     }
                 });
 
-                // PHASE 1: Pause — user sees the inbox
+                // PHASE 1: Pause - user sees the inbox
                 tl.to({}, { duration: 1 });
 
                 // PHASE 2: Chrome fades out
@@ -237,7 +237,7 @@ export function ScrollScatterSection() {
         <section ref={containerRef} className="w-full bg-slate-50 overflow-hidden relative" style={{ height: '100vh' }}>
             <div className="w-full h-full flex flex-col items-center justify-center px-4 md:px-6 relative">
 
-                {/* Top text — zanika z chrome */}
+                {/* Top text - zanika z chrome */}
                 <p ref={topTextRef} className="text-base md:text-xl text-slate-500 font-medium text-center mb-6 md:mb-8 relative z-20">
                     Poniedziałek, 9:45 rano. Tak wygląda Twoja skrzynka.
                 </p>
@@ -245,7 +245,7 @@ export function ScrollScatterSection() {
                 {/* Gmail mockup container */}
                 <div className="relative w-full max-w-full md:max-w-xl lg:max-w-2xl z-10 transition-all">
 
-                    {/* Chrome (traffic lights + search + inbox header) — ref for fade */}
+                    {/* Chrome (traffic lights + search + inbox header) - ref for fade */}
                     <div ref={chromeRef}>
                         {/* macOS traffic lights + search bar */}
                         <div className="bg-[#f6f8fc] rounded-t-xl border border-b-0 border-slate-200/80 px-4 py-3 flex items-center gap-3">
@@ -328,12 +328,12 @@ export function ScrollScatterSection() {
                     </div>
                 </div>
 
-                {/* Bottom text — zanika z chrome */}
+                {/* Bottom text - zanika z chrome */}
                 <p ref={bottomTextRef} className="text-sm text-slate-400 text-center mt-6 relative z-20">
                     Nie musisz się na tym znać. My to ogarniemy.
                 </p>
 
-                {/* Reveal card — absolute positioned, centered, starts hidden */}
+                {/* Reveal card - absolute positioned, centered, starts hidden */}
                 <div ref={revealRef} className="absolute inset-0 flex items-center justify-center z-30 pointer-events-none px-4">
                     <div className="pointer-events-auto max-w-sm w-full mx-auto bg-white/95 backdrop-blur-xl border border-slate-200/60 shadow-2xl overflow-hidden rounded-xl">
 

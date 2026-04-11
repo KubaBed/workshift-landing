@@ -153,7 +153,7 @@ export function IndustriesSection() {
                         AI skrojone pod Twoją branżę
                     </motion.h2>
                     <p className="text-lg text-muted-dark">
-                        Każda branża ma swoje "wąskie gardła". Poniżej — jak je usuwamy.
+                        Każda branża ma swoje "wąskie gardła". Poniżej - jak je usuwamy.
                     </p>
                 </div>
 
@@ -260,7 +260,7 @@ export function IndustriesSection() {
                 {/* Footer Disclaimer */}
                 <div className="mt-8 text-center">
                      <p className="inline-flex items-center gap-2 text-sm font-medium text-muted-dark bg-white px-4 py-2 rounded-full shadow-sm border border-black/10">
-                        Twojej branży nie ma na liście? <span className="font-bold text-black ml-1">Napisz — zbudujemy coś specjalnie dla Ciebie.</span>
+                        Twojej branży nie ma na liście? <span className="font-bold text-black ml-1">Napisz - zbudujemy coś specjalnie dla Ciebie.</span>
                      </p>
                 </div>
 

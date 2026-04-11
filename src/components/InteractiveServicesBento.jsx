@@ -96,7 +96,7 @@ function AutomationPreview() {
                 @keyframes ws-hub-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(238,112,61,0); } 50% { box-shadow: 0 0 28px 6px rgba(238,112,61,0.18); } }
             `}</style>
             
-            {/* Orbit system — center pushed to right edge (50% translateX) so only left half visible */}
+            {/* Orbit system - center pushed to right edge (50% translateX) so only left half visible */}
             <div style={{
                 position: 'absolute',
                 top: '50%', right: 0,
@@ -220,7 +220,7 @@ function AuditPreview() {
                 </svg>
             </div>
 
-            {/* Stat badges — fade out on hover */}
+            {/* Stat badges - fade out on hover */}
             <div className="absolute top-3 left-3 z-[9] flex items-center gap-1.5 transition-opacity duration-300 group-hover:opacity-0">
                 <div className="flex items-center rounded-full border border-slate-200 bg-white/60 px-2 py-0.5 backdrop-blur-sm">
                     <div className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: mainColor }} />
@@ -232,7 +232,7 @@ function AuditPreview() {
                 </div>
             </div>
 
-            {/* Hover tooltip — slides up on hover */}
+            {/* Hover tooltip - slides up on hover */}
             <div className="absolute inset-0 z-[7] flex items-start justify-center p-4
                             translate-y-full group-hover:translate-y-0
                             transition-transform duration-500 ease-[cubic-bezier(0.6,0.6,0,1)]">
@@ -491,7 +491,7 @@ function AgentPreview() {
                                 </div>
                             </div>
 
-                            {/* Agent — audio waveform message */}
+                            {/* Agent - audio waveform message */}
                             <div className="gsap-chat-4" style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', gap: 6, opacity: 0 }}>
                                 {AVATAR}
                                 <div style={{ background: 'linear-gradient(135deg, rgba(238,112,61,0.08), rgba(133,48,209,0.08))', borderRadius: '16px 16px 16px 4px', padding: '8px 12px', border: '1px solid rgba(133,48,209,0.15)', display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -1282,7 +1282,7 @@ export function InteractiveServicesBento() {
                             </div>
                             <div>
                                 <p className="font-medium text-black text-sm mb-0.5">Kupujesz tylko to, czego naprawdę potrzebujesz</p>
-                                <p className="text-muted-dark text-sm">Każdą usługę możesz zamówić osobno — sam audyt, samo wdrożenie, samo szkolenie. Bez pakietów, bez nadmuchanych scope'ów.</p>
+                                <p className="text-muted-dark text-sm">Każdą usługę możesz zamówić osobno - sam audyt, samo wdrożenie, samo szkolenie. Bez pakietów, bez nadmuchanych scope'ów.</p>
                             </div>
                         </div>
                         <a href="#kontakt" className="inline-flex items-center gap-2 bg-white border border-black/10 text-black px-5 py-2.5 rounded-[10px] font-medium text-sm shadow-sm hover:border-lime/40 hover:bg-lime/10 transition-all duration-200 shrink-0 whitespace-nowrap">

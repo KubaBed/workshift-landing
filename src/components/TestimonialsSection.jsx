@@ -149,6 +149,10 @@ function Panel({ testimonial, isActive, onClick }) {
             {!isActive && (
                 <>
                     {testimonial.avatar ? (
+                        <img
+                            src={testimonial.avatar}
+                            alt=""
+                            className="absolute inset-0 w-full h-full object-cover"
                             style={{ filter: 'brightness(0.85)' }}
                             loading="lazy"
                         />
@@ -367,7 +371,6 @@ export function TestimonialsSection() {
                                     testimonial={testimonial}
                                     isActive={activeIndex === index}
                                     onClick={() => setActiveIndex(index)}
-                                    // Remove index and totalCount since they are not used in Panel
                                 />
                             </Floating>
                         </motion.div>

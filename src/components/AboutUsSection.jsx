@@ -65,7 +65,7 @@ export function AboutUsSection() {
                             transition={{ duration: 0.8, delay: 0.2, type: "spring", stiffness: 100 }}
                         >
                             <h2 className="text-4xl md:text-5xl lg:text-6xl font-display tracking-tight text-black mb-8 text-balance">
-                                Wiemy, o co toczy się gra, bo sami <GradientText colors={['#9CE069', '#E6E8DD', '#7bc44a']} animationSpeed={6} yoyo={true}>w nią gramy.</GradientText>
+                                Wiemy, o co toczy się gra, bo sami <GradientText colors={['#9CE069', '#7bc44a']} animationSpeed={6} yoyo={true}>w nią gramy.</GradientText>
                             </h2>
 
                             <div className="space-y-6 text-lg md:text-xl text-muted-dark leading-relaxed">
