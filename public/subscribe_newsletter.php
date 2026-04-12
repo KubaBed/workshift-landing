@@ -52,11 +52,15 @@ file_put_contents($rate_file, implode("\n", $requests), LOCK_EX);
 
 // ─── CONFIGURATION ──────────────────────────────────────────────────
 $brevo_api_key = getenv('BREVO_API_KEY');
+$templateId = (int)getenv('BREVO_DOI_TEMPLATE_ID');
+$redirectionUrl = getenv('BREVO_DOI_REDIRECTION_URL');
 
 // Load from local config if environment variable is not set
-if (!$brevo_api_key && file_exists(__DIR__ . '/config.env.php')) {
+if (file_exists(__DIR__ . '/config.env.php')) {
     $config = require __DIR__ . '/config.env.php';
-    $brevo_api_key = $config['BREVO_API_KEY'] ?? null;
+    if (!$brevo_api_key) $brevo_api_key = $config['BREVO_API_KEY'] ?? null;
+    if (!$templateId) $templateId = (int)($config['BREVO_DOI_TEMPLATE_ID'] ?? 0);
+    if (!$redirectionUrl) $redirectionUrl = $config['BREVO_DOI_REDIRECTION_URL'] ?? null;
 }
 
 // ─── INPUT VALIDATION ───────────────────────────────────────────────
@@ -82,20 +86,20 @@ $listId = (int)$data['listId'];
 // Whitelist allowed list IDs to prevent abuse
 $allowed_lists = [2, 3, 4, 5]; // Update with your actual Brevo list IDs
 if (!in_array($listId, $allowed_lists, true)) {
-    http_response_code(400);
-    echo json_encode(["error" => "Nieprawidłowa lista."]);
-    exit;
+    // Override to list #4 as per user request if not specified or invalid
+    $listId = 4;
 }
 
-// ─── SUBSCRIBE VIA BREVO ─────────────────────────────────────────────
+// ─── SUBSCRIBE VIA BREVO (Double Opt-In) ──────────────────────────────
 $postData = [
     "email" => $email,
     "attributes" => ["FIRSTNAME" => $name],
-    "listIds" => [$listId],
-    "updateEnabled" => true
+    "includeListIds" => [$listId],
+    "templateId" => $templateId,
+    "redirectionUrl" => $redirectionUrl ?: "https://workshift.pl/thank-you"
 ];
 
-$ch = curl_init("https://api.brevo.com/v3/contacts");
+$ch = curl_init("https://api.brevo.com/v3/contacts/doubleOptinConfirmation");
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_POST => true,

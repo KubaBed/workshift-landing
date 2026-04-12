@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Button } from './ui/Button';
@@ -11,6 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
 export function ContactSection() {
     const [submitted, setSubmitted] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [privacyAccepted, setPrivacyAccepted] = useState(false);
     const [error, setError] = useState(null);
     const sectionRef = useRef(null);
 
@@ -196,11 +199,28 @@ export function ContactSection() {
                                     />
                                 </div>
 
+                                    <div className="flex items-start gap-3 px-1">
+                                        <div className="flex items-center h-5">
+                                            <input
+                                                id="privacy-checkbox"
+                                                name="privacy-checkbox"
+                                                type="checkbox"
+                                                required
+                                                checked={privacyAccepted}
+                                                onChange={(e) => setPrivacyAccepted(e.target.checked)}
+                                                className="h-4 w-4 rounded border-white/10 bg-white/10 text-lime focus:ring-lime/40 focus:ring-offset-black"
+                                            />
+                                        </div>
+                                        <label htmlFor="privacy-checkbox" className="text-xs text-white/50 leading-tight">
+                                            Zgadzam się na przetwarzanie moich danych osobowych zgodnie z <Link to="/polityka-prywatnosci" className="text-white hover:text-lime underline transition-colors">Polityką Prywatności</Link>. <span className="text-lime">*</span>
+                                        </label>
+                                    </div>
+
                                     <Button
                                         type="submit"
                                         variant="accent"
                                         size="lg"
-                                        disabled={isSubmitting}
+                                        disabled={isSubmitting || !privacyAccepted}
                                         className="w-full text-base gap-2"
                                     >
                                         <Send size={16} />
@@ -212,10 +232,6 @@ export function ContactSection() {
                                             {error}
                                         </p>
                                     )}
-
-                                    <p className="text-xs text-white/30 text-center">
-                                        Wysyłając formularz zgadzasz się z naszą Polityką Prywatności.
-                                    </p>
                             </form>
                         )}
                     </div>

@@ -5,7 +5,7 @@ import { FadeUp } from '../components/animations/FadeUp';
 
 /**
  * Blog listing page — /blog
- * Layout inspired by Rendani:
+ * Layout:
  *   Hero + category filters
  *   Row 1: 2 featured cards (asymmetric 57/43%)
  *   Row 2+: 3-column equal grid

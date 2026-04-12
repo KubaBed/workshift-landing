@@ -1,5 +1,6 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { motion, useScroll, useSpring } from 'framer-motion';
 import { ArrowLeft, Linkedin, Twitter, Link2 } from 'lucide-react';
 import { getPostBySlug, getRelatedPosts, formatDate } from '../data/blogPosts';
 import { BlogCard } from '../components/blog/BlogCard';
@@ -7,7 +8,7 @@ import { FadeUp } from '../components/animations/FadeUp';
 
 /**
  * Blog article page — /blog/:slug
- * Layout inspired by Rendani:
+ * Layout:
  *   Banner: author avatar + meta + H1 title + featured image (centered, full-width)
  *   Body:   800px centered column, markdown-like HTML rendering
  *   Footer: share icons + related posts (2-col asymmetric) + CTA
@@ -29,8 +30,20 @@ export default function BlogPostPage() {
 
   const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
 
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
   return (
-    <main className="min-h-screen bg-sage pt-32 pb-0">
+    <>
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-lime z-[100] origin-left"
+        style={{ scaleX }}
+      />
+      <main className="min-h-screen bg-sage pt-32 pb-0">
       {/* ─── Banner Section ─── */}
       <section id="banner" className="max-w-[1320px] mx-auto px-6 max-md:px-4 mb-16">
         {/* Back link */}
@@ -165,6 +178,7 @@ export default function BlogPostPage() {
         </div>
       </section>
     </main>
+    </>
   );
 }
 

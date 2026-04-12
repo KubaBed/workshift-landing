@@ -162,7 +162,7 @@ Model: **à la carte** — każda usługa dostępna osobno.
 - **Container max-width:** `1320px`
 - **Header max-width:** `1400px`
 - **Padding poziomy:** `px-6` (24px desktop) / `px-4` (16px mobile `max-md`)
-- **Grid:** Rendani editorial grid — globalne linie marginesów
+- **Grid:** Workshift editorial grid — globalne linie marginesów
 
 #### Breakpoints (Tailwind)
 

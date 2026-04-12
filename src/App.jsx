@@ -22,6 +22,8 @@ const Footer = lazy(() => FooterAndMiscModule().then(m => ({ default: m.Footer }
 // Blog pages
 const BlogListPage = lazy(() => import('./pages/BlogListPage'));
 const BlogPostPage = lazy(() => import('./pages/BlogPostPage'));
+const ThankYouPage = lazy(() => import('./pages/ThankYouPage'));
+const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
 
 const SECTION_MAP = {
   'hero': HeroTypographic,
@@ -91,7 +93,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-sage font-sans text-black antialiased selection:bg-lime selection:text-black relative">
-      {/* Global Margin Lines (Rendani Editorial Grid) */}
+      {/* Global Margin Lines (Workshift Editorial Grid) */}
       <div className="fixed inset-0 pointer-events-none z-0 hidden lg:flex justify-center px-5">
         <div className="w-full max-w-[1320px] flex relative">
           <div className="absolute top-0 bottom-0 left-0 w-px bg-black/5" />
@@ -108,6 +110,8 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/blog" element={<BlogListPage />} />
             <Route path="/blog/:slug" element={<BlogPostPage />} />
+            <Route path="/thank-you" element={<ThankYouPage />} />
+            <Route path="/polityka-prywatnosci" element={<PrivacyPolicyPage />} />
           </Routes>
         </Suspense>
 

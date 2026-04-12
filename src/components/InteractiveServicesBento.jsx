@@ -426,7 +426,7 @@ function AgentPreview() {
 
     return (
         <div ref={containerRef} className="w-full h-full flex items-start justify-center pt-6 px-4">
-            <Floating duration={6} amplitude={12} rotationRange={2}>
+            <Floating duration={6} amplitude={12} rotation={2}>
                 <PhoneMockupCard className="shadow-2xl will-change-transform">
                     <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', margin: '-24px -24px -64px -24px' }}>
                         {/* App header bar */}

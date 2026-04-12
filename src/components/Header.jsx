@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Button } from './ui/Button';
 import { Menu, X, Phone } from 'lucide-react';
 import { Logo } from './ui/Logo';
+import { Magnetic } from './animations/Magnetic';
 
 export function Header() {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -61,19 +62,25 @@ export function Header() {
                                 // Hash links → use <a> on homepage, <Link> on other pages
                                 if (link.href.startsWith('/#')) {
                                     return isHome ? (
-                                        <a key={link.name} href={link.href.slice(1)} className={linkClass}>
-                                            {link.name}
-                                        </a>
+                                        <Magnetic key={link.name} strength={0.2}>
+                                            <a href={link.href.slice(1)} className={linkClass}>
+                                                {link.name}
+                                            </a>
+                                        </Magnetic>
                                     ) : (
-                                        <Link key={link.name} to={link.href} className={linkClass}>
-                                            {link.name}
-                                        </Link>
+                                        <Magnetic key={link.name} strength={0.2}>
+                                            <Link to={link.href} className={linkClass}>
+                                                {link.name}
+                                            </Link>
+                                        </Magnetic>
                                     );
                                 }
                                 return (
-                                    <Link key={link.name} to={link.href} className={linkClass}>
-                                        {link.name}
-                                    </Link>
+                                    <Magnetic key={link.name} strength={0.2}>
+                                        <Link to={link.href} className={linkClass}>
+                                            {link.name}
+                                        </Link>
+                                    </Magnetic>
                                 );
                             })}
                         </nav>

@@ -13,7 +13,7 @@ import React from 'react';
 export function Logo({ variant = 'light', showWordmark = true, className = '', size = 36 }) {
     const isDark = variant === 'dark';
 
-    // Rendani uses solid black for text instead of navy
+    // Project uses solid black for text instead of navy
     const textColorClass = isDark ? 'text-white' : 'text-black';
 
     return (
@@ -21,13 +21,13 @@ export function Logo({ variant = 'light', showWordmark = true, className = '', s
             {/* SVG implementation of the "C1 Parallelogram" motif */}
             <svg width={size} height={size} viewBox="0 0 512 512" fill="none" className="shrink-0 overflow-visible">
                 <defs>
-                    {/* Top/Bottom Layer Gradient (Subtle Rendani darks) */}
+                    {/* Top/Bottom Layer Gradient (Subtle Workshift darks) */}
                     <linearGradient id="ss-logo-bg-grad" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
                         <stop offset="0%" stopColor="#000000" stopOpacity="0.15" />
                         <stop offset="100%" stopColor="#000000" stopOpacity="0.05" />
                     </linearGradient>
 
-                    {/* Middle Layer Brand Gradient: Rendani Lime */}
+                    {/* Middle Layer Brand Gradient: Workshift Lime */}
                     <linearGradient id="ss-logo-grad" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
                         <stop offset="0%" stopColor="#9CE069" />
                         <stop offset="100%" stopColor="#81c44e" />

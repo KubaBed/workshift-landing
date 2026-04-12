@@ -1,4 +1,4 @@
-# Workshift — Design System (Rendani)
+# Workshift — Design System
 
 > Source of truth for visual identity, components, and animations for the Workshift landing page.
 

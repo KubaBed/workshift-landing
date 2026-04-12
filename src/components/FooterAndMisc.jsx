@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from './ui/Button';
 import { Logo } from './ui/Logo';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './ui/accordion';
@@ -92,7 +93,7 @@ export function CTASection() {
         <section id="darmowa-konsultacja" className="py-32 bg-black relative overflow-hidden">
 
             {/* Decorative overlay */}
-            <Floating duration={10} amplitude={100} rotationRange={0} className="absolute top-0 right-0 pointer-events-none">
+            <Floating duration={10} amplitude={100} rotation={0} className="absolute top-0 right-0 pointer-events-none">
                 <div className="w-[800px] h-[800px] bg-lime rounded-full blur-[150px] opacity-10 -translate-y-1/2 translate-x-1/2" />
             </Floating>
 
@@ -167,7 +168,7 @@ export function Footer() {
 
                     <div className="md:col-span-2">
                         <div className="mb-6">
-                            <Floating duration={5} amplitude={5} rotationRange={3}>
+                            <Floating duration={5} amplitude={5} rotation={3}>
                                 <Logo variant="dark" size={48} />
                             </Floating>
                         </div>
@@ -181,8 +182,8 @@ export function Footer() {
                         <ul className="space-y-4">
                             <li><a href="#uslugi" className="text-white/50 hover:text-lime transition-colors">Usługi i Automatyzacje</a></li>
                             <li><a href="#proces" className="text-white/50 hover:text-lime transition-colors">Nasz proces wdrożenia</a></li>
-                            <li><a href="#case-studies" className="text-white/50 hover:text-lime transition-colors">Historie Klientów</a></li>
-                            <li><a href="#!" className="text-white/50 hover:text-lime transition-colors">Newsletter AI Praktycznie</a></li>
+                            <li><Link to="/blog" className="text-white/50 hover:text-lime transition-colors">Baza wiedzy (Blog)</Link></li>
+                            <li><a href="#newsletter" className="text-white/50 hover:text-lime transition-colors">Newsletter AI Praktycznie</a></li>
                         </ul>
                     </div>
 
@@ -199,7 +200,7 @@ export function Footer() {
                 <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
                     <p className="text-white/30 text-sm">© {new Date().getFullYear()} Workshift. Wszelkie prawa zastrzeżone.</p>
                     <div className="flex gap-6">
-                        <a href="#!" className="text-sm font-mono text-white/30 hover:text-white transition-colors">Polityka Prywatności</a>
+                        <Link to="/polityka-prywatnosci" className="text-sm font-mono text-white/30 hover:text-white transition-colors">Polityka Prywatności</Link>
                         <a href="#!" className="text-sm font-mono text-white/30 hover:text-white transition-colors">Regulamin</a>
                     </div>
                 </div>

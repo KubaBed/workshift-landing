@@ -20,7 +20,7 @@ export function HeroTypographic() {
         fontFamily: "'Inter', sans-serif",
       }}
     >
-      {/* Decorative Floating Elements (Rendani aesthetic) */}
+      {/* Decorative Floating Elements (Workshift aesthetic) */}
       <div className="absolute inset-0 pointer-events-none z-[1] overflow-hidden">
         <Floating amplitude={20} duration={6} delay={0} rotation={5} className="absolute top-[15%] right-[10%] opacity-20 hidden lg:block">
           <div className="w-64 h-64 rounded-full bg-lime/20 blur-3xl" />
@@ -57,14 +57,14 @@ export function HeroTypographic() {
           background: 'linear-gradient(to right, #E6E8DD 78%, transparent)',
         }}
       >
-        {/* Eyebrow - Rendani section label pattern */}
+        {/* Eyebrow - Workshift section label pattern */}
         <FadeUp delay={0.1}>
           <span className="font-mono text-xs uppercase tracking-wider text-black mb-8 inline-block">
             AI Consulting dla MŚP
           </span>
         </FadeUp>
 
-        {/* Headline - Rendani style: normal weight, tight tracking */}
+        {/* Headline - Workshift style: normal weight, tight tracking */}
         <div style={{ marginBottom: 20 }}>
           <TextReveal
             text="Wdrażamy AI, które po prostu działa."
@@ -106,7 +106,7 @@ export function HeroTypographic() {
           </p>
         </FadeUp>
 
-        {/* CTA - Rendani pill button pattern */}
+        {/* CTA - Workshift pill button pattern */}
         <FadeUp delay={0.7}>
           <div className="flex flex-col gap-6 mb-10">
             <div className="flex items-center gap-6">

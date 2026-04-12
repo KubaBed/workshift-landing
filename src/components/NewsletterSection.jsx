@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Button } from './ui/Button';
 import { Input } from './ui/input';
 import newsletterBg from '../assets/newsletter-bg.png';
@@ -42,7 +43,7 @@ export function NewsletterSection() {
             const payload = {
                 name: name,
                 email: email,
-                listId: 2 // UPDATE: ID Twojej listy w Brevo
+                listId: 4 // Zmieniono na listę #4 zgodnie z prośbą
             };
 
             const response = await fetch('/subscribe_newsletter.php', {
@@ -251,7 +252,7 @@ export function NewsletterSection() {
                                             className="mt-1 w-4 h-4 rounded border-black/20 text-black focus:ring-lime"
                                         />
                                         <label htmlFor="privacy" className="text-xs text-muted-dark leading-relaxed">
-                                            Akceptuję <a href="#" className="underline hover:text-black">Politykę Prywatności</a> i wyrażam zgodę na otrzymywanie materiałów promocyjnych.
+                                            Akceptuję <Link to="/polityka-prywatnosci" className="underline hover:text-black">Politykę Prywatności</Link> i wyrażam zgodę na otrzymywanie materiałów promocyjnych.
                                         </label>
                                     </div>
 
@@ -259,10 +260,48 @@ export function NewsletterSection() {
                                         type="submit" 
                                         size="lg" 
                                         disabled={isSubmitting || !privacyAccepted}
-                                        className="w-full h-12 text-base mt-4 shadow-md disabled:opacity-70 disabled:cursor-not-allowed"
-                                        style={{ backgroundColor: status === 'success' ? '#10b981' : undefined }}
+                                        className="w-full h-12 text-base mt-4 shadow-md transition-all duration-500 disabled:opacity-70 disabled:cursor-not-allowed group overflow-hidden relative"
+                                        style={{ backgroundColor: status === 'success' ? '#A3E635' : undefined, color: status === 'success' ? 'black' : undefined }}
                                     >
-                                        {status === 'success' ? 'Zapisano pomyślnie!' : (isSubmitting ? 'Zapisywanie...' : 'Dołącz do newslettera')}
+                                        <AnimatePresence mode="wait">
+                                            {status === 'success' ? (
+                                                <motion.div 
+                                                    key="success"
+                                                    initial={{ y: 20, opacity: 0 }}
+                                                    animate={{ y: 0, opacity: 1 }}
+                                                    transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                                                    className="flex items-center justify-center gap-2"
+                                                >
+                                                    <motion.svg 
+                                                        initial={{ scale: 0 }}
+                                                        animate={{ scale: 1 }}
+                                                        transition={{ delay: 0.2, type: "spring", stiffness: 500, damping: 10 }}
+                                                        className="w-5 h-5 text-black" 
+                                                        viewBox="0 0 24 24" 
+                                                        fill="none" 
+                                                        stroke="currentColor" 
+                                                        strokeWidth="3"
+                                                    >
+                                                        <motion.path 
+                                                            initial={{ pathLength: 0 }}
+                                                            animate={{ pathLength: 1 }}
+                                                            transition={{ delay: 0.3, duration: 0.4 }}
+                                                            d="M20 6L9 17L4 12" 
+                                                        />
+                                                    </motion.svg>
+                                                    <span>Zapisano pomyślnie!</span>
+                                                </motion.div>
+                                            ) : (
+                                                <motion.span 
+                                                    key="idle"
+                                                    initial={{ opacity: 0 }}
+                                                    animate={{ opacity: 1 }}
+                                                    exit={{ opacity: 0 }}
+                                                >
+                                                    {isSubmitting ? 'Zapisywanie...' : 'Dołącz do newslettera'}
+                                                </motion.span>
+                                            )}
+                                        </AnimatePresence>
                                     </Button>
 
                                     {status === 'error' && (

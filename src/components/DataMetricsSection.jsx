@@ -103,7 +103,7 @@ export function DataMetricsSection() {
                                         stiffness: 200,
                                     }}
                                 >
-                                    <Floating duration={3 + idx} amplitude={5} rotationRange={2}>
+                                    <Floating duration={3 + idx} amplitude={5} rotation={2}>
                                         <div className="-translate-x-1/2 bg-black text-white text-xs md:text-sm font-semibold font-mono px-3 py-1.5 md:px-4 md:py-2 rounded-full shadow-md whitespace-nowrap border border-black/20">
                                             {bar.value}
                                         </div>

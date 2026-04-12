@@ -396,7 +396,7 @@ def section_visual():
     # ── Colors ──
     items.append(Paragraph('Paleta kolorów', S['h2']))
     items.append(Paragraph(
-        'System oparty na Rendani Design Tokens. Sage jako tło nadaje profesjonalny, '
+        'System oparty na Workshift Design Tokens. Sage jako tło nadaje profesjonalny, '
         'spokojny charakter. Lime jako akcent wprowadza energię i kieruje uwagę.',
         S['body_muted']
     ))
@@ -687,7 +687,7 @@ def section_marketing():
     files_data = [
         ['Plik', 'Zawartość'],
         ['src/index.css', 'Source of truth — Tailwind CSS v4 @theme tokens'],
-        ['design-system.css', 'CSS reference — dokumentacja aktualnego systemu Rendani'],
+        ['design-system.css', 'CSS reference — dokumentacja aktualnego systemu Workshift'],
         ['BRAND.md', 'Kompletny brand book w Markdown (ten dokument)'],
         ['design-system-legacy.css', 'LEGACY — stary system (Satoshi + Orange). Nie używać.'],
     ]
