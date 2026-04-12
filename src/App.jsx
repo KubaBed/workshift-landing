@@ -1,4 +1,5 @@
 import React, { lazy, Suspense } from 'react';
+import { Routes, Route, useSearchParams } from 'react-router-dom';
 import { Header } from './components/Header';
 import { HeroTypographic } from './components/HeroTypographic';
 import { AnimatedQuoteSection } from './components/AnimatedQuoteSection';
@@ -17,6 +18,10 @@ const FooterAndMiscModule = () => import('./components/FooterAndMisc');
 const FAQSection = lazy(() => FooterAndMiscModule().then(m => ({ default: m.FAQSection })));
 const CTASection = lazy(() => FooterAndMiscModule().then(m => ({ default: m.CTASection })));
 const Footer = lazy(() => FooterAndMiscModule().then(m => ({ default: m.Footer })));
+
+// Blog pages
+const BlogListPage = lazy(() => import('./pages/BlogListPage'));
+const BlogPostPage = lazy(() => import('./pages/BlogPostPage'));
 
 const SECTION_MAP = {
   'hero': HeroTypographic,
@@ -50,9 +55,35 @@ function SectionPreview({ sectionKey }) {
   );
 }
 
+function HomePage() {
+  return (
+    <>
+      <main>
+        {/* Above-fold: eager-loaded */}
+        <HeroTypographic />
+        <AnimatedQuoteSection />
+        <InteractiveServicesBento id="uslugi" />
+
+        {/* Below-fold: lazy-loaded for faster initial paint */}
+        <Suspense fallback={null}>
+          <ProcessSection />
+          <IndustriesSection />
+          <TestimonialsSection />
+          <DataMetricsSection />
+          <AboutUsSection />
+          <FAQSection />
+          <NewsletterSection />
+          <ContactSection />
+          <CTASection />
+        </Suspense>
+      </main>
+    </>
+  );
+}
+
 function App() {
-  const params = new URLSearchParams(window.location.search);
-  const previewSection = params.get('preview');
+  const [searchParams] = useSearchParams();
+  const previewSection = searchParams.get('preview');
 
   if (previewSection) {
     return <SectionPreview sectionKey={previewSection} />;
@@ -72,25 +103,13 @@ function App() {
       <div className="relative z-10 w-full flex flex-col">
         <Header />
 
-        <main>
-          {/* Above-fold: eager-loaded */}
-          <HeroTypographic />
-          <AnimatedQuoteSection />
-          <InteractiveServicesBento id="uslugi" />
-
-          {/* Below-fold: lazy-loaded for faster initial paint */}
-          <Suspense fallback={null}>
-            <ProcessSection />
-            <IndustriesSection />
-            <TestimonialsSection />
-            <DataMetricsSection />
-            <AboutUsSection />
-            <FAQSection />
-            <NewsletterSection />
-            <ContactSection />
-            <CTASection />
-          </Suspense>
-        </main>
+        <Suspense fallback={null}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/blog" element={<BlogListPage />} />
+            <Route path="/blog/:slug" element={<BlogPostPage />} />
+          </Routes>
+        </Suspense>
 
         <Suspense fallback={null}>
           <Footer />

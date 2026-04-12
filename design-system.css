@@ -1,0 +1,282 @@
+/* ==========================================================================
+   WORKSHIFT — DESIGN SYSTEM REFERENCE (Rendani)
+   ==========================================================================
+   Ten plik jest dokumentacją / referencją aktualnego Design Systemu.
+   Source of truth dla tokenów: src/index.css (Tailwind CSS v4 @theme).
+   Aktualizować przy każdej zmianie tokenów w index.css.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. TYPOGRAFIA
+   ========================================================================== */
+
+/*
+  Font Families
+  ─────────────────────────────────────────────────────────────────────────
+  --font-sans / --font-display  →  "Inter"      (headings, body, UI)
+  --font-mono                   →  "IBM Plex Mono" (liczby, etykiety, akcenty danych)
+
+  Ładowanie fontów: Google Fonts / self-hosted (Vite build)
+
+  Zasady użycia:
+  • Inter używany do WSZYSTKIEGO — nagłówki i treść mają spójny krój
+  • IBM Plex Mono tylko dla akcentów technicznych: numery kroków, metryki,
+    etykiety sekcji, liczniki — nadaje "precision feel"
+*/
+
+:root {
+  --font-sans:    "Inter", system-ui, sans-serif;
+  --font-display: "Inter", system-ui, sans-serif;
+  --font-mono:    "IBM Plex Mono", ui-monospace, monospace;
+}
+
+/*
+  Typography Scale (Tailwind classes + wartości)
+  ─────────────────────────────────────────────────────────────────────────
+  Hero H1       text-[72px] lg:text-[96px]   font-normal   tracking-[-3.6px]
+  Section H2    text-4xl / text-5xl           font-normal   tracking-tight
+  Subsection H3 text-2xl / text-3xl           font-normal   tracking-tight
+  H4–H6         text-xl / text-lg             font-normal   tracking-tight
+
+  Body large    text-lg (18px)    font-normal    leading-relaxed
+  Body default  text-base (16px)  font-normal    leading-relaxed
+  Body small    text-sm (14px)    font-normal    leading-normal
+  Caption       text-xs (12px)    font-normal    text-muted-dark
+
+  Label / Nav   text-sm (14px)    font-medium    tracking-normal
+  Mono accent   font-mono text-sm  font-normal    text-muted-dark
+
+  Reguły:
+  • Nagłówki: font-weight 400 (normal) — Inter normalny jest wystarczająco mocny
+  • Logo: font-bold, text-xl, tracking-[-0.04em]
+  • Selekcja (::selection): bg-lime, text-black
+  • Antialiased rendering włączony globalnie
+*/
+
+
+/* ==========================================================================
+   2. PALETA KOLORÓW (Rendani Design System)
+   ========================================================================== */
+
+/*
+  Kolory Core
+  ─────────────────────────────────────────────────────────────────────────
+  Nazwa         Token              Hex        Użycie
+  ─────────────────────────────────────────────────────────────────────────
+  Sage          --color-sage       #E6E8DD    Główne tło strony, sekcje, karty
+  Lime          --color-lime       #9CE069    CTA, przyciski akcji, focus ring,
+                                             selekcja tekstu, gradient divider
+  Dark          --color-dark       #000000    Nagłówki, treść, elementy strukturalne
+  Muted Dark    --color-muted-dark #595959    Opisy drugorzędne, metadane, subheady
+  Muted Light   --color-muted-light #AAAAAA   Placeholder, captions, wyłączone stany
+  White         (brak tokenu)      #FFFFFF    Karty, modale, powierzchnie na tle sage
+
+  Warianty Lime (tła, subtelne akcenty)
+  ─────────────────────────────────────────────────────────────────────────
+  Accent Light  --color-accent-light  #b8ec92   Jasny lime — hover stany, tła tagów
+  Accent Rose   --color-accent-rose   #c5e0a8   Ciepły zielony — karty, ilustracje
+  Accent Violet --color-accent-violet #d4e8c4   Chłodny zielony — karty, ilustracje
+  Accent Purple --color-accent-purple #7bc44a   Ciemny lime — aktywne stany, ikony
+
+  Semantyczne (Shadcn / BaseUI)
+  ─────────────────────────────────────────────────────────────────────────
+  background           #E6E8DD    (= sage)
+  foreground           #000000    (= dark)
+  card                 #FFFFFF
+  card-foreground      #000000
+  primary              #9CE069    (= lime)
+  primary-foreground   #000000
+  secondary            #FFFFFF
+  muted                #595959    (= muted-dark)
+  muted-foreground     #595959
+  accent               #9CE069    (= lime)
+  destructive          #DD453D    Błędy, alerty destruktywne
+  border               rgba(0,0,0,0.2)
+  ring                 #9CE069    (focus ring)
+*/
+
+:root {
+  /* Core Rendani palette */
+  --color-sage:        #E6E8DD;
+  --color-lime:        #9CE069;
+  --color-dark:        #000000;
+  --color-muted-dark:  #595959;
+  --color-muted-light: #AAAAAA;
+
+  /* Lime variants */
+  --color-accent-light:  #b8ec92;
+  --color-accent-rose:   #c5e0a8;
+  --color-accent-violet: #d4e8c4;
+  --color-accent-purple: #7bc44a;
+
+  /* Semantic UI tokens */
+  --background:          #E6E8DD;
+  --foreground:          #000000;
+  --card:                #FFFFFF;
+  --card-foreground:     #000000;
+  --primary:             #9CE069;
+  --primary-foreground:  #000000;
+  --secondary:           #FFFFFF;
+  --secondary-foreground:#000000;
+  --muted:               #595959;
+  --muted-foreground:    #595959;
+  --accent:              #9CE069;
+  --accent-foreground:   #000000;
+  --destructive:         #DD453D;
+  --border:              rgba(0, 0, 0, 0.2);
+  --input:               rgba(0, 0, 0, 0.2);
+  --ring:                #9CE069;
+}
+
+/*
+  Zasady kontrastu i dostępności
+  ─────────────────────────────────────────────────────────────────────────
+  • Czarny tekst na tle Sage (#E6E8DD)      → WCAG AA ✓
+  • Czarny tekst na Lime (#9CE069)          → WCAG AA ✓  (używany w przyciskach)
+  • Szary (#595959) na Sage                 → WCAG AA ✓
+  • Szary (#AAAAAA) na Sage                 → tylko dekoracyjnie, nie treść
+  • Lime na czarnym tle                     → WCAG AA ✓
+*/
+
+
+/* ==========================================================================
+   3. SPACING & LAYOUT
+   ========================================================================== */
+
+/*
+  Border Radius
+  ─────────────────────────────────────────────────────────────────────────
+  --radius-sm    4px    Małe elementy: tagi, badges, małe ikony
+  --radius-md    8px    Checkboxy, małe przyciski (xs)
+  --radius-lg    10px   Standardowe przyciski, inputy, karty (default)
+  --radius-xl    16px   Duże karty, modale
+  --radius-2xl   20px   Sekcje, prominentne karty
+  --radius-3xl   24px   Duże panele
+  --radius-4xl   80px   Pill buttons, pełne zaokrąglenia (np. nawigacja)
+*/
+
+:root {
+  --radius:     10px;   /* default (= --radius-lg) */
+  --radius-sm:  4px;
+  --radius-md:  8px;
+  --radius-lg:  10px;
+  --radius-xl:  16px;
+  --radius-2xl: 20px;
+  --radius-3xl: 24px;
+  --radius-4xl: 80px;
+}
+
+/*
+  Layout
+  ─────────────────────────────────────────────────────────────────────────
+  Container max-width: 1320px  (--container-max-w)
+  Header max-width:    1400px
+  Horizontal padding:  px-6  (24px desktop) / px-4  (16px mobile)
+
+  Breakpoints (Tailwind standard):
+  sm:   640px
+  md:   768px
+  lg:   1024px
+  xl:   1280px
+  2xl:  1536px
+*/
+
+
+/* ==========================================================================
+   4. UTILITY CLASSES
+   ========================================================================== */
+
+/* Frosted glass — tło Sage z rozmyciem */
+.glass-panel {
+  background-color:  rgba(230, 232, 221, 0.7); /* sage 70% */
+  backdrop-filter:   blur(24px);
+  border:            1px solid rgba(0, 0, 0, 0.1);
+  box-shadow:        0 8px 32px rgba(0, 0, 0, 0.04);
+}
+
+/* Frosted glass — ciemna wersja (na czarnym tle) */
+.glass-panel-dark {
+  background-color:  rgba(0, 0, 0, 0.7);
+  backdrop-filter:   blur(24px);
+  border:            1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:        0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Ukryj scrollbar (karuzele, scroll-area) */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Smart text wrapping dla krótkich nagłówków */
+.text-balance {
+  text-wrap: balance;
+}
+
+
+/* ==========================================================================
+   5. EFEKTY WIZUALNE
+   ========================================================================== */
+
+/*
+  Gradient Divider
+  ─────────────────────────────────────────────────────────────────────────
+  Wysokość:    3px
+  Kształt:     rounded-full
+  Gradient:    linear-gradient(90deg, #9CE069 0%, #b8e88a 50%, #E6E8DD 100%)
+  Opacity:     0.8
+  Padding:     py-6 md:py-10
+  Użycie:      separator między głównymi sekcjami strony
+*/
+
+/*
+  Gradient Text
+  ─────────────────────────────────────────────────────────────────────────
+  Kolory domyślne: ['#9CE069', '#E6E8DD', '#7bc44a']
+  Animacja:        8s loop (background-position)
+  Kierunek:        horizontal / vertical / diagonal
+  Technika:        background-clip: text; color: transparent;
+  Użycie:          słowa kluczowe w hero, sekcje highlight
+*/
+
+
+/* ==========================================================================
+   6. ANIMACJE
+   ========================================================================== */
+
+/*
+  Floating (ambient motion)
+  ─────────────────────────────────────────────────────────────────────────
+  Cel:       Dekoracyjne elementy tła, ilustracje, ikony
+  Metoda:    translateY + rotate loops
+  Easing:    easeInOutSine
+  Duration:  4s–12s (zróżnicowane, unikaj synchronizacji)
+  Amplituda: domyślnie 12px
+  GPU:       will-change: transform
+  Reguła:    NIE używaj na elementach z treścią / interaktywnych
+
+  FadeUp (wejście sekcji)
+  ─────────────────────────────────────────────────────────────────────────
+  Initial:   opacity 0, y: +30px
+  Final:     opacity 1, y: 0
+  Duration:  0.8s
+  Easing:    [0.21, 0.47, 0.32, 0.98] (custom cubic-bezier)
+  Trigger:   IntersectionObserver (once: true)
+  Reguła:    Każda główna sekcja strony wchodzi przez FadeUp
+
+  TextReveal (hero / key statements)
+  ─────────────────────────────────────────────────────────────────────────
+  Metoda:    Word-by-word reveal z efektem blur (filter: blur)
+  Użycie:    Tylko hero headline i kluczowe statements — nie nadużywać
+
+  Scale & Gradient (akcenty UI)
+  ─────────────────────────────────────────────────────────────────────────
+  Easing:    cubic-bezier(0.16, 1, 0.3, 1) (ease-out-expo)
+  Użycie:    scaleX dla dividerów, pasków akcentu
+
+  Global rules:
+  • prefers-reduced-motion: duration 0.01ms dla WSZYSTKICH animacji
+  • GPU acceleration: will-change: transform na animowanych elementach
+*/

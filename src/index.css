@@ -183,6 +183,50 @@ html.lenis body {
   overflow: hidden;
 }
 
+/* ─── Blog Article Prose ─── */
+.prose-workshift {
+  @apply text-black text-base leading-relaxed;
+}
+.prose-workshift h3 {
+  @apply text-2xl md:text-[32px] font-display tracking-tight text-black mt-12 mb-4 leading-tight;
+  font-weight: 400;
+}
+.prose-workshift h4 {
+  @apply text-xl md:text-2xl font-display tracking-tight text-black mt-10 mb-3 leading-tight;
+  font-weight: 400;
+}
+.prose-workshift p {
+  @apply text-base leading-[1.7] text-black mb-4;
+}
+.prose-workshift strong {
+  @apply font-semibold;
+}
+.prose-workshift em {
+  @apply italic;
+}
+.prose-workshift code {
+  @apply font-mono text-sm bg-black/5 px-1.5 py-0.5 rounded;
+}
+.prose-workshift blockquote {
+  @apply border-l-3 border-lime pl-6 my-8 py-2;
+}
+.prose-workshift blockquote p {
+  @apply text-lg italic text-muted-dark;
+}
+.prose-workshift ul,
+.prose-workshift ol {
+  @apply my-4 pl-6 flex flex-col gap-2;
+}
+.prose-workshift ul {
+  @apply list-disc;
+}
+.prose-workshift ol {
+  @apply list-decimal;
+}
+.prose-workshift li {
+  @apply text-base leading-[1.7] text-black;
+}
+
 /* Performance Utilities */
 .will-change-transform {
   will-change: transform;

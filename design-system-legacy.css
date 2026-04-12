@@ -1,8 +1,13 @@
 /* ==========================================================================
-   WORKSHIFT - DESIGN SYSTEM REFERENCE
-   ========================================================================== 
-   Ten plik służy wyłącznie jako dokumentacja/referencja obecnego Design Systemu.
-   Faktyczne reguły są kompilowane z src/index.css przy użyciu Tailwind CSS v4.
+   ⚠️  LEGACY — NIEAKTUALNY DESIGN SYSTEM (Satoshi + Orange Accent)
+   ==========================================================================
+   Ten plik dokumentuje POPRZEDNI design system (iteracja 1: Mistral / SaaS B2B).
+   NIE używaj tych tokenów w nowych komponentach.
+
+   Zastąpiony przez:
+     • BRAND.md            — kompletny brand book i design system (source of truth)
+     • design-system.css   — aktualny CSS reference (Rendani: Sage + Lime + Inter)
+     • src/index.css       — source of truth dla tokenów Tailwind CSS v4
    ========================================================================== */
 
 /* 1. TYPOGRAFIA
