@@ -123,12 +123,14 @@ Niedawno premierę miał serwis **junior.so**. Niby nic specjalnego, kolejny sta
 
 Ale spokojnie, nie ma się co martwić, że AI zabierze nam pracę. Parę dni temu powstała platforma **rentahuman.ai**. W tym serwisie to Agenci AI mogą wynająć żywego człowieka na godziny. Do odklikania zadań, z którymi kod jednak sam sobie nie radzi.
 
-Więc rewolja na rynku pracy raczej nie będzie wyglądać jak kadr z Terminatora.
+Więc rewolucja na rynku pracy raczej nie będzie wyglądać jak kadr z Terminatora.
 
 Może zamiast tego na firmowym Slacku po prostu pojawi się skrypt, który jak czegoś nie ogarnie, to wynajmie nas na godziny jako swojego podwykonawcę. I jeszcze bezczelnie dopyta o deadline.
     `,
   },
 ];
+
+export const blogCategories = [...new Set(blogPosts.map((post) => post.category))];
 
 export function getPostBySlug(slug) {
   return blogPosts.find((p) => p.slug === slug) || null;

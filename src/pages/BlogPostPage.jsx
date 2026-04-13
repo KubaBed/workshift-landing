@@ -60,17 +60,6 @@ export default function BlogPostPage() {
         {/* Author + Meta — centered */}
         <FadeUp delay={0.05}>
           <div className="flex flex-col items-center text-center mb-8">
-            {/* Author */}
-            <div className="flex items-center gap-3 mb-4">
-              <img
-                src={post.author.avatar}
-                alt={post.author.name}
-                className="w-10 h-10 rounded-full object-cover bg-black/10"
-              />
-              <span className="text-base text-black font-medium">
-                {post.author.name}
-              </span>
-            </div>
 
             {/* Category + Date */}
             <div className="flex items-center gap-3 text-base text-muted-dark">
