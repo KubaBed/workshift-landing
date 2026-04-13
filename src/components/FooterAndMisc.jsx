@@ -191,7 +191,7 @@ export function Footer() {
                         <h4 className="text-white font-display mb-6">Kontakt</h4>
                         <ul className="space-y-4">
                             <li><a href="mailto:kontakt@workshift.pl" className="text-white/50 hover:text-white transition-colors flex items-center gap-2"><svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg> kontakt@workshift.pl</a></li>
-                            <li><span className="text-white/50 flex items-center gap-2"><svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg> Warszawa, Polska</span></li>
+                            <li><span className="text-white/50 flex items-center gap-2"><svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg> Poznań, Stawna 10/5</span></li>
                         </ul>
                     </div>
 

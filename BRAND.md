@@ -23,7 +23,7 @@
 **Workshift** to boutique AI consulting dla polskich MŚP. Nie technologia na pokaz — konkretne wyniki bez rocznych transformacji.
 
 - **Założyciel:** Jakub Bednarz
-- **Kontakt:** hello@workshift.pl | Warszawa
+- **Kontakt:** hello@workshift.pl | Poznań
 - **Tagline:** *Wdrażamy AI, które po prostu działa*
 - **Filozofia:** Przebudowa bez burzenia — precyzyjne zmiany, nie rewolucja
 
