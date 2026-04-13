@@ -1,39 +1,39 @@
-/**
- * Blog posts data.
- * Real content from LinkedIn and local community events.
- */
-
-export const blogCategories = [
-  'Automatyzacja',
-  'Case Study',
-  'Narzędzia',
-  'Wiedza',
-  'Wydarzenia',
-];
-
 export const blogPosts = [
   {
-    slug: 'zatrudnie-juniora-ai',
-    title: 'Zatrudnię Juniora za 2000$ miesięcznie! Jak AI zmienia rynek pracy',
-    category: 'Narzędzia',
+    slug: 'brave-ai-community-meetup-poznan',
+    title: 'II Meetup BRAVE AI Poznań: Build fast. Validate faster',
+    category: 'Wydarzenia',
     date: '2026-04-13',
     author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.png' },
-    image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&q=80',
+    image: '/images/blog/meetup-brave-ai-poznan.jpg',
     excerpt:
-      'Ten junior pracuje 24/7, nie bierze L4 i nie zapomina o zadaniach. Poznaj junior.so i nową rzeczywistość agentów AI.',
+      'Zapraszam na 2. meetup BRAVE AI Community w Poznaniu! Porozmawiamy o tym, jak szybko i tanio walidować pomysły biznesowe z AI.',
     content: `
-Zatrudnię Juniora za 2000$ miesięcznie! 
-Takiego, co pracuje 24/7, nie bierze L4 i nie zapomina o żadnym zadaniu.
+Rośnie nam w Poznaniu świetne community AI, którego mocno tu brakowało. Bardzo się cieszę, że do niego dołączyłem!
 
-Brzmi nieźle? Jest tylko mały twist – ten junior to (oczywiście) AI.
+### Build fast. Validate faster.
 
-Niedawno premierę miał serwis **junior.so**. Niby nic specjalnego, kolejny startup oparty o AI. Ale tym razem jest jakoś dziwnie - usługa pozwala nam zatrudnić niemal prawdziwego pracownika. Z własnym firmowym mailem, kontem na Slacku i ludzkim awatarem. Takiego, który przychodzi na calle na Zoomie, robi notatki, wychodzi z inicjatywą i realizuje zadania.
+Chcecie dowiedzieć się, jak z pomocą AI szybko sprawdzić, czy Wasz pomysł, nowa usługa albo usprawnienie w firmie faktycznie są warte "milion dolarów" - a przy okazji na tych testach nie zbankrutować?
 
-Ale spokojnie, nie ma się co martwić, że AI zabierze nam pracę. Parę dni temu powstała platforma **rentahuman.ai**. W tym serwisie to Agenci AI mogą wynająć żywego człowieka na godziny. Do odklikania zadań, z którymi kod jednak sam sobie nie radzi.
+Porozmawiajmy o tym już **14 kwietnia** na #2 meetupie BRAVE AI Community. Temat to: *Build fast. Validate faster.*
 
-Więc rewolucja na rynku pracy raczej nie będzie wyglądać jak kadr z Terminatora.
+### Kogo zobaczycie na scenie?
 
-Może zamiast tego na firmowym Slacku po prostu pojawi się skrypt, który jak czegoś nie ogarnie, to wynajmie nas na godziny jako swojego podwykonawcę. I jeszcze bezczelnie dopyta o deadline.
+Na scenie mocny skład praktyków:
+*   Artur Skwarek
+*   Michał Niekrasz
+*   Piotr Synowiec
+
+Ja też dorzucę coś od siebie i podzielę się krótką, życiową historią: **"Jak stracić przyjaciół i zaoszczędzić 35 000 PLN, budując aplikacje z Claude i Lovable"**.
+
+Jeśli macie ochotę posłuchać wystąpień, ale przede wszystkim zbić piątkę, wymienić się doświadczeniami i poznać super ludzi – gorąco zapraszam.
+
+---
+
+📅 **14 kwietnia**
+📍 Collegium Da Vinci, Poznań
+
+**Rejestracja:** [Luma - Build fast. Validate faster.](https://luma.com/build-fast-validate-faster)
     `,
   },
   {
@@ -88,7 +88,7 @@ Nie do końca się z tym zgadzam, mam trochę inną, też budowlaną analogię.
 
 ### YouTube w świecie kodu
 
-Narzędzia takie jak Claude Code czy Cursor to odpowiednik dzisiejszego YouTube’a w świecie wykończeniówki. Kiedyś, jeśli nie nauczył Cię tego rodzic albo szkoła, do każdego remontu musiałeś wołać specjalistę. Nieważne, czy to kładzenie gładzi, czy zwykłe malowanie. Nie miałeś alternatywy, więc płaciłeś te kilka/kilkanaście tysięcy, albo odkładałeś remont w nieskończoność.
+Narzędzia takie jak Claude Code czy Cursor to odpowiednik dzisiejszego YouTube’a w świecie wykońzeniówki. Kiedyś, jeśli nie nauczył Cię tego rodzic albo szkoła, do każdego remontu musiałeś wołać specjalistę. Nieważne, czy to kładzenie gładzi, czy zwykłe malowanie. Nie miałeś alternatywy, więc płaciłeś te kilka/kilkanaście tysięcy, albo odkładałeś remont w nieskończoność.
 
 Dzisiaj? Odpalasz tutorial na YouTube, dowiadujesz się, jak oczyścić, zagruntować i pomalować ścianę. Kupujesz wałek i robisz to sam.
 
@@ -105,40 +105,27 @@ AI właśnie demokratyzuje budowanie oprogramowania. A "good enough" dowiezione 
     `,
   },
   {
-    slug: 'brave-ai-community-meetup-poznan',
-    title: 'II Meetup BRAVE AI Poznań: Build fast. Validate faster',
-    category: 'Wydarzenia',
-    date: '2026-04-01',
+    slug: 'zatrudnie-juniora-ai',
+    title: 'Zatrudnię Juniora za 2000$ miesięcznie! (Z małym twistem)',
+    category: 'Wiedza',
+    date: '2026-03-01',
     author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.png' },
-    image: '/images/blog/meetup-brave-ai-poznan.jpg',
+    image: 'https://images.unsplash.com/photo-1516321318423-f06f85e514b3?w=800&q=80',
     excerpt:
-      'Zapraszam na 2. meetup BRAVE AI Community w Poznaniu! Porozmawiamy o tym, jak szybko i tanio walidować pomysły biznesowe z AI.',
+      'Ten junior pracuje 24/7, nie bierze L4 i nie zapomina o zadaniach. Poznaj junior.so i nową rzeczywistość agentów AI.',
     content: `
-Rośnie nam w Poznaniu świetne community AI, którego mocno tu brakowało. Bardzo się cieszę, że do niego dołączyłem!
+Zatrudnię Juniora za 2000$ miesięcznie! 
+Takiego, co pracuje 24/7, nie bierze L4 i nie zapomina o żadnym zadaniu.
 
-### Build fast. Validate faster.
+Brzmi nieźle? Jest tylko mały twist – ten junior to (oczywiście) AI.
 
-Chcecie dowiedzieć się, jak z pomocą AI szybko sprawdzić, czy Wasz pomysł, nowa usługa albo usprawnienie w firmie faktycznie są warte "milion dolarów" - a przy okazji na tych testach nie zbankrutować?
+Niedawno premierę miał serwis **junior.so**. Niby nic specjalnego, kolejny startup oparty o AI. Ale tym razem jest jakoś dziwnie - usługa pozwala nam zatrudnić niemal prawdziwego pracownika. Z własnym firmowym mailem, kontem na Slacku i ludzkim awatarem. Takiego, który przychodzi na calle na Zoomie, robi notatki, wychodzi z inicjatywą i realizuje zadania.
 
-Porozmawiajmy o tym już **14 kwietnia** na #2 meetupie BRAVE AI Community. Temat to: *Build fast. Validate faster.*
+Ale spokojnie, nie ma się co martwić, że AI zabierze nam pracę. Parę dni temu powstała platforma **rentahuman.ai**. W tym serwisie to Agenci AI mogą wynająć żywego człowieka na godziny. Do odklikania zadań, z którymi kod jednak sam sobie nie radzi.
 
-### Kogo zobaczycie na scenie?
+Więc rewolja na rynku pracy raczej nie będzie wyglądać jak kadr z Terminatora.
 
-Na scenie mocny skład praktyków:
-*   Artur Skwarek
-*   Michał Niekrasz
-*   Piotr Synowiec
-
-Ja też dorzucę coś od siebie i podzielę się krótką, życiową historią: **"Jak stracić przyjaciół i zaoszczędzić 35 000 PLN, budując aplikacje z Claude i Lovable"**.
-
-Jeśli macie ochotę posłuchać wystąpień, ale przede wszystkim zbić piątkę, wymienić się doświadczeniami i poznać super ludzi – gorąco zapraszam.
-
----
-
-📅 **14 kwietnia**
-📍 Collegium Da Vinci, Poznań
-
-**Rejestracja:** [Luma - Build fast. Validate faster.](https://luma.com/build-fast-validate-faster)
+Może zamiast tego na firmowym Slacku po prostu pojawi się skrypt, który jak czegoś nie ogarnie, to wynajmie nas na godziny jako swojego podwykonawcę. I jeszcze bezczelnie dopyta o deadline.
     `,
   },
 ];
