@@ -1,0 +1,29 @@
+<svg width="1200" height="400" viewBox="0 0 1200 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700&amp;display=swap');
+      .wordmark {
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 140px;
+        letter-spacing: -0.04em;
+      }
+    </style>
+    <linearGradient id="ss-logo-bg-grad" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.1" />
+    </linearGradient>
+    <linearGradient id="ss-logo-grad" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stop-color="#9CE069" />
+      <stop offset="100%" stop-color="#81c44e" />
+    </linearGradient>
+  </defs>
+  
+  <g transform="translate(50, 50) scale(0.6)">
+    <polygon points="141,141 371,141 333,205 103,205" fill="url(#ss-logo-bg-grad)" />
+    <polygon points="192,237 422,237 384,301 154,301" fill="url(#ss-logo-grad)" />
+    <polygon points="141,333 371,333 333,397 103,397" fill="url(#ss-logo-bg-grad)" />
+  </g>
+
+  <text x="350" y="240" fill="#FFFFFF" class="wordmark">Workshift</text>
+</svg>

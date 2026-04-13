@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Brand Assets Renderer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            background: transparent;
+        }
+        .container {
+            display: none;
+        }
+        .container.active {
+            display: inline-block;
+        }
+        #logo-light svg, #logo-dark svg { width: 1200px; height: 400px; }
+        #logo-icon svg { width: 1024px; height: 1024px; }
+    </style>
+</head>
+<body>
+    <div id="logo-light" class="container active">
+        <img src="logo-light.svg">
+    </div>
+    <div id="logo-dark" class="container">
+        <img src="logo-dark.svg">
+    </div>
+    <div id="logo-icon" class="container">
+        <img src="logo-icon.svg">
+    </div>
+
+    <script>
+        function show(id) {
+            document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+    </script>
+</body>
+</html>
