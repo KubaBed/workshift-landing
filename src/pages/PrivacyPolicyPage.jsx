@@ -85,27 +85,27 @@ const PrivacyPolicyPage = () => {
             <h4>W JAKICH CELACH I NA JAKICH PODSTAWACH PRAWNYCH PRZETWARZAMY DANE OSOBOWE UŻYTKOWNIKA?</h4>
             <p>Dane osobowe Użytkownika na Stronie Administratora mogą być przetwarzane w następujących celach i na następujących podstawach prawnych:</p>
             <ul>
-              <li>wykonania usługi lub wykonania zawartej umowy, przesłania oferty na prośbę Użytkownika — na podstawie art. 6 ust. 1 lit. b RODO;</li>
-              <li>wystawienia faktury, rachunku i spełnienia innych obowiązków wynikających z przepisów prawa podatkowego — na podstawie art. 6 ust. 1 lit. c RODO;</li>
-              <li>udzielenia rabatu lub informowania o promocjach i ciekawych ofertach Administratora — na podstawie art. 6 ust. 1 lit. a RODO;</li>
-              <li>rozpatrzenia reklamacji czy roszczeń związanych z umową — na podstawie art. 6 ust. 1 lit. b RODO oraz art. 6 ust. 1 lit. c RODO;</li>
-              <li>ustalenia, dochodzenia lub obrony przed roszczeniami — na podstawie art. 6 ust. 1 lit. f RODO (prawnie uzasadniony interes);</li>
-              <li>kontaktu telefonicznego w sprawach związanych z realizacją usługi — na podstawie art. 6 ust. 1 lit. b RODO;</li>
-              <li>kontaktu telefonicznego w celu przedstawienia oferty i marketingu bezpośredniego — na podstawie art. 6 ust. 1 lit. a RODO oraz lit. f RODO;</li>
-              <li>tworzenia rejestrów związanych z RODO i innymi przepisami — na podstawie art. 6 ust. 1 lit. c RODO oraz lit. f RODO;</li>
-              <li>archiwalnym i dowodowym, na potrzeby zabezpieczenia informacji — na podstawie art. 6 ust. 1 lit. f RODO;</li>
-              <li>analitycznym, polegającym na analizie danych zbieranych automatycznie — na podstawie art. 6 ust. 1 lit. f RODO;</li>
-              <li>wykorzystywania cookies na Stronie i jej podstronach — na podstawie art. 6 ust. 1 lit. a RODO;</li>
-              <li>zarządzania Stroną internetową — na podstawie art. 6 ust. 1 lit. f RODO;</li>
-              <li>badania satysfakcji z oferowanych usług — na podstawie art. 6 ust. 1 lit. f RODO;</li>
-              <li>zamieszczenia przez Użytkownika opinii o usługach — na podstawie art. 6 ust. 1 lit. a RODO;</li>
-              <li>w wewnętrznych celach administracyjnych związanych z zarządzaniem kontaktem — na podstawie art. 6 ust. 1 lit. f RODO;</li>
-              <li>w celu wysyłania newslettera — na podstawie art. 6 ust. 1 lit. f RODO oraz ustawy o świadczeniu usług drogą elektroniczną;</li>
-              <li>w celu dopasowania treści wyświetlanych na stronach Administratora — na podstawie art. 6 ust. 1 lit. f RODO;</li>
-              <li>w celu marketingu bezpośredniego własnych produktów lub usług — na podstawie art. 6 ust. 1 lit. f RODO;</li>
-              <li>w celu prowadzenia rekrutacji — na podstawie art. 6 ust. 1 lit. b RODO lub art. 6 ust. 1 lit. a RODO;</li>
-              <li>w celu tworzenia własnych baz danych Użytkowników — na podstawie art. 6 ust. 1 lit. f RODO;</li>
-              <li>w celu przechowywania komentarzy — na podstawie art. 6 ust. 1 lit. a RODO.</li>
+              <li>wykonania usługi lub wykonania zawartej umowy, przesłania oferty na prośbę Użytkownika - na podstawie art. 6 ust. 1 lit. b RODO;</li>
+              <li>wystawienia faktury, rachunku i spełnienia innych obowiązków wynikających z przepisów prawa podatkowego - na podstawie art. 6 ust. 1 lit. c RODO;</li>
+              <li>udzielenia rabatu lub informowania o promocjach i ciekawych ofertach Administratora - na podstawie art. 6 ust. 1 lit. a RODO;</li>
+              <li>rozpatrzenia reklamacji czy roszczeń związanych z umową - na podstawie art. 6 ust. 1 lit. b RODO oraz art. 6 ust. 1 lit. c RODO;</li>
+              <li>ustalenia, dochodzenia lub obrony przed roszczeniami - na podstawie art. 6 ust. 1 lit. f RODO (prawnie uzasadniony interes);</li>
+              <li>kontaktu telefonicznego w sprawach związanych z realizacją usługi - na podstawie art. 6 ust. 1 lit. b RODO;</li>
+              <li>kontaktu telefonicznego w celu przedstawienia oferty i marketingu bezpośredniego - na podstawie art. 6 ust. 1 lit. a RODO oraz lit. f RODO;</li>
+              <li>tworzenia rejestrów związanych z RODO i innymi przepisami - na podstawie art. 6 ust. 1 lit. c RODO oraz lit. f RODO;</li>
+              <li>archiwalnym i dowodowym, na potrzeby zabezpieczenia informacji - na podstawie art. 6 ust. 1 lit. f RODO;</li>
+              <li>analitycznym, polegającym na analizie danych zbieranych automatycznie - na podstawie art. 6 ust. 1 lit. f RODO;</li>
+              <li>wykorzystywania cookies na Stronie i jej podstronach - na podstawie art. 6 ust. 1 lit. a RODO;</li>
+              <li>zarządzania Stroną internetową - na podstawie art. 6 ust. 1 lit. f RODO;</li>
+              <li>badania satysfakcji z oferowanych usług - na podstawie art. 6 ust. 1 lit. f RODO;</li>
+              <li>zamieszczenia przez Użytkownika opinii o usługach - na podstawie art. 6 ust. 1 lit. a RODO;</li>
+              <li>w wewnętrznych celach administracyjnych związanych z zarządzaniem kontaktem - na podstawie art. 6 ust. 1 lit. f RODO;</li>
+              <li>w celu wysyłania newslettera - na podstawie art. 6 ust. 1 lit. f RODO oraz ustawy o świadczeniu usług drogą elektroniczną;</li>
+              <li>w celu dopasowania treści wyświetlanych na stronach Administratora - na podstawie art. 6 ust. 1 lit. f RODO;</li>
+              <li>w celu marketingu bezpośredniego własnych produktów lub usług - na podstawie art. 6 ust. 1 lit. f RODO;</li>
+              <li>w celu prowadzenia rekrutacji - na podstawie art. 6 ust. 1 lit. b RODO lub art. 6 ust. 1 lit. a RODO;</li>
+              <li>w celu tworzenia własnych baz danych Użytkowników - na podstawie art. 6 ust. 1 lit. f RODO;</li>
+              <li>w celu przechowywania komentarzy - na podstawie art. 6 ust. 1 lit. a RODO.</li>
             </ul>
 
             <h4>W JAKI SPOSÓB ZBIERANE SĄ DANE?</h4>

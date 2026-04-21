@@ -5,8 +5,8 @@ import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Magnetic } from '../animations/Magnetic';
 
 /**
- * Blog card — Workshift editorial grid.
- * @param {'featured'|'standard'} variant — featured = large (row 1), standard = 3-col grid
+ * Blog card - Workshift editorial grid.
+ * @param {'featured'|'standard'} variant - featured = large (row 1), standard = 3-col grid
  */
 export function BlogCard({ post, variant = 'standard' }) {
   const isFeatured = variant === 'featured';
@@ -68,7 +68,7 @@ export function BlogCard({ post, variant = 'standard' }) {
               isFeatured ? 'aspect-[4/3]' : 'aspect-[4/3]'
             }`}
           />
-          {/* Arrow overlay — visible on hover */}
+          {/* Arrow overlay - visible on hover */}
           <div className="absolute top-4 right-4 z-20">
             <Magnetic strength={0.4}>
               <div className="size-10 rounded-full bg-lime flex items-center justify-center opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 shadow-lg">

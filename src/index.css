@@ -69,7 +69,7 @@
     text-wrap: balance;
   }
 
-  /* Glass panel — adapted for sage palette */
+  /* Glass panel - adapted for sage palette */
   .glass-panel {
     @apply bg-sage/70 backdrop-blur-xl border border-black/10 shadow-[0_8px_32px_#0000000a];
   }

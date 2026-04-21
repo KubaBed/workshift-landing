@@ -180,10 +180,10 @@ export function Footer() {
                     <div>
                         <h4 className="text-white font-display mb-6">Sekcje</h4>
                         <ul className="space-y-4">
-                            <li><a href="#uslugi" className="text-white/50 hover:text-lime transition-colors">Usługi i Automatyzacje</a></li>
-                            <li><a href="#proces" className="text-white/50 hover:text-lime transition-colors">Nasz proces wdrożenia</a></li>
+                            <li><Link to="/#uslugi" className="text-white/50 hover:text-lime transition-colors">Usługi i Automatyzacje</Link></li>
+                            <li><Link to="/#proces" className="text-white/50 hover:text-lime transition-colors">Nasz proces wdrożenia</Link></li>
                             <li><Link to="/blog" className="text-white/50 hover:text-lime transition-colors">Baza wiedzy (Blog)</Link></li>
-                            <li><a href="#newsletter" className="text-white/50 hover:text-lime transition-colors">Newsletter AI Praktycznie</a></li>
+                            <li><Link to="/#newsletter" className="text-white/50 hover:text-lime transition-colors">Newsletter AI Praktycznie</Link></li>
                         </ul>
                     </div>
 

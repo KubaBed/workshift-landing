@@ -1,5 +1,5 @@
-import React, { lazy, Suspense } from 'react';
-import { Routes, Route, useSearchParams } from 'react-router-dom';
+import React, { lazy, Suspense, useEffect } from 'react';
+import { Routes, Route, useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import { Header } from './components/Header';
 import { HeroTypographic } from './components/HeroTypographic';
 import { AnimatedQuoteSection } from './components/AnimatedQuoteSection';
@@ -24,6 +24,40 @@ const BlogListPage = lazy(() => import('./pages/BlogListPage'));
 const BlogPostPage = lazy(() => import('./pages/BlogPostPage'));
 const ThankYouPage = lazy(() => import('./pages/ThankYouPage'));
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
+const ServicePage = lazy(() => import('./pages/ServicePage'));
+
+// Redirect /uslugi (bare) to homepage services section
+function ServicesRedirect() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    navigate('/', { replace: true });
+    // Scroll to #uslugi after navigation completes
+    setTimeout(() => {
+      const el = document.getElementById('uslugi');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  }, [navigate]);
+  return null;
+}
+
+// Handle hash-based scrolling after navigation
+function ScrollToHash() {
+  const location = useLocation();
+  useEffect(() => {
+    if (location.hash) {
+      // Small delay to let the page render
+      const timer = setTimeout(() => {
+        const el = document.getElementById(location.hash.slice(1));
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+      return () => clearTimeout(timer);
+    } else if (location.pathname !== '/') {
+      // Scroll to top on non-hash navigations to subpages
+      window.scrollTo(0, 0);
+    }
+  }, [location]);
+  return null;
+}
 
 const SECTION_MAP = {
   'hero': HeroTypographic,
@@ -105,9 +139,12 @@ function App() {
       <div className="relative z-10 w-full flex flex-col">
         <Header />
 
+        <ScrollToHash />
         <Suspense fallback={null}>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/uslugi" element={<ServicesRedirect />} />
+            <Route path="/uslugi/:serviceId" element={<ServicePage />} />
             <Route path="/blog" element={<BlogListPage />} />
             <Route path="/blog/:slug" element={<BlogPostPage />} />
             <Route path="/thank-you" element={<ThankYouPage />} />

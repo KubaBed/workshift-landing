@@ -11,14 +11,16 @@ gsap.registerPlugin(ScrollTrigger);
 
 const articles = [
     {
-        title: "Jak zautomatyzowaliśmy onboarding w firmie produkcyjnej",
-        tag: "Case Study",
-        time: "4 min czytania"
+        title: "Google TurboQuant: Algorytm, który zmieści potężne AI w Twoim telefonie",
+        tag: "Wiedza",
+        time: "4 min czytania",
+        slug: "google-turboquant-kompresja-ai"
     },
     {
-        title: "OCR vs AI: Dlaczego stare systemy do faktur zawodzą",
-        tag: "Edukacja",
-        time: "6 min czytania"
+        title: "Zatrudnię Juniora za 2000$ miesięcznie! (Z małym twistem)",
+        tag: "Wiedza",
+        time: "5 min czytania",
+        slug: "zatrudnie-juniora-ai"
     }
 ];
 
@@ -153,8 +155,8 @@ export function NewsletterSection() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 relative z-10">
                         {articles.map((article, idx) => (
-                            <a
-                                href="#!"
+                            <Link
+                                to={`/blog/${article.slug}`}
                                 key={idx}
                                 className="article-animate opacity-0 group block p-8 rounded-[10px] bg-white border border-black/10 shadow-sm hover:shadow-xl hover:border-black/15 transition-all duration-300"
                             >
@@ -166,7 +168,7 @@ export function NewsletterSection() {
                                     {article.title}
                                 </h3>
                                 <p className="text-sm font-mono text-muted-dark">{article.time}</p>
-                            </a>
+                            </Link>
                         ))}
                     </div>
 

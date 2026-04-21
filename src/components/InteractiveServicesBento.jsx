@@ -1,17 +1,19 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { SERVICES } from '../data/services';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowUpRight, ArrowLeft, ArrowRight, Check, Play, Pause, X, Zap, Sparkles } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Logo } from './ui/Logo';
-import { Floating } from './animations/Floating';
 
 function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
 import { ThreeDMarquee } from './ui/ThreeDMarquee';
+import { Terminal, AnimatedSpan, TypingAnimation } from './ui/Terminal';
 import PhoneMockupCard from './PhoneMockupCard';
 import anthropicLogo from '../assets/logos/anthropic.png';
 import claudeLogo from '../assets/logos/claude.png';
@@ -375,15 +377,9 @@ function TrainingPreview() {
     <div className="w-full h-full flex items-center justify-center relative mt-8 pr-8">
       <div className="grid [grid-template-areas:'stack'] place-items-center">
         {cards.map((cardProps, index) => (
-          <Floating 
-            key={index} 
-            duration={4 + index} 
-            amplitude={10 + index * 5} 
-            delay={index * 0.5}
-            className="[grid-area:stack]"
-          >
+          <div key={index} className="[grid-area:stack]">
             <DisplayCard {...cardProps} />
-          </Floating>
+          </div>
         ))}
       </div>
     </div>
@@ -426,8 +422,7 @@ function AgentPreview() {
 
     return (
         <div ref={containerRef} className="w-full h-full flex items-start justify-center pt-6 px-4">
-            <Floating duration={6} amplitude={12} rotation={2}>
-                <PhoneMockupCard className="shadow-2xl will-change-transform">
+            <PhoneMockupCard className="shadow-2xl will-change-transform">
                     <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', margin: '-24px -24px -64px -24px' }}>
                         {/* App header bar */}
                         <div style={{
@@ -518,34 +513,95 @@ function AgentPreview() {
 
                         </div>
                     </div>
-                </PhoneMockupCard>
-            </Floating>
+            </PhoneMockupCard>
         </div>
     );
 }
 function CreativePreview() {
+    // TODO: placeholder - czekamy na nowy element wizualny od użytkownika.
+    // Poprzednio: ThreeDMarquee (3D grid logo AI), potem Lottie jitter-scene (za mała skala).
     return (
-        <div className="w-full h-full flex items-start justify-center overflow-hidden relative -mt-4">
-            <ThreeDMarquee className="w-full" />
+        <div className="w-full h-full flex items-center justify-center overflow-hidden relative">
+            <div className="text-xs text-muted-dark/50 font-mono tracking-wider uppercase">
+                {/* intentionally empty */}
+            </div>
             <ParticleBlur position="bottom-right" />
         </div>
     );
 }
 
-// --- DATA STRUCTURE & EXPANDED BENTO BUILDER ---
+function AppDevPreview() {
+    return (
+        <div className="w-full h-full flex items-start justify-center relative pt-2 pr-2 pointer-events-none select-none">
+            <Terminal className="shadow-2xl w-[340px] md:w-[400px] lg:w-[420px] will-change-transform">
+                    <TypingAnimation duration={40}>&gt; npx create-workshift-app@latest</TypingAnimation>
 
-const SERVICES = [
+                    <AnimatedSpan delay={1600} className="text-green-400">
+                        ✔ Analiza procesów klienta.
+                    </AnimatedSpan>
+                    <AnimatedSpan delay={1900} className="text-green-400">
+                        ✔ Integracje: Google, Slack, CRM.
+                    </AnimatedSpan>
+                    <AnimatedSpan delay={2200} className="text-green-400">
+                        ✔ Schemat bazy danych.
+                    </AnimatedSpan>
+                    <AnimatedSpan delay={2500} className="text-green-400">
+                        ✔ Konfiguracja autentykacji.
+                    </AnimatedSpan>
+                    <AnimatedSpan delay={2800} className="text-green-400">
+                        ✔ Generowanie modułu AI.
+                    </AnimatedSpan>
+                    <AnimatedSpan delay={3100} className="text-green-400">
+                        ✔ Podpięcie n8n workflow.
+                    </AnimatedSpan>
+                    <AnimatedSpan delay={3400} className="text-green-400">
+                        ✔ Panel administratora gotowy.
+                    </AnimatedSpan>
+
+                    <AnimatedSpan delay={3800} className="text-blue-400">
+                        <span>ℹ Wdrożenie:</span>
+                        <span className="pl-2 text-white/70">- app.twoja-firma.pl ✓</span>
+                    </AnimatedSpan>
+
+                    <TypingAnimation delay={4200} duration={30} className="text-white/60">
+                        Gotowe. Aplikacja wdrożona.
+                    </TypingAnimation>
+            </Terminal>
+            <ParticleBlur position="top-right" />
+        </div>
+    );
+}
+
+// --- DATA STRUCTURE & EXPANDED BENTO BUILDER ---
+// Service data imported from ../data/services.js
+
+// Map Preview components to service IDs
+const SERVICE_PREVIEWS = {
+    automatyzacja: AutomationPreview,
+    aplikacja: AppDevPreview,
+    szkolenia: TrainingPreview,
+    agenty: AgentPreview,
+    kreacje: CreativePreview,
+};
+
+// Enrich imported SERVICES with Preview components
+const SERVICES_WITH_PREVIEWS = SERVICES.map(s => ({
+    ...s,
+    Preview: SERVICE_PREVIEWS[s.id],
+}));
+
+const _SERVICES_LEGACY = [
     {
         id: 'automatyzacja',
-        title: 'Automatyzacja procesów',
-        tagline: 'Twój zespół odzyskuje 10h+ na każdego pracownika. Pracujcie, a maszyna wpisuje sama.',
+        title: 'Audyt i automatyzacja procesów',
+        tagline: 'Najpierw pokażemy gdzie tracisz czas. Potem zbudujemy pipeline, który odda go Twojemu zespołowi.',
         colSpan: 'lg:col-span-6',
         minHeight: 'min-h-[420px] lg:min-h-[480px]',
         Preview: AutomationPreview,
 
         categoryTag: 'Nasza flagowa usługa',
-        expandedTitle: 'Twoje narzędzia, jeden płynny przepływ.',
-        expandedDescription: 'Zamiast ręcznie kopiować dane z maila do arkusza, z arkusza do CRM-a, a z CRM-a do systemu fakturowego - budujemy automatyczny pipeline, który robi to za Ciebie. Używamy n8n, Make i dedykowanych skryptów, które wpinają się w to, jak już pracujesz. Bez zmiany przyzwyczajeń, bez wdrażania nowego "systemu". Po prostu - dane płyną same.',
+        expandedTitle: 'Od diagnozy procesu - do działającego workflow.',
+        expandedDescription: 'Zaczynamy od 30-minutowej darmowej diagnozy i mapy Twoich procesów. Wskazujemy 2-3 miejsca, gdzie automatyzacja da najszybszy, policzalny zwrot. Potem budujemy pipeline: n8n, Make i dedykowane skrypty, które wpinają się w to, jak już pracujesz. Bez zmiany przyzwyczajeń, bez wdrażania nowego "systemu" - dane płyną same.',
         heroMetric: { value: '10h+', label: 'oszczędności na pracowniku tygodniowo - średnia z naszych wdrożeń', subtext: 'Przy zespole 5-osobowym to 200h+ miesięcznie.' },
 
         innerCards: [
@@ -565,9 +621,9 @@ const SERVICES = [
                 colSpan: 'lg:col-span-4',
                 label: '3 kroki do pierwszego workflow',
                 steps: [
-                    { num: '01', title: 'Mapujemy', desc: 'Pokazujesz nam, jak dziś wygląda proces (1 spotkanie, 30 min).' },
-                    { num: '02', title: 'Budujemy', desc: 'Tworzymy workflow i testujemy na Twoich danych (1-2 tygodnie).' },
-                    { num: '03', title: 'Odpalamy', desc: 'Workflow działa, Ty dostajesz dashboard z wynikami.' },
+                    { num: '01', title: 'Diagnoza', desc: 'Darmowa rozmowa + audyt procesów (30 min online).' },
+                    { num: '02', title: 'Mapujemy i budujemy', desc: 'Workflow + testy na Twoich danych (1-2 tygodnie).' },
+                    { num: '03', title: 'Odpalamy', desc: 'Workflow działa, dostajesz dashboard z wynikami.' },
                 ]
             },
             {
@@ -575,7 +631,17 @@ const SERVICES = [
                 colSpan: 'lg:col-span-4',
                 label: 'Narzędzia, których używamy',
                 subtitle: 'Integrujemy się z 200+ narzędziami.',
-                tools: ['n8n', 'Make', 'Zapier', 'Google Workspace', 'Slack', 'API'] // placeholders for logos
+                tools: ['n8n', 'Make', 'Zapier', 'Google Workspace', 'Slack', 'API']
+            },
+            {
+                type: 'insights',
+                colSpan: 'lg:col-span-8',
+                label: 'Co najczęściej znajdujemy w audycie',
+                cards: [
+                    { icon: '🕐', title: 'Ręczne przepisywanie danych', desc: 'Pracownicy kopiują te same dane między 3-4 narzędziami. 5-8h/tydzień na osobę.' },
+                    { icon: '📧', title: 'Chaos w skrzynkach', desc: 'Zlecenia, faktury, pytania klientów - wszystko w jednym inboxie, bez filtrów.' },
+                    { icon: '📊', title: 'Raporty robione ręcznie', desc: 'Comiesięczne zestawienia składane z 5 źródeł w arkuszu. 2 dni pracy.' }
+                ]
             },
             {
                 type: 'case',
@@ -588,63 +654,70 @@ const SERVICES = [
             {
                 type: 'cta',
                 colSpan: 'lg:col-span-4',
-                headline: 'Zautomatyzuj pierwszy proces',
-                subline: 'Bezpłatna diagnoza - pokażemy Quick Win w 30 minut.',
-                ctaLabel: 'Umów rozmowę',
+                headline: 'Zacznij od darmowej diagnozy',
+                subline: '30 minut Twojego czasu. Zero zobowiązań. Konkretne rekomendacje od razu.',
+                ctaLabel: 'Umów diagnozę',
             },
         ],
     },
     {
-        id: 'audyt',
-        title: 'Audyt i Strategia AI',
-        tagline: 'Powiemy Ci gdzie tracisz czas - zanim napiszemy jedną linijkę kodu.',
+        id: 'aplikacja',
+        title: 'Dedykowana aplikacja',
+        tagline: 'Gotowe narzędzia nie ogarniają Twojego procesu? Budujemy aplikację skrojoną pod Twoją firmę.',
         colSpan: 'lg:col-span-6',
         minHeight: 'min-h-[420px] lg:min-h-[480px]',
-        Preview: AuditPreview,
+        Preview: AppDevPreview,
 
-        categoryTag: 'Krok pierwszy',
-        expandedTitle: 'Zanim zaczniemy budować - musimy wiedzieć, co budować.',
-        expandedDescription: 'Nie sprzedajemy technologii na ślepo. Najpierw siadamy z Tobą na 30-minutową diagnozę, mapujemy jak wyglądają Twoje procesy, rozmawiamy z zespołem, i wskazujemy 2-3 miejsca, gdzie automatyzacja da najszybszy, policzalny zwrot. Bez tego kroku - reszta to strzały w ciemno.',
-        heroMetric: { value: '32%', label: 'średni potencjał oszczędności czasu, który identyfikujemy u klientów MŚP', subtext: 'U niektórych firm to 50+ godzin miesięcznie.' },
+        categoryTag: 'Rozwiązanie szyte na miarę',
+        expandedTitle: 'Twój proces jest unikalny - oprogramowanie też powinno być.',
+        expandedDescription: 'Są procesy, których żaden SaaS nie obsłuży dobrze. Zamiast naginać firmę do narzędzia, budujemy aplikację skrojoną pod Twój workflow. Panel dla zespołu, integracje z Twoimi systemami, moduł AI do zadań, na które nie masz czasu. Wdrożenie w 4-8 tygodni - używamy AI-wspomaganego developmentu, więc koszt i czas są kilkukrotnie niższe niż w klasycznym software house.',
+        heroMetric: { value: '4-8 tyg.', label: 'od briefu do działającej aplikacji w produkcji', subtext: 'Tam, gdzie tradycyjny software house liczy miesiące.' },
 
         innerCards: [
             {
                 type: 'features',
-                colSpan: 'lg:col-span-6',
-                label: 'Co dostajesz po audycie',
+                colSpan: 'lg:col-span-4',
+                label: 'Co budujemy',
                 items: [
-                    'Mapę przepływu pracy Twojej firmy (workflow diagram)',
-                    'Listę zidentyfikowanych wąskich gardeł z priorytetyzacją',
-                    'Szacunek ROI - ile czasu / pieniędzy odzyskasz per automatyzacja',
-                    'Roadmapę: co wdrożyć najpierw, co może poczekać',
+                    'Wewnętrzny panel operacyjny (CRM / ERP / workflow)',
+                    'Aplikacja kliencka (portal, konfigurator, self-service)',
+                    'Dashboardy z danymi z Twoich narzędzi w czasie rzeczywistym',
+                    'Moduły AI wpięte w proces (klasyfikacja, OCR, asystent)',
                 ],
             },
             {
-                type: 'timeline',
-                colSpan: 'lg:col-span-6',
-                label: 'Jak to wygląda',
+                type: 'process',
+                colSpan: 'lg:col-span-4',
+                label: 'Jak pracujemy',
                 steps: [
-                    { title: 'Dzień 1', desc: 'Diagnoza online (30 min, darmowa)' },
-                    { title: 'Tydzień 1', desc: 'Wywiady z zespołem + mapowanie procesów' },
-                    { title: 'Tydzień 2', desc: 'Dostajesz raport z roadmapą i Quick Wins' },
+                    { num: '01', title: 'Discovery', desc: 'Warsztat + mapa procesu, makieta głównych ekranów (3-5 dni).' },
+                    { num: '02', title: 'MVP', desc: 'Pierwsza działająca wersja w 2-3 tygodnie - na Twoich danych.' },
+                    { num: '03', title: 'Iteracje', desc: 'Kolejne moduły co tydzień, feedback na bieżąco od zespołu.' },
                 ]
             },
             {
-                type: 'insights',
+                type: 'stack',
+                colSpan: 'lg:col-span-4',
+                label: 'Stack technologiczny',
+                subtitle: 'Nowoczesny, utrzymywany przez lata.',
+                tools: ['Next.js', 'React', 'Supabase', 'Postgres', 'Vercel', 'AI SDK']
+            },
+            {
+                type: 'usp',
                 colSpan: 'lg:col-span-8',
-                label: 'Co najczęściej znajdujemy u klientów',
-                cards: [
-                    { icon: '🕐', title: 'Ręczne przepisywanie danych', desc: 'Pracownicy kopiują te same dane między 3-4 narzędziami. Często 5-8h/tydzień.' },
-                    { icon: '📧', title: 'Chaos w skrzynkach', desc: 'Zlecenia, faktury, pytania klientów - wszystko w jednym inboxie, bez filtrów.' },
-                    { icon: '📊', title: 'Raporty robione ręcznie', desc: 'Comiesięczne zestawienia składane z 5 źródeł w arkuszu. 2 dni pracy.' }
+                label: 'Dlaczego nie kupić gotowego SaaS-u?',
+                points: [
+                    { title: 'Masz unikalny proces', desc: 'SaaS narzuca swój model pracy. My budujemy pod to, jak faktycznie działa Twoja firma.' },
+                    { title: 'Zero abonamentów per user', desc: 'Jedno wdrożenie, Twój kod. Żadnych niespodzianek przy skalowaniu zespołu.' },
+                    { title: 'AI w rdzeniu aplikacji', desc: 'Nie dokręcamy AI do starego UI - od początku projektujemy proces wokół modeli.' },
                 ]
             },
             {
                 type: 'cta',
                 colSpan: 'lg:col-span-4',
-                headline: 'Zacznij od darmowej diagnozy',
-                subline: '30 minut Twojego czasu. Zero zobowiązań. Konkretne rekomendacje od razu.',
-                ctaLabel: 'Umów diagnozę',
+                headline: 'Masz pomysł na aplikację?',
+                subline: 'Pokażemy wstępną architekturę i szacunek kosztu w 1 rozmowie.',
+                ctaLabel: 'Porozmawiajmy',
             },
         ],
     },
@@ -1027,7 +1100,7 @@ function ExtendedInnerCard({ card, index }) {
     );
 }
 
-function ExpandedServiceView({ service, onClose }) {
+export function ExpandedServiceView({ service, onClose }) {
     const containerRef = useRef(null);
 
     useLayoutEffect(() => {
@@ -1046,7 +1119,7 @@ function ExpandedServiceView({ service, onClose }) {
     return (
         <div
             ref={containerRef}
-            className="w-full relative opacity-0"
+            className="w-full relative opacity-0 pt-10"
         >
             <button
                 onClick={onClose}
@@ -1096,6 +1169,17 @@ function ExpandedServiceView({ service, onClose }) {
 
                 </div>
             </GlareCard>
+
+            {/* Bottom back button */}
+            <button
+                onClick={onClose}
+                className="mt-8 mx-auto flex items-center gap-2 text-[12px] font-mono uppercase tracking-widest text-muted-dark hover:text-black transition-colors group/back px-2"
+            >
+                <div className="w-8 h-8 rounded-full bg-sage flex items-center justify-center group-hover/back:bg-sage/80 transition-colors border border-black/5">
+                    <ArrowLeft size={14} className="group-hover/back:-translate-x-1 transition-transform" />
+                </div>
+                Wróć do usług
+            </button>
         </div>
     );
 }
@@ -1218,7 +1302,7 @@ function LogoCloudHeader() {
 }
 
 export function InteractiveServicesBento() {
-    const [selectedId, setSelectedId] = useState(null);
+    const navigate = useNavigate();
     const containerRef = useRef(null);
 
     useLayoutEffect(() => {
@@ -1232,15 +1316,15 @@ export function InteractiveServicesBento() {
         return () => ctx.revert();
     }, []);
 
-    // Fade in grid on mount/unmount/change
+    // Fade in grid on mount
     useLayoutEffect(() => {
-        if (!selectedId && containerRef.current) {
+        if (containerRef.current) {
             gsap.fromTo(".gsap-bento-grid", 
                 { opacity: 0 }, 
                 { opacity: 1, duration: 0.4 }
             );
         }
-    }, [selectedId]);
+    }, []);
 
     return (
         <section className="py-24 md:py-32 bg-white relative overflow-hidden" id="uslugi" ref={containerRef}>
@@ -1249,47 +1333,37 @@ export function InteractiveServicesBento() {
                 <LogoCloudHeader />
 
                 <div className="relative">
-                    {selectedId ? (
-                        <ExpandedServiceView
-                            key={selectedId}
-                            service={SERVICES.find(s => s.id === selectedId)}
-                            onClose={() => setSelectedId(null)}
-                        />
-                    ) : (
-                        <div
-                            key="grid"
-                            className="gsap-bento-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 lg:gap-5"
-                        >
-                            {SERVICES.map((service, idx) => (
-                                <GlareCard
-                                    key={service.id}
-                                    onClick={() => setSelectedId(service.id)}
-                                    className={`${service.colSpan} ${service.minHeight}`}
-                                >
-                                    <CollapsedCard service={service} index={idx} />
-                                </GlareCard>
-                            ))}
-                        </div>
-                    )}
+                    <div
+                        key="grid"
+                        className="gsap-bento-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 lg:gap-5"
+                    >
+                        {SERVICES_WITH_PREVIEWS.map((service, idx) => (
+                            <GlareCard
+                                key={service.id}
+                                onClick={() => navigate(`/uslugi/${service.id}`)}
+                                className={`${service.colSpan} ${service.minHeight}`}
+                            >
+                                <CollapsedCard service={service} index={idx} />
+                            </GlareCard>
+                        ))}
+                    </div>
                 </div>
 
                 {/* Modular services note */}
-                {!selectedId && (
-                    <div className="gsap-modular-note opacity-0 mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 md:p-6 rounded-[10px] bg-sage border border-black/5">
-                        <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 shrink-0 rounded-full bg-white border border-black/10 shadow-sm flex items-center justify-center">
-                                <span className="text-lg">🧩</span>
-                            </div>
-                            <div>
-                                <p className="font-medium text-black text-sm mb-0.5">Kupujesz tylko to, czego naprawdę potrzebujesz</p>
-                                <p className="text-muted-dark text-sm">Każdą usługę możesz zamówić osobno - sam audyt, samo wdrożenie, samo szkolenie. Bez pakietów, bez nadmuchanych scope'ów.</p>
-                            </div>
+                <div className="gsap-modular-note opacity-0 mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 md:p-6 rounded-[10px] bg-sage border border-black/5">
+                    <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 shrink-0 rounded-full bg-white border border-black/10 shadow-sm flex items-center justify-center">
+                            <span className="text-lg">🧩</span>
                         </div>
-                        <a href="#kontakt" className="inline-flex items-center gap-2 bg-white border border-black/10 text-black px-5 py-2.5 rounded-[10px] font-medium text-sm shadow-sm hover:border-lime/40 hover:bg-lime/10 transition-all duration-200 shrink-0 whitespace-nowrap">
-                            Zapytaj o zakres →
-                        </a>
+                        <div>
+                            <p className="font-medium text-black text-sm mb-0.5">Kupujesz tylko to, czego naprawdę potrzebujesz</p>
+                            <p className="text-muted-dark text-sm">Każdą usługę możesz zamówić osobno - sam audyt, samo wdrożenie, samo szkolenie. Bez pakietów, bez nadmuchanych scope'ów.</p>
+                        </div>
                     </div>
-                )}
+                    <a href="#kontakt" className="inline-flex items-center gap-2 bg-white border border-black/10 text-black px-5 py-2.5 rounded-[10px] font-medium text-sm shadow-sm hover:border-lime/40 hover:bg-lime/10 transition-all duration-200 shrink-0 whitespace-nowrap">
+                        Zapytaj o zakres →
+                    </a>
+                </div>
 
             </div>
         </section>

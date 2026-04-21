@@ -110,7 +110,7 @@ AI właśnie demokratyzuje budowanie oprogramowania. A "good enough" dowiezione 
     category: 'Wiedza',
     date: '2026-03-01',
     author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.png' },
-    image: 'https://images.unsplash.com/photo-1516321318423-f06f85e514b3?w=800&q=80',
+    image: '/images/blog/zatrudnie-juniora-ai.png',
     excerpt:
       'Ten junior pracuje 24/7, nie bierze L4 i nie zapomina o zadaniach. Poznaj junior.so i nową rzeczywistość agentów AI.',
     content: `

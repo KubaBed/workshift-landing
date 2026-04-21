@@ -4,7 +4,7 @@ import { BlogCard } from '../components/blog/BlogCard';
 import { FadeUp } from '../components/animations/FadeUp';
 
 /**
- * Blog listing page — /blog
+ * Blog listing page - /blog
  * Layout:
  *   Hero + category filters
  *   Row 1: 2 featured cards (asymmetric 57/43%)
@@ -76,7 +76,7 @@ export default function BlogListPage() {
           </div>
         )}
 
-        {/* Featured row — 2 cards, asymmetric */}
+        {/* Featured row - 2 cards, asymmetric */}
         {featured.length > 0 && (
           <FadeUp delay={0.1}>
             <div className="grid grid-cols-1 md:grid-cols-[1.3fr_1fr] gap-8 md:gap-16 mb-16">

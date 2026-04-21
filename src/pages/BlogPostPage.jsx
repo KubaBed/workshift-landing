@@ -7,7 +7,7 @@ import { BlogCard } from '../components/blog/BlogCard';
 import { FadeUp } from '../components/animations/FadeUp';
 
 /**
- * Blog article page — /blog/:slug
+ * Blog article page - /blog/:slug
  * Layout:
  *   Banner: author avatar + meta + H1 title + featured image (centered, full-width)
  *   Body:   800px centered column, markdown-like HTML rendering
@@ -57,7 +57,7 @@ export default function BlogPostPage() {
           </Link>
         </FadeUp>
 
-        {/* Author + Meta — centered */}
+        {/* Author + Meta - centered */}
         <FadeUp delay={0.05}>
           <div className="flex flex-col items-center text-center mb-8">
 
@@ -70,14 +70,14 @@ export default function BlogPostPage() {
           </div>
         </FadeUp>
 
-        {/* Title — centered, large */}
+        {/* Title - centered, large */}
         <FadeUp delay={0.1}>
           <h1 className="text-3xl md:text-5xl lg:text-[60px] font-display tracking-tight text-black text-center max-w-[900px] mx-auto leading-[1.1] mb-12">
             {post.title}
           </h1>
         </FadeUp>
 
-        {/* Featured image — full container width */}
+        {/* Featured image - full container width */}
         <FadeUp delay={0.15}>
           <div className="w-full overflow-hidden rounded-[10px]">
             <img
@@ -155,7 +155,7 @@ export default function BlogPostPage() {
               Masz pomysł? Porozmawiajmy.
             </h2>
             <p className="text-muted-light text-lg mb-10 max-w-lg mx-auto">
-              Bezpłatna konsultacja — bez zobowiązań, bez haczyka.
+              Bezpłatna konsultacja - bez zobowiązań, bez haczyka.
             </p>
             <Link
               to="/#kontakt"
@@ -184,7 +184,7 @@ function renderContent(raw) {
   for (const line of lines) {
     const trimmed = line.trim();
 
-    // Empty line — close list if open, add spacing
+    // Empty line - close list if open, add spacing
     if (!trimmed) {
       if (inList) { html += '</ul>'; inList = false; }
       continue;
