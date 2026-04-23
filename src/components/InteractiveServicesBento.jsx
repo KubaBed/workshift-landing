@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { SERVICES } from '../data/services';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowUpRight, ArrowLeft, ArrowRight, Check, Play, Pause, X, Zap, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowUpRight, ArrowLeft, ArrowRight, Check, Play, Pause, X, Zap, Sparkles, BookOpen, Lock } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Logo } from './ui/Logo';
@@ -14,6 +15,7 @@ function cn(...inputs) {
 
 import { ThreeDMarquee } from './ui/ThreeDMarquee';
 import { Terminal, AnimatedSpan, TypingAnimation } from './ui/Terminal';
+import { CircularGallery } from './ui/CircularGallery';
 import PhoneMockupCard from './PhoneMockupCard';
 import anthropicLogo from '../assets/logos/anthropic.png';
 import claudeLogo from '../assets/logos/claude.png';
@@ -163,227 +165,238 @@ function AutomationPreview() {
     );
 }
 
-function AuditPreview() {
-    const mainColor = '#9CE069';
-    const secondaryColor = '#d5a4e7';
+// Identified processes with before/after timings discovered by an audit.
+// Values intentionally illustrative - they suggest scale ("tyle można urwać")
+// without claiming specific numbers for a specific client.
+const AUDIT_PROCESSES = [
+    { name: 'Fakturowanie klientów',    beforePct: 92, afterPct: 26, saved: '-72%' },
+    { name: 'Raportowanie sprzedaży',   beforePct: 78, afterPct: 36, saved: '-54%' },
+    { name: 'Onboarding nowego klienta',beforePct: 85, afterPct: 10, saved: '-89%' },
+];
 
-    // Bar data: default state and hover state
-    const barsData = [
-        { w: 15, h: 20, y: 130, hH: 20, hY: 140, fill: 'default', hFill: 'secondary' },
-        { w: 15, h: 30, y: 110, hH: 35, hY: 125, fill: 'main', hFill: 'main' },
-        { w: 15, h: 45, y: 95, hH: 30, hY: 130, fill: 'main', hFill: 'main' },
-        { w: 15, h: 35, y: 105, hH: 55, hY: 105, fill: 'main', hFill: 'main' },
-        { w: 15, h: 25, y: 125, hH: 40, hY: 120, fill: 'default', hFill: 'secondary' },
-        { w: 15, h: 50, y: 100, hH: 25, hY: 135, fill: 'default', hFill: 'secondary' },
-        { w: 15, h: 60, y: 80, hH: 40, hY: 120, fill: 'main', hFill: 'main' },
-        { w: 15, h: 35, y: 105, hH: 20, hY: 140, fill: 'main', hFill: 'main' },
-        { w: 15, h: 20, y: 130, hH: 50, hY: 110, fill: 'default', hFill: 'secondary' },
-        { w: 15, h: 45, y: 95, hH: 65, hY: 95, fill: 'main', hFill: 'main' },
-        { w: 15, h: 30, y: 120, hH: 75, hY: 85, fill: 'default', hFill: 'secondary' },
-        { w: 15, h: 55, y: 95, hH: 55, hY: 105, fill: 'default', hFill: 'secondary' },
-        { w: 15, h: 25, y: 125, hH: 85, hY: 75, fill: 'default', hFill: 'secondary' },
-        { w: 15, h: 40, y: 100, hH: 95, hY: 65, fill: 'main', hFill: 'main' },
-    ];
-
-    const getFill = (type) => {
-        if (type === 'main') return mainColor;
-        if (type === 'secondary') return secondaryColor;
-        return 'rgba(148, 163, 184, 0.15)'; // default: subtle slate
-    };
-
+function AuditRow({ process, index }) {
+    const baseDelay = 0.25 + index * 0.12;
     return (
-        <div className="relative w-full max-w-[356px] h-[220px] md:h-[240px] overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-lg
-                        group-hover:shadow-xl group-hover:scale-[1.02] transition-all duration-500 will-change-transform">
-
-            {/* Grid overlay */}
-            <div
-                className="pointer-events-none absolute inset-0 z-[4] h-full w-full bg-transparent opacity-50"
-                style={{
-                    backgroundImage: `linear-gradient(to right, rgba(148,163,184,0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(148,163,184,0.08) 1px, transparent 1px)`,
-                    backgroundSize: '20px 20px',
-                    backgroundPosition: 'center',
-                    maskImage: 'radial-gradient(ellipse 50% 50% at 50% 50%, #000 60%, transparent 100%)',
-                    WebkitMaskImage: 'radial-gradient(ellipse 50% 50% at 50% 50%, #000 60%, transparent 100%)',
-                }}
-            />
-
-            {/* Radial gradient glow */}
-            <div className="absolute inset-0 z-[5] flex items-center justify-center">
-                <svg width="100%" height="100%" viewBox="0 0 356 220" fill="none" preserveAspectRatio="none">
-                    <rect width="356" height="220" fill="url(#auditGlow)" />
-                    <defs>
-                        <radialGradient id="auditGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
-                            gradientTransform="translate(178 140) rotate(90) scale(100 178)">
-                            <stop stopColor={mainColor} stopOpacity="0.2" />
-                            <stop offset="0.4" stopColor={mainColor} stopOpacity="0.08" />
-                            <stop offset="1" stopOpacity="0" />
-                        </radialGradient>
-                    </defs>
-                </svg>
+        <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: baseDelay, duration: 0.35, ease: [0.2, 0, 0, 1] }}
+            className="rounded-lg px-3 py-2.5 bg-black/[0.02]"
+        >
+            <div className="flex items-center justify-between gap-3 mb-1.5">
+                <p className="text-[11.5px] font-semibold text-black leading-tight truncate">{process.name}</p>
+                <span className="text-[10px] font-mono tabular-nums font-bold text-black bg-lime/40 px-1.5 py-0.5 rounded">
+                    {process.saved}
+                </span>
             </div>
-
-            {/* Stat badges - fade out on hover */}
-            <div className="absolute top-3 left-3 z-[9] flex items-center gap-1.5 transition-opacity duration-300 group-hover:opacity-0">
-                <div className="flex items-center rounded-full border border-slate-200 bg-white/60 px-2 py-0.5 backdrop-blur-sm">
-                    <div className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: mainColor }} />
-                    <span className="ml-1.5 text-[10px] font-bold text-black">+32%</span>
-                </div>
-                <div className="flex items-center rounded-full border border-slate-200 bg-white/60 px-2 py-0.5 backdrop-blur-sm">
-                    <div className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: secondaryColor }} />
-                    <span className="ml-1.5 text-[10px] font-bold text-black">+18,7%</span>
+            {/* Before bar */}
+            <div className="flex items-center gap-2 mb-1">
+                <span className="text-[8px] font-mono uppercase tracking-wider text-black/40 w-8 shrink-0">przed</span>
+                <div className="flex-1 h-1.5 rounded-full bg-black/10 overflow-hidden">
+                    <motion.div
+                        initial={{ width: '0%' }}
+                        whileInView={{ width: `${process.beforePct}%` }}
+                        viewport={{ once: true }}
+                        transition={{ delay: baseDelay + 0.1, duration: 0.7, ease: [0.2, 0, 0, 1] }}
+                        className="h-full rounded-full bg-black/30"
+                    />
                 </div>
             </div>
+            {/* After bar */}
+            <div className="flex items-center gap-2">
+                <span className="text-[8px] font-mono uppercase tracking-wider text-black/60 w-8 shrink-0">po</span>
+                <div className="flex-1 h-1.5 rounded-full bg-black/10 overflow-hidden">
+                    <motion.div
+                        initial={{ width: '0%' }}
+                        whileInView={{ width: `${process.afterPct}%` }}
+                        viewport={{ once: true }}
+                        transition={{ delay: baseDelay + 0.25, duration: 0.7, ease: [0.2, 0, 0, 1] }}
+                        className="h-full rounded-full bg-lime"
+                    />
+                </div>
+            </div>
+        </motion.div>
+    );
+}
 
-            {/* Hover tooltip - slides up on hover */}
-            <div className="absolute inset-0 z-[7] flex items-start justify-center p-4
-                            translate-y-full group-hover:translate-y-0
-                            transition-transform duration-500 ease-[cubic-bezier(0.6,0.6,0,1)]">
-                <div className="rounded-lg border border-slate-200 bg-white/70 p-2.5 backdrop-blur-sm
-                                opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                    <div className="flex items-center gap-2 mb-0.5">
-                        <div className="h-2 w-2 rounded-full" style={{ backgroundColor: mainColor }} />
-                        <p className="text-xs font-bold text-black">Potencjał oszczędności</p>
+function AuditPreview() {
+    return (
+        <div className="w-full h-full flex items-center justify-center relative px-4 py-6 pointer-events-none select-none">
+            <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.5, ease: [0.2, 0, 0, 1] }}
+                className="w-full max-w-[340px] rounded-2xl border border-black/5 bg-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15),0_4px_12px_-4px_rgba(0,0,0,0.08)] overflow-hidden antialiased"
+            >
+                {/* Header */}
+                <div className="flex items-center gap-2.5 px-4 pt-3.5 pb-3 border-b border-black/5">
+                    <div className="w-8 h-8 rounded-lg bg-lime/25 flex items-center justify-center shrink-0">
+                        <Zap className="w-4 h-4 text-black" strokeWidth={2} fill="currentColor" />
                     </div>
-                    <p className="text-[11px] text-slate-500 font-medium">Zidentyfikowaliśmy 32% czasu do odzyskania.</p>
+                    <div className="flex-1 min-w-0">
+                        <p className="text-[11px] font-semibold text-black tracking-tight leading-tight">Raport z audytu</p>
+                        <p className="text-[10px] text-black/50 font-medium leading-tight mt-0.5">
+                            3 procesy do automatyzacji
+                        </p>
+                    </div>
+                    <div className="flex items-center gap-1 text-[9px] font-mono uppercase tracking-wider text-emerald-700 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded">
+                        <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
+                        live
+                    </div>
                 </div>
-            </div>
 
-            {/* Gradient overlay on hover */}
-            <div className="absolute inset-0 z-[6] translate-y-full opacity-0
-                            group-hover:translate-y-0 group-hover:opacity-100
-                            transition-all duration-500 ease-[cubic-bezier(0.6,0.6,0,1)]">
-                <svg width="100%" height="100%" viewBox="0 0 356 220" fill="none" preserveAspectRatio="none">
-                    <rect width="356" height="220" fill="url(#auditHoverGrad)" />
-                    <defs>
-                        <linearGradient id="auditHoverGrad" x1="178" y1="0" x2="178" y2="220" gradientUnits="userSpaceOnUse">
-                            <stop offset="0.35" stopColor={mainColor} stopOpacity="0" />
-                            <stop offset="1" stopColor={mainColor} stopOpacity="0.25" />
-                        </linearGradient>
-                    </defs>
-                </svg>
-            </div>
-
-            {/* Animated bars  */}
-            <div className="absolute inset-0 z-[8] flex items-center justify-center
-                            group-hover:scale-[1.15] transition-transform duration-500 ease-[cubic-bezier(0.6,0.6,0,1)]">
-                <svg width="356" height="180" viewBox="0 0 356 180" xmlns="http://www.w3.org/2000/svg" className="mt-4">
-                    {barsData.map((bar, i) => (
-                        <rect
-                            key={i}
-                            width={bar.w}
-                            x={30 + i * 21}
-                            rx="2" ry="2"
-                            className="transition-all duration-500 ease-[cubic-bezier(0.6,0.6,0,1)]"
-                            style={{
-                                height: bar.h,
-                                y: bar.y,
-                                fill: getFill(bar.fill),
-                            }}
-                        >
-                            {/* CSS can't animate SVG y/height attrs, so we use two-state approach with group-hover in the style */}
-                        </rect>
+                {/* Process rows */}
+                <div className="flex flex-col gap-1.5 p-2">
+                    {AUDIT_PROCESSES.map((p, i) => (
+                        <AuditRow key={p.name} process={p} index={i} />
                     ))}
-                </svg>
-
-                {/* Hidden duplicate that shows on hover with different values */}
-                <svg width="356" height="180" viewBox="0 0 356 180" xmlns="http://www.w3.org/2000/svg"
-                    className="absolute mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    {barsData.map((bar, i) => (
-                        <rect
-                            key={i}
-                            width={bar.w}
-                            height={bar.hH}
-                            x={30 + i * 21}
-                            y={bar.hY}
-                            rx="2" ry="2"
-                            fill={getFill(bar.hFill)}
-                            className="transition-all duration-500 ease-[cubic-bezier(0.6,0.6,0,1)]"
-                        />
-                    ))}
-                </svg>
-            </div>
-
-            {/* Branding tag */}
-            <div className="absolute bottom-3 left-3 z-[10] flex items-center gap-1.5">
-                <div className="w-4 h-4 rounded bg-gradient-to-br from-accent to-accent-purple flex items-center justify-center">
-                    <span className="text-white text-[7px] font-bold">W</span>
                 </div>
-                <span className="text-[9px] font-bold uppercase tracking-widest text-slate-400">Audyt AI</span>
-            </div>
 
-            <ParticleBlur position="top-right" />
+                {/* Footer summary */}
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.9, duration: 0.4 }}
+                    className="flex items-center justify-between gap-3 px-4 py-2.5 border-t border-black/5 bg-lime/10"
+                >
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-black/55 font-medium">
+                        Odzyskany czas
+                    </span>
+                    <span className="text-[12px] font-semibold text-black tabular-nums">
+                        ~27h / tydzień
+                    </span>
+                </motion.div>
+            </motion.div>
+            <ParticleBlur position="bottom-right" />
         </div>
     );
 }
 
-function DisplayCard({
-  className,
-  icon = <Sparkles className="w-4 h-4 text-accent" />,
-  title = "Featured",
-  description = "Discover amazing content",
-  date = "Just now",
-  iconClassName = "text-accent",
-  titleClassName = "text-black",
-}) {
-  return (
-    <div
-      className={cn(
-        "relative flex h-32 w-64 select-none flex-col justify-between rounded-2xl border border-slate-200/60 bg-white/95 backdrop-blur-sm px-5 py-4 transition-all duration-500 hover:border-accent/40 shadow-[0_8px_30px_rgb(0,0,0,0.06)]",
-        className
-      )}
-    >
-      <div className="flex items-center gap-3">
-        <span className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-50 shadow-sm border border-slate-100">
-          {icon}
-        </span>
-        <p className={cn("text-sm font-semibold tracking-tight", titleClassName)}>{title}</p>
-      </div>
-      <div className="mt-1 text-left">
-        <p className="text-[13px] text-slate-600 font-medium leading-tight">{description}</p>
-      </div>
-      <div className="mt-auto text-left">
-        <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">{date}</p>
-      </div>
-    </div>
-  );
+function TrainingPreview() {
+    const modules = [
+        { id: 1, title: 'Wprowadzenie do GenAI', duration: '12 min', state: 'done' },
+        { id: 2, title: 'Prompt engineering w praktyce', duration: '18 min', state: 'done' },
+        { id: 3, title: 'Narzędzia AI dla zespołu', duration: '22 min', state: 'active' },
+        { id: 4, title: 'Bezpieczeństwo i RODO', duration: '15 min', state: 'locked' },
+        { id: 5, title: 'Automatyzacja procesów', duration: '24 min', state: 'locked' },
+    ];
+
+    return (
+        <div className="w-full h-full flex items-center justify-center relative px-4 py-6 pointer-events-none select-none">
+            <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.5, ease: [0.2, 0, 0, 1] }}
+                className="w-full max-w-[340px] rounded-2xl border border-black/5 bg-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15),0_4px_12px_-4px_rgba(0,0,0,0.08)] overflow-hidden antialiased"
+            >
+                {/* Header */}
+                <div className="flex items-center gap-2.5 px-4 pt-3.5 pb-3 border-b border-black/5">
+                    <div className="w-8 h-8 rounded-lg bg-lime/25 flex items-center justify-center shrink-0">
+                        <BookOpen className="w-4 h-4 text-black" strokeWidth={2} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <p className="text-[11px] font-semibold text-black tracking-tight leading-tight">Workshift Academy</p>
+                        <p className="text-[10px] text-black/50 font-medium leading-tight mt-0.5">Ścieżka: AI dla zespołów</p>
+                    </div>
+                    <span className="text-[10px] font-semibold text-black/45 tabular-nums font-mono">2 / 5</span>
+                </div>
+
+                {/* Modules */}
+                <div className="flex flex-col gap-1 p-2">
+                    {modules.map((m, i) => (
+                        <TrainingRow key={m.id} module={m} index={i} />
+                    ))}
+                </div>
+            </motion.div>
+            <ParticleBlur position="top-left" />
+        </div>
+    );
 }
 
-function TrainingPreview() {
-  const cards = [
-    {
-      title: "Prompt Engineering",
-      description: "Pisz instrukcje docelowe",
-      date: "Wprowadzenie",
-      icon: <Sparkles className="w-4 h-4 text-accent" />,
-      className: "[grid-area:stack] z-30 translate-x-0 translate-y-0 shadow-[0_8px_30px_rgb(0,0,0,0.08)] group-hover/bento:-translate-y-2 group-hover/bento:-translate-x-2 transition-all duration-500",
-    },
-    {
-      title: "Bezpieczeństwo AI",
-      description: "Ochrona danych firmy",
-      date: "Dobre praktyki",
-      icon: <Sparkles className="w-4 h-4 text-accent-light" />,
-      className: "[grid-area:stack] z-20 translate-x-4 -translate-y-6 opacity-90 shadow-md group-hover/bento:translate-x-6 group-hover/bento:-translate-y-8 group-hover/bento:opacity-100 transition-all duration-500 group-hover/bento:rotate-2",
-    },
-    {
-      title: "Narzędzia GenAI",
-      description: "Automatyzacja zadań",
-      date: "Poziom średnio.",
-      icon: <Sparkles className="w-4 h-4 text-slate-400" />,
-      className: "[grid-area:stack] z-10 translate-x-8 -translate-y-12 opacity-80 shadow-sm group-hover/bento:translate-x-12 group-hover/bento:-translate-y-14 group-hover/bento:opacity-100 transition-all duration-500 group-hover/bento:rotate-3",
-    },
-  ];
+function TrainingRow({ module: m, index }) {
+    const baseRow = 'flex items-center gap-3 rounded-lg px-3 py-2.5';
+    const enterTransition = { delay: 0.15 + index * 0.08, duration: 0.35, ease: [0.2, 0, 0, 1] };
 
-  return (
-    <div className="w-full h-full flex items-center justify-center relative mt-8 pr-8">
-      <div className="grid [grid-template-areas:'stack'] place-items-center">
-        {cards.map((cardProps, index) => (
-          <div key={index} className="[grid-area:stack]">
-            <DisplayCard {...cardProps} />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+    if (m.state === 'done') {
+        return (
+            <motion.div
+                initial={{ opacity: 0, x: -8 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={enterTransition}
+                className={cn(baseRow, 'bg-black/[0.025]')}
+            >
+                <div className="w-5 h-5 rounded-full bg-lime flex items-center justify-center shrink-0">
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                        <path d="M2 5l2 2 4-4" stroke="black" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                </div>
+                <div className="flex-1 min-w-0">
+                    <p className="text-[11.5px] font-medium text-black/65 leading-tight truncate">{m.title}</p>
+                </div>
+                <span className="text-[10px] font-mono tabular-nums text-black/40 shrink-0">{m.duration}</span>
+            </motion.div>
+        );
+    }
+
+    if (m.state === 'active') {
+        return (
+            <motion.div
+                initial={{ opacity: 0, x: -8 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={enterTransition}
+                className={cn(baseRow, 'bg-lime/15 ring-1 ring-lime/40')}
+            >
+                <div className="relative w-5 h-5 shrink-0">
+                    <span className="absolute inset-0 rounded-full bg-lime/50 animate-ping" />
+                    <div className="relative w-5 h-5 rounded-full bg-lime flex items-center justify-center">
+                        <Play className="w-2 h-2 fill-black text-black" style={{ marginLeft: 1 }} />
+                    </div>
+                </div>
+                <div className="flex-1 min-w-0">
+                    <p className="text-[11.5px] font-semibold text-black leading-tight truncate">{m.title}</p>
+                    <div className="mt-1.5 h-1 rounded-full bg-black/10 overflow-hidden">
+                        <motion.div
+                            initial={{ width: '0%' }}
+                            animate={{ width: ['0%', '72%', '72%'] }}
+                            transition={{
+                                duration: 2.8,
+                                times: [0, 0.75, 1],
+                                repeat: Infinity,
+                                repeatDelay: 1.2,
+                                ease: [0.2, 0, 0, 1],
+                            }}
+                            className="h-full rounded-full bg-black"
+                        />
+                    </div>
+                </div>
+                <span className="text-[10px] font-mono tabular-nums text-black shrink-0 font-semibold">{m.duration}</span>
+            </motion.div>
+        );
+    }
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, x: -8 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={enterTransition}
+            className={cn(baseRow, 'opacity-55')}
+        >
+            <div className="w-5 h-5 rounded-full border border-black/15 bg-transparent shrink-0 flex items-center justify-center">
+                <Lock className="w-2.5 h-2.5 text-black/40" strokeWidth={2} />
+            </div>
+            <div className="flex-1 min-w-0">
+                <p className="text-[11.5px] font-medium text-black/60 leading-tight truncate">{m.title}</p>
+            </div>
+            <span className="text-[10px] font-mono tabular-nums text-black/30 shrink-0">{m.duration}</span>
+        </motion.div>
+    );
 }
 
 function AgentPreview() {
@@ -517,14 +530,75 @@ function AgentPreview() {
         </div>
     );
 }
-function CreativePreview() {
-    // TODO: placeholder - czekamy na nowy element wizualny od użytkownika.
-    // Poprzednio: ThreeDMarquee (3D grid logo AI), potem Lottie jitter-scene (za mała skala).
+// Mock ad-creative items - simulates AI-generated ad variants cycling
+// on a slow-rotating ring, which is the core promise of the "Kreacje" service.
+const CREATIVE_ADS = [
+    { label: 'Promocja -50%',    emoji: '🔥', bg: 'linear-gradient(135deg, #FF6B6B, #EE5A6F)',   text: '#fff' },
+    { label: 'Nowa kolekcja',    emoji: '✨', bg: 'linear-gradient(135deg, #667EEA, #764BA2)',   text: '#fff' },
+    { label: 'Darmowa dostawa',  emoji: '📦', bg: 'linear-gradient(135deg, #FAF7F0, #E8E4D8)',   text: '#111' },
+    { label: 'Black Friday',     emoji: '🛍️', bg: 'linear-gradient(135deg, #0F172A, #1E293B)',   text: '#fff' },
+    { label: 'Letnia wyprzedaż', emoji: '☀️', bg: 'linear-gradient(135deg, #FDE68A, #FBBF24)',   text: '#111' },
+    { label: 'Odbierz kupon',    emoji: '🎁', bg: 'linear-gradient(135deg, #9CE069, #7ab84e)',   text: '#0b2313' },
+    { label: 'Premiera',         emoji: '🚀', bg: 'linear-gradient(135deg, #A78BFA, #8530D1)',   text: '#fff' },
+    { label: 'Zapisz się',       emoji: '💌', bg: 'linear-gradient(135deg, #FECACA, #F87171)',   text: '#111' },
+];
+
+function AdVariant({ ad, index }) {
     return (
-        <div className="w-full h-full flex items-center justify-center overflow-hidden relative">
-            <div className="text-xs text-muted-dark/50 font-mono tracking-wider uppercase">
-                {/* intentionally empty */}
+        <div
+            className="w-[88px] h-[112px] rounded-[14px] overflow-hidden flex flex-col justify-between p-2.5 antialiased will-change-transform"
+            style={{
+                background: ad.bg,
+                color: ad.text,
+                boxShadow: '0 6px 18px -6px rgba(0,0,0,0.25), 0 2px 6px -2px rgba(0,0,0,0.15), inset 0 0 0 1px rgba(0,0,0,0.08)',
+            }}
+        >
+            <div className="flex items-start justify-between">
+                <span className="text-[14px] leading-none">{ad.emoji}</span>
+                <span
+                    className="text-[7px] font-mono uppercase tracking-widest opacity-60 tabular-nums"
+                    style={{ color: ad.text }}
+                >
+                    v{String(index + 1).padStart(2, '0')}
+                </span>
             </div>
+            <div>
+                <p className="text-[10px] font-semibold leading-tight tracking-tight">{ad.label}</p>
+                <div className="mt-1.5 flex items-center gap-1">
+                    <span
+                        className="h-0.5 flex-1 rounded-full"
+                        style={{ background: ad.text, opacity: 0.2 }}
+                    />
+                    <span
+                        className="h-0.5 w-2 rounded-full"
+                        style={{ background: ad.text, opacity: 0.5 }}
+                    />
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function CreativePreview() {
+    return (
+        <div className="w-full h-full relative overflow-hidden pointer-events-none select-none">
+            <CircularGallery
+                items={CREATIVE_ADS}
+                renderItem={(ad, i) => <AdVariant ad={ad} index={i % CREATIVE_ADS.length} />}
+                radius={260}
+                duration={36}
+                offset={40}
+                elementSize={88}
+                gap={24}
+            />
+            {/* Fade mask top + sides so cards emerge/fade into the card background */}
+            <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                    background:
+                        'radial-gradient(120% 80% at 50% 100%, transparent 35%, #ffffff 78%)',
+                }}
+            />
             <ParticleBlur position="bottom-right" />
         </div>
     );
@@ -536,34 +610,34 @@ function AppDevPreview() {
             <Terminal className="shadow-2xl w-[340px] md:w-[400px] lg:w-[420px] will-change-transform">
                     <TypingAnimation duration={40}>&gt; npx create-workshift-app@latest</TypingAnimation>
 
-                    <AnimatedSpan delay={1600} className="text-green-400">
+                    <AnimatedSpan delay={1600} className="text-emerald-600">
                         ✔ Analiza procesów klienta.
                     </AnimatedSpan>
-                    <AnimatedSpan delay={1900} className="text-green-400">
+                    <AnimatedSpan delay={1900} className="text-emerald-600">
                         ✔ Integracje: Google, Slack, CRM.
                     </AnimatedSpan>
-                    <AnimatedSpan delay={2200} className="text-green-400">
+                    <AnimatedSpan delay={2200} className="text-emerald-600">
                         ✔ Schemat bazy danych.
                     </AnimatedSpan>
-                    <AnimatedSpan delay={2500} className="text-green-400">
+                    <AnimatedSpan delay={2500} className="text-emerald-600">
                         ✔ Konfiguracja autentykacji.
                     </AnimatedSpan>
-                    <AnimatedSpan delay={2800} className="text-green-400">
+                    <AnimatedSpan delay={2800} className="text-emerald-600">
                         ✔ Generowanie modułu AI.
                     </AnimatedSpan>
-                    <AnimatedSpan delay={3100} className="text-green-400">
+                    <AnimatedSpan delay={3100} className="text-emerald-600">
                         ✔ Podpięcie n8n workflow.
                     </AnimatedSpan>
-                    <AnimatedSpan delay={3400} className="text-green-400">
+                    <AnimatedSpan delay={3400} className="text-emerald-600">
                         ✔ Panel administratora gotowy.
                     </AnimatedSpan>
 
-                    <AnimatedSpan delay={3800} className="text-blue-400">
+                    <AnimatedSpan delay={3800} className="text-blue-600">
                         <span>ℹ Wdrożenie:</span>
-                        <span className="pl-2 text-white/70">- app.twoja-firma.pl ✓</span>
+                        <span className="pl-2 text-black/60">- app.twoja-firma.pl ✓</span>
                     </AnimatedSpan>
 
-                    <TypingAnimation delay={4200} duration={30} className="text-white/60">
+                    <TypingAnimation delay={4200} duration={30} className="text-black/55">
                         Gotowe. Aplikacja wdrożona.
                     </TypingAnimation>
             </Terminal>
@@ -575,9 +649,13 @@ function AppDevPreview() {
 // --- DATA STRUCTURE & EXPANDED BENTO BUILDER ---
 // Service data imported from ../data/services.js
 
-// Map Preview components to service IDs
+// Map Preview components to service IDs.
+// `automatyzacja` uses AuditPreview (Raport z audytu panel) to match the
+// concrete before/after visual style of TrainingPreview and AppDevPreview.
+// AutomationPreview (orbital 200+ tools ring) is kept for possible re-use
+// but currently unmapped.
 const SERVICE_PREVIEWS = {
-    automatyzacja: AutomationPreview,
+    automatyzacja: AuditPreview,
     aplikacja: AppDevPreview,
     szkolenia: TrainingPreview,
     agenty: AgentPreview,
@@ -1090,10 +1168,10 @@ function ExtendedInnerCard({ card, index }) {
                     </div>
                     <h4 className="text-2xl lg:text-3xl font-display text-white mb-4 relative z-10 leading-[1.1]">{card.headline}</h4>
                     <p className="text-sm text-white/60 mb-10 max-w-[240px] relative z-10">{card.subline}</p>
-                    <a href="#kontakt" className="inline-flex items-center gap-2 bg-lime text-black px-8 py-4 
-                                         rounded-[10px] font-medium text-sm shadow-[0_4px_20px_-5px_rgba(156,224,105,0.4)] group-hover:shadow-[0_10px_30px_-5px_rgba(156,224,105,0.4)] group-hover:-translate-y-1 transition-all duration-300 relative z-10 w-full justify-center">
+                    <Link to="/#kontakt" className="inline-flex items-center gap-2 bg-lime text-black px-8 py-4
+                                         rounded-[10px] font-medium text-sm shadow-[0_4px_20px_-5px_rgba(156,224,105,0.4)] group-hover:shadow-[0_10px_30px_-5px_rgba(156,224,105,0.4)] group-hover:-translate-y-1 transition-all duration-300 relative z-10 w-full justify-center active:scale-[0.96]">
                         {card.ctaLabel}
-                    </a>
+                    </Link>
                 </div>
             )}
         </div>
@@ -1106,10 +1184,10 @@ export function ExpandedServiceView({ service, onClose }) {
     useLayoutEffect(() => {
         if (containerRef.current) {
             const el = containerRef.current;
-            const top = el.getBoundingClientRect().top + window.pageYOffset - 24;
-            window.scrollTo({ top, behavior: 'smooth' });
-
-            gsap.fromTo(el, 
+            // Scroll handling is owned by the parent route (ServicePage resets
+            // to top on mount, ScrollToHash handles hash anchors). We only
+            // animate the reveal here.
+            gsap.fromTo(el,
                 { opacity: 0, clipPath: 'inset(8% 2% 8% 2% round 2rem)', scale: 0.97 },
                 { opacity: 1, clipPath: 'inset(0% 0% 0% 0% round 2rem)', scale: 1, duration: 0.55, ease: "power3.out" }
             );
@@ -1360,9 +1438,9 @@ export function InteractiveServicesBento() {
                             <p className="text-muted-dark text-sm">Każdą usługę możesz zamówić osobno - sam audyt, samo wdrożenie, samo szkolenie. Bez pakietów, bez nadmuchanych scope'ów.</p>
                         </div>
                     </div>
-                    <a href="#kontakt" className="inline-flex items-center gap-2 bg-white border border-black/10 text-black px-5 py-2.5 rounded-[10px] font-medium text-sm shadow-sm hover:border-lime/40 hover:bg-lime/10 transition-all duration-200 shrink-0 whitespace-nowrap">
+                    <Link to="/#kontakt" className="inline-flex items-center gap-2 bg-white border border-black/10 text-black px-5 py-2.5 rounded-[10px] font-medium text-sm shadow-sm hover:border-lime/40 hover:bg-lime/10 active:scale-[0.96] transition-all duration-200 shrink-0 whitespace-nowrap">
                         Zapytaj o zakres →
-                    </a>
+                    </Link>
                 </div>
 
             </div>

@@ -45,7 +45,7 @@ export function AboutUsSection() {
                                         </div>
                                         <div className="flex flex-col">
                                             <p className="font-semibold text-black text-sm">@jakubbednarz</p>
-                                            <p className="text-[11px] text-muted-dark font-medium mt-0.5">Prezes Zarządu</p>
+                                            <p className="text-[11px] text-muted-dark font-medium mt-0.5">Założyciel</p>
                                         </div>
                                     </div>
                                     <a href="https://www.linkedin.com/in/jakubbednarz/" target="_blank" rel="noopener noreferrer" className="h-9 px-4 rounded-full bg-black text-white text-xs font-semibold hover:bg-black/90 transition-colors flex items-center gap-2">
@@ -70,7 +70,7 @@ export function AboutUsSection() {
 
                             <div className="space-y-6 text-lg md:text-xl text-muted-dark leading-relaxed">
                                 <p>
-                                    Cześć, tu Jakub. W Workshift nie bawimy się w "korporacyjną nowomowę". Od lat buduję i skaluję organizacje, więc doskonale rozumiem, że każda minuta Twojego zespołu ma swoją cenę, a w raporcie P&L na koniec dnia liczy się konkretny wynik. 
+                                    Cześć, tu Jakub. Sam od kilku lat prowadzę firmę z sektora MŚP, więc dobrze znam codzienność właścicieli - ograniczony czas, rosnące koszty i zespół, który nie nadąża za wszystkim, co trzeba zrobić. Wiem, jak to jest ważyć każdą decyzję o wydatku i zastanawiać się, czy faktycznie przełoży się na realny wynik.
                                 </p>
                                 <p>
                                     Widziałem zbyt wiele firm przepalających budżety na drogie narzędzia, których nikt nie potrafi obsłużyć. Wiem też, jak frustrujące jest tracenie utalentowanych ludzi, gdy ich potencjał marnuje się na mechaniczne, powtarzalne kopiowanie danych.

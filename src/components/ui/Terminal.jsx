@@ -11,19 +11,23 @@ export function Terminal({ children, className }) {
   return (
     <div
       className={cn(
-        'z-0 h-full max-h-[400px] w-full max-w-lg rounded-xl border border-black/10 bg-[#0B0F0D] shadow-2xl',
+        'z-0 h-full max-h-[400px] w-full max-w-lg rounded-xl border border-black/10 bg-[#FAF7F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15),0_4px_12px_-4px_rgba(0,0,0,0.08)] antialiased',
         className
       )}
     >
-      <div className="flex flex-col gap-y-2 border-b border-white/10 p-3">
-        <div className="flex flex-row gap-x-2">
-          <div className="h-2.5 w-2.5 rounded-full bg-red-500/90" />
-          <div className="h-2.5 w-2.5 rounded-full bg-yellow-500/90" />
-          <div className="h-2.5 w-2.5 rounded-full bg-green-500/90" />
+      <div className="flex items-center gap-x-2 border-b border-black/5 px-3 py-2.5">
+        <div className="flex flex-row gap-x-1.5">
+          <div className="h-2.5 w-2.5 rounded-full bg-[#FF5F57] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.15)]" />
+          <div className="h-2.5 w-2.5 rounded-full bg-[#FEBC2E] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.15)]" />
+          <div className="h-2.5 w-2.5 rounded-full bg-[#28C840] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.15)]" />
         </div>
+        <span className="flex-1 text-center text-[10px] font-medium tracking-wide text-black/40 font-mono select-none">
+          workshift ~ zsh
+        </span>
+        <span className="w-[46px]" aria-hidden />
       </div>
       <pre className="p-3 overflow-hidden">
-        <code className="grid gap-y-1 text-[10px] sm:text-[11px] md:text-xs font-mono leading-snug text-white/90 whitespace-nowrap">
+        <code className="grid gap-y-1 text-[10px] sm:text-[11px] md:text-xs font-mono leading-snug text-black/85 whitespace-nowrap">
           {children}
         </code>
       </pre>

@@ -145,7 +145,7 @@ export const SERVICES = [
         categoryTag: 'Rozwój zespołu',
         expandedTitle: 'Twój zespół nie boi się AI. Po prostu nikt im nie pokazał, jak korzystać.',
         expandedDescription: 'Nie robimy wykładów. Robimy warsztaty, na których Twój zespół pracuje na SWOICH danych, w SWOICH narzędziach. Po jednym dniu - wiedzą jak promptować, jak zautomatyzować powtarzalną robotę, i jak AI wbudować w swój dzień pracy. Bez teoretyzowania.',
-        heroMetric: { value: '2-3x', label: 'wzrost produktywności pracownika po szkoleniu - raportowany przez naszych klientów' },
+        heroMetric: { value: '2-3x', label: 'wzrost produktywności pracownika w wybranych procesach, które automatyzujemy - raportowany przez naszych klientów' },
         metaTitle: 'Szkolenia AI dla firm - praktyczne warsztaty | Workshift',
         metaDescription: 'Warsztaty AI na Twoich danych i narzędziach. ChatGPT, Claude, automatyzacje. 2-3x wzrost produktywności zespołu.',
 

@@ -8,6 +8,13 @@ export default function ServicePage() {
     const navigate = useNavigate();
     const service = getServiceById(serviceId);
 
+    // Scroll to top on mount (and whenever the serviceId changes) - otherwise
+    // the previous page's scroll position is preserved across client-side
+    // navigation and users land deep inside the service page.
+    useEffect(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }, [serviceId]);
+
     // Set SEO metadata
     useEffect(() => {
         if (service) {
