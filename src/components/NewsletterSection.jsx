@@ -48,7 +48,7 @@ export function NewsletterSection() {
                 listId: 4 // Zmieniono na listę #4 zgodnie z prośbą
             };
 
-            const response = await fetch('/subscribe_newsletter.php', {
+            const response = await fetch('/api/subscribe-newsletter', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -291,7 +291,7 @@ export function NewsletterSection() {
                                                             d="M20 6L9 17L4 12" 
                                                         />
                                                     </motion.svg>
-                                                    <span>Zapisano pomyślnie!</span>
+                                                    <span>Sprawdź skrzynkę!</span>
                                                 </motion.div>
                                             ) : (
                                                 <motion.span 

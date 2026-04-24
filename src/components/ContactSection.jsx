@@ -30,7 +30,7 @@ export function ContactSection() {
                 message: e.target['contact-message'].value,
             };
 
-            const response = await fetch('/send_email.php', {
+            const response = await fetch('/api/send-email', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
