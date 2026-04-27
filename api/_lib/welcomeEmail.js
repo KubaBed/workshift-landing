@@ -44,14 +44,14 @@ function articleCard(post) {
     return `
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0 0 18px;background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:10px;overflow:hidden;">
     <tr>
-        <td>
+        <td style="padding:14px 14px 0;">
             <a href="${url}" style="text-decoration:none;color:inherit;display:block;">
-                <img src="${img}" alt="${escapeHtml(post.title)}" width="600" style="display:block;width:100%;max-width:100%;height:auto;border:0;" />
+                <img src="${img}" alt="${escapeHtml(post.title)}" width="572" style="display:block;width:100%;max-width:100%;height:auto;border:0;border-radius:6px;background:#f4f4f0;" />
             </a>
         </td>
     </tr>
     <tr>
-        <td style="padding:18px 22px 22px;">
+        <td style="padding:14px 22px 22px;">
             <p style="margin:0 0 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#6b7280;">
                 ${escapeHtml(post.category)} · ${formatDate(post.date)}
             </p>
