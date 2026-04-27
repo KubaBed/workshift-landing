@@ -7,6 +7,7 @@ import { Button } from './ui/Button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Send, CheckCircle, Clock, Shield } from 'lucide-react';
+import { track, EVENTS } from '../lib/analytics';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -38,8 +39,12 @@ export function ContactSection() {
 
             if (response.ok || (window.location.hostname === "localhost")) {
                 // Jesli to localhost, zakladamy, ze PHP nie dziala (zazwyczaj wymaga oddzielnego serwera z PHP, a Vite dziala pod Node)
-                // W przypadku sukcesu lub trybu dev: 
+                // W przypadku sukcesu lub trybu dev:
                 setSubmitted(true);
+                track(EVENTS.CONTACT_FORM_SUBMIT, {
+                    hasCompany: !!payload.company,
+                    messageLength: payload.message.length,
+                });
             } else {
                 const data = await response.json();
                 setError(data.error || "Wystąpił nieoczekiwany błąd. Spróbuj później.");
@@ -49,6 +54,7 @@ export function ContactSection() {
             if (window.location.hostname === "localhost") {
                 console.log("Mockowanie powidzenia formularza na Localhost (Brak silnika PHP)");
                 setSubmitted(true);
+                track(EVENTS.CONTACT_FORM_SUBMIT, { hasCompany: false, mock: true });
             } else {
                 setError("Problem techniczny podczas łączenia z serwerem poczty.");
             }

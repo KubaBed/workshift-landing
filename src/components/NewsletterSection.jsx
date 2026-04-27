@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Button } from './ui/Button';
 import { Input } from './ui/input';
 import newsletterBg from '../assets/newsletter-bg.png';
+import { track, EVENTS } from '../lib/analytics';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -58,6 +59,7 @@ export function NewsletterSection() {
 
             if (response.ok || window.location.hostname === "localhost") {
                 setStatus('success');
+                track(EVENTS.NEWSLETTER_SIGNUP, { stage: 'doi_sent' });
                 setTimeout(() => setIsModalOpen(false), 2000);
             } else {
                 setStatus('error');
@@ -66,6 +68,7 @@ export function NewsletterSection() {
             if (window.location.hostname === "localhost") {
                  console.log("Mockowanie powidzenia newslettera na Localhost (Brak silnika PHP)");
                  setStatus('success');
+                 track(EVENTS.NEWSLETTER_SIGNUP, { stage: 'doi_sent', mock: true });
                  setTimeout(() => setIsModalOpen(false), 2000);
             } else {
                  setStatus('error');

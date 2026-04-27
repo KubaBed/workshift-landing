@@ -8,6 +8,7 @@ import { ArrowUpRight, ArrowLeft, ArrowRight, Check, Play, Pause, X, Zap, Sparkl
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Logo } from './ui/Logo';
+import { track, EVENTS } from '../lib/analytics';
 
 function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -1454,7 +1455,10 @@ export function InteractiveServicesBento() {
                         {SERVICES_WITH_PREVIEWS.map((service, idx) => (
                             <GlareCard
                                 key={service.id}
-                                onClick={() => navigate(`/uslugi/${service.id}`)}
+                                onClick={() => {
+                                    track(EVENTS.SERVICE_CARD_CLICK, { serviceId: service.id, position: idx });
+                                    navigate(`/uslugi/${service.id}`);
+                                }}
                                 className={`${service.colSpan} ${service.minHeight}`}
                             >
                                 <CollapsedCard service={service} index={idx} />

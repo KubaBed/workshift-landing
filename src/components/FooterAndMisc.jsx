@@ -5,6 +5,7 @@ import { Logo } from './ui/Logo';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './ui/accordion';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Floating } from './animations/Floating';
+import { track, EVENTS } from '../lib/analytics';
 // -------------------------------------------------------------
 // FAQ SECTION
 // -------------------------------------------------------------
@@ -105,7 +106,7 @@ export function CTASection() {
                     30 minut. Zero kosztów. Znajdziemy jedno "wąskie gardło" w Twoich procesach i pokażemy, jak je usunąć.
                 </p>
                 <div className="flex flex-col items-center">
-                    <Button onClick={() => setIsModalOpen(true)} variant="accent" size="lg" className="w-full sm:w-auto text-lg px-10 h-16 shadow-2xl shadow-lime/20 transition-transform active:scale-95">
+                    <Button onClick={() => { track(EVENTS.CALENDAR_OPEN, { source: 'cta_section' }); setIsModalOpen(true); }} variant="accent" size="lg" className="w-full sm:w-auto text-lg px-10 h-16 shadow-2xl shadow-lime/20 transition-transform active:scale-95">
                         Wybierz termin darmowej konsultacji
                     </Button>
                     <p className="mt-6 text-sm text-white/40 font-mono tracking-wide text-center">
@@ -143,11 +144,31 @@ export function CTASection() {
                             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-lime"></div>
                             </div>
-                            <iframe 
-                                src="https://calendar.app.google/djYy2maXAivipcSH6" 
+                            {/*
+                              Osadzony harmonogram Google Calendar Appointments.
+                              UWAGA: krótki link https://calendar.app.google/... ma nagłówek
+                              X-Frame-Options: SAMEORIGIN i nie daje się osadzić w iframe
+                              ("Google odrzucił połączenie"). Tutaj używamy pełnego URL
+                              harmonogramu z parametrem ?gv=true, który jest oficjalnym
+                              trybem embed Google i pozwala na iframe. Krótki link pozostaje
+                              jako fallback "Otwórz w nowej karcie" poniżej.
+                            */}
+                            <iframe
+                                src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ0cb-4TEvZTauBRKqCzf7NqCjxJaJvDYlNf5xDQnuyUeSRTfnZfO2jqKJ4IeuUEuEWOOtvV1_0L?gv=true"
                                 className="relative z-10 w-full h-full border-0 bg-transparent"
                                 title="Kuba Bednarczyk - Kalendarz Spotkań"
                             />
+                        </div>
+                        <div className="px-5 py-3 border-t border-black/5 bg-sage flex items-center justify-between gap-3 text-xs text-muted-dark">
+                            <span>Nie widzisz kalendarza?</span>
+                            <a
+                                href="https://calendar.app.google/djYy2maXAivipcSH6"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-medium text-black underline underline-offset-2 decoration-lime/60 hover:decoration-lime"
+                            >
+                                Otwórz w nowej karcie ↗
+                            </a>
                         </div>
                     </motion.div>
                 </div>

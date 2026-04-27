@@ -1,5 +1,7 @@
 import React, { lazy, Suspense, useEffect } from 'react';
 import { Routes, Route, useSearchParams, useNavigate, useLocation } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Header } from './components/Header';
 import { HeroTypographic } from './components/HeroTypographic';
 import { AnimatedQuoteSection } from './components/AnimatedQuoteSection';
@@ -160,6 +162,12 @@ function App() {
 
         <FloatingWhatsApp />
       </div>
+
+      {/* Vercel Analytics: cookieless, no consent banner needed.
+          Tracks page views automatically + custom events via track() helper. */}
+      <Analytics />
+      {/* Speed Insights: Core Web Vitals from real users (RUM). */}
+      <SpeedInsights />
     </div>
   );
 }

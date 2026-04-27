@@ -1,10 +1,11 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { ArrowLeft, Linkedin, Twitter, Link2 } from 'lucide-react';
 import { getPostBySlug, getRelatedPosts, formatDate } from '../data/blogPosts';
 import { BlogCard } from '../components/blog/BlogCard';
 import { FadeUp } from '../components/animations/FadeUp';
+import { track, EVENTS } from '../lib/analytics';
 
 /**
  * Blog article page - /blog/:slug
@@ -22,6 +23,30 @@ export default function BlogPostPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [slug]);
+
+  // Track "blog read complete" gdy user dochodzi do końca artykułu (sentinel
+  // div tuż za body). IntersectionObserver dużo wydajniejszy niż scroll listener
+  // — zero throttling, zero re-render, zero CPU dopóki user nie dotrze tam.
+  // Pamięć per-slug w sessionStorage żeby nie trackować tego samego posta 2x.
+  const sentinelRef = useRef(null);
+  useEffect(() => {
+    if (!post || !sentinelRef.current) return;
+    const key = `blog_read_${slug}`;
+    if (sessionStorage.getItem(key)) return;
+
+    const obs = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          track(EVENTS.BLOG_READ_COMPLETE, { slug, category: post.category });
+          sessionStorage.setItem(key, '1');
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.1 },
+    );
+    obs.observe(sentinelRef.current);
+    return () => obs.disconnect();
+  }, [slug, post]);
 
   if (!post) return <Navigate to="/blog" replace />;
 
@@ -97,6 +122,9 @@ export default function BlogPostPage() {
             dangerouslySetInnerHTML={{ __html: contentHtml }}
           />
         </FadeUp>
+
+        {/* Sentinel dla blog_read_complete event — niewidoczny, na końcu artykułu */}
+        <div ref={sentinelRef} aria-hidden="true" className="h-px w-full" />
 
         {/* Share links */}
         <div className="mt-16 pt-8 border-t border-black/10 flex items-center gap-6">

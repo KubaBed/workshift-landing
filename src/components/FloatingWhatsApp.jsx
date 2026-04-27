@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { track, EVENTS } from '../lib/analytics';
 
 export function FloatingWhatsApp() {
     return (
@@ -13,6 +14,7 @@ export function FloatingWhatsApp() {
                 href="https://wa.me/48796186067"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => track(EVENTS.WHATSAPP_CLICK, { source: 'floating_button' })}
                 className="group relative flex items-center justify-center w-14 h-14 bg-[#25D366] rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300"
                 aria-label="Napisz na WhatsApp"
             >
