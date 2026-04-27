@@ -23,7 +23,7 @@ const STORAGE_KEY = 'workshift_consent';
 export const CONSENT_VERSION = 1;
 
 const GA4_ID = 'G-B6VJVVFPLR';
-const CLARITY_ID = 'wia4hb7r2s';
+const CLARITY_ID = 'wifxjjszyz';
 
 // Custom event name dla cross-component communication.
 const CHANGE_EVENT = 'workshift:consent-change';
