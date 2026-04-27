@@ -1,5 +1,7 @@
 import { Resend } from 'resend';
 import { verifyToken } from './_lib/doi.js';
+import { buildWelcomeEmail, buildWelcomeText } from './_lib/welcomeEmail.js';
+import { blogPosts } from '../src/data/blogPosts.js';
 
 const errorPage = (title, body, status = 400) => ({
     status,
@@ -48,6 +50,10 @@ export default async function handler(req, res) {
 
     const [firstName = '', lastName = ''] = String(name).split(' ');
     const resend = new Resend(RESEND_API_KEY);
+    const {
+        RESEND_FROM_EMAIL = 'kontakt@workshift.pl',
+        RESEND_NEWSLETTER_FROM_NAME = 'Jakub Bednarz',
+    } = process.env;
 
     try {
         const { error } = await resend.contacts.create({
@@ -65,6 +71,33 @@ export default async function handler(req, res) {
             console.error('Resend error (confirm):', error);
             const page = errorPage('Chwilowy problem', 'Nie mogliśmy zakończyć zapisu. Odśwież tę stronę za minutę lub napisz na kontakt@workshift.pl.', 500);
             return res.status(page.status).send(page.html);
+        }
+
+        // Welcome email — wysyłamy tylko gdy user był nowy (alreadyExists = false).
+        // Idempotency-Key chroni przed duplikatem gdy user kliknie DOI link 2x.
+        // Nie failujemy całego flow gdy wysyłka padnie — user już jest w audience.
+        if (!alreadyExists) {
+            try {
+                const latestPosts = blogPosts.slice(0, 3);
+                const html = buildWelcomeEmail({ firstName, posts: latestPosts });
+                const text = buildWelcomeText({ firstName, posts: latestPosts });
+
+                await resend.emails.send(
+                    {
+                        from: `${RESEND_NEWSLETTER_FROM_NAME} <${RESEND_FROM_EMAIL}>`,
+                        to: [email],
+                        replyTo: 'kontakt@workshift.pl',
+                        subject: 'Dzięki za zapis. Trzy artykuły na dobry start',
+                        html,
+                        text,
+                    },
+                    { idempotencyKey: `welcome/${email}` },
+                );
+            } catch (welcomeErr) {
+                // Loguj jako warning — non-fatal. User dostał zapis, mail welcome
+                // można re-trigger ręcznie z Resend dashboard jeśli się nie udał.
+                console.warn('confirm-newsletter: welcome email failed', { email, err: welcomeErr?.message });
+            }
         }
 
         res.setHeader('Location', RESEND_DOI_REDIRECT_URL);
