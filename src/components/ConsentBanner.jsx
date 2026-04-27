@@ -63,52 +63,48 @@ export function ConsentBanner() {
         <AnimatePresence>
             {visible && (
                 <motion.div
-                    initial={{ y: 100, opacity: 0 }}
+                    initial={{ y: 60, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: 100, opacity: 0 }}
+                    exit={{ y: 60, opacity: 0 }}
                     transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                    className="fixed bottom-4 left-4 right-4 md:left-6 md:right-6 z-[10000] pointer-events-none"
+                    className="
+                        fixed z-[10000] pointer-events-none
+                        bottom-3 left-3 right-3
+                        md:left-5 md:right-auto md:bottom-5 md:max-w-[420px]
+                    "
                     role="dialog"
                     aria-label="Ustawienia cookies"
                 >
-                    <div className="max-w-[820px] mx-auto pointer-events-auto bg-white border border-black/10 rounded-[14px] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.25),0_8px_20px_-10px_rgba(0,0,0,0.15)] overflow-hidden">
+                    <div className="pointer-events-auto bg-white border border-black/10 rounded-[12px] shadow-[0_16px_40px_-16px_rgba(0,0,0,0.22),0_6px_14px_-8px_rgba(0,0,0,0.12)] overflow-hidden">
 
                         {/* Header bar — kategoria visual */}
-                        <div className="px-5 md:px-7 pt-5 md:pt-6 flex items-center justify-between gap-3">
-                            <span className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-dark">
+                        <div className="px-4 pt-3.5 flex items-center justify-between gap-2">
+                            <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-dark">
                                 <span className="w-1.5 h-1.5 rounded-full bg-lime" />
-                                Cookies & dane
+                                Cookies
                             </span>
                             <button
                                 onClick={rejectAll}
                                 aria-label="Zamknij i odrzuć wszystko"
-                                className="p-1.5 rounded-md text-muted-dark hover:text-black hover:bg-black/5 transition-colors"
+                                className="p-1 rounded-md text-muted-dark hover:text-black hover:bg-black/5 transition-colors"
                             >
-                                <X size={16} />
+                                <X size={14} />
                             </button>
                         </div>
 
                         {/* Body */}
-                        <div className="px-5 md:px-7 py-4">
-                            <h2 className="text-xl md:text-2xl font-display tracking-tight text-black mb-3 leading-tight">
-                                Cookies i takie tam
+                        <div className="px-4 pt-2 pb-3">
+                            <h2 className="text-base font-display tracking-tight text-black mb-1.5 leading-tight">
+                                Krótko o cookies
                             </h2>
-                            <p className="text-sm md:text-[15px] text-muted-dark leading-relaxed mb-4 max-w-[640px]">
-                                Używamy cookies, żeby zobaczyć jak ludzie korzystają z tej strony — gdzie klikają, co działa, co jest do poprawki. Bez tego latamy ślepo.
+                            <p className="text-[13px] text-muted-dark leading-snug mb-2">
+                                Zliczamy anonimowe statystyki, żeby wiedzieć co na stronie działa. <span className="text-black">Nie sprzedajemy</span> Twoich danych ani <span className="text-black">nie targetujemy</span> reklam.
                             </p>
-                            <p className="text-sm md:text-[15px] text-muted-dark leading-relaxed mb-2 max-w-[640px]">
-                                Dwie rzeczy, których <span className="font-medium text-black">NIE</span> robimy:
-                            </p>
-                            <ul className="text-sm md:text-[15px] text-muted-dark leading-relaxed mb-5 max-w-[640px] space-y-1">
-                                <li>— nie sprzedajemy Twoich danych</li>
-                                <li>— nie targetujemy Cię reklamami w internecie</li>
-                            </ul>
-                            <p className="text-xs md:text-sm text-muted-dark/80">
-                                Cała polityka jest{' '}
+                            <p className="text-[12px] text-muted-dark/80 leading-snug">
+                                Więcej w{' '}
                                 <Link to="/polityka-prywatnosci" className="text-black underline underline-offset-2 decoration-lime hover:decoration-2">
-                                    tutaj
-                                </Link>
-                                {' '}— jeśli lubisz długie czytanki.
+                                    polityce prywatności
+                                </Link>.
                             </p>
 
                             {/* Granular settings (collapsible) */}
@@ -118,25 +114,25 @@ export function ConsentBanner() {
                                         initial={{ height: 0, opacity: 0 }}
                                         animate={{ height: 'auto', opacity: 1 }}
                                         exit={{ height: 0, opacity: 0 }}
-                                        transition={{ duration: 0.25 }}
+                                        transition={{ duration: 0.22 }}
                                         className="overflow-hidden"
                                     >
-                                        <div className="mt-5 pt-5 border-t border-black/5 space-y-3">
+                                        <div className="mt-3 pt-3 border-t border-black/5 space-y-2.5">
                                             <ConsentToggle
                                                 label="Niezbędne"
-                                                desc="Zapamiętanie Twojej decyzji o cookies. Bez nich banner pokazałby się znowu po odświeżeniu."
+                                                desc="Zapamiętanie Twojej decyzji."
                                                 checked={true}
                                                 disabled
                                             />
                                             <ConsentToggle
-                                                label="Statystyki anonimowe"
-                                                desc="Vercel Analytics + Google Analytics. Liczymy odwiedziny i konwersje, bez identyfikacji osoby."
+                                                label="Statystyki"
+                                                desc="Vercel Analytics + Google Analytics — anonimowe wizyty i konwersje."
                                                 checked={analytics}
                                                 onChange={setAnalytics}
                                             />
                                             <ConsentToggle
-                                                label="Nagrania sesji (Microsoft Clarity)"
-                                                desc="Heatmapy + odtwarzanie kliknięć. Pomaga znaleźć miejsca, gdzie userzy się gubią. Anonimowe — bez maskowania pól tekstowych."
+                                                label="Nagrania sesji"
+                                                desc="Microsoft Clarity — heatmapy i debug UX."
                                                 checked={recordings}
                                                 onChange={setRecordings}
                                             />
@@ -147,46 +143,46 @@ export function ConsentBanner() {
                         </div>
 
                         {/* Actions */}
-                        <div className="px-5 md:px-7 py-4 bg-sage/40 border-t border-black/5">
+                        <div className="px-4 py-3 bg-sage/40 border-t border-black/5">
                             {expanded ? (
-                                <div className="flex flex-col-reverse sm:flex-row gap-3 items-stretch sm:items-center sm:justify-between">
+                                <div className="flex items-center justify-between gap-2">
                                     <button
                                         onClick={() => setExpanded(false)}
-                                        className="text-sm text-muted-dark hover:text-black transition-colors text-center sm:text-left"
+                                        className="text-xs text-muted-dark hover:text-black transition-colors"
                                     >
                                         ← Wróć
                                     </button>
                                     <Button
                                         onClick={saveCustom}
                                         variant="accent"
-                                        className="h-11 px-6 text-sm"
+                                        className="h-9 px-4 text-xs"
                                     >
                                         Zapisz wybór
                                     </Button>
                                 </div>
                             ) : (
-                                <div className="flex flex-col sm:flex-row gap-3">
+                                <div className="flex items-center gap-2">
                                     <Button
                                         onClick={acceptAll}
                                         variant="accent"
-                                        className="h-11 px-6 text-sm flex-1 sm:flex-initial"
+                                        className="h-9 px-4 text-xs flex-1"
                                     >
-                                        <Check size={15} className="mr-1.5" />
+                                        <Check size={13} className="mr-1" />
                                         Zgoda
                                     </Button>
                                     <Button
                                         onClick={rejectAll}
                                         variant="outline"
-                                        className="h-11 px-6 text-sm flex-1 sm:flex-initial border-black/15 hover:border-black/30"
+                                        className="h-9 px-4 text-xs flex-1 border-black/15 hover:border-black/30"
                                     >
                                         Tylko niezbędne
                                     </Button>
                                     <button
                                         onClick={() => setExpanded(true)}
-                                        className="h-11 px-3 text-sm text-muted-dark hover:text-black transition-colors flex items-center justify-center gap-1 ml-auto"
+                                        className="h-9 px-2 text-xs text-muted-dark hover:text-black transition-colors flex items-center gap-0.5 shrink-0"
+                                        aria-label="Wybierz co"
                                     >
-                                        Wybierz co
-                                        <ChevronDown size={14} />
+                                        <ChevronDown size={13} />
                                     </button>
                                 </div>
                             )}
