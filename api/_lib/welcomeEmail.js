@@ -87,15 +87,17 @@ export function buildWelcomeEmail({ firstName, posts }) {
 
 <!-- Preheader (visible in inbox preview, not in email body) -->
 <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#E6E8DD;">
-    Dzięki za zapis. Trzy artykuły na dobry start — plus krótka informacja, czego się spodziewać.
+    Cieszę się, że jesteś. Co dwa tygodnie - jedno narzędzie, jedna porada, krótki przegląd newsów.
 </div>
 
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#E6E8DD;">
     <tr>
         <td align="center" style="padding:32px 16px;">
 
-            <!-- Container 600px -->
-            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="max-width:600px;width:100%;">
+            <!-- Container 640px - lekko szerszy niż klasyczne 600px,
+                 nadal bezpieczny dla wszystkich email clients (Litmus benchmark
+                 do 680px). Daje więcej miejsca dla hero z większą sylwetką. -->
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="640" style="max-width:640px;width:100%;">
 
                 <!-- Header: logo wordmark -->
                 <tr>
@@ -108,51 +110,75 @@ export function buildWelcomeEmail({ firstName, posts }) {
                     </td>
                 </tr>
 
-                <!-- Personal welcome card -->
+                <!-- Personal welcome card — hero z dużym headingiem i sylwetką po prawej.
+                     3D effect: heading rozciąga się do prawej krawędzi LEFT TD, photo
+                     wchodzi w jego obszar przez negative margin-left (modern clients
+                     pokazują overlap, Outlook desktop fallback bez overlap = nadal OK).
+                     Transparent PNG = tekst widoczny przez "luki" wokół sylwetki. -->
                 <tr>
-                    <td style="background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:32px 28px;">
+                    <td style="background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:0;overflow:hidden;">
                         <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
                             <tr>
-                                <td valign="top" width="72" style="padding-right:18px;">
-                                    <img src="${SITE_URL}/Jakub-Bednarz.png" alt="Jakub Bednarz" width="72" height="72" style="display:block;width:72px;height:72px;border-radius:50%;border:2px solid #9CE069;object-fit:cover;" />
-                                </td>
-                                <td valign="top">
-                                    <p style="margin:0 0 6px;font-size:14px;color:#6b7280;line-height:1.4;">
+                                <!-- LEFT: tekst (55% = ~352px content) -->
+                                <td valign="top" width="55%" style="padding:32px 0 32px 30px;">
+                                    <p style="margin:0 0 12px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#6b7280;font-weight:600;">
                                         Jakub Bednarz · Workshift
                                     </p>
-                                    <h1 style="margin:0;font-size:22px;line-height:1.25;font-weight:700;color:#111111;letter-spacing:-0.01em;">
-                                        Dzięki za zaufanie!
+                                    <h1 style="margin:0 0 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:44px;line-height:0.96;font-weight:800;letter-spacing:-0.025em;color:#111111;">
+                                        Dzięki<br/>za&nbsp;zaufanie!
                                     </h1>
+                                    <p style="margin:0 0 12px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:14px;line-height:1.6;color:#1f2937;">
+                                        ${greeting}
+                                    </p>
+                                    <p style="margin:0 0 12px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:14px;line-height:1.6;color:#1f2937;">
+                                        Cieszę się, że jesteś! <strong>"AI Praktycznie"</strong> to mój pomysł na to, jak rozmawiać o AI bez bełkotu - pokazując narzędzia i przykłady, które realnie odzyskują Twój czas w firmie.
+                                    </p>
+                                    <p style="margin:0 0 18px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:14px;line-height:1.6;color:#1f2937;">
+                                        Co dwa tygodnie będziesz dostawać jeden mail: krótki przegląd newsów, jedno praktyczne narzędzie + jedną poradę. Wszystko po to, żebyś mógł od razu przetestować tę wiedzę u siebie w praktyce.
+                                    </p>
+                                    <!-- Deliverability ask: subtle callout, lime border-left dla hierarchii bez krzykliwego boxa -->
+                                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#F4F4F0;border-left:3px solid #9CE069;border-radius:4px;">
+                                        <tr>
+                                            <td style="padding:14px 16px;">
+                                                <p style="margin:0 0 4px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;line-height:1.5;color:#111111;font-weight:700;">
+                                                    Ważna prośba na start
+                                                </p>
+                                                <p style="margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;line-height:1.55;color:#1f2937;">
+                                                    Aby moje maile nie znikały w gąszczu spamu lub zakładce "Oferty", dodaj ten adres do swoich kontaktów lub przenieś tę wiadomość do folderu Głównego.
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <!-- P.S. — naturalny most do sekcji artykułów poniżej.
+                                         Italic + muted color = postscript voice, nie konkuruje z callout-em -->
+                                    <p style="margin:18px 0 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;line-height:1.55;color:#6b7280;font-style:italic;">
+                                        P.S. Poniżej trzy ostatnie wpisy z bloga - żeby było od czego zacząć.
+                                    </p>
+                                </td>
+                                <!-- RIGHT: photo (45% = ~288px), valign bottom żeby
+                                     sylwetka "stała" na dnie card-a. Photo 340px szerokie
+                                     przesuwa się -60px w lewo (negative margin) -> wchodzi
+                                     w obszar tekstu, daje 3D overlap effect. -->
+                                <td valign="bottom" width="45%" align="right" style="padding:0;font-size:0;line-height:0;">
+                                    <!--[if mso]>
+                                    <img src="${SITE_URL}/jakub-bednarz-hero.png" alt="" width="280" style="display:block;width:280px;border:0;" />
+                                    <![endif]-->
+                                    <!--[if !mso]><!-->
+                                    <img src="${SITE_URL}/jakub-bednarz-hero.png" alt="" width="340" style="display:block;width:340px;max-width:none;height:auto;border:0;margin-left:-60px;margin-bottom:-1px;" />
+                                    <!--<![endif]-->
                                 </td>
                             </tr>
                         </table>
-
-                        <div style="height:20px;line-height:20px;">&nbsp;</div>
-
-                        <p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:#1f2937;">
-                            ${greeting}
-                        </p>
-                        <p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:#1f2937;">
-                            Cieszę się, że jesteś. <strong>"AI Praktycznie"</strong> to mój pomysł na to, jak rozmawiać o AI bez bełkotu — pokazując narzędzia i przykłady, które realnie odzyskują czas w firmie.
-                        </p>
-                        <p style="margin:0;font-size:15px;line-height:1.6;color:#1f2937;">
-                            Co piątek dostajesz jeden mail: jedno narzędzie + jedna nowość ze świata AI, przetworzone tak, żebyś mógł od razu coś z tym zrobić. Bez spamu i bez zobowiązań — jak nie pasuje, wypisujesz się jednym kliknięciem.
-                        </p>
                     </td>
                 </tr>
 
                 <div style="height:32px;line-height:32px;">&nbsp;</div>
 
-                <!-- Articles section -->
+                <!-- Articles section — bez orphan label-a. Most do artykułów jest
+                     w copy hero ("Poniżej trzy ostatnie wpisy..."). -->
                 <tr>
-                    <td style="padding:0 0 8px;">
-                        <p style="margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#6b7280;">
-                            Na początek &mdash; trzy ostatnie wpisy
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="padding:14px 0 0;">
+                    <td style="padding:0;">
                         ${articlesHtml}
                     </td>
                 </tr>
@@ -167,7 +193,7 @@ export function buildWelcomeEmail({ firstName, posts }) {
                                         Sprawdź, co możesz zautomatyzować u siebie
                                     </h2>
                                     <p style="margin:0 0 18px;font-size:14px;line-height:1.55;color:rgba(255,255,255,0.65);">
-                                        30 minut bezpłatnej konsultacji &mdash; pokażemy 2&ndash;3 konkretne procesy, które AI może przejąć w Twojej firmie.
+                                        30 minut bezpłatnej konsultacji - pokażemy 2-3 konkretne procesy, które AI może przejąć w Twojej firmie.
                                     </p>
                                     <a href="${SITE_URL}/#kontakt" style="display:inline-block;background:#9CE069;color:#111111;text-decoration:none;font-size:14px;font-weight:600;padding:12px 24px;border-radius:8px;">
                                         Umów rozmowę
@@ -209,11 +235,14 @@ export function buildWelcomeText({ firstName, posts }) {
     const lines = [
         greeting,
         '',
-        'Cieszę się, że jesteś w "AI Praktycznie".',
+        'Cieszę się, że jesteś! "AI Praktycznie" to mój pomysł na to, jak rozmawiać o AI bez bełkotu - pokazując narzędzia i przykłady, które realnie odzyskują Twój czas w firmie.',
         '',
-        'Co piątek dostajesz jeden mail: jedno narzędzie AI + jedna nowość ze świata AI, przetworzone tak, żebyś mógł od razu coś z tym zrobić.',
+        'Co dwa tygodnie będziesz dostawać jeden mail: krótki przegląd newsów, jedno praktyczne narzędzie + jedną poradę. Wszystko po to, żebyś mógł od razu przetestować tę wiedzę u siebie w praktyce.',
         '',
-        '— NA POCZĄTEK, TRZY OSTATNIE WPISY —',
+        '⚠️ WAŻNA PROŚBA NA START',
+        'Aby moje maile nie znikały w gąszczu spamu lub zakładce "Oferty", dodaj ten adres do swoich kontaktów lub przenieś tę wiadomość do folderu Głównego.',
+        '',
+        'P.S. Poniżej trzy ostatnie wpisy z bloga - żeby było od czego zacząć.',
         '',
     ];
     posts.forEach((p, i) => {
