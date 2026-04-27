@@ -7,6 +7,8 @@ import { HeroTypographic } from './components/HeroTypographic';
 import { AnimatedQuoteSection } from './components/AnimatedQuoteSection';
 import { InteractiveServicesBento } from './components/InteractiveServicesBento';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
+import { ConsentBanner } from './components/ConsentBanner';
+import { bootstrapConsent } from './lib/consent';
 
 // Below-the-fold: lazy-loaded for faster initial paint
 const ProcessSection = lazy(() => import('./components/ProcessSection').then(m => ({ default: m.ProcessSection })));
@@ -124,6 +126,12 @@ function App() {
   const [searchParams] = useSearchParams();
   const previewSection = searchParams.get('preview');
 
+  // Bootstrap analytics: if user previously consented, load GA4 + Clarity
+  // od razu (bez wyświetlania bannera). Bez consent — skrypty czekają.
+  useEffect(() => {
+    bootstrapConsent();
+  }, []);
+
   if (previewSection) {
     return <SectionPreview sectionKey={previewSection} />;
   }
@@ -168,6 +176,10 @@ function App() {
       <Analytics />
       {/* Speed Insights: Core Web Vitals from real users (RUM). */}
       <SpeedInsights />
+
+      {/* Cookie consent banner — pokazuje się gdy brak decyzji w localStorage.
+          Re-otwierany przez link w stopce ('workshift:consent-open' event). */}
+      <ConsentBanner />
     </div>
   );
 }

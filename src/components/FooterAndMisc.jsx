@@ -6,6 +6,7 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './
 import { motion, AnimatePresence } from 'framer-motion';
 import { Floating } from './animations/Floating';
 import { track, EVENTS } from '../lib/analytics';
+import { openConsentBanner } from '../lib/consent';
 // -------------------------------------------------------------
 // FAQ SECTION
 // -------------------------------------------------------------
@@ -220,8 +221,14 @@ export function Footer() {
 
                 <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
                     <p className="text-white/30 text-sm">© {new Date().getFullYear()} Workshift. Wszelkie prawa zastrzeżone.</p>
-                    <div className="flex gap-6">
+                    <div className="flex flex-wrap gap-6 justify-center sm:justify-end">
                         <Link to="/polityka-prywatnosci" className="text-sm font-mono text-white/30 hover:text-white transition-colors">Polityka Prywatności</Link>
+                        <button
+                            onClick={openConsentBanner}
+                            className="text-sm font-mono text-white/30 hover:text-white transition-colors cursor-pointer"
+                        >
+                            Ustawienia cookies
+                        </button>
                         <a href="#!" className="text-sm font-mono text-white/30 hover:text-white transition-colors">Regulamin</a>
                     </div>
                 </div>
