@@ -41,11 +41,20 @@ export default async function handler(req, res) {
     const resend = new Resend(RESEND_API_KEY);
     const companyDisplay = company || 'brak';
 
+    // RESEND_CONTACT_TO supports comma-separated list, np.
+    // "kontakt@workshift.pl,the.bednarz.kuba@gmail.com" — Resend wyśle do każdego
+    // jednocześnie. Działa jako fallback gdy główna skrzynka (Cyberfolks) blokuje
+    // self-sender lub user nie może się zalogować.
+    const recipients = RESEND_CONTACT_TO
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean);
+
     try {
-        const { error } = await resend.emails.send(
+        const { data, error } = await resend.emails.send(
             {
                 from: `${RESEND_FROM_NAME} <${RESEND_FROM_EMAIL}>`,
-                to: [RESEND_CONTACT_TO],
+                to: recipients,
                 replyTo: email,
                 subject: `Nowe zapytanie ze strony: ${name}${company ? ` (Firma: ${company})` : ''}`,
                 html: `<h3>Nowa wiadomość z formularza kontaktowego Workshift</h3>
@@ -64,6 +73,9 @@ export default async function handler(req, res) {
             return res.status(500).json({ error: 'Wystąpił błąd przy wysyłaniu. Spróbuj ponownie lub napisz na kontakt@workshift.pl.' });
         }
 
+        // Log emailId pozwala znaleźć wiadomość w Resend dashboard
+        // (https://resend.com/emails) i sprawdzić status doręczenia.
+        console.log('send-email ok', { emailId: data?.id, to: recipients });
         return res.status(200).json({ success: true, message: 'Otrzymaliśmy zapytanie. Dziękujemy!' });
     } catch (err) {
         console.error('send-email fatal:', err);
