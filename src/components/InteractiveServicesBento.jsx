@@ -543,10 +543,11 @@ const CREATIVE_ADS = [
     { label: 'Zapisz się',       emoji: '💌', bg: 'linear-gradient(135deg, #FECACA, #F87171)',   text: '#111' },
 ];
 
-function AdVariant({ ad, index }) {
+function AdVariant({ ad, index, small = false }) {
+    const sizeClass = small ? 'w-[72px] h-[92px] rounded-[12px] p-2' : 'w-[88px] h-[112px] rounded-[14px] p-2.5';
     return (
         <div
-            className="w-[88px] h-[112px] rounded-[14px] overflow-hidden flex flex-col justify-between p-2.5 antialiased will-change-transform"
+            className={`${sizeClass} overflow-hidden flex flex-col justify-between antialiased will-change-transform`}
             style={{
                 background: ad.bg,
                 color: ad.text,
@@ -579,25 +580,60 @@ function AdVariant({ ad, index }) {
     );
 }
 
+// useIsMobile — responsywny hook bez deps. SPA/Vite (no SSR) → window.matchMedia
+// w useEffect bezpieczny. Default false zapewnia spójny first paint na server-like
+// preview (chunk lazy-loaded, więc i tak hydration nie ma).
+function useIsMobile(query = '(max-width: 767px)') {
+    const [is, setIs] = useState(false);
+    useEffect(() => {
+        const mq = window.matchMedia(query);
+        const update = () => setIs(mq.matches);
+        update();
+        mq.addEventListener('change', update);
+        return () => mq.removeEventListener('change', update);
+    }, [query]);
+    return is;
+}
+
 function CreativePreview() {
+    const isMobile = useIsMobile();
+
+    // Mobile: mniejszy ring (radius 150) + mniejsze karty (72px) + offset 18 →
+    // top arc zmieści się w ~200px wysokości karty. Maska startuje transparentem
+    // do 55% (vs 35% desktop) żeby odsłonić top arc.
+    const config = isMobile
+        ? {
+            radius: 150,
+            offset: 18,
+            elementSize: 72,
+            gap: 16,
+            mask: 'radial-gradient(140% 95% at 50% 100%, transparent 55%, #ffffff 95%)',
+        }
+        : {
+            radius: 260,
+            offset: 40,
+            elementSize: 88,
+            gap: 24,
+            mask: 'radial-gradient(120% 80% at 50% 100%, transparent 35%, #ffffff 78%)',
+        };
+
     return (
         <div className="w-full h-full relative overflow-hidden pointer-events-none select-none">
             <CircularGallery
                 items={CREATIVE_ADS}
-                renderItem={(ad, i) => <AdVariant ad={ad} index={i % CREATIVE_ADS.length} />}
-                radius={260}
+                renderItem={(ad, i) => (
+                    <AdVariant ad={ad} index={i % CREATIVE_ADS.length} small={isMobile} />
+                )}
+                radius={config.radius}
                 duration={36}
-                offset={40}
-                elementSize={88}
-                gap={24}
+                offset={config.offset}
+                elementSize={config.elementSize}
+                gap={config.gap}
             />
             {/* Fade mask top + sides so cards emerge/fade into the card background */}
             <div
                 className="absolute inset-0 pointer-events-none"
-                style={{
-                    background:
-                        'radial-gradient(120% 80% at 50% 100%, transparent 35%, #ffffff 78%)',
-                }}
+                style={{ background: config.mask }}
             />
             <ParticleBlur position="bottom-right" />
         </div>
