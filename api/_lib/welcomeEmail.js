@@ -134,26 +134,8 @@ export function buildWelcomeEmail({ firstName, posts }) {
                                     <p style="margin:0 0 14px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:14px;line-height:1.6;color:#1f2937;">
                                         Cieszę się, że jesteś! W <strong>"AI Praktycznie"</strong> co dwa tygodnie dostaniesz jeden mail bez technicznego żargonu: krótki przegląd newsów, konkretne narzędzie i poradę, które realnie odzyskają Twój czas w firmie.
                                     </p>
-                                    <p style="margin:0 0 18px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:14px;line-height:1.6;color:#1f2937;">
+                                    <p style="margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:14px;line-height:1.6;color:#1f2937;">
                                         Na start mam do Ciebie jedno szybkie pytanie: <strong>Co w temacie sztucznej inteligencji sprawia Ci obecnie największą trudność?</strong>
-                                    </p>
-                                    <!-- Deliverability ask: subtle callout, lime border-left dla hierarchii bez krzykliwego boxa -->
-                                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#F4F4F0;border-left:3px solid #9CE069;border-radius:4px;">
-                                        <tr>
-                                            <td style="padding:14px 16px;">
-                                                <p style="margin:0 0 4px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;line-height:1.5;color:#111111;font-weight:700;">
-                                                    Jedna prośba
-                                                </p>
-                                                <p style="margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;line-height:1.55;color:#1f2937;">
-                                                    Aby maile nie znikały w gąszczu spamu lub zakładce "Oferty", dodaj ten adres do swoich kontaktów lub przenieś tę wiadomość do folderu Głównego.
-                                                </p>
-                                            </td>
-                                        </tr>
-                                    </table>
-
-                                    <!-- P.S. — naturalny most do sekcji artykułów poniżej. -->
-                                    <p style="margin:18px 0 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;line-height:1.55;color:#6b7280;font-style:italic;">
-                                        P.S. Poniżej trzy ostatnie wpisy z bloga - żeby było od czego zacząć.
                                     </p>
                                 </td>
                                 <!-- RIGHT: photo (40% = ~256px). Photo 290px szerokie z -34px
@@ -171,10 +153,34 @@ export function buildWelcomeEmail({ firstName, posts }) {
                     </td>
                 </tr>
 
-                <div style="height:32px;line-height:32px;">&nbsp;</div>
+                <div style="height:20px;line-height:20px;">&nbsp;</div>
 
-                <!-- Articles section — bez orphan label-a. Most do artykułów jest
-                     w copy hero ("Poniżej trzy ostatnie wpisy..."). -->
+                <!-- Sekcja 2 — Ops/admin info (deliverability + bridge do artykułów).
+                     Wyciągnięta z hero do osobnej karty żeby photo naturalnie
+                     zamknęła pierwszą sekcję, a nie wisiała nad orphan content. -->
+                <tr>
+                    <td style="background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:24px 28px;">
+                        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#F4F4F0;border-left:3px solid #9CE069;border-radius:4px;">
+                            <tr>
+                                <td style="padding:14px 16px;">
+                                    <p style="margin:0 0 4px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;line-height:1.5;color:#111111;font-weight:700;">
+                                        Jedna prośba
+                                    </p>
+                                    <p style="margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;line-height:1.55;color:#1f2937;">
+                                        Aby maile nie znikały w gąszczu spamu lub zakładce "Oferty", dodaj ten adres do swoich kontaktów lub przenieś tę wiadomość do folderu Głównego.
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                        <p style="margin:16px 0 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;line-height:1.55;color:#6b7280;font-style:italic;">
+                            P.S. Poniżej trzy ostatnie wpisy z bloga - żeby było od czego zacząć.
+                        </p>
+                    </td>
+                </tr>
+
+                <div style="height:20px;line-height:20px;">&nbsp;</div>
+
+                <!-- Articles section -->
                 <tr>
                     <td style="padding:0;">
                         ${articlesHtml}
