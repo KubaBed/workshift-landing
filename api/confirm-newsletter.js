@@ -52,7 +52,9 @@ export default async function handler(req, res) {
     const resend = new Resend(RESEND_API_KEY);
     const {
         RESEND_FROM_EMAIL = 'kontakt@workshift.pl',
-        RESEND_NEWSLETTER_FROM_NAME = 'Jakub Bednarz',
+        // Display name z pipe separator wymaga quoted-string per RFC 5322 —
+        // Resend SDK obsłuży escapowanie. Format: "Display Name" <email>.
+        RESEND_NEWSLETTER_FROM_NAME = 'Jakub Bednarz | Workshift',
     } = process.env;
 
     try {
