@@ -140,7 +140,7 @@ export function CTASection() {
                                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                             </button>
                         </div>
-                        <div className="flex-1 w-full bg-slate-50 overflow-auto relative min-h-[500px] md:min-h-[600px]">
+                        <div className="w-full bg-slate-50 overflow-auto relative h-[500px] md:h-[600px]">
                             {/* Loader behind iframe */}
                             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-lime"></div>
