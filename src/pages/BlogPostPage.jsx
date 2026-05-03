@@ -260,9 +260,14 @@ function renderContent(raw) {
   return html;
 }
 
-/** Inline formatting: **bold**, *italic*, `code` */
+/** Inline formatting: [text](url), **bold**, *italic*, `code` */
 function inline(text) {
   return text
+    // Links first - so **bold** inside link text still works after this pass
+    .replace(
+      /\[([^\]]+)\]\(([^)]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>',
+    )
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
     .replace(/`(.+?)`/g, '<code>$1</code>');
