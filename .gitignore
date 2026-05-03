@@ -31,3 +31,23 @@ public/config.env.php
 .env
 .env.*
 !.env.example
+
+# Agent / AI tooling (per-developer)
+.claude/worktrees/
+.claude/skills/
+.agents/
+.kiro/
+skills/
+skills-lock.json
+file_tree.txt
+CLAUDE.md
+
+# Local stash + journals (not for repo)
+stash/
+diary/
+
+# Heavy media never goes in repo
+*.mp4
+*.mov
+*.avi
+*.mkv
