@@ -237,6 +237,15 @@ function renderContent(raw) {
       continue;
     }
 
+    // YouTube embed: [youtube:VIDEOID] on its own line → 16:9 iframe
+    const ytMatch = trimmed.match(/^\[youtube:([\w-]+)\]$/);
+    if (ytMatch) {
+      if (inList) { html += '</ul>'; inList = false; }
+      const id = ytMatch[1];
+      html += `<div class="my-8 aspect-video w-full overflow-hidden rounded-[10px] bg-black"><iframe class="w-full h-full" src="https://www.youtube.com/embed/${id}?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>`;
+      continue;
+    }
+
     // List item
     if (trimmed.startsWith('- ')) {
       if (!inList) { html += '<ul>'; inList = true; }

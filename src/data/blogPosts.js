@@ -11,6 +11,8 @@ export const blogPosts = [
     content: `
 Miałem przyjemność być gościem najnowszego odcinka **Value Builders Talks** prowadzonego przez Chrisa Rapacza (No-Code Poland). Zamiast dyplomatycznie kiwać głową nad każdą nową obietnicą AI, schodziliśmy "pod maskę" projektów - tam, gdzie zaczyna się prawdziwa robota. Wyciągam tu kilka wątków, które wracają do mnie najczęściej.
 
+[youtube:p0zNNcAjkMk]
+
 ### 1. Sprawczość. To jest moje "wow" ostatnich miesięcy
 
 Najmocniejszy moment z ostatniego pół roku? Pierwsza apka, którą zbudowałem opisując słowami, czego potrzebuję. Nie pamiętam już dokładnie, czy to było Lovable, Claude, czy coś innego - ważne, że dostałem **link do działającej rzeczy, która wysyłała maile i robiła swoje**.
