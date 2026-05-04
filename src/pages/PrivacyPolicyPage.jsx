@@ -139,8 +139,14 @@ const PrivacyPolicyPage = () => {
             <h4>CZYM SĄ PLIKI COOKIES?</h4>
             <p>Cookies to małe pliki tekstowe zapisywane na urządzeniu końcowym Użytkownika. Pliki te umożliwiają Stronie rozpoznanie urządzenia Użytkownika przy kolejnej wizycie oraz poprawne działanie funkcji Strony.</p>
             
-            <h4>W JAKICH CELACH WYKORZYSTUJEMY COOKIES?</h4>
-            <p>Administrator wykorzystuje pliki cookies w celu zapewnienia prawidłowego działania Strony, analizy ruchu (Google Analytics), personalizacji treści oraz prowadzenia działań marketingowych.</p>
+            <h4>W JAKICH CELACH WYKORZYSTUJEMY COOKIES I JAKIE NARZĘDZIA STOSUJEMY?</h4>
+            <p>Administrator wykorzystuje pliki cookies oraz podobne technologie w następujących celach:</p>
+            <ul>
+              <li><strong>Niezbędne</strong> — zapewnienie prawidłowego działania Strony (Vercel).</li>
+              <li><strong>Statystyki</strong> — anonimowa analiza ruchu i zachowań Użytkowników na Stronie przy użyciu narzędzi: Vercel Analytics, Google Analytics 4 (Google LLC, USA), PostHog (PostHog Inc., USA). Narzędzia te pomagają zrozumieć, w jaki sposób Użytkownicy korzystają ze Strony, co pozwala nam ją ulepszać.</li>
+              <li><strong>Nagrania sesji</strong> — anonimowe nagrania interakcji Użytkowników ze Stroną (heatmapy, odtworzenia sesji) przy użyciu narzędzi: Microsoft Clarity (Microsoft Corp., USA), PostHog (PostHog Inc., USA).</li>
+            </ul>
+            <p>Wszystkie wyżej wymienione narzędzia (poza Vercel Analytics, które działa bez plików cookies) są ładowane dopiero po wyrażeniu przez Użytkownika dobrowolnej zgody za pomocą bannera cookie. Użytkownik może w każdej chwili zmienić swoje preferencje klikając w link „Ustawienia cookies" w stopce Strony.</p>
 
             <h4>CZY UŻYTKOWNIK MOŻE ZARZĄDZAĆ PLIKAMI COOKIES?</h4>
             <p>Użytkownik może w każdej chwili samodzielnie zarządzać plikami cookies poprzez ustawienia swojej przeglądarki internetowej. Wyłączenie obsługi cookies może utrudnić lub uniemożliwić korzystanie ze Strony.</p>
@@ -149,7 +155,7 @@ const PrivacyPolicyPage = () => {
             <p>Niniejsza Polityka Prywatności i Polityka Cookies obowiązuje od dnia jej publikacji na stronie <a href="https://workshift.pl/">https://workshift.pl/</a>.</p>
             <p>W sprawach nieuregulowanych niniejszą Polityką stosuje się odpowiednie przepisy prawa polskiego, w szczególności RODO.</p>
             <p className="mt-12 text-black/40 text-sm">
-              Data ostatniej aktualizacji: kwiecień 2026
+              Data ostatniej aktualizacji: maj 2026
             </p>
           </article>
         </motion.div>

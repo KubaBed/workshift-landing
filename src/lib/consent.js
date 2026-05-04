@@ -1,16 +1,16 @@
 /**
  * Consent management — RODO/GDPR compliant.
  *
- * Strategia: block-by-default. Skrypty analityczne (GA4 + Clarity) ładują
- * się DOPIERO po jawnej zgodzie usera. Vercel Analytics (cookieless) leci
- * od razu — nie wymaga consent.
+ * Strategia: block-by-default. Skrypty analityczne (GA4 + Clarity + PostHog)
+ * ładują się DOPIERO po jawnej zgodzie usera. Vercel Analytics (cookieless)
+ * leci od razu — nie wymaga consent.
  *
  * Przechowywanie: localStorage z wersją (CONSENT_VERSION). Bump wersji
  * gdy zmienisz zakres cookies = wszyscy userzy znów zobaczą banner.
  *
  * Granularność: 2 kategorie poza "necessary":
- *   - analytics: GA4 (page views, events, demographics)
- *   - recordings: Microsoft Clarity (heatmaps, session replay)
+ *   - analytics: GA4 + PostHog product analytics (page views, events, funnels)
+ *   - recordings: Clarity + PostHog session replay (heatmaps, nagrania)
  *
  * API:
  *   getConsent()                  → { analytics, recordings, timestamp, version } | null
@@ -20,10 +20,12 @@
  */
 
 const STORAGE_KEY = 'workshift_consent';
-export const CONSENT_VERSION = 1;
+export const CONSENT_VERSION = 2;
 
 const GA4_ID = 'G-B6VJVVFPLR';
 const CLARITY_ID = 'wifxjjszyz';
+const POSTHOG_KEY = 'phc_yhszHMhh3GTgz6bnNTdDmmMtScC4oduLw7BoasWYafKL';
+const POSTHOG_HOST = 'https://eu.i.posthog.com';
 
 // Custom event name dla cross-component communication.
 const CHANGE_EVENT = 'workshift:consent-change';
@@ -62,6 +64,8 @@ export function setConsent({ analytics = false, recordings = false } = {}) {
 
     if (analytics) loadGA4();
     if (recordings) loadClarity();
+    // PostHog: load if any consent given (both analytics and session replay)
+    if (analytics || recordings) loadPostHog();
     // Note: nie odładowujemy skryptów po withdrawal — wymagałoby reload.
     // Banner pokazuje to userowi i sugeruje refresh.
 
@@ -117,6 +121,25 @@ function loadClarity() {
     });
 }
 
+function loadPostHog() {
+    loadOnce('posthog-loader', async (id) => {
+        try {
+            const { default: posthog } = await import('posthog-js');
+            posthog.init(POSTHOG_KEY, {
+                api_host: POSTHOG_HOST,
+                persistence: 'localStorage+cookie',
+                autocapture: true,
+                capture_pageview: true,
+                capture_pageleave: true,
+                disable_session_recording: false,
+            });
+            window.posthog = posthog;
+        } catch (err) {
+            // Ad blocker / network → nie blokuj user flow.
+        }
+    });
+}
+
 /**
  * Wywołaj raz przy bootstrapie aplikacji — jeśli user już zaakceptował
  * w poprzedniej wizycie, załaduj skrypty od razu (bez wyświetlania bannera).
@@ -126,4 +149,5 @@ export function bootstrapConsent() {
     if (!c) return;
     if (c.analytics) loadGA4();
     if (c.recordings) loadClarity();
+    if (c.analytics || c.recordings) loadPostHog();
 }

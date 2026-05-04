@@ -126,13 +126,13 @@ export function ConsentBanner() {
                                             />
                                             <ConsentToggle
                                                 label="Statystyki"
-                                                desc="Vercel Analytics + Google Analytics — anonimowe wizyty i konwersje."
+                                                desc="Vercel + Google Analytics + PostHog — anonimowe wizyty, lejki konwersji i testy A/B."
                                                 checked={analytics}
                                                 onChange={setAnalytics}
                                             />
                                             <ConsentToggle
                                                 label="Nagrania sesji"
-                                                desc="Microsoft Clarity — heatmapy i debug UX."
+                                                desc="Clarity + PostHog — heatmapy, nagrania i debug UX."
                                                 checked={recordings}
                                                 onChange={setRecordings}
                                             />
