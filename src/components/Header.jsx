@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from './ui/Button';
@@ -35,6 +35,7 @@ export function Header() {
 
     const navLinks = [
         { name: 'Usługi', href: '/#uslugi' },
+        { name: 'Kalkulator', href: '/kalkulator', highlight: true },
         { name: 'Proces', href: '/#proces' },
         { name: 'Klienci', href: '/#case-studies' },
         { name: 'O nas', href: '/#o-nas' },
@@ -56,9 +57,12 @@ export function Header() {
                             <Logo variant="light" size={40} />
                         </Link>
 
-                        <nav className="hidden md:flex items-center gap-8">
+                        <nav className="hidden md:flex items-center gap-7">
                             {navLinks.map((link) => {
-                                const linkClass = "text-sm font-medium text-muted-dark hover:text-black transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-[2px] after:bg-lime after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition-transform after:duration-300";
+                                const baseClass = "text-sm font-medium hover:text-black transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-[2px] after:bg-lime after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition-transform after:duration-300";
+                                const linkClass = link.highlight
+                                    ? `${baseClass} text-black font-semibold flex items-center gap-1.5 before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-lime before:animate-pulse`
+                                    : `${baseClass} text-muted-dark`;
                                 // Hash links → use <a> on homepage, <Link> on other pages
                                 if (link.href.startsWith('/#')) {
                                     return isHome ? (

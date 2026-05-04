@@ -22,6 +22,9 @@ export const EVENTS = {
     CALENDAR_OPEN: 'calendar_open',
     SERVICE_CARD_CLICK: 'service_card_click',
     BLOG_READ_COMPLETE: 'blog_read_complete',
+    CALCULATOR_STEP: 'calculator_step',
+    CALCULATOR_COMPLETE: 'calculator_complete',
+    CALCULATOR_CTA_CLICK: 'calculator_cta_click',
 };
 
 /**

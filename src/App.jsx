@@ -1,7 +1,8 @@
-import React, { lazy, Suspense, useEffect } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { Routes, Route, useSearchParams, useNavigate, useLocation } from 'react-router-dom';
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/react';
+// Vercel Analytics + Speed Insights are loaded dynamically (see VercelTelemetry below).
+// Top-level import zostałby zablokowany przez ad blockery w stylu uBlock Origin/Brave Shields,
+// co przy module-level fetch-fail wywala cały graf modułu Apps i blokuje React render.
 import { Header } from './components/Header';
 import { HeroTypographic } from './components/HeroTypographic';
 import { AnimatedQuoteSection } from './components/AnimatedQuoteSection';
@@ -11,6 +12,7 @@ import { ConsentBanner } from './components/ConsentBanner';
 import { bootstrapConsent } from './lib/consent';
 
 // Below-the-fold: lazy-loaded for faster initial paint
+const KalkulatorCTASection = lazy(() => import('./components/KalkulatorCTASection').then(m => ({ default: m.KalkulatorCTASection })));
 const ProcessSection = lazy(() => import('./components/ProcessSection').then(m => ({ default: m.ProcessSection })));
 const IndustriesSection = lazy(() => import('./components/IndustriesSection').then(m => ({ default: m.IndustriesSection })));
 const DataMetricsSection = lazy(() => import('./components/DataMetricsSection').then(m => ({ default: m.DataMetricsSection })));
@@ -29,6 +31,7 @@ const BlogPostPage = lazy(() => import('./pages/BlogPostPage'));
 const ThankYouPage = lazy(() => import('./pages/ThankYouPage'));
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
 const ServicePage = lazy(() => import('./pages/ServicePage'));
+const KalkulatorStratPage = lazy(() => import('./pages/KalkulatorStratPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 // Redirect /uslugi (bare) to homepage services section
@@ -107,6 +110,7 @@ function HomePage() {
 
         {/* Below-fold: lazy-loaded for faster initial paint */}
         <Suspense fallback={null}>
+          <KalkulatorCTASection />
           <ProcessSection />
           <IndustriesSection />
           <TestimonialsSection />
@@ -118,6 +122,33 @@ function HomePage() {
           <CTASection />
         </Suspense>
       </main>
+    </>
+  );
+}
+
+// Lazy-loaded telemetry: ad blockery blokują @vercel/analytics fetch i przy top-level
+// imporcie wywalają cały moduł App (skutek: pusty #root). Dynamic import izoluje failure.
+function VercelTelemetry() {
+  const [comps, setComps] = useState(null);
+  useEffect(() => {
+    let mounted = true;
+    Promise.all([
+      import('@vercel/analytics/react').catch(() => null),
+      import('@vercel/speed-insights/react').catch(() => null),
+    ]).then(([a, s]) => {
+      if (!mounted) return;
+      setComps({
+        Analytics: a?.Analytics || null,
+        SpeedInsights: s?.SpeedInsights || null,
+      });
+    });
+    return () => { mounted = false; };
+  }, []);
+  if (!comps) return null;
+  return (
+    <>
+      {comps.Analytics && <comps.Analytics />}
+      {comps.SpeedInsights && <comps.SpeedInsights />}
     </>
   );
 }
@@ -156,6 +187,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/uslugi" element={<ServicesRedirect />} />
             <Route path="/uslugi/:serviceId" element={<ServicePage />} />
+            <Route path="/kalkulator" element={<KalkulatorStratPage />} />
             <Route path="/blog" element={<BlogListPage />} />
             <Route path="/blog/:slug" element={<BlogPostPage />} />
             <Route path="/thank-you" element={<ThankYouPage />} />
@@ -171,11 +203,9 @@ function App() {
         <FloatingWhatsApp />
       </div>
 
-      {/* Vercel Analytics: cookieless, no consent banner needed.
-          Tracks page views automatically + custom events via track() helper. */}
-      <Analytics />
-      {/* Speed Insights: Core Web Vitals from real users (RUM). */}
-      <SpeedInsights />
+      {/* Vercel Analytics + Speed Insights — loaded dynamically.
+          Top-level import wywalał całą aplikację gdy ad blocker (uBO/Brave) blokował fetch. */}
+      <VercelTelemetry />
 
       {/* Cookie consent banner — pokazuje się gdy brak decyzji w localStorage.
           Re-otwierany przez link w stopce ('workshift:consent-open' event). */}
