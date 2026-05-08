@@ -246,6 +246,16 @@ function renderContent(raw) {
       continue;
     }
 
+    // Image embed: [image:/path.png] or [image:/path.png|alt text] on its own line
+    const imgMatch = trimmed.match(/^\[image:([^\]|]+)(?:\|([^\]]+))?\]$/);
+    if (imgMatch) {
+      if (inList) { html += '</ul>'; inList = false; }
+      const src = imgMatch[1].trim();
+      const alt = (imgMatch[2] || '').trim();
+      html += `<div class="my-8 w-full overflow-hidden rounded-[10px]"><img src="${src}" alt="${alt}" loading="lazy" class="w-full h-auto"/></div>`;
+      continue;
+    }
+
     // List item
     if (trimmed.startsWith('- ')) {
       if (!inList) { html += '<ul>'; inList = true; }

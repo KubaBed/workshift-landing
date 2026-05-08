@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" width="1200" height="400">
+  <defs>
+    <linearGradient id="bgB" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a0a"/>
+      <stop offset="100%" stop-color="#161916"/>
+    </linearGradient>
+    <filter id="grainB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7"/>
+      <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0   0 0 0 0.05 0"/>
+      <feComposite in2="SourceGraphic" operator="in"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="400" fill="url(#bgB)"/>
+
+  <!-- Diagonal stripe -->
+  <g opacity="0.08">
+    <rect x="-100" y="-100" width="100" height="600" fill="#9CE069" transform="rotate(-12 0 200)"/>
+    <rect x="80" y="-100" width="40" height="600" fill="#9CE069" transform="rotate(-12 0 200)"/>
+  </g>
+
+  <!-- TOP SECRET style stamp -->
+  <g transform="translate(80,110) rotate(-8)">
+    <rect x="-10" y="-10" width="420" height="110" fill="none" stroke="#9CE069" stroke-width="4" opacity="0.85"/>
+    <rect x="0" y="0" width="400" height="90" fill="none" stroke="#9CE069" stroke-width="1.5" opacity="0.6"/>
+    <text x="200" y="58" font-family="Inter, system-ui, sans-serif" font-size="42" font-weight="900" fill="#9CE069" text-anchor="middle" letter-spacing="3">MISSION BRIEF</text>
+  </g>
+
+  <!-- Briefing checklist -->
+  <g transform="translate(560,90)" font-family="IBM Plex Mono, monospace" fill="#E6E8DD">
+    <text font-size="13" fill="#9CE069" letter-spacing="3" font-weight="700">// AGENT REQUIREMENTS</text>
+
+    <g transform="translate(0,40)">
+      <rect width="22" height="22" fill="none" stroke="#9CE069" stroke-width="2"/>
+      <path d="M 4 12 L 9 17 L 18 5" fill="none" stroke="#9CE069" stroke-width="3"/>
+      <text x="38" y="17" font-size="20" font-weight="600">CEL — misja, nie pojedyncze pytanie</text>
+    </g>
+    <g transform="translate(0,80)">
+      <rect width="22" height="22" fill="none" stroke="#9CE069" stroke-width="2"/>
+      <path d="M 4 12 L 9 17 L 18 5" fill="none" stroke="#9CE069" stroke-width="3"/>
+      <text x="38" y="17" font-size="20" font-weight="600">PAMIĘĆ — co zrobił, co wie, gdzie utknął</text>
+    </g>
+    <g transform="translate(0,120)">
+      <rect width="22" height="22" fill="none" stroke="#9CE069" stroke-width="2"/>
+      <path d="M 4 12 L 9 17 L 18 5" fill="none" stroke="#9CE069" stroke-width="3"/>
+      <text x="38" y="17" font-size="20" font-weight="600">NARZĘDZIA — mail, CRM, kod, przeglądarka</text>
+    </g>
+    <g transform="translate(0,160)">
+      <rect width="22" height="22" fill="none" stroke="#9CE069" stroke-width="2"/>
+      <path d="M 4 12 L 9 17 L 18 5" fill="none" stroke="#9CE069" stroke-width="3"/>
+      <text x="38" y="17" font-size="20" font-weight="600">PĘTLA DECYZYJNA — sam reaguje na wynik</text>
+    </g>
+
+    <text y="220" font-size="12" fill="#E6E8DD" opacity="0.5" letter-spacing="2">Brakuje któregoś? To nie agent. To skrypt z modelem AI w środku.</text>
+  </g>
+
+  <!-- Workshift sig -->
+  <g transform="translate(1080,370)">
+    <text font-family="IBM Plex Mono, monospace" font-size="11" font-weight="700" fill="#9CE069" text-anchor="end" letter-spacing="3">WORKSHIFT.PL</text>
+  </g>
+
+  <rect width="1200" height="400" filter="url(#grainB)" opacity="0.6"/>
+</svg>
