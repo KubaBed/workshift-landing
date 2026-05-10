@@ -155,7 +155,7 @@ export function CTASection() {
                               jako fallback "Otwórz w nowej karcie" poniżej.
                             */}
                             <iframe
-                                src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ0cb-4TEvZTauBRKqCzf7NqCjxJaJvDYlNf5xDQnuyUeSRTfnZfO2jqKJ4IeuUEuEWOOtvV1_0L?gv=true"
+                                src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3OTv0k-j2FsAJLC5Db_lhbNVoz1GK8Qk5Z62f3rI8SkRJ7DpdUBgyiIeKtmVIMVgDfI9cbQFkj?gv=true"
                                 className="relative z-10 w-full h-full border-0 bg-transparent"
                                 title="Kuba Bednarczyk - Kalendarz Spotkań"
                             />
@@ -163,7 +163,7 @@ export function CTASection() {
                         <div className="px-5 py-3 border-t border-black/5 bg-sage flex items-center justify-between gap-3 text-xs text-muted-dark">
                             <span>Nie widzisz kalendarza?</span>
                             <a
-                                href="https://calendar.app.google/djYy2maXAivipcSH6"
+                                href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3OTv0k-j2FsAJLC5Db_lhbNVoz1GK8Qk5Z62f3rI8SkRJ7DpdUBgyiIeKtmVIMVgDfI9cbQFkj"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="font-medium text-black underline underline-offset-2 decoration-lime/60 hover:decoration-lime"

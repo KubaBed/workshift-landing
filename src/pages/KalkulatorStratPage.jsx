@@ -476,7 +476,7 @@ function ResultCard({
                     30-minutowa diagnoza online. Mapa Twoich procesów + 2-3 konkretne rekomendacje. Zero zobowiązań.
                 </p>
                 <a
-                    href="https://calendar.app.google/JtjkocJAqrPVehMt9"
+                    href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3OTv0k-j2FsAJLC5Db_lhbNVoz1GK8Qk5Z62f3rI8SkRJ7DpdUBgyiIeKtmVIMVgDfI9cbQFkj"
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={handleCalendarClick}
