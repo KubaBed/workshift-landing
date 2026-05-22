@@ -86,6 +86,13 @@ async function resolveHandler(pathname) {
 export default function apiMiddlewarePlugin() {
     return {
         name: 'workshift-api-middleware',
+        // Plugin obsługuje tylko local dev (Vite middleware → /api/* requests).
+        // W production (Vercel) functions w api/*.js obsługuje Vercel runtime,
+        // więc plugin jest niepotrzebny w build phase. `apply: 'serve'` wyklucza
+        // plugin z `vite build` — eliminujemy ryzyko interakcji z Rollup AST
+        // parser, które wcześniej powodowało false "Expected ',', got 'ident'"
+        // w nieskorelowanych plikach (np. src/data/blogPosts.js).
+        apply: 'serve',
         configureServer(server) {
             server.middlewares.use(async (req, res, next) => {
                 if (!req.url || !req.url.startsWith('/api/')) return next();
