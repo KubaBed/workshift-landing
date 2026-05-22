@@ -16,14 +16,26 @@ import {
     parseCookies,
     verifyOfferToken,
     sanitizeOfferForClient,
+    getOfferFromEnv,
 } from '../_lib/offerAuth.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Lazy load offer data file. Nieobsłużone slugi → null.
+// Dwa źródła danych oferty (priority order):
+//   1. ENV VAR `OFFER_DATA_<SLUG>` (base64-encoded JSON) — wygrywa zawsze gdy
+//      ustawiony. Używamy w produkcji (Vercel env vars, encrypted at rest).
+//   2. Plik `api/_data/offers/<slug>.js` — fallback dla local dev (gitignored).
+//
+// Order pozwala na "hot patching" oferty w produkcji bez nowego deploy'a:
+// zmieniasz env var w Vercel → kolejny request od razu serwuje nowe dane.
 async function loadOffer(slug) {
     if (!/^[a-z0-9_-]+$/.test(slug)) return null;
-    // Najpierw szukamy pliku per-slug (private, gitignored). Fallback: null.
+
+    // 1. Env var (produkcja)
+    const fromEnv = getOfferFromEnv(slug);
+    if (fromEnv) return fromEnv;
+
+    // 2. File system (local dev)
     const candidate = path.join(__dirname, '..', '_data', 'offers', `${slug}.js`);
     try {
         const url = pathToFileURL(candidate).href;

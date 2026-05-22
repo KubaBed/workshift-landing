@@ -25,8 +25,29 @@ export function envPasswordKey(slug) {
     return `OFFER_PASSWORD_${slug.toUpperCase().replace(/[^A-Z0-9_]/g, '_')}`;
 }
 
+export function envDataKey(slug) {
+    return `OFFER_DATA_${slug.toUpperCase().replace(/[^A-Z0-9_]/g, '_')}`;
+}
+
 export function getOfferPassword(slug) {
     return process.env[envPasswordKey(slug)] || null;
+}
+
+// Decoduje treść oferty z env var (base64-encoded JSON). Używane w produkcji
+// gdy plik na file system nie jest dostępny (gitignored). Wraca null jeśli env
+// var nie ustawiony albo zawartość nie parsuje się jako JSON.
+export function getOfferFromEnv(slug) {
+    const raw = process.env[envDataKey(slug)];
+    if (!raw) return null;
+    try {
+        const json = Buffer.from(raw, 'base64').toString('utf-8');
+        const parsed = JSON.parse(json);
+        if (!parsed || typeof parsed !== 'object') return null;
+        return parsed;
+    } catch (err) {
+        console.error(`getOfferFromEnv: failed to decode ${envDataKey(slug)}:`, err.message);
+        return null;
+    }
 }
 
 export function getJwtSecret() {

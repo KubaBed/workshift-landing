@@ -13,7 +13,9 @@
     "lead-magnets:build": "node lead-magnets/build-pdf.mjs",
     "lead-magnets:build:kancelaria": "node lead-magnets/build-pdf.mjs kancelaria",
     "offer:pdf": "node lead-magnets/build-offer-pdf.mjs",
-    "offer:pdf:informax": "node lead-magnets/build-offer-pdf.mjs informax"
+    "offer:pdf:informax": "node lead-magnets/build-offer-pdf.mjs informax",
+    "offer:encode": "node lead-magnets/encode-offer-for-vercel.mjs",
+    "offer:encode:informax": "node lead-magnets/encode-offer-for-vercel.mjs informax"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",
