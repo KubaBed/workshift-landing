@@ -38,7 +38,7 @@ Kancelarie, biura księgowe, firmy obsługujące administrację publiczną – t
 - **Jest już wdrożony w mObywatelu**, więc zaufanie instytucjonalne masz w pakiecie.
 
 Jeżeli miałbym coś doradzić, to polecam zacząć z modelem 8B/12B. To dobry kompromis między jakością a wymaganiami sprzętowymi - można go postawić na sensownej maszynie, a nie na klastrze za 200 tysięcy złotych.
-    \`,
+    `,
   },
   {
     slug: 'o-co-chodzi-z-tymi-agentami',
