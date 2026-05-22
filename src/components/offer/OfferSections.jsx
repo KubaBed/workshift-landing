@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check, ArrowRight, Eye, Calendar } from 'lucide-react';
+import { Check, ArrowRight, Eye, Calendar, Printer } from 'lucide-react';
 
 const fadeUp = {
   initial: { opacity: 0, y: 16 },
@@ -11,7 +11,7 @@ const fadeUp = {
 
 function SectionWrap({ children, className = '' }) {
   return (
-    <section className={`relative py-20 md:py-28 px-6 ${className}`}>
+    <section className={`relative py-14 md:py-20 px-6 ${className}`}>
       <div className="max-w-[1100px] mx-auto">{children}</div>
     </section>
   );
@@ -29,7 +29,7 @@ function LimeDivider() {
   return <div className="w-12 h-px bg-lime mb-6" />;
 }
 
-// Mały status pasek u góry oferty — pokazuje liczbę otwarć i datę ważności.
+// Mały status pasek u góry oferty - pokazuje liczbę otwarć i datę ważności.
 // Subtelny, tylko po odblokowaniu. Wykorzystuje dane z /api/offers/views.
 export function StatusBanner({ views, validUntil }) {
   if (!views && !validUntil) return null;
@@ -64,7 +64,7 @@ export function StatusBanner({ views, validUntil }) {
   );
 }
 
-// Embed do Loom / YouTube — bezpieczna ramka iframe z lazy loading.
+// Embed do Loom / YouTube - bezpieczna ramka iframe z lazy loading.
 // Jeśli video.id pusty, sekcja się nie renderuje (placeholder logic ready).
 function VideoEmbed({ video }) {
   if (!video || !video.id) return null;
@@ -277,7 +277,7 @@ export function TimelineSection({ timeline }) {
       <motion.div {...fadeUp}>
         <SectionLabel>Harmonogram</SectionLabel>
         <h2 className="text-3xl md:text-5xl font-display tracking-tight text-black mb-12 leading-tight max-w-3xl">
-          Od startu do działającego asystenta — ok. 5 miesięcy
+          Od startu do działającego asystenta - ok. 5 miesięcy
         </h2>
         <div className="relative">
           <div className="absolute left-3 top-2 bottom-2 w-px bg-black/15 md:left-1/2 md:-translate-x-px" aria-hidden />
@@ -383,7 +383,13 @@ export function SaldeoSection({ saldeo }) {
 }
 
 export function NextStepsSection({ steps, validUntil, contact, client }) {
-  const subject = encodeURIComponent(`Akceptacja oferty pilotażu — ${client?.name?.replace(' Sp. z o.o.', '') || ''}`);
+  const subject = encodeURIComponent(`Akceptacja oferty pilotażu - ${client?.name?.replace(' Sp. z o.o.', '') || ''}`);
+  const handlePrint = () => {
+    // window.print() z naszym print stylesheet w OfferPage.jsx pokazuje wszystkie
+    // sekcje bez nawigacji, status bannera i WhatsApp button'a. Klient wybiera
+    // w systemowym dialogu "Zapisz jako PDF".
+    if (typeof window !== 'undefined') window.print();
+  };
   return (
     <SectionWrap className="pb-32">
       <motion.div {...fadeUp}>
@@ -409,7 +415,7 @@ export function NextStepsSection({ steps, validUntil, contact, client }) {
           ))}
         </ol>
 
-        <div className="border-t border-black/15 pt-10 grid md:grid-cols-[1fr_auto] gap-6 items-end">
+        <div className="border-t border-black/15 pt-10 grid md:grid-cols-[1fr_auto] gap-6 items-end no-print">
           <div>
             <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-dark mb-2">Kontakt</p>
             <p className="text-xl md:text-2xl font-display tracking-tight text-black mb-1">{contact.name}</p>
@@ -417,13 +423,24 @@ export function NextStepsSection({ steps, validUntil, contact, client }) {
               {contact.email}
             </a>
           </div>
-          <a
-            href={`mailto:${contact.email}?subject=${subject}`}
-            className="inline-flex items-center gap-2 h-14 px-6 bg-black text-sage rounded-md font-medium hover:bg-lime hover:text-black transition group"
-          >
-            Akceptuję ofertę
-            <ArrowRight size={18} className="group-hover:translate-x-1 transition" />
-          </a>
+          <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+            <button
+              type="button"
+              onClick={handlePrint}
+              className="inline-flex items-center justify-center gap-2 h-14 px-5 border border-black/15 hover:border-black rounded-md font-medium transition group"
+              aria-label="Pobierz ofertę jako PDF"
+            >
+              <Printer size={18} />
+              Pobierz PDF
+            </button>
+            <a
+              href={`mailto:${contact.email}?subject=${subject}`}
+              className="inline-flex items-center justify-center gap-2 h-14 px-6 bg-black text-sage rounded-md font-medium hover:bg-lime hover:text-black transition group"
+            >
+              Akceptuję ofertę
+              <ArrowRight size={18} className="group-hover:translate-x-1 transition" />
+            </a>
+          </div>
         </div>
 
         <p className="mt-10 text-sm text-muted-light">

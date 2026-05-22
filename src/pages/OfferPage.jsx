@@ -89,6 +89,51 @@ export default function OfferPage() {
         };
     }, []);
 
+    // Print stylesheet — aktywuje się gdy klient klika "Pobierz PDF" (window.print).
+    // Strategia: globalnie ukrywamy elementy nawigacyjne strony (Header, Footer,
+    // WhatsApp button, ConsentBanner) oraz sticky status banner i CTA. Wymuszamy
+    // białe tło, wyłączamy animacje framer-motion (opacity:0 by default → show).
+    // Page break-inside na sekcjach żeby nie ciąć tabel cenowych w połowie.
+    useEffect(() => {
+        const style = document.createElement('style');
+        style.setAttribute('data-offer-print', '1');
+        style.textContent = `
+            @media print {
+                /* Hide global app chrome */
+                header[class*="sticky"], nav, footer, [role="contentinfo"] { display: none !important; }
+                a[aria-label*="WhatsApp"], [class*="FloatingWhatsApp"] { display: none !important; }
+                [role="dialog"][aria-label*="cookies"], div[id*="cookie"] { display: none !important; }
+                /* Hide offer-specific non-print elements */
+                main > div.sticky.top-0 { display: none !important; }
+                .no-print { display: none !important; }
+                /* Force white bg + readable colors */
+                html, body, main { background: #ffffff !important; }
+                .bg-sage { background: #ffffff !important; }
+                .bg-white\\/30, .bg-white\\/60 { background: #fafafa !important; }
+                /* Reveal framer-motion elements that started at opacity:0 */
+                [style*="opacity: 0"] { opacity: 1 !important; }
+                [style*="opacity:0"] { opacity: 1 !important; }
+                [style*="transform: translateY"] { transform: none !important; }
+                /* Avoid breaking sections mid-content */
+                section { break-inside: avoid; page-break-inside: avoid; }
+                h1, h2, h3 { break-after: avoid; page-break-after: avoid; }
+                .rounded-2xl { break-inside: avoid; page-break-inside: avoid; }
+                table { break-inside: avoid; page-break-inside: avoid; }
+                /* Compact padding for print */
+                section { padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; }
+                /* Make sure lime accents print (color-adjust) */
+                .bg-lime, [class*="bg-lime"] {
+                    -webkit-print-color-adjust: exact;
+                    print-color-adjust: exact;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        return () => {
+            try { document.head.removeChild(style); } catch { /* ok */ }
+        };
+    }, []);
+
     if (state.status === 'loading') {
         return (
             <main className="min-h-screen bg-sage flex items-center justify-center">
