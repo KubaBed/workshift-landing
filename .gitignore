@@ -51,3 +51,23 @@ diary/
 *.mov
 *.avi
 *.mkv
+
+# Client offer data — NEVER commits (RODO + business sensitivity)
+# Kod ofert (komponenty, route, gate) jest publiczny.
+# Treść konkretnych klientów + ich dane osobowe — gitignored.
+src/data/offers/*.js
+!src/data/offers/index.js
+!src/data/offers/*.example.js
+api/_data/offers/*.js
+api/_data/offers/_views.json
+!api/_data/offers/*.example.js
+public/offers/
+
+# Generated PDF exports of offers (mogą zawierać dane klientów)
+offers-pdf/
+
+# Wewnętrzne notatki strategiczne — NIE do publicznego repo.
+# Jeśli chcesz przenieść do repo, usuń z tej listy i sprawdź czy nie zawierają
+# wrażliwych nazwisk / cen / strategii konkurencyjnej.
+SALES_PLAN.md
+TOOLS_DEEP_DIVE.md

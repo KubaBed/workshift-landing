@@ -32,6 +32,7 @@ const ThankYouPage = lazy(() => import('./pages/ThankYouPage'));
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
 const ServicePage = lazy(() => import('./pages/ServicePage'));
 const KalkulatorStratPage = lazy(() => import('./pages/KalkulatorStratPage'));
+const OfferPage = lazy(() => import('./pages/OfferPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 // Redirect /uslugi (bare) to homepage services section
@@ -192,6 +193,7 @@ function App() {
             <Route path="/blog/:slug" element={<BlogPostPage />} />
             <Route path="/thank-you" element={<ThankYouPage />} />
             <Route path="/polityka-prywatnosci" element={<PrivacyPolicyPage />} />
+            <Route path="/oferta/:slug" element={<OfferPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>
