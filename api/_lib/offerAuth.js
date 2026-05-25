@@ -143,6 +143,7 @@ export function sanitizeOfferForClient(offer) {
         },
         meta: offer.meta || {},
         context: offer.context || null,
+        tldr: offer.tldr || [],
         problems: offer.problems || [],
         approach: offer.approach || null,
         pilot: offer.pilot || null,
