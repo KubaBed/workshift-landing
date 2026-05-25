@@ -47,7 +47,9 @@ if ! command -v vercel &>/dev/null; then
     exit 2
 fi
 
-if [[ ! -f ".vercel/project.json" ]]; then
+# Vercel CLI v37+ używa .vercel/repo.json zamiast starego .vercel/project.json.
+# Akceptujemy oba formaty.
+if [[ ! -f ".vercel/project.json" && ! -f ".vercel/repo.json" ]]; then
     echo "Error: projekt nie jest połączony z Vercel." >&2
     echo "Uruchom raz: vercel link" >&2
     exit 3
