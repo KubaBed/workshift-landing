@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Button } from './ui/Button';
 import { Input } from './ui/input';
-import newsletterBg from '../assets/newsletter-bg.png';
+import newsletterBg from '../assets/newsletter-bg.webp';
 import { track, EVENTS } from '../lib/analytics';
 
 gsap.registerPlugin(ScrollTrigger);

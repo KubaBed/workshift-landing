@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Floating } from './animations/Floating';
-import tymoteuszImg from '../assets/tymoteusz-madry-highres.jpg';
-import zuzannaImg from '../assets/zuzanna-wozniak-highres.jpg';
-import bogdanImg from '../assets/bogdan-dzudzewicz-highres.jpg';
+import tymoteuszImg from '../assets/tymoteusz-madry-highres.webp';
+import zuzannaImg from '../assets/zuzanna-wozniak-highres.webp';
+import bogdanImg from '../assets/bogdan-dzudzewicz-highres.webp';
 
 const testimonials = [
     {

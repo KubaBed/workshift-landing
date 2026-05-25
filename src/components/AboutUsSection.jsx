@@ -1,7 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import GradientText from './GradientText';
-import jakubPhoto from '../Jakub-Bednarz.png';
+// Foto serwowane z public/ jako WebP (1 plik vs poprzednio 2 duplikaty
+// — `src/Jakub-Bednarz.png` 745 KB + `public/Jakub-Bednarz.png` 745 KB
+// zostały skonsolidowane do `/Jakub-Bednarz.webp` 246 KB).
+const jakubPhoto = '/Jakub-Bednarz.webp';
 
 export function AboutUsSection() {
     return (
