@@ -2,9 +2,10 @@
 // Dla nowego klienta: skopiuj do `api/_data/offers/<slug>.js` (gitignored)
 // i dopisz hasło do .env.local jako OFFER_PASSWORD_<SLUG_UPPER>.
 //
-// Wszystkie pola opcjonalne — pomiń sekcję, której nie chcesz pokazywać.
-// Wszędzie używaj formy "Ty" (drugiej osoby) — bez zwrotów "Pan" ani
-// "klient" (oba sztuczne dla podstawowego tonu Workshift).
+// Wszystkie pola opcjonalne - pomiń sekcję, której nie chcesz pokazywać.
+// Domyślny ton: "Pan" / "Państwo" (formalny, bezpieczny dla księgowo-prawnych
+// i mature klientów). "Ty" tylko gdy klient sam ustalił przejście. Bez
+// zwrotów "klient" w trzeciej osobie (sztuczne, self-referential).
 
 export default {
     slug: 'example-client',
@@ -53,7 +54,7 @@ export default {
     approach: {
         headline: 'Krótkie zdanie z rekomendacją.',
         reasons: ['Powód 1', 'Powód 2', 'Powód 3'],
-        callout: 'Callout w italics — dodatkowe wyjaśnienie podejścia.',
+        callout: 'Callout w italics - dodatkowe wyjaśnienie podejścia.',
     },
 
     pilot: {
@@ -72,7 +73,7 @@ export default {
         priceNote: 'netto, fakturowane miesięcznie z dołu',
         duration: '3 miesiące',
         deliverables: ['Element 1', 'Element 2'],
-        callout: 'Co dzieje się po 3 miesiącach — decyzja razem.',
+        callout: 'Co dzieje się po 3 miesiącach - decyzja razem.',
     },
 
     timeline: [

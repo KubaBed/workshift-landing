@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { OfferGate } from '../components/offer/OfferGate';
 import {
     HeroSection,
+    TldrSection,
     ContextSection,
     ProblemsSection,
     ApproachSection,
@@ -15,7 +16,7 @@ import {
 } from '../components/offer/OfferSections';
 import NotFoundPage from './NotFoundPage';
 
-// Kontakt w stopce — używamy bezpośredniego maila Jakuba zamiast kontakt@.
+// Kontakt w stopce - używamy bezpośredniego maila Jakuba zamiast kontakt@.
 const CONTACT = {
     name: 'Jakub Bednarz · Workshift',
     email: 'jakub@workshift.pl',
@@ -72,7 +73,7 @@ export default function OfferPage() {
                     credentials: 'include',
                 });
                 if (r.ok && mounted) setViews(await r.json());
-            } catch { /* ignore — tracking nie blokuje strony */ }
+            } catch { /* ignore - tracking nie blokuje strony */ }
         };
         track();
         return () => { mounted = false; };
@@ -89,7 +90,7 @@ export default function OfferPage() {
         };
     }, []);
 
-    // Print stylesheet — aktywuje się gdy klient klika "Pobierz PDF" (window.print).
+    // Print stylesheet - aktywuje się gdy klient klika "Pobierz PDF" (window.print).
     // Strategia: globalnie ukrywamy elementy nawigacyjne strony (Header, Footer,
     // WhatsApp button, ConsentBanner) oraz sticky status banner i CTA. Wymuszamy
     // białe tło, wyłączamy animacje framer-motion (opacity:0 by default → show).
@@ -178,6 +179,7 @@ export default function OfferPage() {
         <main className="bg-sage min-h-screen relative">
             <StatusBanner views={views} validUntil={offer.meta.validUntil} />
             <HeroSection meta={offer.meta} client={offer.client} video={offer.video} />
+            <TldrSection tldr={offer.tldr} />
             <ContextSection context={offer.context} />
             <ProblemsSection problems={offer.problems} />
             <ApproachSection approach={offer.approach} />

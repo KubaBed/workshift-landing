@@ -5,8 +5,8 @@ import { Logo } from '../ui/Logo';
 import { Button } from '../ui/Button';
 
 // Auth gate dla strony oferty.
-// POST /api/offers/verify { slug, password } — backend ustawia httpOnly cookie.
-// Po sukcesie odpalamy onUnlock() — OfferPage przeładuje dane z API.
+// POST /api/offers/verify { slug, password } - backend ustawia httpOnly cookie.
+// Po sukcesie odpalamy onUnlock() - OfferPage przeładuje dane z API.
 
 export function OfferGate({ slug, clientName, onUnlock }) {
     const [value, setValue] = useState('');

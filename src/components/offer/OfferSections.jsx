@@ -113,6 +113,28 @@ export function HeroSection({ meta, client, video }) {
   );
 }
 
+// TL;DR - "above-the-fold" przegląd dla decydenta-skanera. 3-4 punkty,
+// renderowane jako pierwsza sekcja po Hero. Każdy z hyphen prefix
+// (zgodnie z Workshift typography rule: hyphen, nie em-dash).
+export function TldrSection({ tldr }) {
+  if (!Array.isArray(tldr) || tldr.length === 0) return null;
+  return (
+    <SectionWrap className="pt-4 md:pt-6">
+      <motion.div {...fadeUp}>
+        <SectionLabel>W skrócie</SectionLabel>
+        <ul className="flex flex-col gap-4 max-w-3xl">
+          {tldr.map((item, i) => (
+            <li key={i} className="flex gap-4 items-start">
+              <span className="font-display text-2xl text-lime leading-none mt-1 shrink-0 select-none" aria-hidden="true">-</span>
+              <span className="text-lg md:text-xl text-black leading-relaxed">{item}</span>
+            </li>
+          ))}
+        </ul>
+      </motion.div>
+    </SectionWrap>
+  );
+}
+
 export function ContextSection({ context }) {
   return (
     <SectionWrap>
@@ -277,7 +299,7 @@ export function TimelineSection({ timeline }) {
       <motion.div {...fadeUp}>
         <SectionLabel>Harmonogram</SectionLabel>
         <h2 className="text-3xl md:text-5xl font-display tracking-tight text-black mb-12 leading-tight max-w-3xl">
-          Od startu do działającego asystenta - ok. 5 miesięcy
+          Od startu do działającego asystenta - ok. 4 tygodnie
         </h2>
         <div className="relative">
           <div className="absolute left-3 top-2 bottom-2 w-px bg-black/15 md:left-1/2 md:-translate-x-px" aria-hidden />
