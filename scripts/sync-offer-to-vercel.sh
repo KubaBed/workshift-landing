@@ -80,31 +80,70 @@ if [[ "$BYTES" -gt 65000 ]]; then
     echo "Rozważ migrację do Vercel Edge Config / Blob storage." >&2
 fi
 
-# 2 + 3. Dla każdego środowiska: usuń starą + wstaw nową
-for ENV in production preview development; do
+# 2 + 3. Dla każdego środowiska: usuń starą + wstaw nową.
+# Production ma najwyższy priorytet — błąd na production = fatal.
+# Preview/development = best-effort; failure logowany, ale nie zatrzymuje skryptu
+# (np. Vercel CLI sporadycznie failuje przy `env add ... preview` na fresh projects).
+#
+# Opcjonalna flaga `--prod-only` pomija preview + development (szybciej, mniej szumu).
+ENVIRONMENTS=("production" "preview" "development")
+if [[ "${2:-}" == "--prod-only" ]]; then
+    ENVIRONMENTS=("production")
+    echo "  ℹ Flaga --prod-only: synchronizuję tylko production"
+fi
+
+declare -a FAILED_ENVS=()
+declare -a SUCCESS_ENVS=()
+
+for ENV in "${ENVIRONMENTS[@]}"; do
     echo ""
     echo "▶ ${ENV_VAR_NAME} → ${ENV}..."
 
-    # Usuń starą (ignoruj błąd jeśli nie istnieje)
-    if vercel env rm "$ENV_VAR_NAME" "$ENV" --yes 2>/dev/null; then
+    # Usuń starą (ignoruj błąd jeśli nie istnieje; tłumimy też stdout JSON-a Vercela)
+    if vercel env rm "$ENV_VAR_NAME" "$ENV" --yes >/dev/null 2>&1; then
         echo "  ✓ Usunięto starą wartość"
     else
         echo "  ℹ Brak starej wartości (OK przy pierwszym uruchomieniu)"
     fi
 
-    # Wstaw nową
-    if vercel env add "$ENV_VAR_NAME" "$ENV" < "$TMP_FILE" >/dev/null 2>&1; then
+    # Wstaw nową — capture stderr żeby przy błędzie pokazać user-friendly diagnose
+    ADD_STDERR=$(mktemp -t "vercel-add-err.XXXXXX")
+    if vercel env add "$ENV_VAR_NAME" "$ENV" < "$TMP_FILE" >/dev/null 2>"$ADD_STDERR"; then
         echo "  ✓ Zapisano nową wartość"
+        SUCCESS_ENVS+=("$ENV")
     else
-        echo "  ✗ Błąd przy dodawaniu env var" >&2
-        echo "    Sprawdź ręcznie: vercel env ls" >&2
-        exit 6
+        echo "  ✗ Błąd przy dodawaniu env var dla środowiska: $ENV" >&2
+        if [[ -s "$ADD_STDERR" ]]; then
+            sed 's/^/    /' "$ADD_STDERR" >&2
+        fi
+        FAILED_ENVS+=("$ENV")
+
+        # Production failure = fatal (workshift.pl używa production)
+        if [[ "$ENV" == "production" ]]; then
+            echo "" >&2
+            echo "════════════════════════════════════════════════════════════════" >&2
+            echo "✗ KRYTYCZNY: production sync zawiódł. Spróbuj ręcznie:" >&2
+            echo "    vercel env add ${ENV_VAR_NAME} production < ${TMP_FILE}" >&2
+            echo "════════════════════════════════════════════════════════════════" >&2
+            rm -f "$ADD_STDERR"
+            exit 6
+        fi
     fi
+    rm -f "$ADD_STDERR"
 done
 
 echo ""
 echo "═══════════════════════════════════════════════════════════════"
-echo "✓ Sync zakończony. OFFER_DATA_${SLUG_UPPER} zaktualizowany w 3 środowiskach."
+if [[ ${#FAILED_ENVS[@]} -eq 0 ]]; then
+    echo "✓ Sync zakończony. OFFER_DATA_${SLUG_UPPER} zaktualizowany w: ${SUCCESS_ENVS[*]}"
+else
+    echo "⚠ Sync częściowo zakończony."
+    echo "  ✓ OK:     ${SUCCESS_ENVS[*]:-(brak)}"
+    echo "  ✗ Failed: ${FAILED_ENVS[*]}"
+    echo ""
+    echo "  Production jest najważniejsze dla workshift.pl. Preview/Development"
+    echo "  potrzebne tylko jeśli testujesz na branch deployments / lokalnym dev."
+fi
 echo ""
 echo "Następny krok — wymuś redeploy production żeby nowa wartość poszła live:"
 echo "  vercel --prod"
