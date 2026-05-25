@@ -15,7 +15,9 @@
     "offer:pdf": "node lead-magnets/build-offer-pdf.mjs",
     "offer:pdf:informax": "node lead-magnets/build-offer-pdf.mjs informax",
     "offer:encode": "node lead-magnets/encode-offer-for-vercel.mjs",
-    "offer:encode:informax": "node lead-magnets/encode-offer-for-vercel.mjs informax"
+    "offer:encode:informax": "node lead-magnets/encode-offer-for-vercel.mjs informax",
+    "offer:sync": "scripts/sync-offer-to-vercel.sh",
+    "offer:sync:informax": "scripts/sync-offer-to-vercel.sh informax"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",
