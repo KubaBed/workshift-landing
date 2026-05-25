@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check, ArrowRight, Eye, Calendar, Printer } from 'lucide-react';
+import { Check, ArrowRight, Eye, Calendar } from 'lucide-react';
 
 const fadeUp = {
   initial: { opacity: 0, y: 16 },
@@ -406,12 +406,6 @@ export function SaldeoSection({ saldeo }) {
 
 export function NextStepsSection({ steps, validUntil, contact, client }) {
   const subject = encodeURIComponent(`Akceptacja oferty pilotażu - ${client?.name?.replace(' Sp. z o.o.', '') || ''}`);
-  const handlePrint = () => {
-    // window.print() z naszym print stylesheet w OfferPage.jsx pokazuje wszystkie
-    // sekcje bez nawigacji, status bannera i WhatsApp button'a. Klient wybiera
-    // w systemowym dialogu "Zapisz jako PDF".
-    if (typeof window !== 'undefined') window.print();
-  };
   return (
     <SectionWrap className="pb-32">
       <motion.div {...fadeUp}>
@@ -437,7 +431,7 @@ export function NextStepsSection({ steps, validUntil, contact, client }) {
           ))}
         </ol>
 
-        <div className="border-t border-black/15 pt-10 grid md:grid-cols-[1fr_auto] gap-6 items-end no-print">
+        <div className="border-t border-black/15 pt-10 grid md:grid-cols-[1fr_auto] gap-6 items-end">
           <div>
             <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-dark mb-2">Kontakt</p>
             <p className="text-xl md:text-2xl font-display tracking-tight text-black mb-1">{contact.name}</p>
@@ -445,24 +439,13 @@ export function NextStepsSection({ steps, validUntil, contact, client }) {
               {contact.email}
             </a>
           </div>
-          <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
-            <button
-              type="button"
-              onClick={handlePrint}
-              className="inline-flex items-center justify-center gap-2 h-14 px-5 border border-black/15 hover:border-black rounded-md font-medium transition group"
-              aria-label="Pobierz ofertę jako PDF"
-            >
-              <Printer size={18} />
-              Pobierz PDF
-            </button>
-            <a
-              href={`mailto:${contact.email}?subject=${subject}`}
-              className="inline-flex items-center justify-center gap-2 h-14 px-6 bg-black text-sage rounded-md font-medium hover:bg-lime hover:text-black transition group"
-            >
-              Akceptuję ofertę
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition" />
-            </a>
-          </div>
+          <a
+            href={`mailto:${contact.email}?subject=${subject}`}
+            className="inline-flex items-center justify-center gap-2 h-14 px-6 bg-black text-sage rounded-md font-medium hover:bg-lime hover:text-black transition group"
+          >
+            Akceptuję ofertę
+            <ArrowRight size={18} className="group-hover:translate-x-1 transition" />
+          </a>
         </div>
 
         <p className="mt-10 text-sm text-muted-light">
