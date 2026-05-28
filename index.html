@@ -68,15 +68,38 @@
       ]
     }
     </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Fonts self-hosted via @font-face in index.css (was Google Fonts) -->
 
     <!-- GA4 + Clarity + PostHog ładowane dynamicznie
          przez src/lib/consent.js po akceptacji cookie consent. RODO. -->
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Fallback / Pre-render HTML for bots (like Google Pomelli) and slow connections -->
+      <div style="background-color: #E6E8DD; color: #000000; min-height: 100vh; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 3rem 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; box-sizing: border-box;">
+        <header style="margin-bottom: 2.5rem;">
+          <img src="/brand-assets/logo-dark.png" alt="Workshift Logo" style="height: 48px; max-width: 100%; object-fit: contain;" />
+        </header>
+        <main style="max-width: 640px; margin: 0 auto;">
+          <h1 style="font-size: 3rem; font-weight: 800; margin: 0 0 1rem 0; letter-spacing: -0.04em; line-height: 1.1;">Workshift</h1>
+          <h2 style="font-size: 1.5rem; font-weight: 400; color: #595959; margin: 0 0 2rem 0; letter-spacing: -0.02em;">Wdrażamy AI, które po prostu działa</h2>
+          <p style="font-size: 1.125rem; line-height: 1.6; color: #000000; margin: 0 0 2.5rem 0;">
+            Workshift to boutique AI consulting dla polskich MŚP. Pomagamy firmom wdrażać pragmatyczne innowacje AI, oszczędzać czas (+32% odzyskanego czasu operacyjnego), optymalizować procesy oraz budować dedykowanych agentów AI pracujących 24/7. Bez buzzwordów, bez przestojów, z mierzalnymi rezultatami.
+          </p>
+          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <span style="background-color: #9CE069; color: #000000; padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 600; font-size: 1rem; border: 1px solid #9CE069;">
+              Bezpłatny audyt AI
+            </span>
+            <span style="background-color: #FFFFFF; color: #000000; padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 600; font-size: 1rem; border: 1px solid rgba(0, 0, 0, 0.1);">
+              Nasze Usługi
+            </span>
+          </div>
+        </main>
+        <footer style="margin-top: 5rem; color: #595959; font-size: 0.875rem; border-top: 1px solid rgba(0, 0, 0, 0.05); padding-top: 1.5rem; width: 100%; max-width: 640px;">
+          &copy; 2026 Workshift. Wszelkie prawa zastrzeżone. kontakt@workshift.pl
+        </footer>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
