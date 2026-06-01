@@ -25,6 +25,13 @@ export const EVENTS = {
     CALCULATOR_STEP: 'calculator_step',
     CALCULATOR_COMPLETE: 'calculator_complete',
     CALCULATOR_CTA_CLICK: 'calculator_cta_click',
+    AUDIT_VIEW: 'audit_view',
+    AUDIT_START: 'audit_start',
+    AUDIT_QUESTION_ANSWERED: 'audit_question_answered',
+    AUDIT_COMPLETE: 'audit_complete',
+    AUDIT_CTA_HOT: 'audit_cta_hot',
+    AUDIT_CTA_WARM: 'audit_cta_warm',
+    AUDIT_CTA_COLD: 'audit_cta_cold',
 };
 
 /**
