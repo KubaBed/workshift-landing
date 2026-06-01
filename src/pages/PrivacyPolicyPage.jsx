@@ -42,7 +42,7 @@ const PrivacyPolicyPage = () => {
               Polityka Prywatności i Polityka Cookies
             </h1>
             <p className="text-black/60 text-lg italic">
-              Ostatnia aktualizacja: Kwiecień 2026
+              Ostatnia aktualizacja: Czerwiec 2026
             </p>
           </header>
 
@@ -63,15 +63,15 @@ const PrivacyPolicyPage = () => {
 
             <h3>§2 DEFINICJE</h3>
             <ul>
-              <li><strong>Administrator</strong> – Jakub Bednarz Business Consulting z siedzibą w Warszawie, ul. Złota 7 lok. 28, 00-019 Warszawa, NIP: 6492314982.</li>
-              <li><strong>Użytkownik</strong> – każdy podmiot przebywający na stronie i korzystający z niej.</li>
-              <li><strong>Strona</strong> – strona internetowa znajdująca się pod adresem <a href="https://workshift.pl/">https://workshift.pl/</a> i odpowiednich podstronach.</li>
-              <li><strong>Formularz lub Formularze</strong> – miejsca na Stronie, które umożliwiają wprowadzenie danych osobowych przez Użytkownika, we wskazanych w nich celach np. w celu kontaktu z Administratorem.</li>
-              <li><strong>Newsletter</strong> – oznacza bezpłatną usługę świadczoną drogą elektroniczną przez Administratora na rzecz Użytkownika poprzez przesyłanie listów elektronicznych, za pośrednictwem których Administrator informuje o wydarzeniach, usługach, produktach i innych elementach istotnych z punktu widzenia Administratora i/lub w celu realizacji prawnie uzasadnionego celu Administratora, którym jest marketing bezpośredni, w tym wysyłanie treści marketingowych i handlowych za zgodą Użytkownika.</li>
-              <li><strong>RODO</strong> – oznacza Rozporządzenie Parlamentu Europejskiego i Rady EU 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE (Ogólne Rozporządzenie o Ochronie Danych).</li>
-              <li><strong>Ustawa o ochronie danych osobowych</strong> – ustawa z dnia 10 maja 2018 r. o ochronie danych osobowych (Dz. U. 2018, poz. 1000 z późn. zm.).</li>
-              <li><strong>Ustawa o świadczeniu usług drogą elektroniczną</strong> – ustawa z dnia 18 lipca 2002 r. o świadczeniu usług drogą elektroniczną (Dz. U. z 2020 r. poz. 344 z późn. zm.).</li>
-              <li><strong>Ustawa Prawo Telekomunikacyjne</strong> – ustawa z dnia 16 lipca 2004 r. Prawo telekomunikacyjne (Dz. U. z 2021 r. poz. 576 z późn. zm.).</li>
+              <li><strong>Administrator</strong> - Jakub Bednarz Business Consulting z siedzibą w Warszawie, ul. Złota 7 lok. 28, 00-019 Warszawa, NIP: 6492314982.</li>
+              <li><strong>Użytkownik</strong> - każdy podmiot przebywający na stronie i korzystający z niej.</li>
+              <li><strong>Strona</strong> - strona internetowa znajdująca się pod adresem <a href="https://workshift.pl/">https://workshift.pl/</a> i odpowiednich podstronach.</li>
+              <li><strong>Formularz lub Formularze</strong> - miejsca na Stronie, które umożliwiają wprowadzenie danych osobowych przez Użytkownika, we wskazanych w nich celach np. w celu kontaktu z Administratorem.</li>
+              <li><strong>Newsletter</strong> - oznacza bezpłatną usługę świadczoną drogą elektroniczną przez Administratora na rzecz Użytkownika poprzez przesyłanie listów elektronicznych, za pośrednictwem których Administrator informuje o wydarzeniach, usługach, produktach i innych elementach istotnych z punktu widzenia Administratora i/lub w celu realizacji prawnie uzasadnionego celu Administratora, którym jest marketing bezpośredni, w tym wysyłanie treści marketingowych i handlowych za zgodą Użytkownika.</li>
+              <li><strong>RODO</strong> - oznacza Rozporządzenie Parlamentu Europejskiego i Rady EU 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE (Ogólne Rozporządzenie o Ochronie Danych).</li>
+              <li><strong>Ustawa o ochronie danych osobowych</strong> - ustawa z dnia 10 maja 2018 r. o ochronie danych osobowych (Dz. U. 2018, poz. 1000 z późn. zm.).</li>
+              <li><strong>Ustawa o świadczeniu usług drogą elektroniczną</strong> - ustawa z dnia 18 lipca 2002 r. o świadczeniu usług drogą elektroniczną (Dz. U. z 2020 r. poz. 344 z późn. zm.).</li>
+              <li><strong>Ustawa Prawo Telekomunikacyjne</strong> - ustawa z dnia 16 lipca 2004 r. Prawo telekomunikacyjne (Dz. U. z 2021 r. poz. 576 z późn. zm.).</li>
             </ul>
 
             <h3>§3 DANE OSOBOWE I ZASADY ICH PRZETWARZANIA</h3>
@@ -113,7 +113,7 @@ const PrivacyPolicyPage = () => {
             <p>Podczas wizyty na Stronie, automatycznie zbierane są dane dotyczące samej wizyty, np. adres IP Użytkownika, nazwa domeny, typ przeglądarki, typ systemu operacyjnego itp. Dane te przetwarzane są wyłącznie w celach administrowania stroną i zapewnienia sprawnej obsługi hostingowej i nie są kojarzone z danymi poszczególnych Użytkowników.</p>
 
             <h4>JAKIE SĄ UPRAWNIENIA UŻYTKOWNIKA?</h4>
-            <p>Użytkownikowi przysługują w każdej chwili uprawnienia zawarte w art. 15–21 RODO tj.:</p>
+            <p>Użytkownikowi przysługują w każdej chwili uprawnienia zawarte w art. 15-21 RODO tj.:</p>
             <ul>
               <li>prawo dostępu do treści jego danych,</li>
               <li>prawo do przenoszenia danych,</li>
@@ -121,7 +121,7 @@ const PrivacyPolicyPage = () => {
               <li>prawo usunięcia danych, jeśli brak jest podstaw do ich przetwarzania,</li>
               <li>prawo ograniczenia przetwarzania,</li>
               <li>prawo do wniesienia sprzeciwu wobec przetwarzania danych,</li>
-              <li>prawo wniesienia skargi do organu nadzorczego – Prezesa Urzędu Ochrony Danych Osobowych,</li>
+              <li>prawo wniesienia skargi do organu nadzorczego - Prezesa Urzędu Ochrony Danych Osobowych,</li>
               <li>prawo do bycia zapomnianym.</li>
             </ul>
             <p>W celu realizacji swoich praw Użytkownik może zwrócić się do Administratora poprzez adres e-mail <a href="mailto:kontakt@workshift.pl">kontakt@workshift.pl</a>.</p>
@@ -130,7 +130,7 @@ const PrivacyPolicyPage = () => {
             <p>Jeżeli Użytkownik wyraził zgodę na określone działanie, zgoda taka może być w każdym czasie cofnięta, co skutkować będzie zaprzestaniem wskazanych działań. Cofnięcie zgody pozostaje bez wpływu na przetwarzanie danych, którego dokonano przed jej cofnięciem.</p>
 
             <h4>CZY ADMINISTRATOR PRZEKAZUJE DANE UŻYTKOWNIKA DO PAŃSTW TRZECICH?</h4>
-            <p>Dane Użytkownika mogą być przekazywane poza obszar Unii Europejskiej – do państw trzecich (np. USA w związku z usługami Google, Microsoft itp.). Dostawcy ci stosują mechanizmy zgodności przewidziane przez RODO (np. standardowe klauzule umowne).</p>
+            <p>Dane Użytkownika mogą być przekazywane poza obszar Unii Europejskiej - do państw trzecich (np. USA w związku z usługami Google, Microsoft itp.). Dostawcy ci stosują mechanizmy zgodności przewidziane przez RODO (np. standardowe klauzule umowne).</p>
 
             <h4>JAK DŁUGO ADMINISTRATOR PRZECHOWUJE DANE UŻYTKOWNIKA?</h4>
             <p>Dane będą przechowywane przez czas realizacji poszczególnych usług/osiągnięcia celów oraz przez okres przedawnienia roszczeń zgodnie z przepisami prawa (zazwyczaj do 3 lub 6 lat w zależności od celu przetwarzania).</p>
@@ -142,9 +142,10 @@ const PrivacyPolicyPage = () => {
             <h4>W JAKICH CELACH WYKORZYSTUJEMY COOKIES I JAKIE NARZĘDZIA STOSUJEMY?</h4>
             <p>Administrator wykorzystuje pliki cookies oraz podobne technologie w następujących celach:</p>
             <ul>
-              <li><strong>Niezbędne</strong> — zapewnienie prawidłowego działania Strony (Vercel).</li>
-              <li><strong>Statystyki</strong> — anonimowa analiza ruchu i zachowań Użytkowników na Stronie przy użyciu narzędzi: Vercel Analytics, Google Analytics 4 (Google LLC, USA), PostHog (PostHog Inc., USA). Narzędzia te pomagają zrozumieć, w jaki sposób Użytkownicy korzystają ze Strony, co pozwala nam ją ulepszać.</li>
-              <li><strong>Nagrania sesji</strong> — anonimowe nagrania interakcji Użytkowników ze Stroną (heatmapy, odtworzenia sesji) przy użyciu narzędzi: Microsoft Clarity (Microsoft Corp., USA), PostHog (PostHog Inc., USA).</li>
+              <li><strong>Niezbędne</strong> - zapewnienie prawidłowego działania Strony (Vercel).</li>
+              <li><strong>Statystyki</strong> - anonimowa analiza ruchu i zachowań Użytkowników na Stronie przy użyciu narzędzi: Vercel Analytics, Google Analytics 4 (Google LLC, USA), PostHog (PostHog Inc., USA). Narzędzia te pomagają zrozumieć, w jaki sposób Użytkownicy korzystają ze Strony, co pozwala nam ją ulepszać.</li>
+              <li><strong>Nagrania sesji</strong> - anonimowe nagrania interakcji Użytkowników ze Stroną (heatmapy, odtworzenia sesji) przy użyciu narzędzi: Microsoft Clarity (Microsoft Corp., USA), PostHog (PostHog Inc., USA).</li>
+              <li><strong>Marketing</strong> - pomiar skuteczności i optymalizacja reklam oraz remarketing przy użyciu narzędzia: Meta Pixel (Meta Platforms Ireland Ltd., dane przekazywane do Meta Platforms Inc., USA). Narzędzie ładuje się wyłącznie po wyrażeniu przez Użytkownika zgody na cele marketingowe. W ramach zaawansowanego dopasowywania wybrane dane kontaktowe (np. adres e-mail, numer telefonu) mogą być przekazywane do Meta w postaci zaszyfrowanej (zahaszowanej), wyłącznie w celu dopasowania konwersji - Meta nie otrzymuje ich w formie jawnej.</li>
             </ul>
             <p>Wszystkie wyżej wymienione narzędzia (poza Vercel Analytics, które działa bez plików cookies) są ładowane dopiero po wyrażeniu przez Użytkownika dobrowolnej zgody za pomocą bannera cookie. Użytkownik może w każdej chwili zmienić swoje preferencje klikając w link „Ustawienia cookies" w stopce Strony.</p>
 

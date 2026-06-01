@@ -20,12 +20,16 @@
  */
 
 const STORAGE_KEY = 'workshift_consent';
-export const CONSENT_VERSION = 2;
+// v3: dodano kategorię "marketing" (Meta Pixel). Bump wymusza re-zgodę u wszystkich
+// userów - prawnie wymagane przy dodaniu nowego celu (reklama/remarketing).
+export const CONSENT_VERSION = 3;
 
 const GA4_ID = 'G-B6VJVVFPLR';
 const CLARITY_ID = 'wifxjjszyz';
 const POSTHOG_KEY = 'phc_yhszHMhh3GTgz6bnNTdDmmMtScC4oduLw7BoasWYafKL';
 const POSTHOG_HOST = 'https://eu.i.posthog.com';
+// Meta Pixel ID (z Meta Events Manager). Pusty = loader no-opuje.
+const META_PIXEL_ID = '1350172243839037';
 
 // Custom event name dla cross-component communication.
 const CHANGE_EVENT = 'workshift:consent-change';
@@ -49,10 +53,11 @@ export function hasConsent(category) {
     return !!(c && c[category]);
 }
 
-export function setConsent({ analytics = false, recordings = false } = {}) {
+export function setConsent({ analytics = false, recordings = false, marketing = false } = {}) {
     const value = {
         analytics,
         recordings,
+        marketing,
         timestamp: Date.now(),
         version: CONSENT_VERSION,
     };
@@ -66,6 +71,7 @@ export function setConsent({ analytics = false, recordings = false } = {}) {
     if (recordings) loadClarity();
     // PostHog: load if any consent given (both analytics and session replay)
     if (analytics || recordings) loadPostHog();
+    if (marketing) loadMetaPixel();
     // Note: nie odładowujemy skryptów po withdrawal — wymagałoby reload.
     // Banner pokazuje to userowi i sugeruje refresh.
 
@@ -140,6 +146,45 @@ function loadPostHog() {
     });
 }
 
+function loadMetaPixel() {
+    if (!META_PIXEL_ID) return; // brak ID → no-op (infra gotowa, czeka na ID)
+    loadOnce('meta-pixel-loader', () => {
+        /* eslint-disable */
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0; t.id = 'meta-pixel-loader';
+            t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+        }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+        /* eslint-enable */
+        // Wyłącz automatyczne eventy Meta (SubscribedButtonClick itp.) - wysyłamy
+        // tylko własne, intencjonalne konwersje (PageView/Lead/Contact/CompleteRegistration).
+        window.fbq('set', 'autoConfig', false, META_PIXEL_ID);
+        window.fbq('init', META_PIXEL_ID);
+        window.fbq('track', 'PageView');
+    });
+}
+
+/**
+ * Wyślij event do Meta Pixel. Odpala TYLKO gdy pixel jest załadowany
+ * (czyli gdy user dał zgodę "marketing"). Bez zgody = cichy no-op,
+ * więc można wołać bezpiecznie z dowolnego miejsca bez sprawdzania zgody.
+ *
+ * @param {string} event - standardowy ('Lead'|'Contact'|'CompleteRegistration') lub własny
+ * @param {object} [params]
+ * @param {{ custom?: boolean }} [opts] - custom=true → trackCustom (event spoza standardu Meta)
+ */
+export function trackPixel(event, params = {}, { custom = false } = {}) {
+    if (typeof window === 'undefined' || typeof window.fbq !== 'function') return;
+    try {
+        window.fbq(custom ? 'trackCustom' : 'track', event, params);
+    } catch {
+        // SDK error (ad blocker / network) → nie blokuj user flow.
+    }
+}
+
 /**
  * Wywołaj raz przy bootstrapie aplikacji — jeśli user już zaakceptował
  * w poprzedniej wizycie, załaduj skrypty od razu (bez wyświetlania bannera).
@@ -150,4 +195,5 @@ export function bootstrapConsent() {
     if (c.analytics) loadGA4();
     if (c.recordings) loadClarity();
     if (c.analytics || c.recordings) loadPostHog();
+    if (c.marketing) loadMetaPixel();
 }

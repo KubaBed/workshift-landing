@@ -32,6 +32,7 @@ const ThankYouPage = lazy(() => import('./pages/ThankYouPage'));
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
 const ServicePage = lazy(() => import('./pages/ServicePage'));
 const KalkulatorStratPage = lazy(() => import('./pages/KalkulatorStratPage'));
+const AudytAiPage = lazy(() => import('./pages/AudytAiPage'));
 const OfferPage = lazy(() => import('./pages/OfferPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
@@ -189,6 +190,7 @@ function App() {
             <Route path="/uslugi" element={<ServicesRedirect />} />
             <Route path="/uslugi/:serviceId" element={<ServicePage />} />
             <Route path="/kalkulator" element={<KalkulatorStratPage />} />
+            <Route path="/audyt-ai" element={<AudytAiPage />} />
             <Route path="/blog" element={<BlogListPage />} />
             <Route path="/blog/:slug" element={<BlogPostPage />} />
             <Route path="/thank-you" element={<ThankYouPage />} />

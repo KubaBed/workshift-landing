@@ -6,7 +6,7 @@ import { Button } from './ui/Button';
 import { getConsent, setConsent } from '../lib/consent';
 
 /**
- * Cookie consent banner — Workshift voice (przystępny, nie prawniczy).
+ * Cookie consent banner - Workshift voice (przystępny, nie prawniczy).
  *
  * UX decisions:
  * - Bottom-fixed slide-up, nie modal blokujący stronę. User może czytać
@@ -15,18 +15,19 @@ import { getConsent, setConsent } from '../lib/consent';
  * - "Wybierz co" expand pokazuje granular checkboxy bez kolejnego ekranu.
  * - Nie pokazuje się jeśli user już zdecydował (sprawdza localStorage
  *   przez getConsent()).
- * - Reopen przez window event 'workshift:consent-open' — link w Footer.
+ * - Reopen przez window event 'workshift:consent-open' - link w Footer.
  */
 export function ConsentBanner() {
     const [visible, setVisible] = useState(false);
     const [expanded, setExpanded] = useState(false);
     const [analytics, setAnalytics] = useState(true);
     const [recordings, setRecordings] = useState(true);
+    const [marketing, setMarketing] = useState(true);
 
     useEffect(() => {
         // Show banner gdy brak decyzji w localStorage.
         if (!getConsent()) {
-            // Mała zwłoka — daj stronie się załadować zanim wystrzeli banner.
+            // Mała zwłoka - daj stronie się załadować zanim wystrzeli banner.
             const t = setTimeout(() => setVisible(true), 800);
             return () => clearTimeout(t);
         }
@@ -39,6 +40,7 @@ export function ConsentBanner() {
             if (c) {
                 setAnalytics(c.analytics);
                 setRecordings(c.recordings);
+                setMarketing(c.marketing);
             }
             setVisible(true);
         };
@@ -47,15 +49,15 @@ export function ConsentBanner() {
     }, []);
 
     const acceptAll = () => {
-        setConsent({ analytics: true, recordings: true });
+        setConsent({ analytics: true, recordings: true, marketing: true });
         setVisible(false);
     };
     const rejectAll = () => {
-        setConsent({ analytics: false, recordings: false });
+        setConsent({ analytics: false, recordings: false, marketing: false });
         setVisible(false);
     };
     const saveCustom = () => {
-        setConsent({ analytics, recordings });
+        setConsent({ analytics, recordings, marketing });
         setVisible(false);
     };
 
@@ -77,7 +79,7 @@ export function ConsentBanner() {
                 >
                     <div className="pointer-events-auto bg-white border border-black/10 rounded-[12px] shadow-[0_16px_40px_-16px_rgba(0,0,0,0.22),0_6px_14px_-8px_rgba(0,0,0,0.12)] overflow-hidden">
 
-                        {/* Header bar — kategoria visual */}
+                        {/* Header bar - kategoria visual */}
                         <div className="px-4 pt-3.5 flex items-center justify-between gap-2">
                             <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-dark">
                                 <span className="w-1.5 h-1.5 rounded-full bg-lime" />
@@ -98,7 +100,7 @@ export function ConsentBanner() {
                                 Krótko o cookies
                             </h2>
                             <p className="text-[13px] text-muted-dark leading-snug mb-2">
-                                Zliczamy anonimowe statystyki, żeby wiedzieć co na stronie działa. <span className="text-black">Nie sprzedajemy</span> Twoich danych ani <span className="text-black">nie targetujemy</span> reklam.
+                                Zliczamy anonimowe statystyki, żeby wiedzieć co na stronie działa. <span className="text-black">Nie sprzedajemy</span> Twoich danych - reklamy i remarketing tylko <span className="text-black">za Twoją zgodą</span>.
                             </p>
                             <p className="text-[12px] text-muted-dark/80 leading-snug">
                                 Więcej w{' '}
@@ -126,15 +128,21 @@ export function ConsentBanner() {
                                             />
                                             <ConsentToggle
                                                 label="Statystyki"
-                                                desc="Vercel + Google Analytics + PostHog — anonimowe wizyty, lejki konwersji i testy A/B."
+                                                desc="Vercel + Google Analytics + PostHog - anonimowe wizyty, lejki konwersji i testy A/B."
                                                 checked={analytics}
                                                 onChange={setAnalytics}
                                             />
                                             <ConsentToggle
                                                 label="Nagrania sesji"
-                                                desc="Clarity + PostHog — heatmapy, nagrania i debug UX."
+                                                desc="Clarity + PostHog - heatmapy, nagrania i debug UX."
                                                 checked={recordings}
                                                 onChange={setRecordings}
+                                            />
+                                            <ConsentToggle
+                                                label="Marketing"
+                                                desc="Meta Pixel - pomiar skuteczności reklam i remarketing (tylko za Twoją zgodą)."
+                                                checked={marketing}
+                                                onChange={setMarketing}
                                             />
                                         </div>
                                     </motion.div>
