@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Phone, MessageCircle, Mail, CheckCircle, Loader2, RotateCcw } from 'lucide-react';
 import { track, EVENTS } from '../lib/analytics';
+import { trackPixel } from '../lib/consent';
 import {
     BRANZE,
     WIELKOSC,
@@ -101,6 +102,7 @@ export function AudytQuiz() {
     useEffect(() => {
         if (step === RESULT_STEP) {
             track(EVENTS.AUDIT_COMPLETE, { score, tier, branza: branza || 'n/a' });
+            trackPixel('CompleteRegistration', { content_name: 'mikro-audyt-ai', status: tier });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [step]);
@@ -275,6 +277,7 @@ function ResultScreen({ score, tier, branza, wielkosc, answers, onRestart }) {
             });
             if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'send failed');
             setState('done');
+            trackPixel('Lead', { content_name: 'audyt-' + mode });
         } catch {
             setState('error');
             setErrorMsg('Nie udało się wysłać. Spróbuj ponownie lub zadzwoń: ' + PHONE_HUMAN + '.');
@@ -324,7 +327,7 @@ function ResultScreen({ score, tier, branza, wielkosc, answers, onRestart }) {
         <div className="flex flex-col sm:flex-row gap-3">
             <a
                 href={PHONE_TEL}
-                onClick={() => track(EVENTS.AUDIT_CTA_HOT, { channel: 'tel', source: 'result', score })}
+                onClick={() => { track(EVENTS.AUDIT_CTA_HOT, { channel: 'tel', source: 'result', score }); trackPixel('Contact', { content_name: 'audyt-tel' }); }}
                 className={`inline-flex items-center justify-center gap-2 ${
                     size === 'lg' ? 'px-6 py-3.5' : 'px-5 py-3 text-sm'
                 } bg-black text-white rounded-full font-medium hover:bg-black/85 transition-colors`}
@@ -336,7 +339,7 @@ function ResultScreen({ score, tier, branza, wielkosc, answers, onRestart }) {
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => track(EVENTS.AUDIT_CTA_HOT, { channel: 'whatsapp', source: 'result', score })}
+                onClick={() => { track(EVENTS.AUDIT_CTA_HOT, { channel: 'whatsapp', source: 'result', score }); trackPixel('Contact', { content_name: 'audyt-whatsapp' }); }}
                 className={`inline-flex items-center justify-center gap-2 ${
                     size === 'lg' ? 'px-6 py-3.5' : 'px-5 py-3 text-sm'
                 } bg-lime text-black rounded-full font-medium hover:opacity-90 transition-opacity`}
