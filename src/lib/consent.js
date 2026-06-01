@@ -28,9 +28,8 @@ const GA4_ID = 'G-B6VJVVFPLR';
 const CLARITY_ID = 'wifxjjszyz';
 const POSTHOG_KEY = 'phc_yhszHMhh3GTgz6bnNTdDmmMtScC4oduLw7BoasWYafKL';
 const POSTHOG_HOST = 'https://eu.i.posthog.com';
-// Meta Pixel ID - wklej z Meta Events Manager (~15-16 cyfr). Pusty = loader no-opuje
-// (cała infra gotowa, pixel po prostu się nie ładuje dopóki ID nie zostanie ustawione).
-const META_PIXEL_ID = '';
+// Meta Pixel ID (z Meta Events Manager). Pusty = loader no-opuje.
+const META_PIXEL_ID = '1350172243839037';
 
 // Custom event name dla cross-component communication.
 const CHANGE_EVENT = 'workshift:consent-change';
@@ -160,6 +159,9 @@ function loadMetaPixel() {
             t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
         }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
         /* eslint-enable */
+        // Wyłącz automatyczne eventy Meta (SubscribedButtonClick itp.) - wysyłamy
+        // tylko własne, intencjonalne konwersje (PageView/Lead/Contact/CompleteRegistration).
+        window.fbq('set', 'autoConfig', false, META_PIXEL_ID);
         window.fbq('init', META_PIXEL_ID);
         window.fbq('track', 'PageView');
     });
