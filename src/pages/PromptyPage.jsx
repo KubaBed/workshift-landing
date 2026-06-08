@@ -78,7 +78,7 @@ export default function PromptyPage() {
     // Lekki indeks — lista + wyszukiwarka renderują się natychmiast.
     useEffect(() => {
         let alive = true;
-        fetch('/prompty/index.json')
+        fetch('/prompty-data/index.json')
             .then((r) => r.json())
             .then((d) => {
                 if (!alive) return;
@@ -95,7 +95,7 @@ export default function PromptyPage() {
     // Persony (małe, ładujemy od razu).
     useEffect(() => {
         let alive = true;
-        fetch('/prompty/personas.json')
+        fetch('/prompty-data/personas.json')
             .then((r) => r.json())
             .then((d) => alive && setPersonas(d.personas || []))
             .catch(() => {});
@@ -107,7 +107,7 @@ export default function PromptyPage() {
     // Pełne treści doczytujemy leniwie (do kopiowania / modala), bez blokowania paintu.
     const loadBodies = useCallback(() => {
         if (!bodiesPromise.current) {
-            bodiesPromise.current = fetch('/prompty/prompts.json')
+            bodiesPromise.current = fetch('/prompty-data/prompts.json')
                 .then((r) => r.json())
                 .then((d) => {
                     const m = new Map();

@@ -22,7 +22,9 @@ DEFAULT_SRC = os.path.expanduser(
     "~/Projekty/_scratch/awesome-chatgpt-prompts/prompts.csv"
 )
 SRC = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_SRC
-OUT = os.path.join(os.path.dirname(__file__), "..", "public", "prompty", "prompts.json")
+# Uwaga: katalog danych MUSI być inny niż route SPA `/prompty`, inaczej Vercel
+# serwuje index.json jako index katalogu i przesłania stronę. Stąd `prompty-data`.
+OUT = os.path.join(os.path.dirname(__file__), "..", "public", "prompty-data", "prompts.json")
 OVERLAY = os.path.join(os.path.dirname(__file__), "prompts-pl.json")
 PERSONAS_SRC = os.path.join(os.path.dirname(__file__), "personas-pl.json")
 
