@@ -11,8 +11,14 @@ import {
 } from 'lucide-react';
 import { track, EVENTS } from '../lib/analytics';
 import { AudytQuiz } from '../components/AudytQuiz';
+import logo1 from '../assets/partners/logo1.png';
+import logo2 from '../assets/partners/logo2.png';
+import logo3 from '../assets/partners/logo3.png';
+import logo4 from '../assets/partners/logo4.png';
+import logo5 from '../assets/partners/logo5.png';
 
 const jakubPhoto = '/Jakub-Bednarz.webp';
+const PARTNER_LOGOS = [logo1, logo2, logo3, logo4, logo5];
 const PHONE_HUMAN = '+48 796 186 067';
 const PHONE_TEL = 'tel:+48796186067';
 const WHATSAPP_URL = 'https://wa.me/48796186067?text=' + encodeURIComponent('Cześć Kuba, chcę porozmawiać o audycie AI.');
@@ -110,6 +116,25 @@ export default function AudytAiPage() {
                                 <ShieldCheck size={14} />
                                 Bez maila do startu
                             </span>
+                        </div>
+
+                        {/* Trust strip - logo klientów (z audytu landinga: największy zysk CVR) */}
+                        <div className="mt-12">
+                            <p className="font-mono text-xs uppercase tracking-wider text-muted-dark mb-4">
+                                Zaufali nam
+                            </p>
+                            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
+                                {PARTNER_LOGOS.map((logo, i) => (
+                                    <img
+                                        key={i}
+                                        src={logo}
+                                        alt="Logo klienta Workshift"
+                                        className="h-6 md:h-7 object-contain opacity-50 grayscale"
+                                        style={{ mixBlendMode: 'multiply' }}
+                                        loading="lazy"
+                                    />
+                                ))}
+                            </div>
                         </div>
                     </motion.div>
                 </div>

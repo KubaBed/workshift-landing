@@ -52,6 +52,14 @@ export default async function handler(req, res) {
         ? body.recommendations.slice(0, 5).map((r) => String(r).slice(0, 240))
         : [];
 
+    // Atrybucja: fbclid + utm_* z reklamy (żeby wiedzieć który kreatyw/hook dał leada).
+    const tracking = (body.tracking && typeof body.tracking === 'object') ? body.tracking : {};
+    const trackingKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid'];
+    const trackingHtml = trackingKeys
+        .filter((k) => tracking[k])
+        .map((k) => `<p><strong>${k}:</strong> ${escapeHtml(String(tracking[k]).slice(0, 200))}</p>`)
+        .join('') || '<p>(brak parametrów - ruch bezpośredni / organiczny)</p>';
+
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         return res.status(400).json({ error: 'Nieprawidłowy adres e-mail.' });
     }
@@ -102,6 +110,9 @@ export default async function handler(req, res) {
                     <p><strong>Branża:</strong> ${escapeHtml(branza || 'brak')}</p>
                     <p><strong>Wielkość:</strong> ${escapeHtml(wielkosc || 'brak')}</p>
                     <p><strong>Tryb CTA:</strong> ${escapeHtml(mode)}</p>
+                    <hr />
+                    <p><strong>Atrybucja (skąd lead):</strong></p>
+                    ${trackingHtml}
                     <hr />
                     <p><strong>Rekomendacje pokazane:</strong></p>
                     ${recsHtml}

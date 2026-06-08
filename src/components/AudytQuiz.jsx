@@ -24,6 +24,20 @@ const WHATSAPP_URL =
 const CONTEXT_STEPS = 2; // 0 = branża, 1 = wielkość
 const RESULT_STEP = CONTEXT_STEPS + TOTAL_QUESTIONS; // 14
 
+// Przechwyć parametry atrybucji z URL (fbclid + utm_*) - trafiają do maila
+// notyfikacji, żeby Kuba wiedział który kreatyw/hook dał leada. URL nie zmienia
+// się w trakcie quizu, więc odczyt przy submit jest wystarczający.
+function getTrackingParams() {
+    if (typeof window === 'undefined') return {};
+    const p = new URLSearchParams(window.location.search);
+    const out = {};
+    for (const k of ['fbclid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']) {
+        const v = p.get(k);
+        if (v) out[k] = v.slice(0, 200);
+    }
+    return out;
+}
+
 // Wspólna „karta" kroku - tytuł + opcjonalny podtytuł + opcje.
 function OptionTile({ selected, onClick, disabled, children }) {
     return (
@@ -273,7 +287,7 @@ function ResultScreen({ score, tier, branza, wielkosc, answers, onRestart }) {
             const r = await fetch('/api/audyt-submit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: email.trim(), branza, wielkosc, score, tier, mode, recommendations: recs }),
+                body: JSON.stringify({ email: email.trim(), branza, wielkosc, score, tier, mode, recommendations: recs, tracking: getTrackingParams() }),
             });
             if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'send failed');
             setState('done');
