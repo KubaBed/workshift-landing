@@ -32,6 +32,14 @@ export const EVENTS = {
     AUDIT_CTA_HOT: 'audit_cta_hot',
     AUDIT_CTA_WARM: 'audit_cta_warm',
     AUDIT_CTA_COLD: 'audit_cta_cold',
+    LIBRARY_VIEW: 'library_view',
+    LIBRARY_SEARCH: 'library_search',
+    LIBRARY_TAB: 'library_tab',
+    PROMPT_COPY: 'prompt_copy',
+    PROMPT_OPEN: 'prompt_open',
+    PERSONA_OPEN: 'persona_open',
+    PERSONA_COPY: 'persona_copy',
+    LIBRARY_ONLY_PL: 'library_only_pl',
 };
 
 /**
