@@ -35,7 +35,10 @@ export function Header() {
 
     const navLinks = [
         { name: 'Usługi', href: '/#uslugi' },
-        { name: 'Kalkulator', href: '/kalkulator', highlight: true },
+        // Ukryte z menu na czas kampanii czerwiec 2026 - dubluje /audyt-ai (oba to
+        // interaktywne lead-magnety, nie chcemy konkurencji o uwagę). Podstrona
+        // /kalkulator nadal żywa (direct link + SEO). Przywróć po kampanii.
+        // { name: 'Kalkulator', href: '/kalkulator', highlight: true },
         { name: 'Proces', href: '/#proces' },
         { name: 'Klienci', href: '/#case-studies' },
         { name: 'O nas', href: '/#o-nas' },
