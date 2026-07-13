@@ -110,7 +110,14 @@ for (const ad of ADS) {
             },
             // Wyłączamy auto-przeróbki kreacji przez Meta na starcie testu -
             // porównanie K1/K2/K4 ma być czyste. Włączysz po wyłonieniu winnera.
-            degrees_of_freedom_spec: { creative_features_spec: { standard_enhancements: { enroll_status: 'OPT_OUT' } } },
+            // (zbiorczy standard_enhancements wycofany - opt-out per funkcja)
+            degrees_of_freedom_spec: {
+                creative_features_spec: Object.fromEntries([
+                    'image_brightness_and_contrast', 'image_templates', 'image_touchups',
+                    'image_uncrop', 'image_animation', 'enhance_cta', 'text_optimizations',
+                    'inline_comment',
+                ].map((f) => [f, { enroll_status: 'OPT_OUT' }])),
+            },
         },
     });
     const created = await graph(`/${ACCOUNT}/ads`, {
