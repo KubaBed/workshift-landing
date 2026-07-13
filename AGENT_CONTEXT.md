@@ -2,6 +2,11 @@
 
 > **Last updated**: 2026-04-28
 > **Project**: High-conversion landing page for Workshift — AI Automation Agency
+>
+> **📌 Aktywny handoff (2026-07-13):** kampania „Mikro-audyt AI" + posty social z bloga —
+> stan, ID kont Meta, skrypty i następne kroki opisane w
+> [`HANDOFF-2026-07-13-kampania-social.md`](HANDOFF-2026-07-13-kampania-social.md).
+> Przeczytaj go przy wznawianiu tematu kampanii/social.
 
 ---
 
