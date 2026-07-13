@@ -41,18 +41,15 @@ const PROSPECTING_DAILY_BUDGET = 2200;
 // Persona "Marek" (MARKETING_SALES_PLAN §9.3) + stack e-commerce (draft kreacji).
 // Frazy do wyszukania w Meta Targeting Search - brakujące są pomijane z logiem.
 const INTEREST_QUERIES = [
-    'Entrepreneurship', // przedsiębiorczość
-    'Small and medium-sized enterprises',
+    // Polskie nazwy = trafniejsze pierwsze wyniki w Targeting Search (locale pl_PL).
+    'Przedsiębiorczość', // biznes i finanse
+    'Drobna przedsiębiorczość', // proxy MŚP
     'Business process automation',
-    'Marketing automation',
-    'Artificial intelligence',
-    'ChatGPT',
-    'E-commerce',
+    'Automatyzacja marketingu',
+    'Sztuczna inteligencja', // usługi komputerowe
+    'E-handel', // handel detaliczny (merchant-side)
     'Shopify',
     'WooCommerce',
-    'Allegro',
-    'BaseLinker',
-    'Customer relationship management',
 ];
 const PROSPECTING_AGE = { min: 30, max: 55 };
 
@@ -74,7 +71,8 @@ async function graph(path, { method = 'GET', body } = {}) {
     const json = await res.json().catch(() => ({}));
     if (!res.ok || json.error) {
         const e = json.error || {};
-        throw new Error(`Graph API ${method} ${path} → ${e.message || res.status} (code ${e.code ?? '?'}, fbtrace ${e.fbtrace_id ?? '-'})`);
+        const detail = e.error_user_msg ? ` | ${e.error_user_title}: ${e.error_user_msg}` : '';
+        throw new Error(`Graph API ${method} ${path} → ${e.message || res.status} (code ${e.code ?? '?'}, fbtrace ${e.fbtrace_id ?? '-'})${detail}`);
     }
     return json;
 }
@@ -163,6 +161,9 @@ if (campaignId) {
             objective: 'OUTCOME_SALES',
             status: 'PAUSED',
             special_ad_categories: [],
+            // Budżety trzymamy na poziomie ad setów (faza 1 vs 2 rozdzielnie),
+            // bez współdzielenia 20% między ad setami - czysty test budżetów.
+            is_adset_budget_sharing_enabled: false,
         },
     });
     campaignId = created.id;
@@ -182,6 +183,7 @@ if (set) {
             status: 'PAUSED',
             daily_budget: RETARGETING_DAILY_BUDGET,
             billing_event: 'IMPRESSIONS',
+            bid_strategy: 'LOWEST_COST_WITHOUT_CAP',
             optimization_goal: 'OFFSITE_CONVERSIONS',
             // Retargeting celuje w DOKOŃCZENIE audytu, nie kolejny start.
             promoted_object: { pixel_id: PIXEL_ID, custom_event_type: 'COMPLETE_REGISTRATION' },
@@ -220,6 +222,14 @@ if (prospecting) {
     }
     if (!interests.length) throw new Error('Nie znaleziono żadnych zainteresowań - sprawdź uprawnienia tokenu.');
 
+    // Odfiltruj zdeprecjonowane ID (Meta odrzuca cały ad set, gdy trafi się choć jedno).
+    const validation = await graph(`/search?type=adinterestvalid&interest_fbid_list=${encodeURIComponent(JSON.stringify(interests.map((i) => i.id)))}`);
+    const validIds = new Set((validation.data || []).filter((v) => v.valid).map((v) => String(v.id)));
+    const dropped = interests.filter((i) => !validIds.has(String(i.id)));
+    for (const d of dropped) console.log(`  zainteresowanie zdeprecjonowane, pomijam: ${d.name} (${d.id})`);
+    const activeInterests = interests.filter((i) => validIds.has(String(i.id)));
+    if (!activeInterests.length) throw new Error('Wszystkie znalezione zainteresowania są nieaktywne.');
+
     const created = await graph(`/${account}/adsets`, {
         method: 'POST',
         body: {
@@ -228,6 +238,7 @@ if (prospecting) {
             status: 'PAUSED',
             daily_budget: PROSPECTING_DAILY_BUDGET,
             billing_event: 'IMPRESSIONS',
+            bid_strategy: 'LOWEST_COST_WITHOUT_CAP',
             // Faza 1: za mało konwersji w pixelu na OFFSITE_CONVERSIONS -
             // optymalizujemy pod LP views, custom conversion służy jako metryka.
             // Po ~50 startach quizu/tydz przełącz na OFFSITE_CONVERSIONS.
@@ -236,11 +247,14 @@ if (prospecting) {
                 geo_locations: { countries: ['PL'] },
                 age_min: PROSPECTING_AGE.min,
                 age_max: PROSPECTING_AGE.max,
-                flexible_spec: [{ interests: interests.map(({ id, name }) => ({ id, name })) }],
+                flexible_spec: [{ interests: activeInterests.map(({ id, name }) => ({ id, name })) }],
                 // Wyklucz tych, którzy już ukończyli quiz (audience z pkt 2 ich
                 // zawiera tylko częściowo - completerzy odpadają sami przez exclusion
                 // w regule; tu wykluczamy startujących, by prospecting był czysty).
                 excluded_custom_audiences: [{ id: audienceId }],
+                // Advantage audience OFF - test persony na małym budżecie ma być
+                // czysty; rozszerzanie grupy przez Meta włączysz świadomie później.
+                targeting_automation: { advantage_audience: 0 },
             },
             dsa_beneficiary: 'Workshift',
             dsa_payor: 'Workshift',
