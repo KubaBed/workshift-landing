@@ -10,6 +10,11 @@ import { track, EVENTS } from '../lib/analytics';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Auto-popup przy wyjściu (exit intent). Wyłączony na czas bez kampanii
+// newsletterowej — ustaw na true, aby przywrócić. Sekcja i ręczny przycisk
+// "Zapisz się" działają niezależnie od tej flagi.
+const EXIT_INTENT_ENABLED = false;
+
 const articles = [
     {
         title: "Google TurboQuant: Algorytm, który zmieści potężne AI w Twoim telefonie",
@@ -80,6 +85,8 @@ export function NewsletterSection() {
 
     // Exit Intent Popup
     useEffect(() => {
+        if (!EXIT_INTENT_ENABLED) return;
+
         const handleMouseOut = (e) => {
             // Trigger only on desktop and if mouse leaves top of the viewport
             if (window.innerWidth >= 1024 && e.clientY <= 0) {
