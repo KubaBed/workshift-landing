@@ -1,5 +1,16 @@
 # Sesja 2026-07-13 — Kampania „Mikro-audyt AI" + social z bloga
 
+> **UPDATE 2026-07-13 wieczór (sesja lokalna):** wykonane. Tokeny w `.env.local`,
+> IG test opublikowany (post+story „agenci"), 7 postów FB zaplanowanych natywnie,
+> cron IG w crontab (co 15 min, 9-22). Kampania DOKOŃCZONA na koncie (handoff był zbyt
+> optymistyczny - kampania+ad sety nie istniały; skrypt załatany na nowe wymogi API):
+> kampania `120247366356500240` + prospecting `120247366435870240` (30 PLN/d) +
+> retargeting `120247366388610240` (10 PLN/d), wszystko PAUSED, **spend_cap 500 PLN**.
+> Kreacje odtworzone lokalnie (`ad-creatives/`, gitignored). Reklamy: skrypt
+> `scripts/meta-campaign-ads.mjs` gotowy, obrazy wgrane — **BLOKER: aplikacja
+> 2089061569158895 w trybie dev, wymaga Live**. Monitoring: scheduled task
+> `meta-audyt-ai-daily-check` 9:05. Pełny plan: `KAMPANIA-AUDYT-AI.md` (gitignored).
+
 > Zapis kontekstu do wznowienia w nowej sesji (Kuba przełącza środowisko na lokalne).
 > Wszystko poniżej jest **zmergowane do `main`**. Stan na koniec sesji.
 
