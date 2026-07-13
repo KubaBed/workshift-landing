@@ -424,13 +424,18 @@ function ResultScreen({ score, tier, branza, wielkosc, answers, onRestart }) {
         <div className="rounded-2xl bg-white/70 backdrop-blur border border-black/10 p-6 md:p-10">
             {/* Wynik liczbowy */}
             <div className="text-center mb-8">
+                {/* "Potencjał automatyzacji", nie "Twój wynik" - x/36 czytane jak
+                    ocena z testu odwracało sens skali (feedback z testów UX). */}
                 <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted-dark">
-                    Twój wynik
+                    Potencjał automatyzacji
                 </span>
                 <div className={`mt-2 text-6xl md:text-7xl font-display tracking-tight ${ringColor}`}>
                     {score}
                     <span className="text-2xl md:text-3xl text-muted-dark">/{MAX_SCORE}</span>
                 </div>
+                <p className="mt-1 text-xs text-muted-dark">
+                    im wyższy wynik, tym więcej godzin AI może przejąć
+                </p>
                 <p className="mt-3 text-lg font-display text-black">
                     {tierData.emoji} {tierData.headline}
                 </p>
@@ -464,7 +469,7 @@ function ResultScreen({ score, tier, branza, wielkosc, answers, onRestart }) {
                     <div>
                         <h4 className="text-lg font-display text-black mb-1">Pogadajmy konkretnie.</h4>
                         <p className="text-sm text-muted-dark mb-4">
-                            Przy tym wyniku audyt zwraca się zwykle w pierwszym wdrożeniu. Oddzwonię w ciągu 2h roboczych.
+                            Przy tym wyniku audyt zwraca się zwykle w pierwszym wdrożeniu. Oddzwonię w ciągu 2 godzin (w dni robocze 9-17).
                         </p>
                         <p className="text-sm text-black bg-sage/60 border border-black/5 rounded-xl px-4 py-3 mb-4">
                             Biuro rachunkowe, z którym pracuję, odzyskało <strong>20 godzin tygodniowo</strong> -

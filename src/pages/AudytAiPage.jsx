@@ -91,8 +91,8 @@ export default function AudytAiPage() {
                         </h1>
 
                         <p className="mt-6 text-lg md:text-xl text-muted-dark max-w-2xl mx-auto leading-relaxed">
-                            12 pytań. 4 minuty. Konkretny wynik wraz z 3 rekomendacjami,
-                            dopasowanymi do Twojej branży - bez konieczności podawania maila.
+                            Zrób test i zobacz wynik natychmiast - bez podawania e-maila.
+                            12 pytań, 4 minuty, 3 rekomendacje dopasowane do Twojej branży.
                         </p>
 
                         {/* Primary CTA */}
@@ -134,7 +134,7 @@ export default function AudytAiPage() {
                             </span>
                             <span className="inline-flex items-center gap-2">
                                 <ShieldCheck size={14} />
-                                Bez maila do startu
+                                Bez podawania e-maila
                             </span>
                         </div>
 
@@ -316,7 +316,7 @@ export default function AudytAiPage() {
                                         >
                                             napisz na WhatsApp
                                         </a>
-                                        . Oddzwonię w ciągu 2h roboczych.
+                                        . Oddzwonię w ciągu 2 godzin (w dni robocze 9-17).
                                     </>
                                 ),
                             },

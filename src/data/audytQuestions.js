@@ -109,6 +109,9 @@ export const SECTIONS = [
                     { label: 'Kilka tygodniowo', p: 1 },
                     { label: 'Kilkanaście tygodniowo', p: 2 },
                     { label: 'Kilkadziesiąt+ - to pół etatu', p: 3 },
+                    // Feedback z testu (Zuzia): brak takiej opcji zmuszał do zgadywania.
+                    // 2 pkt, bo brak follow-upów = utracony pipeline, nie stan zdrowy.
+                    { label: 'Nie wysyłamy follow-upów - leady zostają bez odpowiedzi', p: 2 },
                 ],
             },
         ],
@@ -140,7 +143,7 @@ export const SECTIONS = [
             },
             {
                 id: 'q9',
-                text: 'Ile średnio wiadomości „tam i z powrotem" zajmuje zamknięcie typowego zapytania klienta?',
+                text: 'Ile średnio wiadomości „tam i z powrotem" zajmuje zamknięcie typowego zapytania od klienta (np. status zamówienia, pytanie o ofertę, reklamacja)?',
                 options: [
                     { label: '1 - odpowiadamy kompletnie od razu', p: 0 },
                     { label: '2-3 wiadomości', p: 1 },
@@ -188,6 +191,12 @@ export const SECTIONS = [
         ],
     },
 ];
+
+// Feedback z testu (Zuzia): właściciel często nie zna liczb i musiał zgadywać.
+// 1 pkt - brak widoczności własnych procesów to łagodny sygnał sam w sobie
+// (0 dawałoby fałszywą zieleń, 3 karałoby za szczerość).
+const DONT_KNOW_OPTION = { label: 'Nie wiem / nie mierzymy tego', p: 1, dontKnow: true };
+SECTIONS.forEach((s) => s.questions.forEach((q) => q.options.push({ ...DONT_KNOW_OPTION })));
 
 // Spłaszczona lista pytań w kolejności prezentacji (z metadanymi sekcji).
 export const QUESTIONS = SECTIONS.flatMap((s, si) =>
@@ -299,9 +308,24 @@ export const TIERS = {
     },
 };
 
+/** Ile pytań dostało odpowiedź "Nie wiem / nie mierzymy tego". */
+export function countDontKnow(answers) {
+    return QUESTIONS.reduce(
+        (n, q) => n + (q.options[answers[q.id]]?.dontKnow ? 1 : 0),
+        0
+    );
+}
+
+// Przy 4+ "nie wiem" największym problemem nie jest żaden proces, tylko brak
+// widoczności - ta rekomendacja wskakuje wtedy na pierwsze miejsce.
+const MEASUREMENT_REC =
+    'Zacznij od pomiaru: przy tylu „nie wiem" pierwszym krokiem jest widoczność procesów - gdzie realnie uciekają godziny.';
+const DONT_KNOW_THRESHOLD = 4;
+
 /**
  * Top-3 rekomendacje: bierze pytania z najwyższym score (≥2 pkt),
  * mapuje przez RECOMMENDATIONS_BY_QUESTION, dopełnia rekomendacjami branży.
+ * Przy 4+ odpowiedziach "nie wiem" pierwsza rekomendacja = pomiar procesów.
  */
 export function getTopRecommendations(answers, branzaId, limit = 3) {
     const scored = QUESTIONS.map((q) => ({
@@ -313,6 +337,10 @@ export function getTopRecommendations(answers, branzaId, limit = 3) {
 
     const recs = [];
     const seen = new Set();
+    if (countDontKnow(answers) >= DONT_KNOW_THRESHOLD) {
+        recs.push(MEASUREMENT_REC);
+        seen.add(MEASUREMENT_REC);
+    }
     for (const s of scored) {
         const r = RECOMMENDATIONS_BY_QUESTION[s.id];
         if (r && !seen.has(r)) {
