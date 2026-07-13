@@ -86,8 +86,9 @@ export default function AudytAiPage() {
                         <h1 className="text-4xl md:text-6xl lg:text-7xl font-display tracking-tight text-black leading-[1.05] text-balance">
                             Twoi ludzie robią ręcznie
                             <br />
-                            {/* Dosłowny message match z kreacjami Meta (koncept 1) - nie zmiękczać. */}
-                            <span className="text-muted-dark">to, co AI robi za nich.</span>
+                            {/* Dosłowny message match z kreacjami Meta (koncept 1) - nie zmieniać
+                                w oderwaniu od kreacji. Czas przyszły celowo: obietnica współpracy. */}
+                            <span className="text-muted-dark">to, co AI zrobi za nich.</span>
                         </h1>
 
                         <p className="mt-6 text-lg md:text-xl text-muted-dark max-w-2xl mx-auto leading-relaxed">
