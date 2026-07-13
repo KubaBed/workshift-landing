@@ -30,19 +30,19 @@ const UTM_BASE = 'utm_source=facebook&utm_medium=paid&utm_campaign=audyt-ai-2026
 const ADS = [
     {
         name: 'K1 typografia × copy A (rational)', file: 'k1.png', adset: PROSPECTING_ADSET, utm: 'k1-rational',
-        message: 'Twoi ludzie robią ręcznie to, co AI zrobi za nich. Kopiowanie danych między systemami, odpowiadanie na te same maile, ręczne raporty.\n\nMikro-audyt AI pokaże Ci, gdzie automatyzacja zwróci się najszybciej: 12 pytań, 3 minuty, wynik od razu - bez podawania e-maila.',
+        message: 'Twoi ludzie robią ręcznie to, co AI zrobi za nich. Kopiowanie danych między systemami, odpowiadanie na te same maile, ręczne raporty.\n\nMikro-audyt AI pokaże Ci, gdzie automatyzacja zwróci się najszybciej: 12 pytań, 4 minuty, wynik od razu - bez podawania e-maila.',
         headline: 'Ile godzin tygodniowo odzyska Twoja firma?',
-        description: 'Mikro-audyt AI · 3 minuty · bez e-maila',
+        description: 'Mikro-audyt AI · 4 minuty · bez e-maila',
     },
     {
-        name: 'K2 założyciel × copy C (curiosity)', file: 'k2.png', adset: PROSPECTING_ADSET, utm: 'k2-founder',
-        message: 'Większość firm nie wie, ile czasu traci na powtarzalną robotę - dopóki tego nie policzy.\n\n12 pytań o Twoje procesy i wiesz: jaki masz potencjał automatyzacji i od którego procesu zacząć, żeby zwrot był najszybszy. 3 minuty, bez podawania e-maila, wynik natychmiast.',
+        name: 'K2 split założyciel × copy C (curiosity)', file: 'WSaudytK2split1080x1080.png', adset: PROSPECTING_ADSET, utm: 'k2-founder',
+        message: 'Większość firm nie wie, ile czasu traci na powtarzalną robotę - dopóki tego nie policzy.\n\n12 pytań o Twoje procesy i wiesz: jaki masz potencjał automatyzacji i od którego procesu zacząć, żeby zwrot był najszybszy. 4 minuty, bez podawania e-maila, wynik natychmiast.',
         headline: 'Zrób mikro-audyt AI swojej firmy',
         description: 'Wynik od razu · zero zobowiązań',
     },
     {
-        name: 'K4 case 20h+ × copy B (social proof)', file: 'k4.png', adset: PROSPECTING_ADSET, utm: 'k4-case',
-        message: '15-osobowa kancelaria odzyskała ponad 20 godzin tygodniowo po automatyzacji obiegu dokumentów i notatek ze spotkań.\n\nTwoja firma ma podobne rezerwy. Mikro-audyt AI znajdzie je w 3 minuty - 12 pytań o procesy, wynik od razu, bez podawania e-maila.',
+        name: 'K4 case 20h+ × copy B (social proof)', file: 'WSaudytK420h1080x1080.png', adset: PROSPECTING_ADSET, utm: 'k4-case',
+        message: '15-osobowa kancelaria odzyskała ponad 20 godzin tygodniowo po automatyzacji obiegu dokumentów i notatek ze spotkań.\n\nTwoja firma ma podobne rezerwy. Mikro-audyt AI znajdzie je w 4 minuty - 12 pytań o procesy, wynik od razu, bez podawania e-maila.',
         headline: '20h+ tygodniowo z powrotem. Sprawdź swój potencjał.',
         description: 'Bezpłatny mikro-audyt · Workshift',
     },
