@@ -7,6 +7,10 @@
  *     content_name=mikro-audyt-ai (start quizu) - do optymalizacji dostarczania.
  *  2. Custom audience (WEBSITE): "zaczął quiz, nie ukończył" -
  *     InitiateCheckout bez CompleteRegistration, okno 30 dni - do retargetingu.
+ *  3. Kampanię "Mikro-audyt AI - czerwiec 2026" (PAUSED - zero wydatków
+ *     do ręcznego włączenia) + ad set retargetingowy fazy 2 z audience z pkt 2,
+ *     optymalizowany pod dokończenie audytu (CompleteRegistration).
+ *     Kreacje/reklamy dodajesz w Ads Managerze po finalizacji statyków i reels.
  *
  * Wymagane env (w .env.local, NIE commitować):
  *  - META_SYSTEM_USER_TOKEN  token systemowego użytkownika (scope: ads_management)
@@ -21,6 +25,11 @@ const PIXEL_ID = '1350172243839037'; // = META_PIXEL_ID w src/lib/consent.js
 const CONVERSION_NAME = 'Mikro-audyt AI - start quizu (InitiateCheckout)';
 const AUDIENCE_NAME = 'Mikro-audyt AI - zaczął, nie ukończył (30 dni)';
 const RETENTION_SECONDS = 30 * 24 * 3600;
+const CAMPAIGN_NAME = 'Mikro-audyt AI - czerwiec 2026';
+const RETARGETING_ADSET_NAME = 'Retargeting - zaczął, nie ukończył (faza 2)';
+// 10 PLN/dzień w groszach (konto rozlicza się w PLN). Placeholder - budżet
+// fazy 2 ustalisz w Ads Managerze przed włączeniem (ad set startuje PAUSED).
+const RETARGETING_DAILY_BUDGET = 1000;
 
 const TOKEN = process.env.META_SYSTEM_USER_TOKEN;
 if (!TOKEN) {
@@ -90,7 +99,9 @@ if (conv) {
 // ── 4. Audience retargetingu (idempotentnie) ────────────────────────────────
 const existingAud = await graph(`/${account}/customaudiences?fields=id,name&limit=100`);
 const aud = (existingAud.data || []).find((a) => a.name === AUDIENCE_NAME);
+let audienceId;
 if (aud) {
+    audienceId = aud.id;
     console.log(`Audience już istnieje: ${aud.id} - pomijam.`);
 } else {
     const eventRule = (event) => ({
@@ -110,8 +121,57 @@ if (aud) {
             prefill: true,
         },
     });
+    audienceId = created.id;
     console.log(`Utworzono audience: ${created.id}`);
 }
 
-console.log('\nGotowe. W Ads Managerze: ustaw kampanię na optymalizację pod tę custom conversion,');
-console.log('a audience użyj w ad secie retargetingowym (faza 2 wg draftu kreacji).');
+// ── 5. Kampania (PAUSED) + ad set retargetingowy fazy 2 ────────────────────
+const existingCamp = await graph(`/${account}/campaigns?fields=id,name&limit=100`);
+let campaignId = (existingCamp.data || []).find((c) => c.name === CAMPAIGN_NAME)?.id;
+if (campaignId) {
+    console.log(`Kampania już istnieje: ${campaignId} - pomijam.`);
+} else {
+    const created = await graph(`/${account}/campaigns`, {
+        method: 'POST',
+        body: {
+            name: CAMPAIGN_NAME,
+            objective: 'OUTCOME_SALES',
+            status: 'PAUSED',
+            special_ad_categories: [],
+        },
+    });
+    campaignId = created.id;
+    console.log(`Utworzono kampanię (PAUSED): ${campaignId}`);
+}
+
+const existingSets = await graph(`/${campaignId}/adsets?fields=id,name&limit=100`);
+const set = (existingSets.data || []).find((s) => s.name === RETARGETING_ADSET_NAME);
+if (set) {
+    console.log(`Ad set retargetingowy już istnieje: ${set.id} - pomijam.`);
+} else {
+    const created = await graph(`/${account}/adsets`, {
+        method: 'POST',
+        body: {
+            name: RETARGETING_ADSET_NAME,
+            campaign_id: campaignId,
+            status: 'PAUSED',
+            daily_budget: RETARGETING_DAILY_BUDGET,
+            billing_event: 'IMPRESSIONS',
+            optimization_goal: 'OFFSITE_CONVERSIONS',
+            // Retargeting celuje w DOKOŃCZENIE audytu, nie kolejny start.
+            promoted_object: { pixel_id: PIXEL_ID, custom_event_type: 'COMPLETE_REGISTRATION' },
+            targeting: {
+                geo_locations: { countries: ['PL'] },
+                custom_audiences: [{ id: audienceId }],
+            },
+            // Wymóg DSA dla reklam kierowanych do UE.
+            dsa_beneficiary: 'Workshift',
+            dsa_payor: 'Workshift',
+        },
+    });
+    console.log(`Utworzono ad set retargetingowy (PAUSED): ${created.id}`);
+}
+
+console.log('\nGotowe. Kampania i ad set są ZAPAUZOWANE - nic nie wydaje pieniędzy.');
+console.log('W Ads Managerze zostało: dodać ad sety fazy 1 (po finalizacji kreacji),');
+console.log('podpiąć reklamy pod ad set retargetingowy i ustawić budżety przed startem.');
