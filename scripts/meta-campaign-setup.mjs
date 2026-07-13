@@ -11,6 +11,10 @@
  *     do ręcznego włączenia) + ad set retargetingowy fazy 2 z audience z pkt 2,
  *     optymalizowany pod dokończenie audytu (CompleteRegistration).
  *     Kreacje/reklamy dodajesz w Ads Managerze po finalizacji statyków i reels.
+ *  4. Ad set prospectingowy fazy 1 (PAUSED) z targetingiem persony "Marek"
+ *     wg MARKETING_SALES_PLAN.md §9.3: PL, 30-55, zainteresowania biznes/AI/
+ *     automatyzacja + stack e-commerce. ID zainteresowań wyszukiwane w API
+ *     w momencie uruchomienia (są dynamiczne, nie da się ich zahardkodować).
  *
  * Wymagane env (w .env.local, NIE commitować):
  *  - META_SYSTEM_USER_TOKEN  token systemowego użytkownika (scope: ads_management)
@@ -30,6 +34,27 @@ const RETARGETING_ADSET_NAME = 'Retargeting - zaczął, nie ukończył (faza 2)'
 // 10 PLN/dzień w groszach (konto rozlicza się w PLN). Placeholder - budżet
 // fazy 2 ustalisz w Ads Managerze przed włączeniem (ad set startuje PAUSED).
 const RETARGETING_DAILY_BUDGET = 1000;
+
+const PROSPECTING_ADSET_NAME = 'Prospecting - MŚP decydenci (faza 1)';
+// ~22 PLN/dzień wg planu testu (300 PLN / 14 dni, faza 1).
+const PROSPECTING_DAILY_BUDGET = 2200;
+// Persona "Marek" (MARKETING_SALES_PLAN §9.3) + stack e-commerce (draft kreacji).
+// Frazy do wyszukania w Meta Targeting Search - brakujące są pomijane z logiem.
+const INTEREST_QUERIES = [
+    'Entrepreneurship', // przedsiębiorczość
+    'Small and medium-sized enterprises',
+    'Business process automation',
+    'Marketing automation',
+    'Artificial intelligence',
+    'ChatGPT',
+    'E-commerce',
+    'Shopify',
+    'WooCommerce',
+    'Allegro',
+    'BaseLinker',
+    'Customer relationship management',
+];
+const PROSPECTING_AGE = { min: 30, max: 55 };
 
 const TOKEN = process.env.META_SYSTEM_USER_TOKEN;
 if (!TOKEN) {
@@ -172,6 +197,58 @@ if (set) {
     console.log(`Utworzono ad set retargetingowy (PAUSED): ${created.id}`);
 }
 
-console.log('\nGotowe. Kampania i ad set są ZAPAUZOWANE - nic nie wydaje pieniędzy.');
-console.log('W Ads Managerze zostało: dodać ad sety fazy 1 (po finalizacji kreacji),');
-console.log('podpiąć reklamy pod ad set retargetingowy i ustawić budżety przed startem.');
+// ── 6. Ad set prospectingowy fazy 1 (PAUSED) ────────────────────────────────
+const setsNow = await graph(`/${campaignId}/adsets?fields=id,name&limit=100`);
+const prospecting = (setsNow.data || []).find((s) => s.name === PROSPECTING_ADSET_NAME);
+if (prospecting) {
+    console.log(`Ad set prospectingowy już istnieje: ${prospecting.id} - pomijam.`);
+} else {
+    // Wyszukaj ID zainteresowań (Targeting Search API). Bierzemy top wynik
+    // o dokładnej nazwie, a gdy brak - pierwszy zwrócony; brakujące pomijamy.
+    const interests = [];
+    for (const q of INTEREST_QUERIES) {
+        const res = await graph(`/search?type=adinterest&q=${encodeURIComponent(q)}&limit=5&locale=pl_PL`);
+        const hits = res.data || [];
+        const exact = hits.find((h) => h.name.toLowerCase() === q.toLowerCase());
+        const pick = exact || hits[0];
+        if (pick) {
+            interests.push({ id: pick.id, name: pick.name });
+            console.log(`  zainteresowanie: "${q}" → ${pick.name} (${pick.id}, zasięg ~${pick.audience_size_lower_bound ?? '?'})`);
+        } else {
+            console.log(`  zainteresowanie: "${q}" → brak w Meta, pomijam`);
+        }
+    }
+    if (!interests.length) throw new Error('Nie znaleziono żadnych zainteresowań - sprawdź uprawnienia tokenu.');
+
+    const created = await graph(`/${account}/adsets`, {
+        method: 'POST',
+        body: {
+            name: PROSPECTING_ADSET_NAME,
+            campaign_id: campaignId,
+            status: 'PAUSED',
+            daily_budget: PROSPECTING_DAILY_BUDGET,
+            billing_event: 'IMPRESSIONS',
+            // Faza 1: za mało konwersji w pixelu na OFFSITE_CONVERSIONS -
+            // optymalizujemy pod LP views, custom conversion służy jako metryka.
+            // Po ~50 startach quizu/tydz przełącz na OFFSITE_CONVERSIONS.
+            optimization_goal: 'LANDING_PAGE_VIEWS',
+            targeting: {
+                geo_locations: { countries: ['PL'] },
+                age_min: PROSPECTING_AGE.min,
+                age_max: PROSPECTING_AGE.max,
+                flexible_spec: [{ interests: interests.map(({ id, name }) => ({ id, name })) }],
+                // Wyklucz tych, którzy już ukończyli quiz (audience z pkt 2 ich
+                // zawiera tylko częściowo - completerzy odpadają sami przez exclusion
+                // w regule; tu wykluczamy startujących, by prospecting był czysty).
+                excluded_custom_audiences: [{ id: audienceId }],
+            },
+            dsa_beneficiary: 'Workshift',
+            dsa_payor: 'Workshift',
+        },
+    });
+    console.log(`Utworzono ad set prospectingowy (PAUSED): ${created.id}`);
+}
+
+console.log('\nGotowe. Kampania i ad sety są ZAPAUZOWANE - nic nie wydaje pieniędzy.');
+console.log('W Ads Managerze zostało: wgrać kreacje do obu ad setów, zweryfikować');
+console.log('budżety (22 PLN/d prospecting, 10 PLN/d retargeting) i włączyć fazę 1.');
