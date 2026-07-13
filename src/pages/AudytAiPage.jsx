@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
     ArrowRight,
     ClipboardCheck,
@@ -24,6 +24,23 @@ const PHONE_TEL = 'tel:+48796186067';
 const WHATSAPP_URL = 'https://wa.me/48796186067?text=' + encodeURIComponent('Cześć Kuba, chcę porozmawiać o audycie AI.');
 
 export default function AudytAiPage() {
+    // Sticky CTA (mobile): tylko gdy user jest PONIŻEJ quizu - nad quizem
+    // widać CTA hero, w quizie pasek by przeszkadzał.
+    const [showStickyCta, setShowStickyCta] = useState(false);
+
+    useEffect(() => {
+        const el = document.getElementById('quiz');
+        if (!el || typeof IntersectionObserver === 'undefined') return;
+        const obs = new IntersectionObserver(
+            ([entry]) => {
+                setShowStickyCta(!entry.isIntersecting && entry.boundingClientRect.top < 0);
+            },
+            { threshold: 0 }
+        );
+        obs.observe(el);
+        return () => obs.disconnect();
+    }, []);
+
     useEffect(() => {
         document.title = 'Mikro-audyt AI - sprawdź ile traci Twoja firma | Workshift';
         const metaDesc = document.querySelector('meta[name="description"]');
@@ -69,7 +86,8 @@ export default function AudytAiPage() {
                         <h1 className="text-4xl md:text-6xl lg:text-7xl font-display tracking-tight text-black leading-[1.05] text-balance">
                             Twoi ludzie robią ręcznie
                             <br />
-                            <span className="text-muted-dark">to, co AI mogłoby robić za nich.</span>
+                            {/* Dosłowny message match z kreacjami Meta (koncept 1) - nie zmiękczać. */}
+                            <span className="text-muted-dark">to, co AI robi za nich.</span>
                         </h1>
 
                         <p className="mt-6 text-lg md:text-xl text-muted-dark max-w-2xl mx-auto leading-relaxed">
@@ -81,7 +99,9 @@ export default function AudytAiPage() {
                         <div className="mt-10 flex flex-col sm:flex-row gap-3 items-center justify-center">
                             <button
                                 onClick={() => {
-                                    track(EVENTS.AUDIT_START, { source: 'hero' });
+                                    // Scroll ≠ start: audit_start liczy tylko realne
+                                    // rozpoczęcie (1. odpowiedź w quizie).
+                                    track(EVENTS.AUDIT_SCROLL_TO_QUIZ, { source: 'hero' });
                                     scrollToQuiz();
                                 }}
                                 className="group inline-flex items-center gap-2 px-6 py-3.5 bg-black text-white rounded-full font-medium hover:bg-black/85 transition-colors"
@@ -359,6 +379,30 @@ export default function AudytAiPage() {
                     </div>
                 </div>
             </section>
+
+            {/* ============ STICKY CTA (mobile, poniżej quizu) ============ */}
+            <AnimatePresence>
+                {showStickyCta && (
+                    <motion.div
+                        initial={{ y: 80, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: 80, opacity: 0 }}
+                        transition={{ duration: 0.25 }}
+                        className="fixed bottom-0 left-0 right-0 z-40 p-3 md:hidden"
+                    >
+                        <button
+                            onClick={() => {
+                                track(EVENTS.AUDIT_SCROLL_TO_QUIZ, { source: 'sticky_mobile' });
+                                scrollToQuiz();
+                            }}
+                            className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-black text-white rounded-full font-medium shadow-lg shadow-black/20"
+                        >
+                            Zrób mikro-audyt - 4 minuty
+                            <ArrowRight size={18} />
+                        </button>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </main>
     );
 }
