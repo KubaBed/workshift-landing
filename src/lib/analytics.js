@@ -26,6 +26,7 @@ export const EVENTS = {
     CALCULATOR_COMPLETE: 'calculator_complete',
     CALCULATOR_CTA_CLICK: 'calculator_cta_click',
     AUDIT_VIEW: 'audit_view',
+    AUDIT_SCROLL_TO_QUIZ: 'audit_scroll_to_quiz',
     AUDIT_START: 'audit_start',
     AUDIT_QUESTION_ANSWERED: 'audit_question_answered',
     AUDIT_COMPLETE: 'audit_complete',

@@ -17,12 +17,53 @@ import {
 
 const PHONE_HUMAN = '+48 796 186 067';
 const PHONE_TEL = 'tel:+48796186067';
-const WHATSAPP_URL =
-    'https://wa.me/48796186067?text=' +
-    encodeURIComponent('Cześć Kuba, zrobiłem mikro-audyt AI i chcę porozmawiać o wyniku.');
+
+// Prefill WhatsApp z wynikiem - tel:/WhatsApp nie niesie fbclid/UTM, więc
+// wynik + branża w treści wiadomości to jedyna atrybucja dla "hot" leadów.
+function buildWhatsAppUrl(score, branzaId) {
+    const branzaLabel = BRANZE.find((b) => b.id === branzaId)?.label;
+    const msg =
+        score != null
+            ? `Cześć Kuba, zrobiłem mikro-audyt AI - wynik ${score}/${MAX_SCORE}${branzaLabel ? ` (${branzaLabel})` : ''}. Chcę porozmawiać o wyniku.`
+            : 'Cześć Kuba, zrobiłem mikro-audyt AI i chcę porozmawiać o wyniku.';
+    return 'https://wa.me/48796186067?text=' + encodeURIComponent(msg);
+}
 
 const CONTEXT_STEPS = 2; // 0 = branża, 1 = wielkość
 const RESULT_STEP = CONTEXT_STEPS + TOTAL_QUESTIONS; // 14
+
+// Persystencja postępu - porzucenie w trakcie (refresh, powrót z reklamy
+// następnego dnia) nie kasuje odpowiedzi. Wynik (RESULT_STEP) nie jest
+// wznawiany - obejrzany wynik = zamknięty cykl.
+const STORAGE_KEY = 'audyt-ai-progress-v1';
+
+function loadProgress() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        const p = JSON.parse(raw);
+        if (typeof p.step !== 'number' || p.step <= 0 || p.step >= RESULT_STEP) return null;
+        return p;
+    } catch {
+        return null;
+    }
+}
+
+function saveProgress(p) {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
+    } catch {
+        // storage pełny / zablokowany → quiz działa dalej bez persystencji
+    }
+}
+
+function clearProgress() {
+    try {
+        localStorage.removeItem(STORAGE_KEY);
+    } catch {
+        // no-op
+    }
+}
 
 // Przechwyć parametry atrybucji z URL (fbclid + utm_*) - trafiają do maila
 // notyfikacji, żeby Kuba wiedział który kreatyw/hook dał leada. URL nie zmienia
@@ -56,15 +97,25 @@ function OptionTile({ selected, onClick, disabled, children }) {
 }
 
 export function AudytQuiz() {
-    const [step, setStep] = useState(0);
-    const [branza, setBranza] = useState(null);
-    const [wielkosc, setWielkosc] = useState(null);
-    const [answers, setAnswers] = useState({}); // qId -> optionIndex
+    const restored = useRef(loadProgress()).current;
+    const [step, setStep] = useState(restored?.step ?? 0);
+    const [branza, setBranza] = useState(restored?.branza ?? null);
+    const [wielkosc, setWielkosc] = useState(restored?.wielkosc ?? null);
+    const [answers, setAnswers] = useState(restored?.answers ?? {}); // qId -> optionIndex
     const [transitioning, setTransitioning] = useState(false);
-    const startedRef = useRef(false);
+    // Wznowiony quiz = start już policzony w poprzedniej sesji.
+    const startedRef = useRef(Boolean(restored));
     const timerRef = useRef(null);
 
     useEffect(() => () => clearTimeout(timerRef.current), []);
+
+    useEffect(() => {
+        if (step > 0 && step < RESULT_STEP) {
+            saveProgress({ step, branza, wielkosc, answers });
+        } else if (step === RESULT_STEP) {
+            clearProgress();
+        }
+    }, [step, branza, wielkosc, answers]);
 
     const advance = (to) => {
         setTransitioning(true);
@@ -78,6 +129,9 @@ export function AudytQuiz() {
         if (!startedRef.current) {
             startedRef.current = true;
             track(EVENTS.AUDIT_START, { source: 'quiz' });
+            // Meta optymalizuje dostarczanie pod ten event + audience
+            // "zaczął, nie skończył" do retargetingu.
+            trackPixel('InitiateCheckout', { content_name: 'mikro-audyt-ai' });
         }
     };
 
@@ -247,6 +301,7 @@ export function AudytQuiz() {
                             wielkosc={wielkosc}
                             answers={answers}
                             onRestart={() => {
+                                clearProgress();
                                 setAnswers({});
                                 setBranza(null);
                                 setWielkosc(null);
@@ -265,6 +320,7 @@ export function AudytQuiz() {
 function ResultScreen({ score, tier, branza, wielkosc, answers, onRestart }) {
     const tierData = TIERS[tier];
     const recs = getTopRecommendations(answers, branza);
+    const whatsAppUrl = buildWhatsAppUrl(score, branza);
     const [email, setEmail] = useState('');
     const [state, setState] = useState('idle'); // idle | loading | done | error
     const [errorMsg, setErrorMsg] = useState('');
@@ -350,7 +406,7 @@ function ResultScreen({ score, tier, branza, wielkosc, answers, onRestart }) {
                 {PHONE_HUMAN}
             </a>
             <a
-                href={WHATSAPP_URL}
+                href={whatsAppUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => { track(EVENTS.AUDIT_CTA_HOT, { channel: 'whatsapp', source: 'result', score }); trackPixel('Contact', { content_name: 'audyt-whatsapp' }); }}
@@ -409,6 +465,10 @@ function ResultScreen({ score, tier, branza, wielkosc, answers, onRestart }) {
                         <h4 className="text-lg font-display text-black mb-1">Pogadajmy konkretnie.</h4>
                         <p className="text-sm text-muted-dark mb-4">
                             Przy tym wyniku audyt zwraca się zwykle w pierwszym wdrożeniu. Oddzwonię w ciągu 2h roboczych.
+                        </p>
+                        <p className="text-sm text-black bg-sage/60 border border-black/5 rounded-xl px-4 py-3 mb-4">
+                            Biuro rachunkowe, z którym pracuję, odzyskało <strong>20 godzin tygodniowo</strong> -
+                            zaczęliśmy dokładnie od takiego wyniku.
                         </p>
                         {callButtons('lg')}
                         <p className="text-xs text-muted-dark mt-4 mb-2">Albo wyślij sobie wynik na mail:</p>

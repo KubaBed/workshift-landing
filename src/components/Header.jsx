@@ -32,6 +32,10 @@ export function Header() {
 
     const location = useLocation();
     const isHome = location.pathname === '/';
+    // Landing kampanii płatnej: logo + telefon, zero nawigacji - każdy link
+    // w menu to wyciek uwagi za którą płacimy w Meta Ads. Przywróć pełny
+    // header po kampanii czerwiec 2026, jeśli /audyt-ai zostanie jako evergreen.
+    const isCampaignLanding = location.pathname === '/audyt-ai';
 
     const navLinks = [
         { name: 'Usługi', href: '/#uslugi' },
@@ -61,7 +65,7 @@ export function Header() {
                         </Link>
 
                         <nav className="hidden md:flex items-center gap-7">
-                            {navLinks.map((link) => {
+                            {!isCampaignLanding && navLinks.map((link) => {
                                 const baseClass = "text-sm font-medium hover:text-black transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-[2px] after:bg-lime after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition-transform after:duration-300";
                                 const linkClass = link.highlight
                                     ? `${baseClass} text-black font-semibold flex items-center gap-1.5 before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-lime before:animate-pulse`
@@ -92,28 +96,46 @@ export function Header() {
                             })}
                         </nav>
 
-                        {/* Full CTA on sm+ */}
-                        <Link to={isHome ? '#kontakt' : '/#kontakt'}>
-                            <Button variant="accent" size="sm" className="hidden sm:flex z-50 relative">
-                                Kontakt
-                            </Button>
-                        </Link>
-                        {/* Compact icon CTA on mobile */}
-                        <Link
-                            to={isHome ? '#kontakt' : '/#kontakt'}
-                            className="sm:hidden z-50 relative w-9 h-9 rounded-full bg-lime text-black flex items-center justify-center shadow-sm transition-transform active:scale-95"
-                            aria-label="Kontakt"
-                        >
-                            <Phone size={16} />
-                        </Link>
+                        {isCampaignLanding ? (
+                            /* Landing kampanii: jedyna akcja poza quizem to telefon */
+                            <a href="tel:+48796186067" className="z-50 relative">
+                                <Button variant="accent" size="sm" className="hidden sm:flex">
+                                    <Phone size={14} className="mr-1.5" />
+                                    +48 796 186 067
+                                </Button>
+                                <span
+                                    className="sm:hidden w-9 h-9 rounded-full bg-lime text-black flex items-center justify-center shadow-sm transition-transform active:scale-95"
+                                    aria-label="Zadzwoń"
+                                >
+                                    <Phone size={16} />
+                                </span>
+                            </a>
+                        ) : (
+                            <>
+                                {/* Full CTA on sm+ */}
+                                <Link to={isHome ? '#kontakt' : '/#kontakt'}>
+                                    <Button variant="accent" size="sm" className="hidden sm:flex z-50 relative">
+                                        Kontakt
+                                    </Button>
+                                </Link>
+                                {/* Compact icon CTA on mobile */}
+                                <Link
+                                    to={isHome ? '#kontakt' : '/#kontakt'}
+                                    className="sm:hidden z-50 relative w-9 h-9 rounded-full bg-lime text-black flex items-center justify-center shadow-sm transition-transform active:scale-95"
+                                    aria-label="Kontakt"
+                                >
+                                    <Phone size={16} />
+                                </Link>
 
-                        <button
-                            className="md:hidden p-2 text-black z-50 relative transition-transform active:scale-95"
-                            onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            aria-label="Toggle mobile menu"
-                        >
-                            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                        </button>
+                                <button
+                                    className="md:hidden p-2 text-black z-50 relative transition-transform active:scale-95"
+                                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                                    aria-label="Toggle mobile menu"
+                                >
+                                    {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                                </button>
+                            </>
+                        )}
                     </div>
                 </div>
             </motion.header>
