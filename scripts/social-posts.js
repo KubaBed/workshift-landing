@@ -128,6 +128,18 @@ async function scheduleFacebook({ pageId, pageToken }) {
     }
 }
 
+// Kontener IG przetwarza się asynchronicznie - media_publish przed FINISHED
+// zwraca code 9007 "Media ID is not available". Czekamy do skutku (max ~60 s).
+async function waitForContainer(creationId) {
+    for (let i = 0; i < 20; i++) {
+        const { status_code } = await graph(`/${creationId}`, { params: { fields: 'status_code' } });
+        if (status_code === 'FINISHED') return;
+        if (status_code === 'ERROR') throw new Error(`Kontener ${creationId} w stanie ERROR (sprawdź URL/format obrazka).`);
+        await new Promise((r) => setTimeout(r, 3000));
+    }
+    throw new Error(`Kontener ${creationId} nie osiągnął FINISHED w 60 s.`);
+}
+
 // ── IG: publikuj dojrzałe (feed + story), dodaj link w komentarzu ────────────
 async function publishInstagram({ igId }, forceSlug) {
     if (!igId) throw new Error('Strona nie ma podpiętego konta IG Business. Podłącz IG w ustawieniach strony.');
@@ -142,6 +154,7 @@ async function publishInstagram({ igId }, forceSlug) {
         const feedKey = `ig:${p.slug}`;
         if (!state[feedKey]) {
             const c = await graph(`/${igId}/media`, { method: 'POST', params: { image_url: imgUrl(p.img), caption: p.ig } });
+            await waitForContainer(c.id);
             const pub = await graph(`/${igId}/media_publish`, { method: 'POST', params: { creation_id: c.id } });
             state[feedKey] = { id: pub.id, at: new Date().toISOString() };
             saveState(state);
@@ -153,6 +166,7 @@ async function publishInstagram({ igId }, forceSlug) {
         const storyKey = `ig-story:${p.slug}`;
         if (!state[storyKey]) {
             const c = await graph(`/${igId}/media`, { method: 'POST', params: { image_url: imgUrl(p.story), media_type: 'STORIES' } });
+            await waitForContainer(c.id);
             const pub = await graph(`/${igId}/media_publish`, { method: 'POST', params: { creation_id: c.id } });
             state[storyKey] = { id: pub.id, at: new Date().toISOString() };
             saveState(state);
