@@ -52,6 +52,13 @@ export default async function handler(req, res) {
         ? body.recommendations.slice(0, 5).map((r) => String(r).slice(0, 240))
         : [];
 
+    // Zgoda RODO - ślad audytowy. Znacznik czasu stawia serwer (wiarygodniejszy
+    // niż czas z klienta). Front bramkuje wysyłkę checkboxem; walidujemy też tutaj.
+    const consentGiven = body.consent === true;
+    const consentText = String(body.consentText ?? '').trim().slice(0, 300);
+    const consentPolicyUrl = String(body.consentPolicyUrl ?? '').trim().slice(0, 200);
+    const consentAt = new Date().toISOString();
+
     // Atrybucja: fbclid + utm_* z reklamy (żeby wiedzieć który kreatyw/hook dał leada).
     const tracking = (body.tracking && typeof body.tracking === 'object') ? body.tracking : {};
     const trackingKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid'];
@@ -65,6 +72,9 @@ export default async function handler(req, res) {
     }
     if (score == null || !tier) {
         return res.status(400).json({ error: 'Brak danych wyniku audytu.' });
+    }
+    if (!consentGiven) {
+        return res.status(400).json({ error: 'Brak zgody na przetwarzanie danych osobowych.' });
     }
 
     const resend = new Resend(RESEND_API_KEY);
@@ -111,6 +121,11 @@ export default async function handler(req, res) {
                     <p><strong>Wielkość:</strong> ${escapeHtml(wielkosc || 'brak')}</p>
                     <p><strong>Tryb CTA:</strong> ${escapeHtml(mode)}</p>
                     <hr />
+                    <p><strong>Zgoda RODO:</strong> ✅ zaakceptowana</p>
+                    <p><strong>Data zgody (serwer):</strong> ${escapeHtml(consentAt)}</p>
+                    ${consentText ? `<p><strong>Treść zgody:</strong> ${escapeHtml(consentText)}</p>` : ''}
+                    ${consentPolicyUrl ? `<p><strong>Polityka:</strong> ${escapeHtml(consentPolicyUrl)}</p>` : ''}
+                    <hr />
                     <p><strong>Atrybucja (skąd lead):</strong></p>
                     ${trackingHtml}
                     <hr />
@@ -128,7 +143,7 @@ export default async function handler(req, res) {
             return res.status(500).json({ error: 'Nie udało się wysłać. Spróbuj ponownie lub zadzwoń: +48 796 186 067.' });
         }
 
-        console.log('audyt-submit ok', { tier, score, branza, leadId: leadRes.data?.id });
+        console.log('audyt-submit ok', { tier, score, branza, consentAt, leadId: leadRes.data?.id });
         return res.status(200).json({ success: true });
     } catch (err) {
         console.error('audyt-submit fatal:', err);

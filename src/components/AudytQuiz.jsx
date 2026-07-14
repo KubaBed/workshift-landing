@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Phone, MessageCircle, Mail, CheckCircle, Loader2, RotateCcw } from 'lucide-react';
 import { track, EVENTS } from '../lib/analytics';
@@ -17,6 +18,14 @@ import {
 
 const PHONE_HUMAN = '+48 796 186 067';
 const PHONE_TEL = 'tel:+48796186067';
+
+// Zgoda RODO - single source of truth: URL polityki i treść zgody używane
+// zarówno w labelce (renderowanej userowi), jak i w payloadzie do /api/audyt-submit
+// (ślad audytowy: co dokładnie user zaakceptował). CONSENT_TEXT musi odpowiadać
+// tekstowi labelki poniżej.
+const CONSENT_POLICY_URL = '/polityka-prywatnosci';
+const CONSENT_TEXT =
+    'Zgadzam się na przetwarzanie moich danych osobowych zgodnie z Polityką Prywatności.';
 
 // Prefill WhatsApp z wynikiem - tel:/WhatsApp nie niesie fbclid/UTM, więc
 // wynik + branża w treści wiadomości to jedyna atrybucja dla "hot" leadów.
@@ -324,6 +333,7 @@ function ResultScreen({ score, tier, branza, wielkosc, answers, onRestart }) {
     const [email, setEmail] = useState('');
     const [state, setState] = useState('idle'); // idle | loading | done | error
     const [errorMsg, setErrorMsg] = useState('');
+    const [privacyAccepted, setPrivacyAccepted] = useState(false);
 
     const ringColor =
         tier === 'red' ? 'text-red-500' : tier === 'yellow' ? 'text-amber-500' : 'text-lime';
@@ -332,6 +342,11 @@ function ResultScreen({ score, tier, branza, wielkosc, answers, onRestart }) {
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
             setState('error');
             setErrorMsg('Podaj poprawny adres e-mail.');
+            return;
+        }
+        if (!privacyAccepted) {
+            setState('error');
+            setErrorMsg('Zaznacz zgodę na przetwarzanie danych osobowych, aby wysłać.');
             return;
         }
         setState('loading');
@@ -343,7 +358,11 @@ function ResultScreen({ score, tier, branza, wielkosc, answers, onRestart }) {
             const r = await fetch('/api/audyt-submit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: email.trim(), branza, wielkosc, score, tier, mode, recommendations: recs, tracking: getTrackingParams() }),
+                body: JSON.stringify({
+                    email: email.trim(), branza, wielkosc, score, tier, mode,
+                    recommendations: recs, tracking: getTrackingParams(),
+                    consent: true, consentText: CONSENT_TEXT, consentPolicyUrl: CONSENT_POLICY_URL,
+                }),
             });
             if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'send failed');
             setState('done');
@@ -367,26 +386,45 @@ function ResultScreen({ score, tier, branza, wielkosc, answers, onRestart }) {
                         e.preventDefault();
                         submit(mode);
                     }}
-                    className="flex flex-col sm:flex-row gap-2"
+                    className="flex flex-col gap-3"
                 >
-                    <div className="relative flex-1">
-                        <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-dark" />
-                        <input
-                            type="email"
-                            required
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="twoj@email.pl"
-                            className="w-full pl-9 pr-3 py-3 rounded-xl border border-black/15 bg-white text-black placeholder:text-muted-dark/60 focus:border-lime focus:outline-none"
-                        />
+                    <div className="flex flex-col sm:flex-row gap-2">
+                        <div className="relative flex-1">
+                            <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-dark" />
+                            <input
+                                type="email"
+                                required
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="twoj@email.pl"
+                                className="w-full pl-9 pr-3 py-3 rounded-xl border border-black/15 bg-white text-black placeholder:text-muted-dark/60 focus:border-lime focus:outline-none"
+                            />
+                        </div>
+                        <button
+                            type="submit"
+                            disabled={state === 'loading' || !privacyAccepted}
+                            className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-black text-white rounded-xl font-medium hover:bg-black/85 transition-colors disabled:opacity-60"
+                        >
+                            {state === 'loading' ? <Loader2 size={16} className="animate-spin" /> : label}
+                        </button>
                     </div>
-                    <button
-                        type="submit"
-                        disabled={state === 'loading'}
-                        className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-black text-white rounded-xl font-medium hover:bg-black/85 transition-colors disabled:opacity-60"
-                    >
-                        {state === 'loading' ? <Loader2 size={16} className="animate-spin" /> : label}
-                    </button>
+
+                    <div className="flex items-start gap-2.5">
+                        <div className="flex items-center h-5">
+                            <input
+                                id={`privacy-${mode}`}
+                                name={`privacy-${mode}`}
+                                type="checkbox"
+                                required
+                                checked={privacyAccepted}
+                                onChange={(e) => setPrivacyAccepted(e.target.checked)}
+                                className="h-4 w-4 rounded border-black/20 accent-lime focus:ring-lime/40"
+                            />
+                        </div>
+                        <label htmlFor={`privacy-${mode}`} className="text-xs text-muted-dark leading-tight">
+                            Zgadzam się na przetwarzanie moich danych osobowych zgodnie z <Link to={CONSENT_POLICY_URL} className="text-black hover:text-lime underline transition-colors">Polityką Prywatności</Link>. <span className="text-lime">*</span>
+                        </label>
+                    </div>
                 </form>
             )}
             {state === 'error' && <p className="mt-2 text-sm text-red-600">{errorMsg}</p>}
