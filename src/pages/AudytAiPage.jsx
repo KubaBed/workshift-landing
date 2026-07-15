@@ -63,14 +63,14 @@ export default function AudytAiPage() {
     return (
         <main className="bg-sage relative overflow-hidden">
             {/* ============ HERO ============ */}
-            <section className="relative px-4 pt-12 md:pt-20 pb-16 md:pb-24">
+            <section className="relative px-4 pt-6 md:pt-20 pb-8 md:pb-24">
                 {/* Background blur orbs (same pattern co kalkulator) */}
                 <div className="absolute inset-0 pointer-events-none z-0">
                     <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-lime/15 blur-[140px] rounded-full" />
                     <div className="absolute bottom-1/4 right-1/4 w-[420px] h-[420px] bg-black/5 blur-[140px] rounded-full" />
                 </div>
 
-                <div className="relative z-10 max-w-4xl mx-auto pt-12 md:pt-16">
+                <div className="relative z-10 max-w-4xl mx-auto pt-4 md:pt-16">
                     <motion.div
                         initial={{ opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -98,7 +98,7 @@ export default function AudytAiPage() {
                         </p>
 
                         {/* Primary CTA */}
-                        <div className="mt-10 flex flex-col sm:flex-row gap-3 items-center justify-center">
+                        <div className="mt-6 md:mt-10 flex flex-col sm:flex-row gap-3 items-center justify-center">
                             <button
                                 onClick={() => {
                                     track(EVENTS.AUDIT_SCROLL_TO_QUIZ, { source: 'hero' });
@@ -128,7 +128,7 @@ export default function AudytAiPage() {
                         </div>
 
                         {/* Micro-trust signals */}
-                        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-muted-dark">
+                        <div className="mt-6 md:mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-muted-dark">
                             <span className="inline-flex items-center gap-2">
                                 <Clock size={14} />
                                 ~4 minuty
@@ -144,8 +144,8 @@ export default function AudytAiPage() {
                         </div>
 
                         {/* Trust strip - logo klientów (z audytu landinga: największy zysk CVR) */}
-                        <div className="mt-12">
-                            <p className="font-mono text-xs uppercase tracking-wider text-muted-dark mb-4">
+                        <div className="mt-7 md:mt-12">
+                            <p className="font-mono text-xs uppercase tracking-wider text-muted-dark mb-3 md:mb-4">
                                 Zaufali nam
                             </p>
                             <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
@@ -166,7 +166,9 @@ export default function AudytAiPage() {
             </section>
 
             {/* ============ QUIZ (live) ============ */}
-            <section id="quiz" className="relative px-4 py-16 md:py-24 scroll-mt-20 min-h-[85vh] flex items-center">
+            {/* Mobile: bez pionowego centrowania (min-h/flex marnowały ~300px górnej pustki
+                i spychały siatkę branż pod fold). Desktop bez zmian. */}
+            <section id="quiz" className="relative px-4 pt-6 pb-12 md:py-24 scroll-mt-20 md:min-h-[85vh] md:flex md:items-center">
                 <div className="w-full">
                     <AudytQuiz />
                 </div>

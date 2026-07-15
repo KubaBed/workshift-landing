@@ -237,7 +237,9 @@ export function AudytQuiz() {
                                 Jaka jest Twoja branża?
                             </h3>
                             <p className="text-muted-dark mb-6">Dobierzemy rekomendacje pod Twój kontekst.</p>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            {/* 2 kolumny już na mobile: 6 kafli w 3 rzędach zamiast 6 —
+                                mieszczą się nad bannerem cookies (bottom-fixed ~290px). */}
+                            <div className="grid grid-cols-2 gap-3">
                                 {BRANZE.map((b) => (
                                     <OptionTile
                                         key={b.id}
