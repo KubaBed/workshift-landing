@@ -80,7 +80,7 @@ export function ConsentBanner() {
                     <div className="pointer-events-auto bg-white border border-black/10 rounded-[12px] shadow-[0_16px_40px_-16px_rgba(0,0,0,0.22),0_6px_14px_-8px_rgba(0,0,0,0.12)] overflow-hidden">
 
                         {/* Header bar - kategoria visual */}
-                        <div className="px-4 pt-3.5 flex items-center justify-between gap-2">
+                        <div className="px-4 pt-2.5 md:pt-3.5 flex items-center justify-between gap-2">
                             <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-dark">
                                 <span className="w-1.5 h-1.5 rounded-full bg-lime" />
                                 Cookies
@@ -94,15 +94,25 @@ export function ConsentBanner() {
                             </button>
                         </div>
 
-                        {/* Body */}
-                        <div className="px-4 pt-2 pb-3">
-                            <h2 className="text-base font-display tracking-tight text-black mb-1.5 leading-tight">
+                        {/* Body — na mobile skondensowane do 1 linii (banner nie może
+                            zjadać dolnej 1/3 ekranu i zasłaniać kroków quizu). Pełna treść
+                            od md+. RODO zachowane: info obecne + link do polityki + granular. */}
+                        <div className="px-4 pt-2 pb-2 md:pb-3">
+                            <h2 className="hidden md:block text-base font-display tracking-tight text-black mb-1.5 leading-tight">
                                 Krótko o cookies
                             </h2>
-                            <p className="text-[13px] text-muted-dark leading-snug mb-2">
+                            {/* Mobile: jedna linia */}
+                            <p className="md:hidden text-[12px] text-muted-dark leading-snug">
+                                Anonimowe statystyki. Reklamy i remarketing <span className="text-black">tylko za Twoją zgodą</span>.{' '}
+                                <Link to="/polityka-prywatnosci" className="text-black underline underline-offset-2 decoration-lime">
+                                    Polityka
+                                </Link>.
+                            </p>
+                            {/* Desktop: pełna treść */}
+                            <p className="hidden md:block text-[13px] text-muted-dark leading-snug mb-2">
                                 Zliczamy anonimowe statystyki, żeby wiedzieć co na stronie działa. <span className="text-black">Nie sprzedajemy</span> Twoich danych - reklamy i remarketing tylko <span className="text-black">za Twoją zgodą</span>.
                             </p>
-                            <p className="text-[12px] text-muted-dark/80 leading-snug">
+                            <p className="hidden md:block text-[12px] text-muted-dark/80 leading-snug">
                                 Więcej w{' '}
                                 <Link to="/polityka-prywatnosci" className="text-black underline underline-offset-2 decoration-lime hover:decoration-2">
                                     polityce prywatności
@@ -151,7 +161,7 @@ export function ConsentBanner() {
                         </div>
 
                         {/* Actions */}
-                        <div className="px-4 py-3 bg-sage/40 border-t border-black/5">
+                        <div className="px-4 py-2.5 md:py-3 bg-sage/40 border-t border-black/5">
                             {expanded ? (
                                 <div className="flex items-center justify-between gap-2">
                                     <button
