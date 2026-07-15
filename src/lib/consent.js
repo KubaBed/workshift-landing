@@ -174,12 +174,18 @@ function loadMetaPixel() {
  *
  * @param {string} event - standardowy ('Lead'|'Contact'|'CompleteRegistration') lub własny
  * @param {object} [params]
- * @param {{ custom?: boolean }} [opts] - custom=true → trackCustom (event spoza standardu Meta)
+ * @param {{ custom?: boolean, eventId?: string }} [opts] - custom=true → trackCustom
+ *        (event spoza standardu Meta); eventId → wspólny identyfikator z CAPI do
+ *        deduplikacji (Meta liczy pixel+CAPI o tym samym eventID jako jeden event).
  */
-export function trackPixel(event, params = {}, { custom = false } = {}) {
+export function trackPixel(event, params = {}, { custom = false, eventId } = {}) {
     if (typeof window === 'undefined' || typeof window.fbq !== 'function') return;
     try {
-        window.fbq(custom ? 'trackCustom' : 'track', event, params);
+        if (eventId) {
+            window.fbq(custom ? 'trackCustom' : 'track', event, params, { eventID: eventId });
+        } else {
+            window.fbq(custom ? 'trackCustom' : 'track', event, params);
+        }
     } catch {
         // SDK error (ad blocker / network) → nie blokuj user flow.
     }

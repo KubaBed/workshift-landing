@@ -1,4 +1,57 @@
 import { Resend } from 'resend';
+import crypto from 'node:crypto';
+
+/**
+ * Meta CAPI Lead — server-side, wysokiej jakości match (mamy email → SHA-256).
+ * Odpala się TYLKO gdy klient przekaże marketingConsent=true (RODO). Fire-and-forget
+ * z perspektywy UX: błąd logujemy, ale nie psujemy wysyłki maila. `eventId` wspólny
+ * z pixelem klienta → Meta deduplikuje. Bez konfiguracji (env) → cichy no-op.
+ */
+async function fireLeadCapi({ email, mode, tracking, eventId, req }) {
+    const {
+        META_PIXEL_ID,
+        META_CAPI_TOKEN,
+        META_SYSTEM_USER_TOKEN,
+        META_TEST_EVENT_CODE,
+    } = process.env;
+    const token = META_CAPI_TOKEN || META_SYSTEM_USER_TOKEN;
+    if (!META_PIXEL_ID || !token) return;
+
+    const sha256 = (v) => crypto.createHash('sha256').update(String(v).trim().toLowerCase()).digest('hex');
+    const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || undefined;
+    const fbclid = tracking?.fbclid ? String(tracking.fbclid).slice(0, 200) : undefined;
+
+    const userData = { em: [sha256(email)] };
+    if (ip) userData.client_ip_address = ip;
+    if (req.headers['user-agent']) userData.client_user_agent = req.headers['user-agent'];
+    if (fbclid) userData.fbc = `fb.1.${Date.now()}.${fbclid}`;
+
+    const payload = {
+        data: [{
+            event_name: 'Lead',
+            event_time: Math.floor(Date.now() / 1000),
+            action_source: 'website',
+            event_source_url: req.headers.referer || 'https://workshift.pl/audyt-ai',
+            event_id: eventId || undefined,
+            user_data: userData,
+            custom_data: { content_name: 'audyt-' + mode },
+        }],
+    };
+    if (META_TEST_EVENT_CODE) payload.test_event_code = META_TEST_EVENT_CODE;
+
+    try {
+        const r = await fetch(
+            `https://graph.facebook.com/v21.0/${META_PIXEL_ID}/events?access_token=${encodeURIComponent(token)}`,
+            { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) },
+        );
+        if (!r.ok) {
+            const j = await r.json().catch(() => ({}));
+            console.error('audyt-submit CAPI Lead error:', r.status, JSON.stringify(j).slice(0, 400));
+        }
+    } catch (err) {
+        console.error('audyt-submit CAPI Lead fetch failed:', err?.message);
+    }
+}
 
 /**
  * Mikro-audyt AI - odbiór wyniku quizu z /audyt-ai.
@@ -141,6 +194,13 @@ export default async function handler(req, res) {
         if (leadRes.error || notifyRes.error) {
             console.error('audyt-submit Resend error:', leadRes.error || notifyRes.error);
             return res.status(500).json({ error: 'Nie udało się wysłać. Spróbuj ponownie lub zadzwoń: +48 796 186 067.' });
+        }
+
+        // Meta CAPI Lead — server-side, tylko za zgodą marketingową (RODO). Awaitujemy,
+        // żeby funkcja serverless nie zakończyła się przed dolotem żądania do Grapha;
+        // helper sam łapie błędy, więc nie zablokuje odpowiedzi sukcesu.
+        if (body.marketingConsent === true) {
+            await fireLeadCapi({ email, mode, tracking, eventId: body.leadEventId, req });
         }
 
         console.log('audyt-submit ok', { tier, score, branza, consentAt, leadId: leadRes.data?.id });

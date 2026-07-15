@@ -10,6 +10,7 @@ import {
     ShieldCheck,
 } from 'lucide-react';
 import { track, EVENTS } from '../lib/analytics';
+import { fireInitiateCheckout } from '../lib/metaCapi';
 import { AudytQuiz } from '../components/AudytQuiz';
 import logo1 from '../assets/partners/logo1.png';
 import logo2 from '../assets/partners/logo2.png';
@@ -100,9 +101,12 @@ export default function AudytAiPage() {
                         <div className="mt-10 flex flex-col sm:flex-row gap-3 items-center justify-center">
                             <button
                                 onClick={() => {
-                                    // Scroll ≠ start: audit_start liczy tylko realne
-                                    // rozpoczęcie (1. odpowiedź w quizie).
                                     track(EVENTS.AUDIT_SCROLL_TO_QUIZ, { source: 'hero' });
+                                    // InitiateCheckout o krok wcześniej niż wybór branży —
+                                    // klik „Rozpocznij" = intencja startu. audit_start (Vercel)
+                                    // nadal liczy realny start (1. odpowiedź). IC jest dedupowany
+                                    // i idempotentny, więc nie zdubluje się z wyborem branży.
+                                    fireInitiateCheckout({ source: 'hero_cta' });
                                     scrollToQuiz();
                                 }}
                                 className="group inline-flex items-center gap-2 px-6 py-3.5 bg-black text-white rounded-full font-medium hover:bg-black/85 transition-colors"
@@ -394,6 +398,7 @@ export default function AudytAiPage() {
                         <button
                             onClick={() => {
                                 track(EVENTS.AUDIT_SCROLL_TO_QUIZ, { source: 'sticky_mobile' });
+                                fireInitiateCheckout({ source: 'sticky_cta' });
                                 scrollToQuiz();
                             }}
                             className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-black text-white rounded-full font-medium shadow-lg shadow-black/20"

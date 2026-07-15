@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Phone, MessageCircle, Mail, CheckCircle, Loader2, RotateCcw } from 'lucide-react';
 import { track, EVENTS } from '../lib/analytics';
-import { trackPixel } from '../lib/consent';
+import { trackPixel, hasConsent } from '../lib/consent';
+import { fireInitiateCheckout, resetInitiateCheckout } from '../lib/metaCapi';
 import {
     BRANZE,
     WIELKOSC,
@@ -137,11 +138,14 @@ export function AudytQuiz() {
     const trackStart = () => {
         if (!startedRef.current) {
             startedRef.current = true;
+            // "Realny start" (analytics) — nie bramkowany zgodą marketingową.
             track(EVENTS.AUDIT_START, { source: 'quiz' });
-            // Meta optymalizuje dostarczanie pod ten event + audience
-            // "zaczął, nie skończył" do retargetingu.
-            trackPixel('InitiateCheckout', { content_name: 'mikro-audyt-ai' });
         }
+        // InitiateCheckout (pixel + CAPI, dedup) — idempotentne per załadowanie
+        // strony. Jeśli user kliknął wcześniej „Rozpocznij audyt", policzyło się tam;
+        // tu łapiemy tych, co przewinęli do quizu i wybrali branżę bez klikania CTA.
+        // Meta optymalizuje pod ten event + audience „zaczął, nie skończył".
+        fireInitiateCheckout({ source: 'branza' });
     };
 
     const pickBranza = (id) => {
@@ -315,6 +319,7 @@ export function AudytQuiz() {
                                 setBranza(null);
                                 setWielkosc(null);
                                 startedRef.current = false;
+                                resetInitiateCheckout();
                                 setStep(0);
                             }}
                         />
@@ -354,6 +359,12 @@ function ResultScreen({ score, tier, branza, wielkosc, answers, onRestart }) {
         const evt =
             tier === 'red' ? EVENTS.AUDIT_CTA_HOT : tier === 'yellow' ? EVENTS.AUDIT_CTA_WARM : EVENTS.AUDIT_CTA_COLD;
         track(evt, { channel: 'email', mode, score });
+        // Wspólny event_id dla pixela (klient) i CAPI (serwer) → Meta dedupikuje Lead.
+        const leadEventId =
+            typeof crypto !== 'undefined' && crypto.randomUUID
+                ? crypto.randomUUID()
+                : 'lead-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+        const marketingConsent = hasConsent('marketing');
         try {
             const r = await fetch('/api/audyt-submit', {
                 method: 'POST',
@@ -362,11 +373,13 @@ function ResultScreen({ score, tier, branza, wielkosc, answers, onRestart }) {
                     email: email.trim(), branza, wielkosc, score, tier, mode,
                     recommendations: recs, tracking: getTrackingParams(),
                     consent: true, consentText: CONSENT_TEXT, consentPolicyUrl: CONSENT_POLICY_URL,
+                    // CAPI: serwer odpali Lead server-side TYLKO gdy jest zgoda marketingowa.
+                    leadEventId, marketingConsent,
                 }),
             });
             if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'send failed');
             setState('done');
-            trackPixel('Lead', { content_name: 'audyt-' + mode });
+            trackPixel('Lead', { content_name: 'audyt-' + mode }, { eventId: leadEventId });
         } catch {
             setState('error');
             setErrorMsg('Nie udało się wysłać. Spróbuj ponownie lub zadzwoń: ' + PHONE_HUMAN + '.');
