@@ -77,4 +77,20 @@ export function track(name, props = {}) {
         // eslint-disable-next-line no-console
         console.warn('[analytics] track failed:', err);
     }
+
+    // Drugi sink: PostHog. `window.posthog` istnieje TYLKO gdy user dał zgodę
+    // "analytics"/"recordings" (ładowany w consent.js:loadPostHog) — więc sam fakt
+    // jego obecności jest bramką zgody, nie trzeba jej tu sprawdzać ani ruszać
+    // bramki marketingowej Meta. W przeciwieństwie do Vercel Hobby (custom eventy
+    // nieprzechowywane) PostHog realnie zapisuje event → dopiero to daje widoczny
+    // sygnał startu/lejka niezależny od zgody MARKETINGOWEJ (szerszy krąg analytics).
+    try {
+        if (window.posthog?.capture) {
+            window.posthog.capture(name, safeProps);
+        }
+    } catch (err) {
+        // Ad blocker / SDK nie w pełni gotowy → nie blokuj user flow.
+        // eslint-disable-next-line no-console
+        console.warn('[analytics] posthog capture failed:', err);
+    }
 }
