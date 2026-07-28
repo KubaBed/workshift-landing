@@ -5,6 +5,9 @@ import tymoteuszImg from '../assets/tymoteusz-madry-highres.webp';
 import zuzannaImg from '../assets/zuzanna-wozniak-highres.webp';
 import bogdanImg from '../assets/bogdan-dzudzewicz-highres.webp';
 
+// accentColor musi zostać literałem hex - jest sklejany z sufiksem alfa
+// (`${accentColor}18`, `...cc`), więc var(--color-lime) tu nie zadziała.
+// Wartość = --color-lime z src/index.css.
 const testimonials = [
     {
         id: 'tymoteusz',
@@ -23,7 +26,7 @@ const testimonials = [
         title: "CEO",
         company: "BusinessQuest",
         avatar: zuzannaImg,
-        accentColor: '#8530d1',
+        accentColor: '#9CE069',
         tags: ["HR Tech", "Ścieżki kariery", "Matryce kompetencji"],
     },
     {
@@ -33,7 +36,7 @@ const testimonials = [
         title: "CEO",
         company: "Vytal Poland",
         avatar: bogdanImg,
-        accentColor: '#22c55e',
+        accentColor: '#9CE069',
         tags: ["Kreacje reklamowe AI", "Automatyzacja procesów", "Meta & Google Ads"],
     },
 ];
