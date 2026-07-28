@@ -3,6 +3,10 @@
 > **Jedyne źródło prawdy** dla tożsamości marki, designu i komunikacji.
 > Wersja **2.0** · lipiec 2026 · zastępuje `Workshift-Brand-Bible.docx` (v1.0) i `brand.md`.
 >
+> 🇬🇧 Wersja angielska: [`BRAND.en.md`](BRAND.en.md) - **ten plik jest normatywny**, tamten to
+> tłumaczenie dla niepolskojęzycznych wykonawców i agencji. Copy marki (tagline, nagłówki,
+> zakazane zwroty) celowo **nie jest** tam przetłumaczone - przy zmianie treści zaktualizuj oba.
+>
 > **Hierarchia prawdy przy sprzeczności:**
 > 1. `src/index.css` (`@theme` + `:root`) - tokeny kolorów, radiusów, fontów. Zmieniasz kolor? Tylko tu.
 > 2. `public/brand-assets/` - pliki logo. Zmieniasz logo? Tylko tu.
@@ -533,7 +537,8 @@ Sekcja istnieje po to, żeby nigdy więcej nie było wątpliwości, który plik 
 
 | Plik | Rola |
 |------|------|
-| `BRAND.md` | **Ten dokument. Jedyny brand book.** |
+| `BRAND.md` | **Ten dokument. Jedyny brand book, wersja normatywna.** |
+| `BRAND.en.md` | Wersja angielska dla niepolskojęzycznych wykonawców. Copy marki nieprzetłumaczone (celowo) |
 | `src/index.css` | **Source of truth dla tokenów** - `@theme` (marka) + `:root` (semantyka shadcn) |
 | `public/brand-assets/logo-{light,dark,icon}.{svg,png}` | **Source of truth dla logo** |
 | `public/favicon.svg` + warianty PNG/ICO | Favicony (sygnet, paleta lime) |
@@ -549,7 +554,9 @@ Sekcja istnieje po to, żeby nigdy więcej nie było wątpliwości, który plik 
 
 **`scripts/generate_brand_pdf.py` NIE parsuje tego pliku** - trzyma własną kopię treści na sztywno w ~1400 liniach ReportLab. Każdą zmianę merytoryczną w `BRAND.md` musisz przenieść tam ręcznie, inaczej PDF i Markdown się rozjadą. Dokładnie tak powstał rozjazd v1.1 (PDF) vs v2.0 (Markdown).
 
-Kolejność przy zmianie: `BRAND.md` → ręczny przeniesienie do generatora → `python3 scripts/generate_brand_pdf.py` → wizualna kontrola PDF-a.
+Kolejność przy zmianie: `BRAND.md` → lustrzana zmiana w `BRAND.en.md` → ręczne przeniesienie do generatora → `python3 scripts/generate_brand_pdf.py` → wizualna kontrola PDF-a.
+
+Trzy kopie tej samej treści to dług, którego świadomie nie spłacam teraz (PDF wymagałby przepisania generatora na parser Markdown). Dopóki istnieje, jedyną obroną jest ta lista kroków.
 
 ### 📁 Robocze / lokalne
 

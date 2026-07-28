@@ -600,9 +600,9 @@ def section_marka():
 
     items.append(Paragraph('Grupa docelowa', S['h2']))
     items.append(Paragraph(
-        '<b>Właściciele i managerowie polskich MŚP</b> - nie deweloperzy, nie specjaliści IT. '
-        'Szukają oszczędności czasu i mniejszych kosztów operacyjnych, '
-        'bez technologicznego ryzyka.',
+        '<b>Właściciele i decydenci polskich MŚP (6-150 osób), wiek 30-60</b> - '
+        'nie deweloperzy, nie specjaliści IT. Szukają oszczędności czasu, mniejszych kosztów '
+        'operacyjnych i przewagi nad konkurencją - bez technologicznego ryzyka.',
         S['body']))
     sectors = [
         ['Branża', 'Przykładowe zastosowania AI'],
@@ -610,8 +610,27 @@ def section_marka():
         ['Agencje rekrutacyjne / HR',     'Screening CV, onboarding automation, boty pierwszej linii'],
         ['E-Commerce',                     'Obsługa klienta 24/7, opisy produktów, personalizacja oferty'],
         ['Agencje marketingowe / reklamowe', 'Setki kreacji w dni, analiza kampanii, briefy w godziny'],
+        ['Produkcja / logistyka',           'Przepływ dokumentów, raportowanie, obsługa zamówień'],
+        ['Usługi B2B',                      'Kwalifikacja zapytań, oferty, obsługa posprzedażowa'],
     ]
     items.append(info_table(sectors, [180, CW - 180]))
+
+    items.append(Paragraph('Bóle, którymi żyją', S['h2']))
+    for b in [
+        'Ręczne przepisywanie danych między systemami',
+        'Nieczytelne skany dokumentów przepisywane ręcznie',
+        'Powtarzalne pytania klientów i wolna pierwsza odpowiedź na zapytanie',
+        'Raporty sklejane dniami w Excelu',
+        'Przekonanie, że automatyzacja jest droga',
+    ]:
+        items.append(Paragraph(f'<font color="#7bc44a"><b>·</b></font>  {b}', S['body']))
+
+    items.append(Paragraph('Insight z kampanii v1 (lipiec 2026)', S['h2']))
+    items.append(Paragraph(
+        'Najlepiej reagowały <b>kobiety 35-54</b> - właścicielki, office managerki, '
+        'główne księgowe - na placemencie Reels. Segment 55-64 był najtańszy. '
+        '<i>Nie ekstrapoluj tego na inne kanały bez własnych danych.</i>',
+        S['body']))
 
     items.append(Paragraph('Usługi  ·  model à la carte', S['h2']))
     services = [
@@ -629,6 +648,13 @@ def section_marka():
         ])
     items.append(info_table([['Usługa', 'Krótki opis']] + cells,
                             [160, CW - 160]))
+
+    items.append(Paragraph('Oferta wejściowa', S['h2']))
+    items.append(Paragraph(
+        '<b>Bezpłatna 30-minutowa rozmowa diagnostyczna</b> - po zostawieniu kontaktu '
+        'w instant formie. To jedyny lead offer; audyt jest płatny i zaliczany na poczet '
+        'wdrożenia.',
+        S['body']))
     return items
 
 
@@ -724,10 +750,11 @@ def section_colors():
 
     items.append(Paragraph('Warianty Lime i stany systemowe', S['h2']))
     variants = [
-        (LIME_LIGHT, '#b8ec92', 'Accent Light', 'Hover, tła tagów'),
-        (ACCENT_ROSE, '#c5e0a8', 'Accent Rose', 'Karty, ilustracje'),
-        (ACCENT_VIOLET, '#d4e8c4', 'Accent Violet', 'Karty, ilustracje'),
-        (LIME_DARK, '#7bc44a', 'Accent Purple', 'Aktywne stany'),
+        (LIME_LIGHT, '#b8ec92', 'Lime jasny', 'Hover, tła tagów'),
+        (ACCENT_ROSE, '#c5e0a8', 'Zieleń ciepła', 'Ilustracje, karty'),
+        (ACCENT_VIOLET, '#d4e8c4', 'Zieleń chłodna', 'Ilustracje, karty'),
+        (LIME_DARK, '#7bc44a', 'Lime ciemny', 'Aktywne stany, ikony'),
+        (HexColor('#81c44e'), '#81c44e', 'Lime Deep', 'Tylko gradient sygnetu'),
         (DESTRUCTIVE, '#DD453D', 'Destructive', 'Błędy, alerty'),
     ]
     swatches = [ColorSwatch(c, h, n, u, size=64) for c, h, n, u in variants]
@@ -766,6 +793,39 @@ def section_colors():
         'na jednym widoku / grafice. Lime ma sygnalizować akcję - wiele Lime to wizualny szum.',
         S['body']))
 
+    items.append(Paragraph('Warstwa semantyczna (shadcn/ui)', S['h2']))
+    items.append(Paragraph(
+        'Obok tokenów markowych w <font name="PlexMono">:root</font> żyje warstwa semantyczna. '
+        '<b>Komponenty UI odwołują się do niej, nie do surowych hexów</b> - dzięki temu zmiana '
+        'palety to jedna edycja, nie polowanie po plikach.',
+        S['body']))
+    items.append(info_table([
+        ['Zmienna', 'Wartość', 'Zmienna', 'Wartość'],
+        ['--background',    '#E6E8DD',           '--primary',            '#9CE069'],
+        ['--foreground',    '#000000',           '--primary-foreground', '#000000'],
+        ['--card',          '#FFFFFF',           '--accent',             '#9CE069'],
+        ['--popover',       '#FFFFFF',           '--destructive',        '#DD453D'],
+        ['--secondary',     '#FFFFFF',           '--ring',               '#9CE069'],
+        ['--muted',         '#595959',           '--border' + ' / --input', 'rgba(0,0,0,.2)'],
+    ], [110, 95, 130, CW - 335]))
+
+    items.append(Paragraph('Legacy-aliasy - nie używaj w nowym kodzie', S['h2']))
+    items.append(Paragraph(
+        'W <font name="PlexMono">@theme</font> zostały nazwy z poprzedniego systemu, '
+        'przemapowane na aktualną paletę wyłącznie dla kompatybilności wstecznej. '
+        '<b>Nazwy kłamią</b> - „accent-rose" i „accent-violet" to zielenie.',
+        S['body']))
+    items.append(info_table([
+        ['Alias', 'Realny hex', 'Czym zastąpić'],
+        ['--color-alabaster',              '#E6E8DD', '--color-sage'],
+        ['--color-navy / --color-navy-dark', '#000000', '--color-dark'],
+        ['--color-accent',                 '#9CE069', '--color-lime'],
+        ['--color-accent-light',           '#b8ec92', 'jasny lime - tła tagów, hover'],
+        ['--color-accent-rose',            '#c5e0a8', 'ciepła zieleń - ilustracje'],
+        ['--color-accent-violet',          '#d4e8c4', 'chłodna zieleń - ilustracje'],
+        ['--color-accent-purple',          '#7bc44a', 'ciemny lime - stany aktywne, ikony'],
+    ], [175, 80, CW - 255]))
+
     items.append(Paragraph('Kontrast & dostępność', S['h2']))
     items.append(info_table([
         ['Para', 'Wynik WCAG'],
@@ -786,6 +846,22 @@ def section_typography():
         '<b>Jeden font</b> - Inter - dla wszystkich poziomów hierarchii. '
         '<b>IBM Plex Mono</b> wyłącznie dla akcentów technicznych: numery sekcji, metryki, '
         'etykiety techniczne. Spójność = spokój i profesjonalizm.',
+        S['body']))
+
+    items.append(Paragraph('Ładowanie fontów', S['h2']))
+    items.append(Paragraph(
+        'Fonty są <b>self-hostowane</b> jako woff2 z <font name="PlexMono">public/fonts/</font> '
+        '(<font name="PlexMono">inter-latin</font>, <font name="PlexMono">inter-latin-ext</font>, '
+        '<font name="PlexMono">plex-mono-{400,500}-latin{,-ext}</font>), z '
+        '<font name="PlexMono">font-display: swap</font> i podziałem na zakresy unicode. '
+        'Warianty <font name="PlexMono">latin-ext</font> są konieczne dla polskich znaków '
+        '(ł ą ę ó ś ż ź ć ń).',
+        S['body']))
+    items.append(Paragraph(
+        '<font color="#DD453D"><b>✗</b></font>  Nie wprowadzaj z powrotem Google Fonts - '
+        'było render-blocking. Wyjątek: pliki SVG logo mają '
+        '<font name="PlexMono">@import</font> w <font name="PlexMono">&lt;defs&gt;</font>, '
+        'bo bywają otwierane poza kontekstem strony. Nie kopiuj tego wzorca do komponentów.',
         S['body']))
 
     # Display samples
@@ -1144,6 +1220,19 @@ def section_tov():
 def section_marketing():
     items = section_opener('08', 'Materiały', 'Marketing & Social')
 
+    items.append(Paragraph('Zasada produkcji: kreacje w kodzie', S['h2']))
+    items.append(Paragraph(
+        '<b>Grafiki i wideo reklamowe powstają w kodzie</b> - HTML lub Remotion renderowane '
+        'przez headless Chrome, z fontami z <font name="PlexMono">public/fonts/</font>. '
+        'Canva tylko na wyraźne życzenie.',
+        S['body']))
+    items.append(Paragraph(
+        'Powód: kod jest wersjonowalny i powtarzalny, generuje warianty seryjnie '
+        'i gwarantuje zgodność z tokenami. Decyzja z 28.07.2026, po dwóch odrzuconych '
+        'iteracjach w Canvie.',
+        S['body_muted']))
+    items.append(sp(10))
+
     items.append(Paragraph('Hero - mock sekcji', S['section_label']))
     items.append(Paragraph('Wizualizacja struktury sekcji hero na stronie głównej.', S['body_muted']))
     items.append(HeroMock())
@@ -1290,6 +1379,36 @@ def section_marketing():
         ['Unikaj', 'Gradientów tła, wielu kolorów akcent naraz'],
     ], [160, CW - 160]))
 
+    items.append(Paragraph('Zakazy w warstwie wizualnej', S['h2']))
+    items.append(Paragraph(
+        '<font color="#DD453D"><b>✗</b></font>  Roboty · mózgi · chipy · sieci neuronowe · '
+        'niebiesko-fioletowe gradienty „tech" · generyczne ilustracje AI · stockowi '
+        'uśmiechnięci biznesmeni · neonowe glowy.',
+        S['body']))
+    items.append(Paragraph(
+        'To klisze, które sygnalizują dokładnie odwrotność naszego pozycjonowania: '
+        'technologię na pokaz zamiast konkretnego wyniku.',
+        S['body_muted']))
+
+    items.append(KeepTogether([
+        Paragraph('Framework kreacji: „A GDYBY TAK"', S['h2']),
+        Paragraph(
+            'Autorski wariant PAS×BAB, zatwierdzony 20.07.2026. Hook <b>„A GDYBY TAK..."</b> '
+            'jest wspólnym elementem wszystkich grafik kampanii - duża typografia jako główny '
+            'nośnik przekazu, dopełnienie zdania zmienia się per kreacja.',
+            S['body']),
+        info_table([
+        ['Etap / reguła', 'Co robi'],
+        ['1 · Problem',     '1-2 zdania problemu językiem klienta - jego słowami, nie naszymi'],
+        ['2 · Pivot',       '„A gdyby tak [obietnica]?" - ten sam hook w każdej kreacji'],
+        ['3 · Rozwiązanie', 'Konkret + CTA'],
+        ['Ceny',            'Zero cen w reklamach (decyzja 20.07.2026)'],
+        ['Stack',           'Zero nazw stacku w copy konsumenckim'],
+        ['Lead offer',      'Bezpłatna 30-minutowa rozmowa diagnostyczna'],
+        ['Formularz',       'Instant form; zgoda RODO wymagana przy zostawianiu maila'],
+        ], [110, CW - 110]),
+    ]))
+
     return items
 
 
@@ -1373,7 +1492,8 @@ def section_files():
         ['Plik', 'Zawartość'],
         ['src/index.css',            'Source of truth - Tailwind CSS v4 @theme tokens'],
         ['design-system.css',        'CSS reference / dokumentacja aktualnego systemu'],
-        ['BRAND.md',                 'Jedyny brand book - sekcja 0 to skrót dla agentów AI'],
+        ['BRAND.md',                 'Jedyny brand book (normatywny) - sekcja 0 to skrót dla agentów AI'],
+        ['BRAND.en.md',              'Wersja EN dla niepolskojęzycznych wykonawców - copy marki nietłumaczone'],
         ['BRAND.pdf',                'Ten dokument - pełny brand book PDF'],
         ['public/favicon.svg',       'Favicon (sygnet, paleta lime)'],
         ['public/fonts/',            'Self-hostowane Inter + IBM Plex Mono (woff2)'],
@@ -1387,12 +1507,17 @@ def section_files():
 
     items.append(Paragraph('Pierwsze kroki przy nowym materiale', S['h2']))
     for s in [
-        '<b>1.</b>  Zacznij od koloru tła - Sage (#E6E8DD) lub Black (#000000). Nie mieszaj.',
-        '<b>2.</b>  Jeden akcent Lime na widok - to ma być CTA lub kluczowa metryka.',
-        '<b>3.</b>  Typografia: tylko Inter. Mono tylko dla liczb i etykiet technicznych.',
-        '<b>4.</b>  Hierarchia nagłówków: tracking-tight, font-weight 400 (nie bold).',
-        '<b>5.</b>  Treść w pierwszej osobie liczby mnogiej („wdrażamy", „wiemy"). Krótkie zdania.',
-        '<b>6.</b>  Metryki konkretne: <b>+32%</b>, <b>45+ godzin</b>, <b>4 tygodnie</b> - nie „znacznie", „bardzo".',
+        '<b>1.</b>  <b>Nagłówki mają font-weight 400</b>, nie bold. Bold jest zarezerwowany '
+        'wyłącznie dla wordmarku logo (700).',
+        '<b>2.</b>  <b>Jeden akcent Lime na widok.</b> Lime = akcja. Kilka Lime to wizualny '
+        'szum i zero hierarchii.',
+        '<b>3.</b>  <b>Tło: Sage albo czarne albo białe</b> - nie mieszaj na jednej grafice.',
+        '<b>4.</b>  <b>Typografia: zawsze dywiz „-", nigdy pauza ani półpauza.</b> Dotyczy UI, '
+        'maili, dokumentów i copy. Tekst z LLM-a lub bazy normalizuj przy renderowaniu.',
+        '<b>5.</b>  <b>Rezultat, nie technologia.</b> Klient kupuje „pierwszą linię obsługi '
+        'działającą o 3 w nocy", nie „agenta AI".',
+        '<b>6.</b>  <b>Konkretna liczba zamiast przymiotnika.</b> <b>18,7%</b> bije „prawie 20%", '
+        'które bije „znacznie".',
     ]:
         items.append(Paragraph(s, S['body']))
 
