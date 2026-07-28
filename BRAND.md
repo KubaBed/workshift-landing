@@ -241,6 +241,8 @@ W `@theme` zostały nazwy z poprzedniego systemu, przemapowane na aktualną pale
 | Błąd / alert | Destructive `#DD453D` |
 
 > **Zakaz:** pomarańcz `#ee703d`, granat `#0A2540`, brzoskwinia `#f5a273`, róż `#cc7cab`, liliowy `#d5a4e7`, fiolet `#8530d1`, chartreuse `#D2FF00`. To paleta legacy - jeśli widzisz ją w pliku, plik jest nieaktualny.
+>
+> **Jedyny zatwierdzony wyjątek:** gradient `#A78BFA → #8530D1` w [InteractiveServicesBento.jsx:543](src/components/InteractiveServicesBento.jsx:543). To jedna z ośmiu **mockowych kreacji cudzych marek** w demo usługi, nie powierzchnia marki Workshift. Decyzja Kuby, commit `321c051`. Nie rozszerzaj tego wyjątku i nie kopiuj tych wartości nigdzie indziej.
 
 ---
 
@@ -576,12 +578,18 @@ Cały system marki v1.0 leży w **`_archive/brand-v1/`** (z własnym README wyja
 | `workshift-c1-parallelogram-export/` + `.zip` | Eksport logo do Brand Bible v1.0 - stara paleta gradientu (`#ee703d → #cc7cab → #8530d1`). **Geometria ta sama, kolory nieaktualne** - stąd brała się pomyłka |
 | `design-system-legacy.css` | Tokeny CSS starego systemu |
 
-Poza archiwum, wciąż do usunięcia:
+Poza archiwum, usunięte z kodu (commity `33aa059`, `321c051`):
 
 | Plik | Dlaczego |
 |------|----------|
-| `src/components/ui/BrandSymbol.jsx` | Martwy kod - zero użyć w `src/`, hardkoduje navy i pomarańcz |
-| `brand.md` (mała litera) | Usunięty z indeksu gita. Skrót dla agentów AI wchłonięty do [sekcji 0](#0-tldr-dla-agentów-ai); nazwa kolidowała z `BRAND.md` na systemach case-insensitive |
+| `src/components/ui/BrandSymbol.jsx` | ✅ Usunięty. Martwy kod - zero użyć, pełna paleta legacy |
+| `src/components/ScrollScatterSection.jsx` | ✅ Usunięty. Zero importerów, ale Tailwind v4 skanuje system plików, nie graf modułów - martwy komponent nadal generował utility `text-[<zakazany-hex>]` w CSS |
+| `src/components/TestimonialsSection.jsx` | ✅ Naprawiony, nie usunięty. `#8530d1` i `#22c55e` → `#9CE069` (żywe i widoczne: tagi, cudzysłów, gradient na zdjęciu) |
+| `brand.md` (mała litera) | ✅ Usunięty z indeksu gita. Skrót dla agentów AI wchłonięty do [sekcji 0](#0-tldr-dla-agentów-ai); nazwa kolidowała z `BRAND.md` na systemach case-insensitive |
+
+**Stan palety legacy w `src/`:** 6 z 7 zakazanych hexów wyczyszczonych; został wyłącznie zatwierdzony wyjątek w `InteractiveServicesBento.jsx` (patrz [sekcja 3.1](#31-paleta-kolorów)). Zero użyć legacy-aliasów tokenów poza definicjami w `src/index.css`.
+
+> **Lekcja z audytu:** o tym, co jest widoczne dla użytkownika, rozstrzyga `npm run build` + grep po `dist/`, nie sam grep po `src/`. Tailwind v4 skanuje system plików, więc martwy komponent wciąż generuje CSS; Rollup z kolei wycina nieużywane wartości JS. Zero importerów = usuń plik, nie przemaluj go.
 
 ### Procedura zmiany marki
 

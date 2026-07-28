@@ -789,6 +789,12 @@ def section_colors():
         'To paleta legacy - jeśli widzisz ją w pliku, plik jest nieaktualny.',
         S['body']))
     items.append(Paragraph(
+        '<b>Jedyny zatwierdzony wyjątek:</b> gradient #A78BFA → #8530D1 w '
+        '<font name="PlexMono">InteractiveServicesBento.jsx</font> - jedna z ośmiu '
+        'mockowych kreacji <i>cudzych</i> marek w demo usługi, nie powierzchnia marki '
+        'Workshift. Nie rozszerzaj wyjątku, nie kopiuj tych wartości gdzie indziej.',
+        S['body_muted']))
+    items.append(Paragraph(
         '<font color="#DD453D"><b>✗</b></font>  Nie używaj więcej niż jednego akcentu Lime '
         'na jednym widoku / grafice. Lime ma sygnalizować akcję - wiele Lime to wizualny szum.',
         S['body']))

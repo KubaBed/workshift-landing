@@ -250,6 +250,8 @@ The project uses shadcn/ui, so a semantic layer sits alongside the brand tokens.
 | Error / alert | Destructive `#DD453D` |
 
 > **Forbidden:** orange `#ee703d`, navy `#0A2540`, peach `#f5a273`, rose `#cc7cab`, lilac `#d5a4e7`, violet `#8530d1`, chartreuse `#D2FF00`. That is the legacy palette - if you see it in a file, the file is out of date.
+>
+> **The one approved exception:** the `#A78BFA → #8530D1` gradient in [InteractiveServicesBento.jsx:543](src/components/InteractiveServicesBento.jsx:543). It is one of eight **mock creatives for other brands** inside a service demo, not a Workshift brand surface. Founder's decision, commit `321c051`. Do not widen this exception and do not copy those values anywhere else.
 
 ---
 
@@ -589,12 +591,18 @@ The entire v1.0 brand system sits in **`_archive/brand-v1/`** (with its own READ
 | `workshift-c1-parallelogram-export/` + `.zip` | Logo export for Brand Bible v1.0 - old gradient palette (`#ee703d → #cc7cab → #8530d1`). **Same geometry, obsolete colours** - which is precisely why it kept getting confused for the current files |
 | `design-system-legacy.css` | CSS tokens of the old system |
 
-Outside the archive, still pending removal:
+Outside the archive, removed from the codebase (commits `33aa059`, `321c051`):
 
 | File | Why |
 |------|-----|
-| `src/components/ui/BrandSymbol.jsx` | Dead code - zero usages in `src/`, hard-codes navy and orange |
-| `brand.md` (lowercase) | Removed from the git index. Its content was folded into [section 0](#0-tldr-for-ai-agents); the filename collided with `BRAND.md` on case-insensitive filesystems |
+| `src/components/ui/BrandSymbol.jsx` | ✅ Deleted. Dead code - zero usages, full legacy palette |
+| `src/components/ScrollScatterSection.jsx` | ✅ Deleted. Zero importers, but Tailwind v4 scans the filesystem rather than the module graph - a dead component still emitted `text-[<forbidden-hex>]` utilities into the CSS |
+| `src/components/TestimonialsSection.jsx` | ✅ Fixed, not deleted. `#8530d1` and `#22c55e` → `#9CE069` (live and visible: tags, quotation mark, photo gradient) |
+| `brand.md` (lowercase) | ✅ Removed from the git index. Its content was folded into [section 0](#0-tldr-for-ai-agents); the filename collided with `BRAND.md` on case-insensitive filesystems |
+
+**State of the legacy palette in `src/`:** 6 of 7 forbidden hex values cleared; only the approved exception in `InteractiveServicesBento.jsx` remains (see [section 3.1](#31-colour-palette)). Zero usages of the legacy token aliases outside their definitions in `src/index.css`.
+
+> **Lesson from the audit:** what is actually user-visible is decided by `npm run build` plus a grep over `dist/`, not by grepping `src/` alone. Tailwind v4 scans the filesystem, so a dead component still generates CSS; Rollup, conversely, strips unused JS values. Zero importers means delete the file, not repaint it.
 
 ### How to change the brand
 
