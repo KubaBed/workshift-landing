@@ -1,10 +1,17 @@
 """
-Workshift Brand Book — PDF Generator
+Workshift Brand Book - PDF Generator
 Generates BRAND.pdf with screens, visualizations and design tokens.
 Run: python3 scripts/generate_brand_pdf.py
 """
 
+#
+# UWAGA: ten skrypt NIE parsuje BRAND.md - trzyma własną kopię treści na sztywno.
+# Każda zmiana merytoryczna w BRAND.md musi zostać przeniesiona tutaj ręcznie,
+# inaczej PDF i Markdown się rozjadą (tak powstał rozjazd v1.1 vs v2.0).
+# Źródłem prawdy jest BRAND.md; ten plik to jego prezentacja dla agencji.
+#
 import os
+import sys
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
 from reportlab.lib.colors import HexColor, white, black, Color
@@ -20,15 +27,29 @@ from reportlab.pdfbase.ttfonts import TTFont
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # ── Fonts ─────────────────────────────────────────────────────────────────────
-INTER_DIR = '/tmp/inter/extras/ttf'
-PLEX_DIR  = '/tmp/plex/ibm-plex-mono/fonts/complete/ttf'
+# TTF-y leżą obok tego skryptu (scripts/fonts/, gitignored). reportlab nie czyta
+# woff2, więc nie da się użyć public/fonts/ wprost. Pobranie: scripts/fetch-fonts.sh
+FONT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fonts')
 
-pdfmetrics.registerFont(TTFont('Inter',           f'{INTER_DIR}/Inter-Regular.ttf'))
-pdfmetrics.registerFont(TTFont('Inter-Medium',    f'{INTER_DIR}/Inter-Medium.ttf'))
-pdfmetrics.registerFont(TTFont('Inter-Bold',      f'{INTER_DIR}/Inter-Bold.ttf'))
-pdfmetrics.registerFont(TTFont('Inter-Italic',    f'{INTER_DIR}/Inter-Italic.ttf'))
-pdfmetrics.registerFont(TTFont('PlexMono',        f'{PLEX_DIR}/IBMPlexMono-Regular.ttf'))
-pdfmetrics.registerFont(TTFont('PlexMono-Bold',   f'{PLEX_DIR}/IBMPlexMono-Bold.ttf'))
+_REQUIRED = [
+    ('Inter',         'Inter-Regular.ttf'),
+    ('Inter-Medium',  'Inter-Medium.ttf'),
+    ('Inter-Bold',    'Inter-Bold.ttf'),
+    ('Inter-Italic',  'Inter-Italic.ttf'),
+    ('PlexMono',      'IBMPlexMono-Regular.ttf'),
+    ('PlexMono-Bold', 'IBMPlexMono-Bold.ttf'),
+]
+
+_missing = [fn for _, fn in _REQUIRED if not os.path.isfile(os.path.join(FONT_DIR, fn))]
+if _missing:
+    sys.exit(
+        f"BŁĄD: brak fontów w {FONT_DIR}\n"
+        f"  brakuje: {', '.join(_missing)}\n"
+        f"  napraw:  bash scripts/fetch-fonts.sh"
+    )
+
+for _name, _file in _REQUIRED:
+    pdfmetrics.registerFont(TTFont(_name, os.path.join(FONT_DIR, _file)))
 pdfmetrics.registerFontFamily(
     'Inter', normal='Inter', bold='Inter-Bold',
     italic='Inter-Italic', boldItalic='Inter-Bold',
@@ -120,7 +141,7 @@ class LogoWordmark(Flowable):
         self.accent = accent
         self.show_icon = show_icon
         self.font_size = font_size
-        # background parallelograms color — defaults to muted of the wordmark color
+        # background parallelograms color - defaults to muted of the wordmark color
         if ghost_color is None:
             if color == WHITE:
                 ghost_color = Color(1, 1, 1, alpha=0.28)
@@ -256,7 +277,7 @@ class CardMock(Flowable):
 
 
 class GlassPanel(Flowable):
-    """Mock of .glass-panel utility — frosted look approximated."""
+    """Mock of .glass-panel utility - frosted look approximated."""
     def __init__(self, width, height, dark=False):
         super().__init__()
         self.width, self.height, self.dark = width, height, dark
@@ -281,7 +302,7 @@ class GlassPanel(Flowable):
 
 
 class HeroMock(Flowable):
-    """A miniature mock of the landing hero — for marketing/visual section."""
+    """A miniature mock of the landing hero - for marketing/visual section."""
     def __init__(self, width=CW, height=260):
         super().__init__()
         self.width, self.height = width, height
@@ -325,7 +346,7 @@ class HeroMock(Flowable):
         c.setFillColor(MUTED_DARK)
         c.setFont(FONT, 9)
         c.drawString(28, self.height - 196,
-                     'Konkretne wyniki w 4 tygodnie — bez chaosu, bez rocznych transformacji.')
+                     'Konkretne wyniki w 4 tygodnie - bez chaosu, bez rocznych transformacji.')
 
         # CTA + secondary (bottom)
         c.setFillColor(LIME); c.setStrokeColor(LIME)
@@ -381,7 +402,7 @@ def on_page(canvas, doc):
     # footer
     canvas.setFillColor(MUTED_DARK)
     canvas.setFont(FONT, 7)
-    canvas.drawString(MARGIN_H, 14, 'Workshift — Brand Book & Design System  ·  v1.1  ·  maj 2026')
+    canvas.drawString(MARGIN_H, 14, 'Workshift - Brand Book & Design System  ·  v2.0  ·  lipiec 2026')
     canvas.drawRightString(W - MARGIN_H, 14, f'{doc.page:02d}')
     canvas.restoreState()
 
@@ -420,7 +441,7 @@ def on_first_page(canvas, doc):
     # Section label
     canvas.setFillColor(LIME)
     canvas.setFont(FONT_MONO_B, 9)
-    canvas.drawString(MARGIN_H, H - 280, '— BRAND BOOK & DESIGN SYSTEM')
+    canvas.drawString(MARGIN_H, H - 280, '- BRAND BOOK & DESIGN SYSTEM')
     # Big title
     canvas.setFillColor(WHITE)
     canvas.setFont(FONT_BOLD, 60)
@@ -442,7 +463,7 @@ def on_first_page(canvas, doc):
     # version
     canvas.setFillColor(MUTED_DARK)
     canvas.setFont(FONT_MONO, 8)
-    canvas.drawRightString(W - MARGIN_H, 30, 'v1.1 · maj 2026 · finalne')
+    canvas.drawRightString(W - MARGIN_H, 30, 'v2.0 · lipiec 2026')
     canvas.restoreState()
 
 
@@ -537,8 +558,19 @@ def section_marka():
             S['quote']),
         Paragraph(
             'Workshift to <b>boutique AI consulting</b> dla polskich MŚP. '
-            'Nie technologia na pokaz — konkretne wyniki bez rocznych transformacji. '
+            'Nie technologia na pokaz - konkretne wyniki bez rocznych transformacji. '
             'Filozofia: <b>przebudowa bez burzenia</b>.',
+            S['body']),
+        sp(4),
+        Paragraph('Onliness Statement', S['section_label']),
+        Paragraph(
+            'Workshift to jedyna firma wdrożeniowa AI w Polsce, która '
+            '<b>przesuwa proces, a nie przewraca go</b> - dając MŚP mierzalne wyniki '
+            'w tygodniach, nie miesiącach.',
+            S['quote']),
+        Paragraph(
+            'To zdanie jest testem pozycjonowania: jeśli materiał marketingowy dałoby się '
+            'podpisać nazwą konkurencji bez zmiany sensu, materiał jest do przepisania.',
             S['body']),
         sp(4),
     ]
@@ -547,9 +579,11 @@ def section_marka():
     facts = [
         ['Założyciel', 'Jakub Bednarz'],
         ['Kontakt', 'kontakt@workshift.pl  ·  Poznań'],
-        ['Tagline', 'Wdrażamy AI, które po prostu działa'],
-        ['Filozofia', 'Przebudowa bez burzenia — precyzyjne zmiany, nie rewolucja'],
+        ['Tagline (zewnętrzny)', 'Wdrażamy AI, które po prostu działa'],
+        ['Trueline (wewnętrzny)', 'Przebudowa bez burzenia - nie do materiałów klienckich'],
+        ['Filozofia', 'Precyzyjne zmiany, nie rewolucja'],
         ['Język marki', 'Polski (klient) / Angielski (kod, dokumentacja techniczna)'],
+        ['Typografia', 'Zawsze dywiz „-", nigdy pauza „—" ani półpauza „–"'],
     ]
     items.append(info_table(facts, [110, CW - 110], header=False))
 
@@ -560,13 +594,13 @@ def section_marka():
         ['02', 'Mierzalne rezultaty', 'Zawsze konkretne liczby: +32% czasu, 45+ godzin/miesiąc.'],
         ['03', 'Prostota wdrożenia', 'Bez chaosu, bez przestojów, bez rocznych projektów.'],
         ['04', 'Transfer wiedzy', 'Zostawiamy wiedzę, nie zależność. Klient umie obsługiwać sam.'],
-        ['05', 'Ludzkie podejście', 'Rozumiemy biznes najpierw — technologia jest narzędziem.'],
+        ['05', 'Ludzkie podejście', 'Rozumiemy biznes najpierw - technologia jest narzędziem.'],
     ]
-    items.append(info_table(values, [22, 95, CW - 117]))
+    items.append(info_table(values, [34, 95, CW - 129]))
 
     items.append(Paragraph('Grupa docelowa', S['h2']))
     items.append(Paragraph(
-        '<b>Właściciele i managerowie polskich MŚP</b> — nie deweloperzy, nie specjaliści IT. '
+        '<b>Właściciele i managerowie polskich MŚP</b> - nie deweloperzy, nie specjaliści IT. '
         'Szukają oszczędności czasu i mniejszych kosztów operacyjnych, '
         'bez technologicznego ryzyka.',
         S['body']))
@@ -581,8 +615,8 @@ def section_marka():
 
     items.append(Paragraph('Usługi  ·  model à la carte', S['h2']))
     services = [
-        ('Automatyzacja procesów',  'Integracja narzędzi w jeden workflow — koniec ręcznego przepisywania danych'),
-        ('Audyt i Strategia AI',    'Identyfikacja strat czasu — typowo ~32% do odzyskania'),
+        ('Automatyzacja procesów',  'Integracja narzędzi w jeden workflow - koniec ręcznego przepisywania danych'),
+        ('Audyt i Strategia AI',    'Identyfikacja strat czasu - typowo ~32% do odzyskania'),
         ('Szkolenia AI',            'Prompt engineering, bezpieczeństwo AI, GenAI tools'),
         ('Agenci AI',               'Automatyczna pierwsza linia obsługi 24/7'),
         ('Kreacje reklamowe AI',    'Setki kreacji w dni zamiast miesięcy'),
@@ -604,7 +638,7 @@ def section_logo():
     items.append(Paragraph(
         'Logotyp Workshift składa się z <b>parallelogramowego znaku</b> '
         '(trzy poziome elementy ułożone w skosie) oraz wordmarku „Workshift" w kroju '
-        'Inter Bold z trackingiem −0.04em. Środkowy parallelogram zawsze w kolorze Lime — '
+        'Inter Bold z trackingiem −0.04em. Środkowy parallelogram zawsze w kolorze Lime - '
         'to klucz rozpoznawczy marki.',
         S['body']))
 
@@ -633,8 +667,11 @@ def section_logo():
         ['Parametr', 'Wartość'],
         ['Font wordmark',      'Inter Bold (700)'],
         ['Tracking',           '−0.04em'],
-        ['Kolor na jasnym tle', 'Dark #000000 / akcent Lime #9CE069 w ikonie'],
-        ['Kolor na ciemnym tle', 'White #FFFFFF / akcent Lime #9CE069 w ikonie'],
+        ['Kolor na jasnym tle', 'Wordmark #000000 · paski tłumione #000000 opacity .15→.05'],
+        ['Kolor na ciemnym tle', 'Wordmark #FFFFFF · paski tłumione #FFFFFF opacity .30→.10'],
+        ['Środkowy pasek',      'Zawsze gradient 90° #9CE069 → #81c44e (obowiązkowy)'],
+        ['Znaczenie znaku',     'Trzy warstwy = procesy klienta · środkowa się przesuwa = '
+                                'nasza interwencja · reszta stabilna = zero przestojów'],
         ['Przestrzeń ochronna', 'Min. równa wysokości litery „W" ze wszystkich stron'],
         ['Min. wysokość ekran', '24px (icon-only) / 32px (z wordmarkiem)'],
         ['Min. wysokość druk',  '8mm (icon-only) / 12mm (z wordmarkiem)'],
@@ -643,10 +680,15 @@ def section_logo():
     items.append(Paragraph('Zakaz dla logo', S['h2']))
     bans = [
         'Nie rozciągaj proporcji ani nie obracaj logo',
-        'Nie zmieniaj koloru wordmarku ani środkowego parallelogramu (Lime)',
-        'Nie stosuj gradientu, cieni, obrysów lub innych efektów na logotypie',
+        'Nie zmieniaj kąta pochylenia równoległoboków',
+        'Nie przesuwaj paska górnego ani dolnego - przesunięty jest tylko środkowy, '
+        'to cały sens znaku',
+        'Nie zastępuj gradientu środkowego paska (#9CE069 → #81c44e) płaskim kolorem '
+        'ani innym gradientem',
+        'Nie dodawaj gradientu, cienia, obrysu, glow ani 3D do wordmarku - '
+        'wordmark jest zawsze płaski, czarny lub biały',
         'Nie nakładaj na skomplikowane tła bez kontrastowej powierzchni pod logo',
-        'Nie używaj pełnokolorowej wersji na tłach Lime — kontrast ginie',
+        'Nie używaj pełnokolorowej wersji na tłach Lime - kontrast ginie',
     ]
     for b in bans:
         items.append(Paragraph(f'<font color="#DD453D"><b>✗</b></font>  {b}', S['body']))
@@ -715,11 +757,13 @@ def section_colors():
     items.append(Paragraph('Zakazy', S['h2']))
     items.append(Paragraph(
         '<font color="#DD453D"><b>✗</b></font>  Nie używaj pomarańczu (#ee703d), '
-        'granatowego (#0A2540), ani fontu Satoshi. To elementy legacy systemu — usunięte w v1.0.',
+        'granatowego (#0A2540), brzoskwini (#f5a273), różu (#cc7cab), liliowego (#d5a4e7), '
+        'fioletu (#8530d1), chartreuse (#D2FF00), ani fontów Satoshi i Plus Jakarta Sans. '
+        'To paleta legacy - jeśli widzisz ją w pliku, plik jest nieaktualny.',
         S['body']))
     items.append(Paragraph(
         '<font color="#DD453D"><b>✗</b></font>  Nie używaj więcej niż jednego akcentu Lime '
-        'na jednym widoku / grafice. Lime ma sygnalizować akcję — wiele Lime to wizualny szum.',
+        'na jednym widoku / grafice. Lime ma sygnalizować akcję - wiele Lime to wizualny szum.',
         S['body']))
 
     items.append(Paragraph('Kontrast & dostępność', S['h2']))
@@ -728,7 +772,7 @@ def section_colors():
         ['Dark #000000 na Sage #E6E8DD',          'AAA ✓ (12.6:1)'],
         ['Dark #000000 na Lime #9CE069',          'AA ✓  (8.9:1)'],
         ['Muted Dark #595959 na Sage #E6E8DD',    'AA ✓  (4.8:1)'],
-        ['Muted Light #AAAAAA na Sage',           'tylko dekoracyjnie — nie treść'],
+        ['Muted Light #AAAAAA na Sage',           'tylko dekoracyjnie - nie treść'],
         ['Lime #9CE069 na Dark #000000',          'AA ✓  (8.9:1)'],
     ], [240, CW - 240]))
 
@@ -739,7 +783,7 @@ def section_typography():
     items = section_opener('04', 'Visual Identity', 'Typografia')
 
     items.append(Paragraph(
-        '<b>Jeden font</b> — Inter — dla wszystkich poziomów hierarchii. '
+        '<b>Jeden font</b> - Inter - dla wszystkich poziomów hierarchii. '
         '<b>IBM Plex Mono</b> wyłącznie dla akcentów technicznych: numery sekcji, metryki, '
         'etykiety techniczne. Spójność = spokój i profesjonalizm.',
         S['body']))
@@ -755,7 +799,7 @@ def section_typography():
         ('Body large', 'Inter Regular', 13,
          'Konkretne rezultaty bez rocznych transformacji.'),
         ('Body default', 'Inter Regular', 11,
-         'Workshift wdraża AI dla polskich MŚP — mierzalnie, bez chaosu.'),
+         'Workshift wdraża AI dla polskich MŚP - mierzalnie, bez chaosu.'),
         ('Caption / Label', 'Inter Medium', 9, 'Etykieta nawigacji'),
         ('Mono accent', 'IBM Plex Mono', 9, '+32% ODZYSKANEGO CZASU'),
     ]
@@ -799,10 +843,10 @@ def section_typography():
     items.append(Paragraph('Skala typograficzna', S['h2']))
     typo = [
         ['Rola', 'Font', 'Rozmiar', 'Weight', 'Tracking'],
-        ['Hero H1',        'Inter',          '72–96px', '400', '−3.6 do −4px'],
-        ['Section H2',     'Inter',          '36–48px', '400', 'tracking-tight'],
-        ['Subsection H3',  'Inter',          '24–30px', '400', 'tracking-tight'],
-        ['H4–H6',          'Inter',          '18–20px', '400', 'tracking-tight'],
+        ['Hero H1',        'Inter',          '72-96px', '400', '−3.6 do −4px'],
+        ['Section H2',     'Inter',          '36-48px', '400', 'tracking-tight'],
+        ['Subsection H3',  'Inter',          '24-30px', '400', 'tracking-tight'],
+        ['H4-H6',          'Inter',          '18-20px', '400', 'tracking-tight'],
         ['Body large',     'Inter',          '18px',    '400', 'normal'],
         ['Body default',   'Inter',          '16px',    '400', 'normal'],
         ['Body small',     'Inter',          '14px',    '400', 'normal'],
@@ -816,11 +860,11 @@ def section_typography():
     items.append(Paragraph('Zasady', S['h2']))
     rules = [
         'Wszystkie nagłówki globalnie: <b>font-weight 400</b>, <b>tracking-tight</b>, kolor <b>#000000</b> '
-        '(Inter Regular jest wystarczająco mocny — nie używaj font-bold dla nagłówków treści).',
+        '(Inter Regular jest wystarczająco mocny - nie używaj font-bold dla nagłówków treści).',
         'Logo wordmark: jedyny element z <b>font-weight 700</b> (bold) + <b>tracking-[-0.04em]</b>.',
         'Selekcja tekstu (::selection): <b>bg: #9CE069</b>, <b>color: #000000</b>.',
         'Globalne ustawienia: <b>antialiased</b>, <b>font-optical-sizing: auto</b>.',
-        'IBM Plex Mono <b>nigdy</b> w treści ciągłej — tylko liczby, metryki, etykiety techniczne.',
+        'IBM Plex Mono <b>nigdy</b> w treści ciągłej - tylko liczby, metryki, etykiety techniczne.',
     ]
     for r in rules:
         items.append(Paragraph(f'•  {r}', S['body']))
@@ -858,7 +902,7 @@ def section_layout_effects():
     items.append(Paragraph('Glass morphism', S['h2']))
     items.append(Paragraph(
         'Półprzezroczyste panele z efektem rozmycia tła. Używaj dla nawigacji, '
-        'pływających kart, overlayów — nadają głębi bez ciężkości cieni.',
+        'pływających kart, overlayów - nadają głębi bez ciężkości cieni.',
         S['body_muted']))
     glass_row = Table([[
         GlassPanel(CW / 2 - 8, 60, dark=False),
@@ -891,18 +935,18 @@ def section_layout_effects():
          'opacity 0→1, y +30px→0\n0.8s, cubic-bezier(0.21,0.47,0.32,0.98)\nIntersectionObserver once',
          'Każda główna sekcja strony wchodzi przez FadeUp'],
         ['Floating',
-         'translateY + rotate loop\neaseInOutSine, 4–12s\namplituda ~12px',
-         'Dekoracyjne elementy tła — nigdy na treści/elementach interaktywnych'],
+         'translateY + rotate loop\neaseInOutSine, 4-12s\namplituda ~12px',
+         'Dekoracyjne elementy tła - nigdy na treści/elementach interaktywnych'],
         ['TextReveal',
          'Word-by-word + blur effect',
-         'Wyłącznie hero headline — oszczędnie, max 1 na stronę'],
+         'Wyłącznie hero headline - oszczędnie, max 1 na stronę'],
         ['Scale / Gradient',
          'scaleX\ncubic-bezier(0.16, 1, 0.3, 1)',
          'Dividery, paski akcent'],
     ], [80, 145, CW - 225]))
     items.append(Paragraph(
         'Globalna reguła: <b>prefers-reduced-motion</b> skraca wszystkie animacje do 0.01ms. '
-        '<b>Lenis</b> dla smooth scroll — nie nadpisuj scroll-behavior.',
+        '<b>Lenis</b> dla smooth scroll - nie nadpisuj scroll-behavior.',
         S['caption']))
 
     return items
@@ -917,7 +961,7 @@ def section_ui():
         '<b>jeden accent CTA na widoku</b>.',
         S['body']))
 
-    items.append(Paragraph('Przyciski — warianty', S['h2']))
+    items.append(Paragraph('Przyciski - warianty', S['h2']))
 
     btns = [
         ('Bezpłatny audyt',  'accent',         130),
@@ -930,13 +974,13 @@ def section_ui():
         ('Czytaj więcej',    'link',           110),
     ]
     descs = [
-        ('accent',         'Główne CTA na widoku — najmocniejszy akcent.'),
+        ('accent',         'Główne CTA na widoku - najmocniejszy akcent.'),
         ('accent-outline', 'Drugorzędne CTA obok accent.'),
         ('default',        'Standardowy primary w formularzach i UI.'),
         ('outline',        'Akcje drugorzędne, neutralne.'),
         ('secondary',      'Na ciemnych tłach, akcje neutralne.'),
         ('ghost',          'Nawigacja, akcje dyskretne.'),
-        ('destructive',    'Usuń, cofnij — niebezpieczne akcje.'),
+        ('destructive',    'Usuń, cofnij - niebezpieczne akcje.'),
         ('link',           'Linki tekstowe w treści.'),
     ]
     rows = []
@@ -961,9 +1005,9 @@ def section_ui():
         ['Size', 'Wysokość', 'Użycie'],
         ['xs', '24px', 'Gęste UI, tabele, badges'],
         ['sm', '28px', 'Sidebar, kompaktowe panele'],
-        ['default', '32px', 'Standard — większość przypadków'],
+        ['default', '32px', 'Standard - większość przypadków'],
         ['lg', '36px', 'Hero CTA, prominentne akcje'],
-        ['icon / icon-sm / icon-lg', '24–36px kwadrat', 'Przyciski z ikoną bez tekstu'],
+        ['icon / icon-sm / icon-lg', '24-36px kwadrat', 'Przyciski z ikoną bez tekstu'],
     ], [180, 90, CW - 270]))
 
     items.append(Paragraph('Karty', S['h2']))
@@ -996,7 +1040,7 @@ def section_ui():
 
     items.append(Paragraph('Accessibility', S['h2']))
     a11y = [
-        'Focus ring: 3px <font name="PlexMono">#9CE069</font> z opacity 50% — widoczny zawsze.',
+        'Focus ring: 3px <font name="PlexMono">#9CE069</font> z opacity 50% - widoczny zawsze.',
         '<font name="PlexMono">aria-invalid</font>: czerwony border + ring (Destructive).',
         '<font name="PlexMono">disabled</font>: pointer-events none, opacity 50%.',
         'Wszystkie interaktywne elementy: min. 32px wysokość (touch target).',
@@ -1013,20 +1057,20 @@ def section_tov():
     items.append(Paragraph(
         'Workshift mówi do <b>właścicieli firm i managerów</b>, nie do deweloperów. '
         'Krótkie zdania. Konkretne liczby. Żadnych korporacyjnych eufemizmów. '
-        'Pierwsza osoba liczby mnogiej („wdrażamy", „wiemy") — partnerstwo, nie pouczanie.',
+        'Pierwsza osoba liczby mnogiej („wdrażamy", „wiemy") - partnerstwo, nie pouczanie.',
         S['body']))
 
     items.append(Paragraph('5 zasad pisania', S['h2']))
     rules = [
         ('01', 'Konkret zamiast abstrakcji',
-         'Zawsze konkretna liczba, czas, wynik. Nie „usprawniamy procesy" — '
+         'Zawsze konkretna liczba, czas, wynik. Nie „usprawniamy procesy" - '
          '„odzyskujesz 32% czasu tygodniowo".'),
         ('02', 'Bezpośredniość bez agresji',
          'Krótkie zdania. Mówimy jak do partnera w biznesie, nie jak do leadu w CRM.'),
         ('03', 'My też jesteśmy w tej grze',
          'Empatia przez wspólne doświadczenie: „Wiemy, o co toczy się gra, bo sami w nią gramy."'),
         ('04', 'Rezultat, nie technologia',
-         'Klient nie kupuje „agenta AI" — kupuje „pierwszą linię obsługi działającą o 3 w nocy".'),
+         'Klient nie kupuje „agenta AI" - kupuje „pierwszą linię obsługi działającą o 3 w nocy".'),
         ('05', 'Żadnych kompromisów w standardach',
          'Obiecujemy: konkretne rezultaty, transfer wiedzy, brak chaosu. I dotrzymujemy.'),
     ]
@@ -1075,7 +1119,7 @@ def section_tov():
         ['Strona bierna („czas jest oszczędzany")', 'Aktywna („Ty oszczędzasz czas")'],
     ], [CW / 2, CW / 2]))
 
-    items.append(Paragraph('Nagłówki — przykłady', S['h2']))
+    items.append(Paragraph('Nagłówki - przykłady', S['h2']))
     items.append(info_table([
         ['✗ Źle', '✓ Dobrze'],
         ['„Innowacyjne AI dla Twojej firmy"',          '„Wdrażamy AI, które po prostu działa"'],
@@ -1085,12 +1129,12 @@ def section_tov():
         ['„Skontaktuj się z nami"',                     '„Zacznij od bezpłatnego audytu"'],
     ], [CW / 2, CW / 2]))
 
-    items.append(Paragraph('Metryki — jak je używać', S['h2']))
+    items.append(Paragraph('Metryki - jak je używać', S['h2']))
     for r in [
         'Zawsze konkretna liczba: <b>+32%</b>, <b>45+ godzin</b>, <b>4 tygodnie</b>, <b>24/7</b>.',
         'Podaj kontekst: <i>„+32% odzyskanego czasu przy typowym wdrożeniu automatyzacji"</i>.',
         'Unikaj zaokrągleń marketingowych: <b>18.7%</b> brzmi wiarygodniej niż „prawie 20%".',
-        'Jeśli liczba pochodzi od klienta — podaj źródło (case study, nazwisko, firma).',
+        'Jeśli liczba pochodzi od klienta - podaj źródło (case study, nazwisko, firma).',
     ]:
         items.append(Paragraph(f'•  {r}', S['body']))
 
@@ -1100,12 +1144,12 @@ def section_tov():
 def section_marketing():
     items = section_opener('08', 'Materiały', 'Marketing & Social')
 
-    items.append(Paragraph('Hero — mock sekcji', S['section_label']))
+    items.append(Paragraph('Hero - mock sekcji', S['section_label']))
     items.append(Paragraph('Wizualizacja struktury sekcji hero na stronie głównej.', S['body_muted']))
     items.append(HeroMock())
     items.append(sp(14))
 
-    items.append(Paragraph('Karty usług — układ à la carte', S['section_label']))
+    items.append(Paragraph('Karty usług - układ à la carte', S['section_label']))
     items.append(Paragraph('Karty na białym tle, sage page, mono kicker, lime CTA.', S['body_muted']))
     services_grid = Table([[
         CardMock(CW / 3 - 6, 140, 'Audyt AI',
@@ -1126,7 +1170,7 @@ def section_marketing():
     items.append(services_grid)
     items.append(sp(14))
 
-    items.append(Paragraph('Sekcja rezultatów — układ metryk', S['section_label']))
+    items.append(Paragraph('Sekcja rezultatów - układ metryk', S['section_label']))
     items.append(Paragraph('IBM Plex Mono dla numerów. Czarne na sage, akcent Lime na kluczowych liczbach.', S['body_muted']))
 
     class MetricsMock(Flowable):
@@ -1160,7 +1204,7 @@ def section_marketing():
     items.append(MetricsMock())
     items.append(sp(14))
 
-    items.append(Paragraph('LinkedIn — kreacje', S['section_label']))
+    items.append(Paragraph('LinkedIn - kreacje', S['section_label']))
     items.append(Paragraph('Trzy dopuszczone tła: sage, czarne, białe. Jeden lime akcent.', S['body_muted']))
 
     class LinkedInPost(Flowable):
@@ -1207,7 +1251,7 @@ def section_marketing():
         LinkedInPost(CW / 3 - 6, 150, SAGE, DARK, '+32%',
                      'czasu odzyskane w typowej kancelarii prawnej po 4 tygodniach.'),
         LinkedInPost(CW / 3 - 6, 150, DARK, WHITE, '45+ godz.',
-                     'oszczędzonych miesięcznie. AI w e-commerce — case Bednarz Group.'),
+                     'oszczędzonych miesięcznie. AI w e-commerce - case Bednarz Group.'),
         LinkedInPost(CW / 3 - 6, 150, WHITE, DARK, '24/7',
                      'Agent AI obsługuje pierwszą linię. Klient zadaje pytanie o 3 w nocy.'),
     ]], colWidths=[CW / 3, CW / 3, CW / 3])
@@ -1223,7 +1267,7 @@ def section_marketing():
     items.append(info_table([
         ['Parametr', 'Wartość'],
         ['Tło grafik', 'Sage #E6E8DD lub Black #000000 lub White #FFFFFF'],
-        ['Kolor akcentu', 'Lime #9CE069 — jeden akcent na grafikę'],
+        ['Kolor akcentu', 'Lime #9CE069 - jeden akcent na grafikę'],
         ['Font nagłówek', 'Inter Bold'],
         ['Font treść', 'Inter Regular'],
         ['Font metryki', 'IBM Plex Mono lub Inter Bold + Lime'],
@@ -1238,11 +1282,11 @@ def section_marketing():
     items.append(info_table([
         ['Element', 'Wytyczna'],
         ['Tło slajdu', 'Sage #E6E8DD lub White'],
-        ['Nagłówki slajdów', 'Inter Bold 36–48px'],
-        ['Treść slajdów', 'Inter Regular 16–20px'],
+        ['Nagłówki slajdów', 'Inter Bold 36-48px'],
+        ['Treść slajdów', 'Inter Regular 16-20px'],
         ['Metryki / liczby', 'IBM Plex Mono lub Inter Bold z Lime accent'],
-        ['Jeden punkt na slajd', 'Nie pakuj więcej — duże liczby jako hero element'],
-        ['Zdjęcia', 'Jasne, minimalistyczne lub czarno-białe — bez stockowych „uśmiechniętych biznesmenów"'],
+        ['Jeden punkt na slajd', 'Nie pakuj więcej - duże liczby jako hero element'],
+        ['Zdjęcia', 'Jasne, minimalistyczne lub czarno-białe - bez stockowych „uśmiechniętych biznesmenów"'],
         ['Unikaj', 'Gradientów tła, wielu kolorów akcent naraz'],
     ], [160, CW - 160]))
 
@@ -1254,18 +1298,18 @@ def section_screens():
 
     items.append(Paragraph(
         'Sekcje strony głównej <font name="PlexMono">workshift.pl</font> '
-        '— widok mobilny. Pokazują system tokenów w praktyce: paleta sage/lime, '
+        '- widok mobilny. Pokazują system tokenów w praktyce: paleta sage/lime, '
         'hierarchia typograficzna, karty na białym tle, gradient dividers między sekcjami.',
         S['body']))
     items.append(sp(14))
 
     screens = [
-        ('01-hero',     'Hero',           'Headline + CTA — najsilniejszy moment marki'),
+        ('01-hero',     'Hero',           'Headline + CTA - najsilniejszy moment marki'),
         ('02-services', 'Usługi',         'Karty à la carte z metryką w IBM Plex Mono'),
-        ('03-process',  'Proces',         'Kroki wdrożenia — numeracja w mono'),
-        ('04-results',  'Rezultaty',      'Mierzalne liczby — central w komunikacji'),
+        ('03-process',  'Proces',         'Kroki wdrożenia - numeracja w mono'),
+        ('04-results',  'Rezultaty',      'Mierzalne liczby - central w komunikacji'),
         ('05-cases',    'Case studies',   'Karty z opiniami klientów na białym tle'),
-        ('06-contact',  'Kontakt',        'Formularz + dane — sage bg, lime CTA'),
+        ('06-contact',  'Kontakt',        'Formularz + dane - sage bg, lime CTA'),
     ]
 
     from PIL import Image as PilImg
@@ -1322,30 +1366,33 @@ def section_screens():
 def section_files():
     items = section_opener('10', 'Reference', 'Pliki techniczne')
     items.append(Paragraph(
-        'Mapa plików source-of-truth — patrz repozytorium '
+        'Mapa plików source-of-truth - patrz repozytorium '
         '<font name="PlexMono">workshift-landing</font>.',
         S['body']))
     items.append(info_table([
         ['Plik', 'Zawartość'],
-        ['src/index.css',            'Source of truth — Tailwind CSS v4 @theme tokens'],
+        ['src/index.css',            'Source of truth - Tailwind CSS v4 @theme tokens'],
         ['design-system.css',        'CSS reference / dokumentacja aktualnego systemu'],
-        ['BRAND.md',                 'Pełna wersja brand booka w Markdown (długa)'],
-        ['brand.md',                 'Wersja lekka dla agentów AI (kompresowana, szybka)'],
-        ['BRAND.pdf',                'Ten dokument — pełny brand book PDF'],
+        ['BRAND.md',                 'Jedyny brand book - sekcja 0 to skrót dla agentów AI'],
+        ['BRAND.pdf',                'Ten dokument - pełny brand book PDF'],
+        ['public/favicon.svg',       'Favicon (sygnet, paleta lime)'],
+        ['public/fonts/',            'Self-hostowane Inter + IBM Plex Mono (woff2)'],
         ['src/components/ui/',       'Komponenty CVA + BaseUI primitives'],
         ['public/brand-assets/',     'Logo SVG/PNG (light/dark/icon)'],
-        ['scripts/generate_brand_pdf.py', 'Generator tego PDF — odpalaj po zmianach BRAND.md'],
-        ['design-system-legacy.css', 'LEGACY — stary system (Satoshi + Orange + Navy). NIE używać.'],
+        ['scripts/generate_brand_pdf.py', 'Generator tego PDF - odpalaj po zmianach BRAND.md'],
+        
+        ['_archive/brand-v1/',        'LEGACY - cały system marki v1.0 (navy + Satoshi). NIE używać.'],
+        ['scripts/fetch-fonts.sh',    'Pobiera TTF-y potrzebne do wygenerowania tego PDF'],
     ], [200, CW - 200]))
 
     items.append(Paragraph('Pierwsze kroki przy nowym materiale', S['h2']))
     for s in [
-        '<b>1.</b>  Zacznij od koloru tła — Sage (#E6E8DD) lub Black (#000000). Nie mieszaj.',
-        '<b>2.</b>  Jeden akcent Lime na widok — to ma być CTA lub kluczowa metryka.',
+        '<b>1.</b>  Zacznij od koloru tła - Sage (#E6E8DD) lub Black (#000000). Nie mieszaj.',
+        '<b>2.</b>  Jeden akcent Lime na widok - to ma być CTA lub kluczowa metryka.',
         '<b>3.</b>  Typografia: tylko Inter. Mono tylko dla liczb i etykiet technicznych.',
         '<b>4.</b>  Hierarchia nagłówków: tracking-tight, font-weight 400 (nie bold).',
         '<b>5.</b>  Treść w pierwszej osobie liczby mnogiej („wdrażamy", „wiemy"). Krótkie zdania.',
-        '<b>6.</b>  Metryki konkretne: <b>+32%</b>, <b>45+ godzin</b>, <b>4 tygodnie</b> — nie „znacznie", „bardzo".',
+        '<b>6.</b>  Metryki konkretne: <b>+32%</b>, <b>45+ godzin</b>, <b>4 tygodnie</b> - nie „znacznie", „bardzo".',
     ]:
         items.append(Paragraph(s, S['body']))
 
@@ -1353,7 +1400,8 @@ def section_files():
     items.append(GradientDivider(CW, height=3))
     items.append(sp(10))
     items.append(Paragraph(
-        '<i>Workshift — Brand Book & Design System  ·  v1.1  ·  maj 2026  ·  finalne</i>',
+        '<i>Workshift - Brand Book &amp; Design System  ·  v2.0  ·  lipiec 2026  ·  '
+        'zrodlo: BRAND.md</i>',
         S['caption']))
     items.append(Paragraph(
         'Pytania, korekty, sugestie:  '
@@ -1376,7 +1424,7 @@ doc = SimpleDocTemplate(
     rightMargin=MARGIN_H,
     topMargin=MARGIN_V + 6,
     bottomMargin=MARGIN_V,
-    title='Workshift — Brand Book & Design System',
+    title='Workshift - Brand Book & Design System',
     author='Workshift / Jakub Bednarz',
     subject='Brand identity, design tokens, tone of voice',
 )

@@ -78,3 +78,7 @@ TOOLS_DEEP_DIVE.md
 ad-creatives/
 KAMPANIA-AUDYT-AI.md
 KAMPANIA-AUDYT-AI-LOG.md
+
+# Fonty TTF dla generatora BRAND.pdf (pobierz: bash scripts/fetch-fonts.sh)
+scripts/fonts/
+scripts/__pycache__/
