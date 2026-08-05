@@ -72,6 +72,15 @@ const POSTS = [
     { slug: 'open-knowledge-format-google-cloud', img: 'WS-post-01-open-knowledge-format-1080x1080.png', story: 'WS-story-01-open-knowledge-format-1080x1920.png', publishAt: '2026-07-28T10:00:00+02:00',
       fb: '„Nasze AI nic nie wie o naszej firmie" - słyszę to na co drugim spotkaniu.\n\nGoogle Cloud wypuściło Open Knowledge Format: otwartą specyfikację, jak podać agentowi AI wiedzę o firmie. Zero SDK, zero vendor lock-in - katalog plików markdown, które agent czyta jak dokumentację.\n\nCo to znaczy dla polskiej firmy - w środku.',
       ig: 'Twoje AI nie wie nic o Twojej firmie? 🧠\n\nGoogle Cloud pokazało Open Knowledge Format - wiedza firmowa dla agenta bez żadnego SDK. Katalog plików markdown i tyle.\n\n🔗 Cały wpis - link w komentarzu 👇\n.\n#AI #automatyzacja #sztucznainteligencja #MŚP #agentAI #biznes #GoogleCloud' },
+
+    // ── Wydarzenie: prelekcja ai use_case 11.08.2026 ────────────────────────
+    // Pozycja wydarzeniowa: własny `link` (zapisy na Lumie) zamiast wpisu na blogu,
+    // oraz osobna grafika na FB (16:9 od organizatora) niż na IG (1:1 w brandzie WS).
+    { slug: 'ai-use-case-11-08', img: 'WS-post-08-aiusecase-1080x1080.png', fbImg: 'WS-event-aiusecase-fb.jpg',
+      story: 'WS-story-08-aiusecase-1080x1920.png', publishAt: '2026-08-06T10:00:00+02:00',
+      link: 'https://luma.com/sp9da9rc', linkLabel: '👉 Zapisy:',
+      fb: 'Wiedza w firmie zwykle jest. Problem w tym, że siedzi w głowie jednej osoby, która akurat jest na urlopie. 🌴\n\nA że sezon urlopowy w pełni, to zapraszam 11 sierpnia na ai use_case, gdzie opowiem, jak sobie z tym poradziłem (Pawel Sieczkiewicz, dzięki za zaproszenie).\nPrzyjdźcie pogadać po prelekcji i wymienić się doświadczeniami.\n\nA jeżeli chodzi o konkrety:\n- Po pierwsze, firmowa baza wiedzy zbudowana z tego, co firma i tak już miała. Blog, stare oferty, transkrypty rozmów z klientami, stawki opłat. Nic nowego nie trzeba było pisać, trzeba było to poukładać. W efekcie, cały zespół odpowiada klientom tak samo, niezależnie od tego, kto odbiera telefon.\n- Po drugie, inny problem, ale ta sama choroba. Każda kancelaria to zna: dokumenty przychodzą mailem jako skany, często niewyraźne zdjęcia zrobione telefonem pod kątem. O wersji edytowalnej można pomarzyć, więc nie da się znaleźć niczego, dopóki ktoś nie przejrzy tego ręcznie, strona po stronie.\nWdrożyliśmy OCR, który to rozwiązuje. Wysyłasz maila ze skanami na wewnętrzny adres, w odpowiedzi dostajesz plik z edytowalnym tekstem, obrobiony przez bezpieczny, lokalny model.\n\nOpowiem o tym, co zadziałało, ile trwało i gdzie się po drodze wyłożyłem.\n\n11 sierpnia, 18:00, Toast, Targowa 76, Warszawa.',
+      ig: 'Wiedza w firmie zwykle jest. Tylko siedzi w głowie jednej osoby, która akurat jest na urlopie. 🌴\n\nA że sezon urlopowy w pełni - 11 sierpnia w Warszawie opowiem, jak sobie z tym poradziłem.\n\n🧠 Firmowa baza wiedzy zbudowana z tego, co firma i tak już miała: bloga, starych ofert, transkryptów rozmów z klientami. Cały zespół odpowiada klientom tak samo, niezależnie od tego, kto odbiera telefon.\n\n📄 OCR dla kancelarii. Wysyłasz maila ze skanami na wewnętrzny adres, w odpowiedzi dostajesz plik z edytowalnym tekstem - obrobiony przez bezpieczny, lokalny model.\n\nBez działu IT. Bez wdrożenia na pół roku.\n\nOpowiem, co zadziałało, ile trwało i gdzie się po drodze wyłożyłem. Przyjdźcie pogadać po prelekcji.\n\n📍 ai use_case · 11.08, 18:00 · Toast, Targowa 76, Warszawa\n\n🔗 Zapisy - link w komentarzu 👇\n.\n#AI #sztucznainteligencja #automatyzacja #MŚP #biznes #kancelaria #legaltech #bazawiedzy #OCR #Warszawa #wydarzenie #przedsiębiorczość' },
 ];
 
 async function graph(pathname, { method = 'GET', params, token = TOKEN } = {}) {
@@ -94,7 +103,11 @@ function loadState() {
 function saveState(s) { fs.writeFileSync(STATE_FILE, JSON.stringify(s, null, 2)); }
 
 const imgUrl = (f) => `${ASSET_BASE}/${f}`;
-const linkFor = (slug) => `${BLOG_BASE}/${slug}`;
+// Domyślnie wpis na blogu. Pozycje wydarzeniowe podają własny `link` (np. zapisy na Lumie)
+// oraz opcjonalnie `linkLabel` (etykieta przed URL-em w poście FB / komentarzu IG).
+const linkFor = (p) => p.link || `${BLOG_BASE}/${p.slug}`;
+const fbLinkLine = (p) => `${p.linkLabel || '📖'} ${linkFor(p)}`;
+const igLinkLine = (p) => `${p.linkLabel ? p.linkLabel : 'Cały wpis 👉'} ${linkFor(p)}`;
 
 // ── Discovery: strona FB + konto IG ─────────────────────────────────────────
 async function resolveTargets() {
@@ -120,7 +133,7 @@ async function scheduleFacebook({ pageId, pageToken }) {
         const res = await graph(`/${pageId}/photos`, {
             method: 'POST',
             token: pageToken,
-            params: { url: imgUrl(p.img), caption: `${p.fb}\n\n📖 ${linkFor(p.slug)}`, published: 'false', scheduled_publish_time: String(ts) },
+            params: { url: imgUrl(p.fbImg || p.img), caption: `${p.fb}\n\n${fbLinkLine(p)}`, published: 'false', scheduled_publish_time: String(ts) },
         });
         state[key] = { id: res.id || res.post_id, at: p.publishAt };
         saveState(state);
