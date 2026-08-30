@@ -94,12 +94,47 @@ function AlertIcon({ active }) {
     );
 }
 
+/** Zegar: wskazówki robią pełny obrót. */
+function ClockIcon({ active }) {
+    return (
+        <Motion.svg {...svgProps} initial={false}>
+            <circle cx="12" cy="12" r="10" />
+            <Motion.path
+                d="M12 6v6l4 2"
+                style={{ originX: '12px', originY: '12px' }}
+                animate={active ? { rotate: 360 } : { rotate: 0 }}
+                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            />
+        </Motion.svg>
+    );
+}
+
+/** Skrzynka: strzałka wpada do tacki. */
+function InboxIcon({ active }) {
+    return (
+        <Motion.svg {...svgProps} initial={false}>
+            <path d="M22 12h-6l-2 3h-4l-2-3H2" />
+            <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
+            <Motion.g
+                animate={active ? { y: [-6, 0], opacity: [0, 1] } : { y: 0, opacity: 1 }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+            >
+                <path d="M12 7v4" />
+                <path d="m10 9.5 2 2 2-2" />
+            </Motion.g>
+        </Motion.svg>
+    );
+}
+
 const ICONS = {
     invoice: InvoiceIcon,
     sync: SyncIcon,
     report: ReportIcon,
     alert: AlertIcon,
+    clock: ClockIcon,
+    inbox: InboxIcon,
 };
+
 
 export function AnimatedProcessIcon({ name, active = false }) {
     const Icon = ICONS[name];

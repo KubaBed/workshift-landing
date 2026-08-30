@@ -9,6 +9,7 @@ import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Logo } from './ui/Logo';
 import { IntegrationsMarquee, IntegrationLogo } from './ui/IntegrationsMarquee';
+import { AnimatedProcessIcon } from './ui/AnimatedProcessIcon';
 import { track, EVENTS } from '../lib/analytics';
 
 function cn(...inputs) {
@@ -1010,6 +1011,30 @@ const _SERVICES_LEGACY = [
     },
 ];
 
+/**
+ * Kafelek karty insights: ikona z zestawu AnimatedProcessIcon (animuje się
+ * na hover), styl spójny z resztą kart (mono labelki, weight-medium tytuły).
+ * Nieznana nazwa ikony (np. stare emoji) renderuje się jak dotąd - fallback.
+ */
+function InsightTile({ insight }) {
+    const [hovered, setHovered] = useState(false);
+    // Nazwa slugowa = ikona z zestawu; wszystko inne (np. stare emoji) = fallback tekstowy.
+    const named = /^[a-z]+$/.test(insight.icon ?? '');
+    return (
+        <div
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            className="p-4 rounded-[10px] border border-black/5 bg-sage flex flex-col transition-colors duration-300 hover:border-black/15"
+        >
+            <div className="mb-3 bg-white w-10 h-10 rounded-[10px] flex items-center justify-center border border-black/5 text-black">
+                {named ? <AnimatedProcessIcon name={insight.icon} active={hovered} /> : <span className="text-2xl">{insight.icon}</span>}
+            </div>
+            <div className="font-medium text-black text-[15px] mb-1.5 leading-snug">{insight.title}</div>
+            <div className="text-[13px] text-muted-dark leading-relaxed">{insight.desc}</div>
+        </div>
+    );
+}
+
 // --- UNIVERSAL INNER CARDS RENDERER FOR EXPANDED VIEW ---
 function ExtendedInnerCard({ card, index }) {
     const elRef = useRef(null);
@@ -1150,14 +1175,10 @@ function ExtendedInnerCard({ card, index }) {
 
             {card.type === 'insights' && (
                 <div className="p-6 md:p-8 flex flex-col h-full bg-white relative">
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-5">{card.label}</h4>
+                    <h4 className="text-xs font-mono uppercase tracking-widest text-muted-dark mb-5">{card.label}</h4>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        {card.cards.map((insight, i) => (
-                            <div key={i} className="p-4 rounded-xl border border-black/5 bg-sage flex flex-col">
-                                <div className="text-2xl mb-3 bg-white w-10 h-10 rounded-lg flex items-center justify-center shadow-sm border border-slate-200/50">{insight.icon}</div>
-                                <div className="font-bold text-black text-sm mb-2">{insight.title}</div>
-                                <div className="text-[13px] text-slate-500 leading-relaxed font-medium">{insight.desc}</div>
-                            </div>
+                        {card.cards.map((insight) => (
+                            <InsightTile key={insight.title} insight={insight} />
                         ))}
                     </div>
                 </div>
