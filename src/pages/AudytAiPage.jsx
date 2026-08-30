@@ -42,15 +42,9 @@ export default function AudytAiPage() {
         return () => obs.disconnect();
     }, []);
 
+    // Meta tej trasy ustawia <RouteMeta /> w App.jsx (źródło: STATIC_ROUTE_META
+    // w src/lib/seo.js, wspólne z generatorem statycznego <head>).
     useEffect(() => {
-        document.title = 'Mikro-audyt AI - sprawdź ile traci Twoja firma | Workshift';
-        const metaDesc = document.querySelector('meta[name="description"]');
-        if (metaDesc) {
-            metaDesc.setAttribute(
-                'content',
-                '12 pytań, 4 minuty. Konkretny wynik + 3 rekomendacje dopasowane do Twojej branży. Bezpłatny mikro-audyt AI dla małych i średnich firm.'
-            );
-        }
         window.scrollTo(0, 0);
         track(EVENTS.AUDIT_VIEW);
     }, []);
@@ -102,7 +96,7 @@ export default function AudytAiPage() {
                             <button
                                 onClick={() => {
                                     track(EVENTS.AUDIT_SCROLL_TO_QUIZ, { source: 'hero' });
-                                    // InitiateCheckout o krok wcześniej niż wybór branży —
+                                    // InitiateCheckout o krok wcześniej niż wybór branży -
                                     // klik „Rozpocznij" = intencja startu. audit_start (Vercel)
                                     // nadal liczy realny start (1. odpowiedź). IC jest dedupowany
                                     // i idempotentny, więc nie zdubluje się z wyborem branży.

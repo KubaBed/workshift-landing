@@ -1,9 +1,9 @@
 /**
- * Consent management — RODO/GDPR compliant.
+ * Consent management - RODO/GDPR compliant.
  *
  * Strategia: block-by-default. Skrypty analityczne (GA4 + Clarity + PostHog)
  * ładują się DOPIERO po jawnej zgodzie usera. Vercel Analytics (cookieless)
- * leci od razu — nie wymaga consent.
+ * leci od razu - nie wymaga consent.
  *
  * Przechowywanie: localStorage z wersją (CONSENT_VERSION). Bump wersji
  * gdy zmienisz zakres cookies = wszyscy userzy znów zobaczą banner.
@@ -64,7 +64,7 @@ export function setConsent({ analytics = false, recordings = false, marketing = 
     try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
     } catch {
-        // Private mode / quota exceeded — nadal stosuj ustawienia w session.
+        // Private mode / quota exceeded - nadal stosuj ustawienia w session.
     }
 
     if (analytics) loadGA4();
@@ -72,7 +72,7 @@ export function setConsent({ analytics = false, recordings = false, marketing = 
     // PostHog: load if any consent given (both analytics and session replay)
     if (analytics || recordings) loadPostHog();
     if (marketing) loadMetaPixel();
-    // Note: nie odładowujemy skryptów po withdrawal — wymagałoby reload.
+    // Note: nie odładowujemy skryptów po withdrawal - wymagałoby reload.
     // Banner pokazuje to userowi i sugeruje refresh.
 
     // Emit event dla innych komponentów (np. footer link "zmień zgodę").
@@ -192,7 +192,7 @@ export function trackPixel(event, params = {}, { custom = false, eventId } = {})
 }
 
 /**
- * Wywołaj raz przy bootstrapie aplikacji — jeśli user już zaakceptował
+ * Wywołaj raz przy bootstrapie aplikacji - jeśli user już zaakceptował
  * w poprzedniej wizycie, załaduj skrypty od razu (bez wyświetlania bannera).
  */
 export function bootstrapConsent() {

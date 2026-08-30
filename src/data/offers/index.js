@@ -1,4 +1,4 @@
-// Klientowy entry point — uwaga: w nowej architekturze (post-2026-05-22)
+// Klientowy entry point - uwaga: w nowej architekturze (post-2026-05-22)
 // dane ofert NIE są już importowane do bundle frontendu.
 // Frontend fetchuje je przez `/api/offers/get?slug=...` z httpOnly cookie
 // ustawianym przez `/api/offers/verify`.

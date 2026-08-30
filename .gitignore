@@ -82,3 +82,47 @@ KAMPANIA-AUDYT-AI-LOG.md
 # Fonty TTF dla generatora BRAND.pdf (pobierz: bash scripts/fetch-fonts.sh)
 scripts/fonts/
 scripts/__pycache__/
+
+# Pliki z sekretami konczace sie na .env (np. PostHog_API.env) - regula
+# `.env.*` powyzej lapie tylko te ZACZYNAJACE sie od `.env`, wiec ich nie obejmuje.
+*.env
+*.env.rtf
+Vercel.env.rtf
+
+# --- Materialy niepubliczne / ciezkie (repo jest PUBLICZNE) ---
+# Oferty klientow: analizy robocze, drafty maili, PDF-y. Nigdy do repo.
+oferty/
+NOTES.md
+
+# Kampanie v3b i v4 - strategia, spojnie z regulami dla v2/v3 wyzej
+KAMPANIA-V3B-NO-FOUNDER.md
+KAMPANIA-V4-KONCEPTY.md
+
+# Wizytowki i materialy do druku: kilka MB binariow + zdjecie prywatne
+print/
+Wizytówka do druku/
+drukomat_wizytowki-Premium_1106.pdf
+inner_DMT_1.kfpx.pdf
+
+# Frame pack i duplikaty assetow marki (kanoniczne sa w public/brand-assets/)
+workshift-frame-showcase-16-9-landscape-frame-pack/
+workshift-frame-showcase-16-9-landscape-frame-pack.zip
+Workshift_logo/
+brand-components/
+public/favicon-512x512-kopia.png
+
+# Cache Pythona w dowolnym katalogu
+__pycache__/
+*.pyc
+
+# Kampanie v2/v3 - research, blueprint, copy deck (strategia, nie do repo)
+KAMPANIA-V2-LEADGEN.md
+KAMPANIA-V3-KONCEPT.md
+campaign-brief.md
+brand-profile.json
+
+# Social engagement - lista targetow, drafty, statusy
+social-engagement.md
+
+# PostHog personal API key
+PostHog_API.env

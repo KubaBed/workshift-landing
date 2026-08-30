@@ -13,7 +13,7 @@ import { openConsentBanner } from '../lib/consent';
 const faqs = [
     {
         q: "Czy moja firma nie jest na to za mała?",
-        a: "Nie. AI dla korporacji to miliony. AI dla MŚP to po prostu spięcie skrzynki mailowej z systemem faktur czy CRM-em by odzyskać 10 godzin pracy w tygodniu. Każda skala zasługuje na optymalizację. Naszym \"sweet spotem\" są firmy 10–200 osób."
+        a: "Nie. AI dla korporacji to miliony. AI dla MŚP to po prostu spięcie skrzynki mailowej z systemem faktur czy CRM-em by odzyskać 10 godzin pracy w tygodniu. Każda skala zasługuje na optymalizację. Naszym \"sweet spotem\" są firmy 10-200 osób."
     },
     {
         q: "Czy to znaczy, że będę musiał zwalniać ludzi?",

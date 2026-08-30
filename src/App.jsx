@@ -10,6 +10,7 @@ import { InteractiveServicesBento } from './components/InteractiveServicesBento'
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { ConsentBanner } from './components/ConsentBanner';
 import { bootstrapConsent } from './lib/consent';
+import { STATIC_ROUTE_META, applyMeta, setCanonical } from './lib/seo';
 
 // Below-the-fold: lazy-loaded for faster initial paint
 const KalkulatorCTASection = lazy(() => import('./components/KalkulatorCTASection').then(m => ({ default: m.KalkulatorCTASection })));
@@ -36,6 +37,11 @@ const AudytAiPage = lazy(() => import('./pages/AudytAiPage'));
 const PromptyPage = lazy(() => import('./pages/PromptyPage'));
 const OfferPage = lazy(() => import('./pages/OfferPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+
+// Katalog komponentów (/showcase). Dostępny też na produkcji, żeby dało się wysłać link.
+// Odcięty od wyszukiwarek: X-Robots-Tag w vercel.json + meta robots w samej stronie
+// + Disallow w robots.txt. Nigdzie nie podlinkowany.
+const ShowcasePage = lazy(() => import('./pages/ShowcasePage'));
 
 // Redirect /uslugi (bare) to homepage services section
 function ServicesRedirect() {
@@ -67,6 +73,28 @@ function ScrollToHash() {
       window.scrollTo(0, 0);
     }
   }, [location]);
+  return null;
+}
+
+/**
+ * Utrzymuje <head> w zgodzie z trasą przy nawigacji wewnątrz SPA.
+ *
+ * Pierwsze wejście na URL obsługuje statyczny <head> generowany przez
+ * `scripts/build-seo-html.mjs` - i tylko on jest widoczny dla scraperów, które
+ * nie wykonują JS (Facebook, LinkedIn, Slack, LLM-y). Ten komponent pokrywa
+ * przejścia klient-side, przy których żadne żądanie do serwera nie leci.
+ *
+ * Trasy oparte o dane (wpis bloga, usługa) ustawiają meta same, bo znają swój
+ * rekord dopiero po rozwiązaniu parametru. Tutaj dostają przynajmniej świeży
+ * canonical, żeby nie został po poprzedniej stronie.
+ */
+function RouteMeta() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    const meta = STATIC_ROUTE_META[pathname];
+    if (meta) applyMeta({ ...meta, path: pathname });
+    else setCanonical(pathname);
+  }, [pathname]);
   return null;
 }
 
@@ -159,15 +187,26 @@ function VercelTelemetry() {
 function App() {
   const [searchParams] = useSearchParams();
   const previewSection = searchParams.get('preview');
+  const { pathname } = useLocation();
 
   // Bootstrap analytics: if user previously consented, load GA4 + Clarity
-  // od razu (bez wyświetlania bannera). Bez consent — skrypty czekają.
+  // od razu (bez wyświetlania bannera). Bez consent - skrypty czekają.
   useEffect(() => {
     bootstrapConsent();
   }, []);
 
   if (previewSection) {
     return <SectionPreview sectionKey={previewSection} />;
+  }
+
+  // /showcase renderuje się poza layoutem (bez Headera i Footera), żeby komponenty
+  // były widoczne bez otoczki strony. Patrz src/pages/ShowcasePage.jsx.
+  if (pathname === '/showcase') {
+    return (
+      <Suspense fallback={null}>
+        <ShowcasePage />
+      </Suspense>
+    );
   }
 
   return (
@@ -185,6 +224,7 @@ function App() {
         <Header />
 
         <ScrollToHash />
+        <RouteMeta />
         <Suspense fallback={null}>
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -209,11 +249,11 @@ function App() {
         <FloatingWhatsApp />
       </div>
 
-      {/* Vercel Analytics + Speed Insights — loaded dynamically.
+      {/* Vercel Analytics + Speed Insights - loaded dynamically.
           Top-level import wywalał całą aplikację gdy ad blocker (uBO/Brave) blokował fetch. */}
       <VercelTelemetry />
 
-      {/* Cookie consent banner — pokazuje się gdy brak decyzji w localStorage.
+      {/* Cookie consent banner - pokazuje się gdy brak decyzji w localStorage.
           Re-otwierany przez link w stopce ('workshift:consent-open' event). */}
       <ConsentBanner />
     </div>

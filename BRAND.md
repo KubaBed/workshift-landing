@@ -35,7 +35,7 @@
 Skompresowana wersja. Wystarczy do 90% zadań - po szczegóły schodź niżej.
 
 **Marka:** boutique AI consulting dla polskich MŚP. Jakub Bednarz, Poznań, kontakt@workshift.pl.
-**Tagline:** „Wdrażamy AI, które po prostu działa". **Trueline (wewnętrzny):** „Przebudowa bez burzenia".
+**Tagline:** „Wdrażamy AI, które po prostu działa". **Trueline:** „Przebudowa bez burzenia" - używany publicznie, m.in. jako nagłówek sekcji procesu.
 
 **Paleta - tylko te kolory:**
 `#E6E8DD` sage (tło) · `#9CE069` lime (akcent/CTA) · `#000000` czarny (tekst i ciemne sekcje) · `#595959` muted-dark · `#AAAAAA` muted-light · `#FFFFFF` białe karty · `#DD453D` błędy.
@@ -46,7 +46,7 @@ Skompresowana wersja. Wystarczy do 90% zadań - po szczegóły schodź niżej.
 1. **Nagłówki mają `font-weight: 400`**, nie bold. Bold jest zarezerwowany wyłącznie dla wordmarku logo (700).
 2. **Jeden akcent lime na widok.** Lime = akcja. Kilka lime = wizualny szum i zero hierarchii.
 3. **Tło: sage albo czarne albo białe - nie mieszaj na jednej grafice.**
-4. **Typografia: zawsze dywiz `-`, nigdy pauza `—` ani półpauza `–`.** Dotyczy UI, maili, dokumentów, copy. Tekst z LLM-a lub bazy normalizuj przy renderowaniu.
+4. **Typografia: zawsze dywiz `-`, nigdy pauza `-` ani półpauza `-`.** Dotyczy UI, maili, dokumentów, copy. Tekst z LLM-a lub bazy normalizuj przy renderowaniu.
 5. **Rezultat, nie technologia.** Klient kupuje „pierwszą linię obsługi działającą o 3 w nocy", nie „agenta AI".
 6. **Konkretna liczba zamiast przymiotnika.** `18,7%` bije „prawie 20%", które bije „znacznie".
 
@@ -64,7 +64,7 @@ Skompresowana wersja. Wystarczy do 90% zadań - po szczegóły schodź niżej.
 - **Założyciel:** Jakub Bednarz
 - **Kontakt:** kontakt@workshift.pl | Poznań
 - **Tagline (zewnętrzny):** *Wdrażamy AI, które po prostu działa*
-- **Trueline (wewnętrzny, nie do materiałów):** *Przebudowa bez burzenia*
+- **Trueline:** *Przebudowa bez burzenia* - używany publicznie. Jest nagłówkiem sekcji „Jak pracujemy" na stronie od marca 2026 i wolno go stawiać w materiałach. Do lipca 2026 ten dokument opisywał go jako „nie do materiałów"; był to artefakt konsolidacji v2.0, nie decyzja - patrz commit `33aa059`.
 
 ### Onliness Statement
 
@@ -283,7 +283,7 @@ W `@theme` zostały nazwy z poprzedniego systemu, przemapowane na aktualną pale
 - Jedyny bold w systemie to wordmark logo (700).
 - Selekcja tekstu (`::selection`): tło `#9CE069`, tekst `#000000`.
 - Rendering: `antialiased` globalnie, `font-optical-sizing: auto`.
-- **Dywiz `-`, nigdy pauza `—` ani półpauza `–`.** Dotyczy każdego tekstu wychodzącego pod marką.
+- **Dywiz `-`, nigdy pauza `-` ani półpauza `-`.** Dotyczy każdego tekstu wychodzącego pod marką.
 
 ---
 
