@@ -38,5 +38,5 @@ Ostrość: wiersz ma być na tyle konkretny, żeby dało się go zweryfikować b
 
 | Data zgłoszenia | Data fixu | Obszar | Co było | Commit |
 |-----------------|-----------|--------|---------|--------|
-| 2026-08-04 (reguła) | 2026-08-30 | global | 59 wystąpień pauz (U+2014, U+2013) w widocznym copy i komentarzach - sygnatura tekstu AI, a te treści idą pod nazwiskiem Kuby. Kontrola: `perl -CSD -ne '$c+=()=/\x{2014}|\x{2013}/g; END{print $c+0,"\n"}' plik` | SEO_COMMIT |
-| 2026-08-30 | 2026-08-30 | global | `robots.txt` nie miał `Disallow: /showcase`, choć `CLAUDE.md` twierdził, że ma. Od teraz regułę dodaje generator `scripts/build-seo-html.mjs` | SEO_COMMIT |
+| 2026-08-04 (reguła) | 2026-08-30 | global | 59 wystąpień pauz (U+2014, U+2013) w widocznym copy i komentarzach - sygnatura tekstu AI, a te treści idą pod nazwiskiem Kuby. Kontrola: `perl -CSD -ne '$c+=()=/\x{2014}|\x{2013}/g; END{print $c+0,"\n"}' plik` | 55ea06b + 55877ed |
+| 2026-08-30 | 2026-08-30 | global | `robots.txt` nie miał `Disallow: /showcase`, choć `CLAUDE.md` twierdził, że ma. Od teraz regułę dodaje generator `scripts/build-seo-html.mjs` | 55ea06b + 55877ed |
