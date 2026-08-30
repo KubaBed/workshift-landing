@@ -1,5 +1,251 @@
 export const blogPosts = [
   {
+    slug: 'baza-wiedzy-ktora-przekonala-sceptykow',
+    title: 'Sceptyka nie przekona prezentacja o AI. Przekona go firmowa baza wiedzy',
+    category: 'Wiedza',
+    date: '2026-08-30',
+    author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.webp' },
+    image: '/images/blog/baza-wiedzy-ktora-przekonala-sceptykow.webp',
+    excerpt:
+      'Najnudniejsze wdrożenie AI, jakie zrobiłem u siebie, zrobiło dla adopcji więcej niż niejeden ambitny projekt. Opisuję je uczciwie: co zadziałało, ile naprawdę trwało i na czym baza wiedzy poległa tak, że musiałem dzwonić do klienta z przeprosinami.',
+    content: `
+  Na spotkaniu ai use_case opowiadałem o dwóch wdrożeniach, które zrobiłem u siebie. Po prelekcji, w kuluarach, wracało jedno pytanie w kilku wariantach: jak przekonać zespół, że to w ogóle ma sens.
+
+  Odpowiedź jest mniej efektowna, niż większość osób chce usłyszeć.
+
+  **Sceptyka w zespole nie przekona prezentacja o agentach AI. Przekona go pierwszy moment, w którym coś realnie oszczędza mu czas.**
+
+  ## AI nie wykłada się na technologii
+
+  Kiedy wdrożenie AI nie wychodzi, prawie nigdy nie chodzi o model. Chodzi o to, że nikt nie pogadał z ludźmi, którzy mają z tego korzystać.
+
+  Widzę trzy warianty tego samego błędu:
+
+  - **"Przeczytałem post na LinkedIn, od dziś wszyscy korzystamy z AI".** Entuzjazm jest, tylko nikt nie powiedział, do czego i po co.
+  - **"Kupiliśmy licencje, możecie korzystać".** Narzędzie stoi, nikt go nie skonfigurował pod nasze procesy, więc po dwóch tygodniach nikt do niego nie wraca.
+  - **"Wydaliśmy X tysięcy na automatyzacje, więc to musi działać".** Nikt nie sprawdził, czy faktycznie działa, bo skoro tyle kosztowało, to niewygodnie byłoby się przyznać.
+
+  Wspólny mianownik: najpierw narzędzie, dopiero potem pytanie po co. To trochę tak, jakby kupić wiertarkę, zanim podejmiemy decyzję, gdzie ma wisieć półka.
+
+  A po drugiej stronie stoi ktoś, kto ma swoje powody, żeby się nie palić. Rok temu zapytał ChatGPT o coś ze swojej działki, dostał odpowiedź pewną siebie i błędną. Do tego dochodzi cicha obawa, której nikt nie mówi głośno na zebraniu: że to jest pierwszy krok do zastąpienia go automatem.
+
+  Tej osoby nie przekonasz kolejnym webinarem o transformacji.
+
+  Mówiłem o tym w krótkiej rozmowie zaraz po prelekcji na ai use_case:
+
+  [youtube:pjmxZlt-v9w|pion]
+
+  ## Co zrobiliśmy: baza wiedzy z tego, co już mieliśmy
+
+  Zacząłem od najbardziej przyziemnego problemu, jaki mieliśmy w obsłudze klienta: **pięć osób odpowiadało na to samo pytanie na pięć różnych sposobów.**
+
+  Każdy pamiętał co innego. Przy każdym onboardingu nowej osoby wracało dokładnie to samo pytanie: gdzie znajdę konkrety o ofercie i aktualnych usługach? Odpowiedź brzmiała zawsze tak samo: zapytaj Kasi. Istniała nawet ściągawka w Excelu, ale nikt jej nie aktualizował, więc nikt jej nie ufał.
+
+  Najważniejsza decyzja przy tym wdrożeniu: **nie napisaliśmy ani jednego nowego dokumentu.** Wzięliśmy to, co firma i tak już miała:
+
+  - blog firmowy
+  - historyczne oferty
+  - transkrypcje 278 rozmów telefonicznych z obsługi klienta, jakieś 26 godzin nagrań
+  - cenniki zagranicznych partnerów, słowackie i węgierskie, przetłumaczone i zczytane naszym własnym OCR-em
+  - materiały z kursów i szkoleń, które sami prowadzimy
+
+  Te 278 rozmów to rzecz, z której jestem najbardziej dumny, i polecam ją każdemu, kto ma nagrania z obsługi. To nie są pytania wymyślone na warsztacie strategicznym. To prawdziwe pytania klientów, zadane prawdziwym językiem klientów, razem z tym, co ich naprawdę blokowało przed decyzją.
+
+  Efekt jest banalnie prosty do opisania: zespół pyta po polsku, dostaje odpowiedź sformatowaną od razu jako mail do klienta, ze wskazaniem, z którego dokumentu to wiemy.
+
+  ## Ile to naprawdę trwało
+
+  Tu muszę być precyzyjny, bo łatwo o dwa przeciwstawne kłamstwa.
+
+  Pierwsza wersja, z której dało się korzystać, powstała w kilka godzin. To nie jest przesada i to jest ta część, w którą ludzie nie wierzą.
+
+  Ale do wersji, której ufa cały zespół, minęły dwa, trzy tygodnie. I nadal ją poprawiamy, bo baza wiedzy nie jest projektem, który się kończy. Dziś korzysta z niej regularnie siedem osób.
+
+  Żadnego działu IT. Żadnego budżetu na własne oprogramowanie. Narzędzia, które już istnieją, poukładane pod jeden konkretny proces.
+
+  ## Gdzie się wyłożyłem
+
+  Napracowaliśmy się jak w kamieniołomie. Transkrypcje z trzech miesięcy, tłumaczenia cenników, kompendium najczęstszych tematów.
+
+  I wiecie, na czym ta baza poległa? Na najbardziej podstawowym pytaniu świata: **ile wynosi opłata roczna.**
+
+  W bazie siedział stary wpis z bloga ze stawką 100 złotych. Aktualna była dwieście. Trafiło akurat na nową osobę, która nie miała żadnego powodu, żeby podejrzewać, że to nieaktualne. Podała klientowi cenę z bazy, klient później usłyszał inną, i nasza wiarygodność pojechała w dół.
+
+  > Baza wiedzy jest dokładnie tak dobra, jak jej najmniej aktualny dokument.
+
+  To jest lekcja, która kosztowała mnie najwięcej nerwów, i jednocześnie najbardziej praktyczna rzecz w całym tym wpisie. **Najpierw przegląd i sprzątanie źródeł, potem AI.** Nie odwrotnie. Wrzucenie do bazy wszystkiego, co firma ma na dysku, wygląda na oszczędność czasu, a jest odroczoną w czasie wpadką przy kliencie.
+
+  Praktycznie oznacza to trzy rzeczy: ktoś musi być właścicielem bazy, każde źródło musi mieć datę, a odpowiedzi muszą pokazywać, skąd pochodzą. To ostatnie jest najważniejsze, bo pozwala złapać błąd, zanim złapie go klient.
+
+  ## Dlaczego akurat to przekonuje sceptyków
+
+  I tu dochodzimy do rzeczy, w którą naprawdę wierzę.
+
+  Takie z pozoru błahe wdrożenie jak firmowa baza wiedzy robi dla adopcji AI w firmie więcej niż niejeden ambitny projekt. Nie dlatego, że jest imponujące. Dokładnie dlatego, że nie jest.
+
+  To pierwszy moment, w którym zespół widzi konkretną korzyść, a nie slajd o transformacji. Nowa osoba przestaje pytać, kogo o to zapytać. Klient dostaje tę samą odpowiedź niezależnie od tego, kto odbierze telefon. Nikt nikogo nie zastąpił, nikomu nie zabrano pracy, po prostu zniknęła jedna irytująca rzecz z dnia.
+
+  I wtedy dzieje się najciekawsze: **ludzie, którzy byli sceptyczni, sami zaczynają pytać, co jeszcze da się tak poukładać.**
+
+  To jest cała mechanika adopcji AI w firmie, w jednym zdaniu. Nie przekonujesz argumentem, tylko pierwszym doświadczeniem. A skoro pytanie pada od nich, a nie od Ciebie, to kolejne wdrożenie nie jest już narzucone z góry.
+
+  Dlatego myślę o tym jak o schodach, nie o skoku:
+
+  - **Stopień 1:** baza wiedzy odpowiada ludziom. Tu jesteśmy.
+  - **Stopień 2:** prosta automatyzacja przypisuje przychodzące maile do właściwego eksperta, bo baza wie, kto się czym zajmuje.
+  - **Stopień 3:** AI przygotowuje draft odpowiedzi, człowiek zatwierdza.
+  - **Stopień 4:** w obszarach, gdzie odpowiedzi są naprawdę powtarzalne, AI odpowiada samo.
+
+  Nie robisz tego jako jednego projektu na pół roku. Dokładasz stopień po stopniu, a każdy zwraca się osobno. Jeśli chcesz zobaczyć, dokąd te schody prowadzą w dużej skali, opisywałem [wewnętrzną bazę wiedzy Cerebras, która odpowiada na 15 000 pytań dziennie](/blog/firmowa-baza-wiedzy-dobre-praktyki). Zasada jest identyczna, różni się tylko liczba klocków.
+
+  [image:/images/blog/baza-wiedzy-scena-ai-use-case.webp|Jakub Bednarz podczas prelekcji "AI, które zna Twoją firmę" na spotkaniu ai use_case w Warszawie]
+
+  ## Co możesz zrobić jutro rano
+
+  Bez kupowania czegokolwiek. Odpowiedz sobie na jedno pytanie:
+
+  > Gdzie w mojej firmie ludzie marnują czas na rzeczy, których nikt nie lubi robić?
+
+  Typowe odpowiedzi z polskich MŚP brzmią zawsze podobnie: przepisywanie ofert z maila do CRM, notatki ze spotkań, odpowiadanie po raz tysięczny na to samo pytanie klienta, sklejanie raportu z trzech narzędzi do jednego Excela.
+
+  Każda z tych rzeczy to kilka godzin tygodniowo na osobę. I to jest Twój realny budżet wdrożeniowy, a nie wymyślony ROI z prezentacji. W audytach, które robię, widzę średnio około 32% czasu pracy do odzyskania już w pierwszym przejściu.
+
+  Zacznij od tej pozycji na liście, która jest najnudniejsza i najbardziej irytująca. Nie od tej, która najlepiej wygląda na slajdzie.
+
+  ---
+
+  Jeśli chcesz policzyć, ile ten bałagan kosztuje Cię w miesiącach, a nie w odczuciach, mam do tego [kalkulator strat](/kalkulator). A jeśli wolisz po prostu pogadać o swoim przypadku, [odezwij się](/#kontakt) - piętnaście minut zwykle wystarczy, żeby powiedzieć, czy w ogóle jest się za co zabierać.
+  `,
+  },
+  {
+    slug: 'firmowa-baza-wiedzy-dobre-praktyki',
+    title: 'Baza wiedzy, która odpowiada na 15 000 pytań dziennie - co warto z niej skopiować do Twojej firmy',
+    category: 'Wiedza',
+    date: '2026-07-17',
+    author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.webp' },
+    image: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&q=80',
+    excerpt:
+      'Cerebras opublikował techniczny opis swojej wewnętrznej bazy wiedzy - 15 000 pytań dziennie, korzystają z niej ludzie, automatyzacje i agenty AI. Rozbieram ich architekturę na zasady, które działają w każdej skali, i pokazuję, jak wdrożyć je w firmie bez działu ML.',
+    content: `
+Cerebras - firma budująca największe chipy AI na świecie - opublikował właśnie techniczny opis swojej wewnętrznej bazy wiedzy. Liczby robią wrażenie: **15 000 pytań dziennie**, trzy miesiące od startu, jedno z najchętniej używanych narzędzi w firmie. I ważny szczegół: korzystają z niej nie tylko ludzie, ale też automatyzacje i agenty AI.
+
+Nie piszę o tym, żeby podziwiać. Piszę, bo problem, który rozwiązali, wygląda identycznie u producenta chipów z setkami inżynierów i w polskiej firmie na 15 osób. Te same trzy pytania zapychają kanały komunikacji wszędzie:
+
+- Gdzie znajdę X?
+- Kto się zna na Y?
+- Co to właściwie jest Z?
+
+Różnica jest tylko w skali. [Pełny wpis Cerebras znajdziesz tutaj](https://www.cerebras.ai/blog/how-we-built-our-knowledge-base) - poniżej wyciągam z niego zasady, które nie zależą od wielkości firmy, i pokazuję, jak przełożyłbym je na realia MŚP.
+
+### Pułapka, w którą wpada każda firma
+
+Cerebras opisuje zjawisko, które pewnie rozpoznasz: co kwartał ktoś proponuje ten sam genialny pomysł - "przenieśmy wszystko do jednej platformy, będzie jedno źródło prawdy". I jak sami piszą, to marzenie rzadko przeżywa zderzenie z praktyką.
+
+Powód jest prosty: informacja powstaje tam, gdzie jej tworzenie jest wygodne. Ustalenia siedzą w wątkach na Teams albo Slacku, uwagi w komentarzach do dokumentów, statusy w CRM, decyzje w mailach. Każde z tych narzędzi jest do swojego zadania zoptymalizowane latami - i dlatego ludzie nie przestaną ich używać, choćby prezes trzy razy ogłosił "od dziś wszystko piszemy w nowej wiki".
+
+Pierwsza decyzja projektowa Cerebras brzmiała więc: **zero zmiany nawyków**. System sam wyciąga dane z narzędzi, w których praca i tak się dzieje, zamiast zmuszać ludzi do przenoszenia wiedzy ręcznie.
+
+Praktyczny wniosek: jeśli plan wdrożenia bazy wiedzy zaczyna się od "wszyscy będą teraz dokumentować w nowym narzędziu" - to nie jest plan, tylko życzenie. Baza umrze po miesiącu.
+
+### Nie wszystko zasługuje na zapamiętanie
+
+Druga rzecz, którą Cerebras zrobił dobrze: nie wrzucają do bazy surowych rozmów. Każdy wątek przechodzi przez destylację - model AI wyciąga z niego stały zestaw informacji: pytanie sformułowane tak, jak ktoś by je naprawdę wyszukiwał, krótkie streszczenie, rozwiązanie i systemy, których dotyczy. Dopiero to trafia do bazy. Ich własne testy pokazały, że po takiej normalizacji trafność wyszukiwania znacząco wzrosła.
+
+Do tego dochodzą progi jakości: wpis musi mieć minimalną długość, zawierać konkretne, rzadkie pojęcia albo reakcje innych osób, żeby w ogóle zostać zapisany. Wiadomość "ok, dzięki, działa" nigdy nie staje się wiedzą firmową.
+
+Zasada uniwersalna: **śmieci na wejściu to śmieci w odpowiedziach**. Wersja dla MŚP, bez żadnego ML: po każdym spotkaniu, zamkniętym projekcie czy rozwiązanym problemie powstaje notatka w stałym formacie - kontekst, decyzja, kto odpowiada, do kiedy ważne. Stały format to 80% sukcesu późniejszego wyszukiwania.
+
+### Wiedza ma datę ważności
+
+Mój ulubiony detal z ich architektury: age decay, czyli wygaszanie starych odpowiedzi. Dwa wątki mogą odpowiadać na to samo pytanie, ale ten sprzed pół roku może opisywać infrastrukturę, która już nie istnieje. Przy porównywalnej trafności wygrywa nowszy.
+
+Teraz pomyśl o swojej firmie: cennik sprzed podwyżki, procedura urlopowa sprzed zmiany regulaminu, szablon oferty sprzed rebrandingu. Baza wiedzy bez dat to generator fałszywych odpowiedzi - i to pewnych siebie. Praktyka: każda notatka ma datę, narzędzie preferuje świeższe wpisy, a raz na kwartał robisz przegląd tego, co się przeterminowało.
+
+### Szukanie po słowach i po znaczeniu to dwie różne rzeczy
+
+Cerebras nie ufa żadnej pojedynczej technice wyszukiwania. Łączą kilka naraz: wyszukiwanie pełnotekstowe łapie dokładne frazy - numer umowy, kod błędu, nazwisko. Wyszukiwanie semantyczne łapie parafrazy - bo pytający i odpowiadający często nie używają ani jednego wspólnego słowa ("klient zalega z płatnością" kontra "faktura po terminie"). Wyniki obu podejść są łączone i dopiero wtedy układane w ranking.
+
+Tego akurat nie musisz budować sam - dostajesz to dziś w gotowych narzędziach. Ale kiedy dostawca pokazuje Ci "wyszukiwanie AI", zadaj jedno pytanie kontrolne: **czy znajdzie dokument, w którym nie pada żadne słowo z mojego pytania?** Jeśli nie - kupujesz wyszukiwarkę, nie bazę wiedzy.
+
+### Baza wiedzy to nie tylko ludzie
+
+Te 15 000 pytań dziennie nie zadają sami pracownicy. Pytają też automatyzacje i agenty AI - Cerebras wystawił bazę jako zestaw prostych narzędzi przez MCP (otwarty standard, którym agenty podłączają się do systemów): przeszukaj rozmowy, przeszukaj dokumenty, powiedz kto się zna na X. Agent sam decyduje, które narzędzie wywołać i jak złożyć z tego odpowiedź.
+
+To zmienia rachunek opłacalności całego przedsięwzięcia. Dobrze zrobiona baza obsługuje jednocześnie nowego pracownika w onboardingu, agenta odpowiadającego na pytania klientów i automatyzację, która przygotowuje ofertę. Jedna inwestycja, trzy zwroty.
+
+### Jak to wdrożyć w firmie 10-100 osób
+
+Nie potrzebujesz bazy wektorowej, zespołu ML ani budżetu Cerebras. Kolejność, którą proponuję klientom:
+
+**Krok 1 - fundament (tydzień, koszt: głównie czas).** Zmapuj, gdzie dziś żyje wiedza: skrzynki mailowe, Teams, dysk sieciowy, CRM i głowy dwóch kluczowych osób. Wybierz jedno miejsce na destylat - wystarczy uporządkowany katalog plików tekstowych w stałym formacie (pisałem o tym przy okazji [Open Knowledge Format](/blog/open-knowledge-format-google-cloud)). Zacznij od 20 pytań, które w firmie powtarzają się najczęściej, i spisz odpowiedzi z datami.
+
+**Krok 2 - automatyczne zasilanie (miesiąc).** Podepnij agenta, który po każdym spotkaniu, zamkniętym wątku albo projekcie proponuje notatkę do bazy w Twoim formacie - a człowiek ją tylko zatwierdza albo odrzuca. To jest destylacja Cerebras w wersji, na którą stać każdą firmę. Progi jakości ustawiasz po swojemu: nie każda rozmowa zasługuje na zapis.
+
+**Krok 3 - dostęp i uprawnienia (kwartał).** Podłącz bazę do narzędzi, w których pracują ludzie i agenty, ustaw kto co widzi (handlowiec nie musi znać wynagrodzeń, księgowa stawek klientów) i włącz log pytań. Cerebras zbudował warstwę uprawnień i audytu od pierwszego dnia - w polskich realiach RODO to nie jest opcja, tylko wymóg. Bonus: log pytań to darmowa mapa tego, czego ludzie w firmie naprawdę nie wiedzą. Lepsza niż niejedna ankieta.
+
+### Od czego zacząć w poniedziałek
+
+Policz, ile razy w tym tygodniu ktoś w firmie zadał pytanie, na które odpowiedź już gdzieś była - w mailu, na dysku, w czyjejś głowie. U Cerebras skala tego problemu uzasadniła budowę całego systemu. U Ciebie na start może wystarczyć katalog z 20 plikami i agent, który umie go czytać.
+
+A jeśli wolisz to policzyć i zaplanować na spokojnie - [zacznij od bezpłatnego audytu](/#kontakt). 15 minut, zero zobowiązań, wychodzisz z mapą wiedzy w swojej firmie i konkretnym pierwszym krokiem.
+    `,
+  },
+  {
+    slug: 'oszczedzanie-tokenow-ai-agent',
+    title: 'Ciągle brakuje tokenów? Naucz swojego agenta AI oszczędnego gospodarowania zasobami',
+    category: 'Wiedza',
+    date: '2026-07-04',
+    author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.webp' },
+    image: 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=800&q=80',
+    excerpt:
+      'Wchodzimy w drugą fazę AI - tę, w której tokeny i narzędzia zaczynają realnie kosztować. Trzy konkretne sposoby, żeby nauczyć swojego agenta AI oszczędnego gospodarowania zasobami - i jeden nawyk, który oszczędza jeszcze więcej.',
+    content: `
+Jeszcze rok temu AI było tanie. Darmowe limity starczały na cały dzień pracy, subskrypcja kosztowała tyle co obiad, a nikt specjalnie nie liczył tokenów. Ta faza się kończy.
+
+Modele robią coraz więcej samodzielnie - czytają cały kod, przeszukują logi, pamiętają długie rozmowy. Wszystko to kosztuje. Limity się kurczą, ceny API rosną, a rachunek na koniec miesiąca robi się odczuwalny. Wiemy, o co toczy się gra, bo sami w nią gramy - u nas w Workshift token to dziś pozycja budżetowa, nie ciekawostka.
+
+### Koniec fazy freemium
+
+Dopóki AI było tanie, nikt nie musiał myśleć o efektywności. Agent mógł napisać 200 linijek tam, gdzie wystarczyłoby 20. Mógł wkleić Ci do kontekstu cały plik logów zamiast jednej istotnej linijki. Mógł opowiedzieć historię zamiast dać odpowiedź. Nikogo to nie bolało, bo nikt tego nie liczył.
+
+Teraz liczy. I okazuje się, że **sposób, w jaki agent gospodaruje tokenami, jest równie ważny jak to, czy w ogóle da radę wykonać zadanie**. Poniżej trzy narzędzia, które adresują dokładnie to - każde z innej strony - plus jeden nawyk, który w dłuższej perspektywie oszczędza najwięcej.
+
+### Sposób 1: Ponytail - agent, który pisze mniej kodu, bo nie musi
+
+[Ponytail](https://github.com/DietrichGebert/ponytail) atakuje najbardziej kosztowny nawyk agentów kodujących: nadmiarową implementację. Zamiast pozwolić agentowi od razu pisać kod, narzędzie wymusza hierarchię pytań, zanim padnie pierwsza linijka: Czy to w ogóle musi istnieć? Czy już jest w kodzie? Czy jest w stdlib? Czy da się to zrobić w jednej linii? Dopiero na końcu tej listy - kod minimalny.
+
+To dyscyplina, jaką ma senior, który zamiast pisać, najpierw sprawdza, czy problem już rozwiązano. Na testach (repo FastAPI + React, 12 zadań, model Haiku 4.5) dało to **-54% linijek kodu (do -94% w skrajnych przypadkach)**, **-22% tokenów**, **-20% kosztu** i **-27% czasu** - przy zachowanym 100% bezpieczeństwa wykonania. Działa jako plugin w Claude Code i 15+ innych agentach (Cursor, Windsurf, Copilot CLI, Codex).
+
+### Sposób 2: Headroom - kompresja tego, co w ogóle trafia do modelu
+
+[Headroom](https://github.com/headroomlabs-ai/headroom) rozwiązuje inny koniec problemu: nie to, co agent pisze, tylko to, co dostaje. Wyniki wyszukiwania w kodzie, logi z produkcji, fragmenty RAG, całe pliki - to wszystko zwykle trafia do modelu w formie znacznie bardziej rozwlekłej, niż potrzeba. Headroom stawia między narzędziami a modelem router, który rozpoznaje typ treści (JSON, kod, tekst) i kompresuje ją specjalizowanym silnikiem - z opcją odtworzenia oryginału, jeśli model faktycznie go potrzebuje.
+
+Liczby z realnych obciążeń robią wrażenie: przeszukanie kodu (100 wyników) - z 17 765 do 1 408 tokenów (**92% oszczędności**), debugowanie incydentu produkcyjnego - z 65 694 do 5 118 (**92%**), triage zgłoszeń na GitHubie - z 54 174 do 14 761 (**73%**). Przy tym dokładność modelu na benchmarkach (GSM8K, TruthfulQA) nie spada - w jednym przypadku nawet rośnie. Działa jako proxy dla Claude Code, Cursor, Aidera i każdego klienta kompatybilnego z OpenAI.
+
+Jedno zastrzeżenie, o którym warto wiedzieć przed wdrożeniem: **tryb proxy przepuszcza ruch do Anthropic czy OpenAI przez lokalny proces** - to technicznie man-in-the-middle, i projekt sam ostrzega w dokumentacji, żeby nie wystawiać takiego proxy publicznie bez autoryzacji. Jeśli pracujesz z danymi klientów albo kluczami API - zacznij od trybu biblioteki (\`from headroom import compress\`) albo \`headroom wrap\`, nie od proxy na produkcji.
+
+### Sposób 3: Caveman - agent, który mówi mniej, ale nie mniej precyzyjnie
+
+[Caveman](https://github.com/JuliusBrussee/caveman) celuje w gadatliwość samego modelu - te wszystkie wstępy, dygresje i uprzejmości, które nic nie wnoszą do odpowiedzi. Instaluje się jako skill w agencie i zmienia styl komunikacji na skondensowany: bez zdań w stylu "Chętnie Ci w tym pomogę", za to z pełną techniczną dokładnością - kod, komendy i komunikaty błędów zostają nietknięte co do znaku.
+
+Na 10 testowych promptach dało to średnio **65% redukcji tokenów odpowiedzi** (zakres 22-87%). Przykład: wyjaśnienie buga z re-renderem w React spadło z 1180 do 159 tokenów - **87% oszczędności**. Jest tu jednak uczciwe zastrzeżenie z dokumentacji: *Caveman zmniejsza tylko tokeny wyjściowe. Tokeny wejściowe i rozumowania zostają nietknięte, a sam skill dokłada ~1-1,5k tokenów wejściowych na turę.* To narzędzie do gadatliwości, nie do wszystkiego - ale tam, gdzie boli najbardziej (długie wyjaśnienia, częste interakcje), robi realną różnicę.
+
+### Bonus: second brain, żeby agent nie zaczynał każdej rozmowy od zera
+
+Wszystkie trzy narzędzia powyżej oszczędzają tokeny **w obrębie jednej rozmowy**. Jest jeszcze jeden nawyk, który oszczędza tokeny **między rozmowami** - i w mojej praktyce daje najwięcej: własny "second brain", czyli uporządkowana baza wiedzy, z której agent czerpie kontekst na żądanie, zamiast dostawać (albo odpytywać) wszystko od nowa przy każdej sesji.
+
+Zamiast tłumaczyć agentowi za każdym razem, kim jestem, nad czym pracuję i jakie decyzje już podjąłem, mam to zapisane - a agent sam sięga po konkretną notatkę, kiedy jest potrzebna, zamiast ładować cały kontekst na wejściu. Mniej tokenów wejściowych, mniej powtórzeń, więcej trafności.
+
+To temat na osobny, dłuższy wpis - sam koncept zasługuje na więcej niż akapit. Trochę o pokrewnym podejściu (ustandaryzowany format wiedzy dla agenta) pisałem już w [Open Knowledge Format](/blog/open-knowledge-format-google-cloud) - to fragment tej samej układanki.
+
+### Co z tym zrobić dzisiaj
+
+Nie musisz wdrażać wszystkiego naraz. Jeśli piszesz kod z agentem - zacznij od Ponytail, to jedna komenda instalacji i natychmiastowy efekt na rachunku. Jeśli Twój agent dużo czyta (logi, RAG, wyniki narzędzi) - Headroom da największy zwrot. Jeśli po prostu rozmawiasz z agentem cały dzień i płacisz za każde jego "chętnie wyjaśnię" - Caveman jest najszybszy do wdrożenia (30 sekund, jedna komenda w terminalu).
+
+A jeśli robisz to wszystko na raz - prawdopodobnie czas pomyśleć o second brain. Chętnie pogadam, jak by to wyglądało u Ciebie - [napisz do mnie](/#kontakt). 15 minut, zero zobowiązań.
+    `,
+  },
+  {
     slug: 'open-knowledge-format-google-cloud',
     title: 'Jak nakarmić agenta wiedzą o Twojej firmie? - Open Knowledge Format',
     category: 'Wiedza',
