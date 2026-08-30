@@ -1013,9 +1013,11 @@ const _SERVICES_LEGACY = [
 function ExtendedInnerCard({ card, index }) {
     const elRef = useRef(null);
     useEffect(() => {
-        gsap.fromTo(elRef.current, 
+        // clearProps zdejmuje inline transform po animacji - bez tego GSAP
+        // nadpisywałby hover:-translate-y z klasy na stałe.
+        gsap.fromTo(elRef.current,
             { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 0.4, delay: 0.15 + index * 0.08, ease: "power2.out" }
+            { opacity: 1, y: 0, duration: 0.4, delay: 0.15 + index * 0.08, ease: "power2.out", clearProps: "transform" }
         );
         
         if (card.type === 'timeline' && elRef.current) {
@@ -1031,8 +1033,10 @@ function ExtendedInnerCard({ card, index }) {
             ref={elRef}
             className={`
           ${card.colSpan || 'lg:col-span-1'}
-          bg-sage rounded-[10px] border border-black/5 
+          bg-sage rounded-[10px] border border-black/5
           overflow-hidden flex flex-col min-h-[140px] opacity-0
+          transition-[border-color,transform,box-shadow] duration-300
+          hover:border-black/15 hover:-translate-y-0.5 hover:shadow-sm
           ${card.type === 'cta' ? 'lg:row-span-2 min-h-full' : ''}
         `}
         >
@@ -1217,6 +1221,27 @@ function ExtendedInnerCard({ card, index }) {
 
 export function ExpandedServiceView({ service, onClose }) {
     const containerRef = useRef(null);
+    const metricRef = useRef(null);
+
+    // Count-up metryki hero ('10h+' -> 0..10 + 'h+'). Zakresy typu '4-8 tyg.'
+    // zostają statyczne - animowany początek zakresu wyglądałby jak inna liczba.
+    useLayoutEffect(() => {
+        const el = metricRef.current;
+        if (!el) return undefined;
+        const match = /^(\d+)([^-\d].*)?$/.exec(service.heroMetric.value);
+        if (!match) return undefined;
+        const target = Number(match[1]);
+        const suffix = match[2] ?? '';
+        const state = { v: 0 };
+        const tween = gsap.to(state, {
+            v: target,
+            duration: 1.1,
+            delay: 0.25,
+            ease: 'power3.out',
+            onUpdate: () => { el.textContent = `${Math.round(state.v)}${suffix}`; },
+        });
+        return () => tween.kill();
+    }, [service.heroMetric.value]);
 
     useLayoutEffect(() => {
         if (containerRef.current) {
@@ -1266,7 +1291,7 @@ export function ExpandedServiceView({ service, onClose }) {
 
                         <div className="lg:col-span-5 flex items-center justify-start lg:justify-end">
                             <div className="text-left lg:text-right border-l-[3px] lg:border-l-0 lg:border-r-[3px] border-lime pl-6 lg:pl-0 lg:pr-6 py-2 bg-gradient-to-r lg:bg-gradient-to-l from-sage to-transparent pr-8 lg:pl-12 rounded-r-[10px] lg:rounded-r-none lg:rounded-l-[10px]">
-                                <div className="text-5xl md:text-7xl font-display font-black text-black tracking-tighter mb-2 pb-2">
+                                <div ref={metricRef} className="text-5xl md:text-7xl font-display font-black text-black tracking-tighter mb-2 pb-2">
                                     {service.heroMetric.value}
                                 </div>
                                 <p className="text-xs text-muted-dark font-mono uppercase tracking-wider max-w-[180px] lg:ml-auto leading-tight mb-2">{service.heroMetric.label}</p>

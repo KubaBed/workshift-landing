@@ -4,6 +4,7 @@ import { getServiceById } from '../data/services';
 import { ExpandedServiceView } from '../components/InteractiveServicesBento';
 import { ServiceArticle } from '../components/ui/ServiceArticle';
 import { ServiceFaq } from '../components/ui/ServiceFaq';
+import { GradientDivider } from '../components/ui/GradientDivider';
 
 export default function ServicePage() {
     const { serviceId } = useParams();
@@ -69,6 +70,11 @@ export default function ServicePage() {
                         service={service}
                         onClose={handleClose}
                     />
+                    {service.seoSections?.length > 0 && (
+                        <div className="max-w-3xl mx-auto mt-20 md:mt-28">
+                            <GradientDivider />
+                        </div>
+                    )}
                     <ServiceArticle
                         sections={service.seoSections}
                         related={[

@@ -7,6 +7,8 @@ import { GradientDivider } from '@/components/ui/GradientDivider';
 import { Highlighter } from '@/components/ui/Highlighter';
 import { ServiceArticle } from '@/components/ui/ServiceArticle';
 import { ServiceFaq } from '@/components/ui/ServiceFaq';
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
+import { AnimatedProcessIcon } from '@/components/ui/AnimatedProcessIcon';
 import { getServiceById } from '@/data/services';
 
 /**
@@ -36,6 +38,22 @@ function Section({ id, title, note, children }) {
       </header>
       {children}
     </section>
+  );
+}
+
+function ShowcaseIconTile({ name }) {
+  const [active, setActive] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => setActive(true)}
+      onMouseLeave={() => setActive(false)}
+      className="flex flex-col items-center gap-2 rounded-[10px] border border-black/5 bg-sage p-5 transition-colors hover:border-black/15"
+    >
+      <div className="flex h-11 w-11 items-center justify-center rounded-[10px] border border-black/5 bg-white text-black">
+        <AnimatedProcessIcon name={name} active={active} />
+      </div>
+      <span className="font-mono text-xs text-black/50">{name}</span>
+    </div>
   );
 }
 
@@ -203,13 +221,39 @@ export default function ShowcasePage() {
         </Section>
 
         <Section
+          id="animated-icons"
+          title="AnimatedProcessIcon"
+          note="src/components/ui/AnimatedProcessIcon.jsx - ikony procesów animowane framer-motion (wzór heroicons-animated). Najedź, żeby uruchomić animację."
+        >
+          <div className="flex flex-wrap gap-4">
+            {['invoice', 'sync', 'report', 'alert'].map((name) => (
+              <ShowcaseIconTile key={name} name={name} />
+            ))}
+          </div>
+        </Section>
+
+        <Section
+          id="scroll-reveal"
+          title="ScrollReveal"
+          note="src/components/ui/ScrollReveal.jsx - scroll-scrubbed word reveal (wzór skiper-ui #70). Słowa wyostrzają się w rytmie scrolla, frazy z highlights dostają tło lime. Opacity startuje z 0.15, nie 0 (SEO)."
+        >
+          <div className="max-w-2xl rounded-lg border border-black/10 bg-white p-8">
+            <ScrollReveal
+              text="Automatyzacja AI łączy klasyczne przepływy danych z rozumieniem treści - dzięki temu obejmuje też zadania, które dotąd wymagały człowieka."
+              highlights={['rozumieniem treści']}
+              className="text-xl md:text-2xl text-black leading-[1.55] tracking-tight"
+            />
+          </div>
+        </Section>
+
+        <Section
           id="service-article"
           title="ServiceArticle + ServiceFaq"
-          note="src/components/ui/ServiceArticle.jsx i ServiceFaq.jsx - sekcja artykułowa i FAQ strony usługi (Sprint 1 SEO). Dane z services.js (seoSections/faq), tu na przykładzie usługi automatyzacja. Żywy render: /uslugi/automatyzacja."
+          note="src/components/ui/ServiceArticle.jsx i ServiceFaq.jsx - sekcja artykułowa i FAQ strony usługi (Sprint 1 SEO + redesign). Dane z services.js (seoSections/faq); pola eyebrow/reveal/icon/stats są czysto wizualne. Żywy render: /uslugi/automatyzacja."
         >
           <div className="rounded-lg border border-black/10 bg-white px-6 py-2">
             <ServiceArticle
-              sections={getServiceById('automatyzacja')?.seoSections?.slice(0, 1)}
+              sections={getServiceById('automatyzacja')?.seoSections?.slice(0, 2)}
               related={[
                 { href: '/audyt-ai', label: 'Mikro-audyt AI (4 minuty)' },
                 { href: '/kalkulator', label: 'Kalkulator strat czasowych' },

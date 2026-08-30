@@ -76,9 +76,15 @@ export const SERVICES = [
         // Treść artykułowa pod bento (Sprint 1 SEO, fraza: automatyzacja ai).
         // Konsumenci: ServiceArticle/ServiceFaq na ServicePage ORAZ statyczny
         // fallback w scripts/seo-routes.mjs - crawler bez JS musi widzieć to samo.
+        // Pola eyebrow/reveal/highlights/icon/stats są czysto wizualne -
+        // flattener SEO (scripts/seo-routes.mjs) czyta tylko heading,
+        // paragraphs i items{title,desc}.
         seoSections: [
             {
                 heading: 'Czym jest automatyzacja AI?',
+                eyebrow: 'Automatyzacja AI',
+                reveal: true,
+                highlights: ['rozumienie treści', 'czytanie, ocenianie i przepisywanie informacji'],
                 paragraphs: [
                     'Automatyzacja AI to połączenie klasycznej automatyzacji procesów z modelami sztucznej inteligencji. Zwykła automatyzacja przenosi dane między narzędziami według sztywnych reguł. AI dodaje do tego rozumienie treści: odczytuje fakturę z załącznika, klasyfikuje maila od klienta, wyciąga ustalenia z notatki ze spotkania. Dzięki temu automatyzacja procesów AI obejmuje także zadania, które dotąd wymagały człowieka - czytanie, ocenianie i przepisywanie informacji.',
                     'W praktyce polskiego MŚP oznacza to jedno: powtarzalne czynności biurowe dzieją się same, a zespół zajmuje się pracą, która wymaga decyzji. Średnia z naszych wdrożeń to ponad 10 godzin odzyskanych tygodniowo na pracownika.',
@@ -86,20 +92,25 @@ export const SERVICES = [
             },
             {
                 heading: 'Które procesy automatyzujemy najczęściej',
+                eyebrow: 'Co automatyzujemy',
                 items: [
                     {
+                        icon: 'invoice',
                         title: 'Obieg faktur',
                         desc: 'Faktura przychodzi mailem, ktoś ją pobiera, przepisuje dane do systemu księgowego i odkłada plik do folderu. Przy 80 fakturach tygodniowo to dwa dni pracy. Po wdrożeniu system sam odczytuje załącznik, kategoryzuje koszt i zapisuje dane - człowiek tylko zatwierdza wyjątki.',
                     },
                     {
+                        icon: 'sync',
                         title: 'Synchronizacja CRM, maila i kalendarza',
                         desc: 'Notatka po spotkaniu, status szansy sprzedażowej i follow-up żyją w trzech miejscach naraz. Automatyzacja spina je w jeden przepływ: po spotkaniu CRM dostaje podsumowanie, a handlowiec przypomnienie - bez ręcznego klikania.',
                     },
                     {
+                        icon: 'report',
                         title: 'Raporty z rozproszonych danych',
                         desc: 'Comiesięczne zestawienie składane z pięciu źródeł w arkuszu potrafi zająć dwa dni. Zautomatyzowany raport buduje się sam w nocy i rano czeka w skrzynce - zawsze w tym samym formacie, zawsze na czas.',
                     },
                     {
+                        icon: 'alert',
                         title: 'Powiadomienia i eskalacje',
                         desc: 'Niezapłacona faktura, zlecenie bez odpowiedzi, kończący się termin umowy - system pilnuje tego za Ciebie i eskaluje do właściwej osoby, zanim problem urośnie.',
                     },
@@ -107,6 +118,7 @@ export const SERVICES = [
             },
             {
                 heading: 'Sztuczna inteligencja w firmie - od czego zaczynamy',
+                eyebrow: 'Jak pracujemy',
                 paragraphs: [
                     'Nie zaczynamy od technologii, tylko od mapy procesów. W 30-minutowej darmowej diagnozie wskazujemy 2-3 miejsca, w których sztuczna inteligencja w firmie zwróci się najszybciej - policzalnie, w godzinach i złotówkach. Potem budujemy pierwszy workflow i testujemy go na Twoich danych przez 1-2 tygodnie. Dopiero gdy widzisz wynik na własnym procesie, decydujesz o kolejnych krokach.',
                     'Jeśli chcesz sprawdzić potencjał przed rozmową, zrób bezpłatny mikro-audyt AI (12 pytań, 4 minuty) albo policz koszt powtarzalnych zadań w kalkulatorze strat czasowych.',
@@ -114,6 +126,15 @@ export const SERVICES = [
             },
             {
                 heading: 'Przykład wdrożenia: 80 faktur tygodniowo bez przepisywania',
+                eyebrow: 'Case study',
+                stats: {
+                    beforeLabel: 'Przed wdrożeniem',
+                    afterLabel: 'Po wdrożeniu',
+                    before: { amount: 16, unit: 'h / tydz.' },
+                    after: { amount: 0.5, decimals: 1, unit: 'h / tydz.' },
+                    afterRatio: 0.04,
+                    note: 'Obsługa 80+ faktur tygodniowo: z 2 dni roboczych do 15 minut.',
+                },
                 paragraphs: [
                     'Firma produkcyjna, 30 osób. Dział księgowości przepisywał dane z ponad 80 faktur tygodniowo ręcznie - z maili do systemu finansowo-księgowego. Wąskie gardło rosło z każdym nowym dostawcą.',
                     'Wdrożyliśmy workflow: mail przychodzący, automatyczny odczyt faktury przez AI, kategoryzacja kosztu i zapis w systemie. Czas operacji spadł z 2 dni roboczych do 15 minut, a księgowość zamiast przepisywać dane, kontroluje wyjątki. Ten sam wzorzec przenosimy do handlu, usług i logistyki - zmienia się dokument, mechanika zostaje.',
