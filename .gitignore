@@ -82,3 +82,9 @@ KAMPANIA-AUDYT-AI-LOG.md
 # Fonty TTF dla generatora BRAND.pdf (pobierz: bash scripts/fetch-fonts.sh)
 scripts/fonts/
 scripts/__pycache__/
+
+# Pliki z sekretami konczace sie na .env (np. PostHog_API.env) - regula
+# `.env.*` powyzej lapie tylko te ZACZYNAJACE sie od `.env`, wiec ich nie obejmuje.
+*.env
+*.env.rtf
+Vercel.env.rtf

@@ -10,6 +10,7 @@ import { InteractiveServicesBento } from './components/InteractiveServicesBento'
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { ConsentBanner } from './components/ConsentBanner';
 import { bootstrapConsent } from './lib/consent';
+import { STATIC_ROUTE_META, applyMeta, setCanonical } from './lib/seo';
 
 // Below-the-fold: lazy-loaded for faster initial paint
 const KalkulatorCTASection = lazy(() => import('./components/KalkulatorCTASection').then(m => ({ default: m.KalkulatorCTASection })));
@@ -67,6 +68,28 @@ function ScrollToHash() {
       window.scrollTo(0, 0);
     }
   }, [location]);
+  return null;
+}
+
+/**
+ * Utrzymuje <head> w zgodzie z trasą przy nawigacji wewnątrz SPA.
+ *
+ * Pierwsze wejście na URL obsługuje statyczny <head> generowany przez
+ * `scripts/build-seo-html.mjs` - i tylko on jest widoczny dla scraperów, które
+ * nie wykonują JS (Facebook, LinkedIn, Slack, LLM-y). Ten komponent pokrywa
+ * przejścia klient-side, przy których żadne żądanie do serwera nie leci.
+ *
+ * Trasy oparte o dane (wpis bloga, usługa) ustawiają meta same, bo znają swój
+ * rekord dopiero po rozwiązaniu parametru. Tutaj dostają przynajmniej świeży
+ * canonical, żeby nie został po poprzedniej stronie.
+ */
+function RouteMeta() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    const meta = STATIC_ROUTE_META[pathname];
+    if (meta) applyMeta({ ...meta, path: pathname });
+    else setCanonical(pathname);
+  }, [pathname]);
   return null;
 }
 
@@ -185,6 +208,7 @@ function App() {
         <Header />
 
         <ScrollToHash />
+        <RouteMeta />
         <Suspense fallback={null}>
           <Routes>
             <Route path="/" element={<HomePage />} />

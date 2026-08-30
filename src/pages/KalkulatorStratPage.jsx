@@ -79,12 +79,8 @@ export default function KalkulatorStratPage() {
     const [emailSubmitted, setEmailSubmitted] = useState(false);
     const [email, setEmail] = useState('');
 
+    // Meta tej trasy ustawia <RouteMeta /> w App.jsx (źródło: STATIC_ROUTE_META).
     useEffect(() => {
-        document.title = 'Kalkulator strat czasowych | Sprawdź ile traci Twoja firma — Workshift';
-        const metaDesc = document.querySelector('meta[name="description"]');
-        if (metaDesc) {
-            metaDesc.setAttribute('content', 'Bezpłatny kalkulator: zobacz w 60 sekund ile czasu i pieniędzy traci Twoja firma na powtarzalnych zadaniach. Spersonalizowane rekomendacje AI dla Twojej branży.');
-        }
         window.scrollTo(0, 0);
     }, []);
 

@@ -6,6 +6,7 @@ import { getPostBySlug, getRelatedPosts, formatDate } from '../data/blogPosts';
 import { BlogCard } from '../components/blog/BlogCard';
 import { FadeUp } from '../components/animations/FadeUp';
 import { track, EVENTS } from '../lib/analytics';
+import { applyMeta, postMeta } from '../lib/seo';
 
 /**
  * Blog article page - /blog/:slug
@@ -23,6 +24,15 @@ export default function BlogPostPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [slug]);
+
+  // Meta wpisu przy nawigacji wewnątrz SPA. Pierwsze wejście na URL obsługuje
+  // statyczny <head> z scripts/build-seo-html.mjs - obie ścieżki liczą meta tą
+  // samą funkcją postMeta(), więc nie mogą się rozjechać.
+  useEffect(() => {
+    if (!post) return undefined;
+    applyMeta(postMeta(post));
+    return () => applyMeta();
+  }, [post]);
 
   // Track "blog read complete" gdy user dochodzi do końca artykułu (sentinel
   // div tuż za body). IntersectionObserver dużo wydajniejszy niż scroll listener

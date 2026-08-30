@@ -61,16 +61,8 @@ export default function PromptyPage() {
 
     const bodiesPromise = useRef(null); // lazy mapa id -> pełna treść
 
-    // SEO + view event
+    // Meta tej trasy ustawia <RouteMeta /> w App.jsx (źródło: STATIC_ROUTE_META).
     useEffect(() => {
-        document.title = 'Baza promptów i skilli AI po polsku | Workshift';
-        const meta = document.querySelector('meta[name="description"]');
-        if (meta) {
-            meta.setAttribute(
-                'content',
-                '200 polskich promptów AI i 12 gotowych person do ChatGPT, Claude i Gemini. Przeszukuj, kopiuj, wdrażaj. Darmowa baza od Workshift.'
-            );
-        }
         window.scrollTo(0, 0);
         track(EVENTS.LIBRARY_VIEW);
     }, []);
