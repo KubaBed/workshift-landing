@@ -247,12 +247,17 @@ function renderContent(raw) {
       continue;
     }
 
-    // YouTube embed: [youtube:VIDEOID] on its own line → 16:9 iframe
-    const ytMatch = trimmed.match(/^\[youtube:([\w-]+)\]$/);
+    // YouTube embed: [youtube:VIDEOID] → 16:9, [youtube:VIDEOID|pion] → 9:16 (Shorts).
+    // Bez wariantu "pion" pionowe nagranie dostaje czarne pasy po bokach i robi sie male.
+    const ytMatch = trimmed.match(/^\[youtube:([\w-]+)(?:\|([^\]]+))?\]$/);
     if (ytMatch) {
       if (inList) { html += '</ul>'; inList = false; }
       const id = ytMatch[1];
-      html += `<div class="my-8 aspect-video w-full overflow-hidden rounded-[10px] bg-black"><iframe class="w-full h-full" src="https://www.youtube.com/embed/${id}?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>`;
+      const vertical = (ytMatch[2] || '').trim() === 'pion';
+      const wrapper = vertical
+        ? 'my-8 mx-auto w-full max-w-sm aspect-[9/16] overflow-hidden rounded-[10px] bg-black'
+        : 'my-8 aspect-video w-full overflow-hidden rounded-[10px] bg-black';
+      html += `<div class="${wrapper}"><iframe class="w-full h-full" src="https://www.youtube.com/embed/${id}?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>`;
       continue;
     }
 

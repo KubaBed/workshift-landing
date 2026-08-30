@@ -38,6 +38,11 @@ const PromptyPage = lazy(() => import('./pages/PromptyPage'));
 const OfferPage = lazy(() => import('./pages/OfferPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
+// Katalog komponentów (/showcase). Dostępny też na produkcji, żeby dało się wysłać link.
+// Odcięty od wyszukiwarek: X-Robots-Tag w vercel.json + meta robots w samej stronie
+// + Disallow w robots.txt. Nigdzie nie podlinkowany.
+const ShowcasePage = lazy(() => import('./pages/ShowcasePage'));
+
 // Redirect /uslugi (bare) to homepage services section
 function ServicesRedirect() {
   const navigate = useNavigate();
@@ -182,6 +187,7 @@ function VercelTelemetry() {
 function App() {
   const [searchParams] = useSearchParams();
   const previewSection = searchParams.get('preview');
+  const { pathname } = useLocation();
 
   // Bootstrap analytics: if user previously consented, load GA4 + Clarity
   // od razu (bez wyświetlania bannera). Bez consent - skrypty czekają.
@@ -191,6 +197,16 @@ function App() {
 
   if (previewSection) {
     return <SectionPreview sectionKey={previewSection} />;
+  }
+
+  // /showcase renderuje się poza layoutem (bez Headera i Footera), żeby komponenty
+  // były widoczne bez otoczki strony. Patrz src/pages/ShowcasePage.jsx.
+  if (pathname === '/showcase') {
+    return (
+      <Suspense fallback={null}>
+        <ShowcasePage />
+      </Suspense>
+    );
   }
 
   return (

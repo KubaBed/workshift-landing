@@ -26,6 +26,32 @@
         "--strictPort"
       ],
       "port": 5184
+    },
+    {
+      "name": "prezentacja",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8788",
+        "--directory",
+        "/Users/kuba/Projekty/prezentacja-ai-use-case/deck"
+      ],
+      "port": 8788
+    },
+    {
+      "name": "funduszeai",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/kuba/Projekty/fundusze-ai",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "3006"
+      ],
+      "port": 3006
     }
   ]
 }
