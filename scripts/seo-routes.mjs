@@ -129,6 +129,18 @@ function serviceSections(service) {
             .join(' '),
         });
         break;
+      case 'toolsMarquee':
+        sections.push({
+          heading: card.label,
+          text: [
+            sentence(card.intro),
+            card.glue && `${card.glue.label}: ${card.glue.tools.map((t) => t.name).join(', ')}.`,
+            `Integrujemy m.in.: ${card.tools.map((t) => t.name).join(', ')} - ${card.badge}.`,
+          ]
+            .filter(Boolean)
+            .join(' '),
+        });
+        break;
       case 'insights':
         sections.push({
           heading: card.label,

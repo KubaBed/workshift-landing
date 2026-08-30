@@ -20,7 +20,7 @@ export const SERVICES = [
         innerCards: [
             {
                 type: 'features',
-                colSpan: 'lg:col-span-4',
+                colSpan: 'lg:col-span-6',
                 label: 'Co automatyzujemy',
                 items: [
                     'Obieg faktur - od maila do księgowości',
@@ -31,7 +31,7 @@ export const SERVICES = [
             },
             {
                 type: 'process',
-                colSpan: 'lg:col-span-4',
+                colSpan: 'lg:col-span-6',
                 label: '3 kroki do pierwszego workflow',
                 steps: [
                     { num: '01', title: 'Diagnoza', desc: 'Darmowa rozmowa + audyt procesów (30 min online).' },
@@ -40,11 +40,47 @@ export const SERVICES = [
                 ]
             },
             {
-                type: 'stack',
-                colSpan: 'lg:col-span-4',
-                label: 'Narzędzia, których używamy',
-                subtitle: 'Integrujemy się z 200+ narzędziami.',
-                tools: ['n8n', 'Make', 'Zapier', 'Google Workspace', 'Slack', 'API']
+                type: 'toolsMarquee',
+                colSpan: 'lg:col-span-12',
+                label: 'Wpinamy się w Twoje narzędzia',
+                intro: 'Nie wdrażamy nowego systemu. Automatyzacja podpina się pod narzędzia, w których Twoja firma już pracuje: pocztę, arkusze, CRM i program do faktur. Ty pracujesz jak dotąd - dane zaczynają płynąć same.',
+                glue: {
+                    label: 'Spinamy je przez',
+                    tools: [
+                        { name: 'n8n', slug: 'n8n' },
+                        { name: 'Make', slug: 'make' },
+                        { name: 'Zapier', slug: 'zapier' },
+                    ],
+                },
+                badge: 'i 200+ innych narzędzi z API lub webhookami',
+                tools: [
+                    { name: 'Gmail', slug: 'gmail' },
+                    { name: 'Fakturownia', mono: 'Fa' },
+                    { name: 'Slack', slug: 'slack' },
+                    { name: 'Allegro', slug: 'allegro' },
+                    { name: 'Google Sheets', slug: 'googlesheets' },
+                    { name: 'Comarch Optima', mono: 'CO' },
+                    { name: 'HubSpot', slug: 'hubspot' },
+                    { name: 'Baselinker', mono: 'BL' },
+                    { name: 'Outlook', mono: 'Ou' },
+                    { name: 'wFirma', mono: 'wF' },
+                    { name: 'Notion', slug: 'notion' },
+                    { name: 'InPost', mono: 'IP' },
+                    { name: 'Google Calendar', slug: 'googlecalendar' },
+                    { name: 'Subiekt GT', mono: 'SG' },
+                    { name: 'Airtable', slug: 'airtable' },
+                    { name: 'inFakt', mono: 'iF' },
+                    { name: 'Teams', mono: 'Ts' },
+                    { name: 'WooCommerce', slug: 'woocommerce' },
+                    { name: 'Pipedrive', mono: 'Pd' },
+                    { name: 'Trello', slug: 'trello' },
+                    { name: 'Livespace', mono: 'Ls' },
+                    { name: 'Asana', slug: 'asana' },
+                    { name: 'Google Drive', slug: 'googledrive' },
+                    { name: 'ClickUp', slug: 'clickup' },
+                    { name: 'Mailchimp', slug: 'mailchimp' },
+                    { name: 'Stripe', slug: 'stripe' },
+                ],
             },
             {
                 type: 'insights',

@@ -8,6 +8,7 @@ import { Highlighter } from '@/components/ui/Highlighter';
 import { ServiceArticle } from '@/components/ui/ServiceArticle';
 import { ServiceFaq } from '@/components/ui/ServiceFaq';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
+import { IntegrationsMarquee } from '@/components/ui/IntegrationsMarquee';
 import { AnimatedProcessIcon } from '@/components/ui/AnimatedProcessIcon';
 import { getServiceById } from '@/data/services';
 
@@ -229,6 +230,19 @@ export default function ShowcasePage() {
             {['invoice', 'sync', 'report', 'alert'].map((name) => (
               <ShowcaseIconTile key={name} name={name} />
             ))}
+          </div>
+        </Section>
+
+        <Section
+          id="integrations-marquee"
+          title="IntegrationsMarquee"
+          note="src/components/ui/IntegrationsMarquee.jsx - pas narzędzi karty toolsMarquee (usługa automatyzacja). Logo SVG self-hosted + monogramy dla narzędzi bez logo. Hover pauzuje; reduced-motion daje statyczną siatkę."
+        >
+          <div className="rounded-lg border border-black/10 bg-white p-6">
+            <IntegrationsMarquee
+              tools={getServiceById('automatyzacja')?.innerCards?.find((c) => c.type === 'toolsMarquee')?.tools ?? []}
+              badge="i 200+ innych narzędzi z API lub webhookami"
+            />
           </div>
         </Section>
 

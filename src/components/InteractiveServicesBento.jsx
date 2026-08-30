@@ -8,6 +8,7 @@ import { ArrowUpRight, ArrowLeft, ArrowRight, Check, Play, Pause, X, Zap, Sparkl
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Logo } from './ui/Logo';
+import { IntegrationsMarquee, IntegrationLogo } from './ui/IntegrationsMarquee';
 import { track, EVENTS } from '../lib/analytics';
 
 function cn(...inputs) {
@@ -1068,6 +1069,31 @@ function ExtendedInnerCard({ card, index }) {
                             </div>
                         ))}
                     </div>
+                </div>
+            )}
+
+            {card.type === 'toolsMarquee' && (
+                <div className="p-6 md:p-8 flex flex-col bg-white">
+                    <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-7">
+                        <div className="max-w-2xl">
+                            <h4 className="text-xs font-mono uppercase tracking-widest text-muted-dark mb-3">{card.label}</h4>
+                            <p className="text-[15px] md:text-base text-black leading-relaxed">{card.intro}</p>
+                        </div>
+                        {card.glue && (
+                            <div className="shrink-0">
+                                <div className="text-[10px] font-mono uppercase tracking-wider text-muted-dark mb-2 lg:text-right">{card.glue.label}</div>
+                                <div className="flex gap-2">
+                                    {card.glue.tools.map((tool) => (
+                                        <div key={tool.name} className="flex items-center gap-2 bg-sage border border-black/5 rounded-[10px] px-3 py-2 transition-colors hover:border-lime/40">
+                                            <IntegrationLogo tool={tool} className="w-4 h-4 object-contain" />
+                                            <span className="text-sm font-medium text-black">{tool.name}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                    <IntegrationsMarquee tools={card.tools} badge={card.badge} />
                 </div>
             )}
 
