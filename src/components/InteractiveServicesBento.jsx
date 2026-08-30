@@ -1321,7 +1321,7 @@ export function ExpandedServiceView({ service, onClose }) {
                                     {service.heroMetric.value}
                                 </div>
                                 <p className="text-xs text-muted-dark font-mono uppercase tracking-wider max-w-[180px] lg:ml-auto leading-tight mb-2">{service.heroMetric.label}</p>
-                                {service.heroMetric.subtext && <p className="text-[11px] font-mono text-muted-light italic max-w-[150px] lg:ml-auto leading-tight">{service.heroMetric.subtext}</p>}
+                                {service.heroMetric.subtext && <p className="text-[11px] font-mono text-muted-dark italic max-w-[150px] lg:ml-auto leading-tight">{service.heroMetric.subtext}</p>}
                             </div>
                         </div>
                     </div>

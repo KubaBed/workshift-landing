@@ -123,7 +123,7 @@ function StatsPanel({ stats }) {
                 ))}
             </div>
             {stats.note && (
-                <p className="mt-5 text-[12px] font-mono text-muted-light">{stats.note}</p>
+                <p className="mt-5 text-[12px] font-mono text-muted-dark">{stats.note}</p>
             )}
         </div>
     );
