@@ -581,7 +581,7 @@ function AdVariant({ ad, index, small = false }) {
     );
 }
 
-// useIsMobile — responsywny hook bez deps. SPA/Vite (no SSR) → window.matchMedia
+// useIsMobile - responsywny hook bez deps. SPA/Vite (no SSR) → window.matchMedia
 // w useEffect bezpieczny. Default false zapewnia spójny first paint na server-like
 // preview (chunk lazy-loaded, więc i tak hydration nie ma).
 function useIsMobile(query = '(max-width: 767px)') {

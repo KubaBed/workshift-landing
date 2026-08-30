@@ -11,7 +11,7 @@ import { track, EVENTS } from '../lib/analytics';
 gsap.registerPlugin(ScrollTrigger);
 
 // Auto-popup przy wyjściu (exit intent). Wyłączony na czas bez kampanii
-// newsletterowej — ustaw na true, aby przywrócić. Sekcja i ręczny przycisk
+// newsletterowej - ustaw na true, aby przywrócić. Sekcja i ręczny przycisk
 // "Zapisz się" działają niezależnie od tej flagi.
 const EXIT_INTENT_ENABLED = false;
 

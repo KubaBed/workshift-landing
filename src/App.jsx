@@ -184,7 +184,7 @@ function App() {
   const previewSection = searchParams.get('preview');
 
   // Bootstrap analytics: if user previously consented, load GA4 + Clarity
-  // od razu (bez wyświetlania bannera). Bez consent — skrypty czekają.
+  // od razu (bez wyświetlania bannera). Bez consent - skrypty czekają.
   useEffect(() => {
     bootstrapConsent();
   }, []);
@@ -233,11 +233,11 @@ function App() {
         <FloatingWhatsApp />
       </div>
 
-      {/* Vercel Analytics + Speed Insights — loaded dynamically.
+      {/* Vercel Analytics + Speed Insights - loaded dynamically.
           Top-level import wywalał całą aplikację gdy ad blocker (uBO/Brave) blokował fetch. */}
       <VercelTelemetry />
 
-      {/* Cookie consent banner — pokazuje się gdy brak decyzji w localStorage.
+      {/* Cookie consent banner - pokazuje się gdy brak decyzji w localStorage.
           Re-otwierany przez link w stopce ('workshift:consent-open' event). */}
       <ConsentBanner />
     </div>

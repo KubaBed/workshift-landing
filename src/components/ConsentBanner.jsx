@@ -94,7 +94,7 @@ export function ConsentBanner() {
                             </button>
                         </div>
 
-                        {/* Body — na mobile skondensowane do 1 linii (banner nie może
+                        {/* Body - na mobile skondensowane do 1 linii (banner nie może
                             zjadać dolnej 1/3 ekranu i zasłaniać kroków quizu). Pełna treść
                             od md+. RODO zachowane: info obecne + link do polityki + granular. */}
                         <div className="px-4 pt-2 pb-2 md:pb-3">

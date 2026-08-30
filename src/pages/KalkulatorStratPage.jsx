@@ -51,19 +51,19 @@ const REKOMENDACJE = {
         'Synchronizacja CRM ↔ kalendarz ↔ mail',
     ],
     agencja: [
-        'Pipeline kreacji AI z brandbookiem (LoRA) — setki wariantów reklam',
+        'Pipeline kreacji AI z brandbookiem (LoRA) - setki wariantów reklam',
         'Automatyczne briefy i propozycje na bazie historii klienta',
         'Generatywne wideo i animacje produktowe',
     ],
     uslugi: [
-        'Onboarding klienta — automatyczne maile, dokumenty, kalendarze',
+        'Onboarding klienta - automatyczne maile, dokumenty, kalendarze',
         'Raportowanie projektów na podstawie danych z narzędzi',
         'Wewnętrzny asystent wiedzy firmowej (RAG)',
     ],
     inne: [
         'Audyt procesów wskaże 2-3 najszybsze automatyzacje (ROI w 3-6 mies)',
-        'Integracja narzędzi w jeden workflow — bez zmiany SaaSów',
-        'Szkolenie zespołu — od jutra korzystają z AI w codziennej pracy',
+        'Integracja narzędzi w jeden workflow - bez zmiany SaaSów',
+        'Szkolenie zespołu - od jutra korzystają z AI w codziennej pracy',
     ],
 };
 
@@ -209,7 +209,7 @@ export default function KalkulatorStratPage() {
                     )}
 
                     {step === 1 && (
-                        <StepCard key="zespol" title="Ile osób jest w Twoim zespole?" subtitle="Cała firma — łącznie z Tobą.">
+                        <StepCard key="zespol" title="Ile osób jest w Twoim zespole?" subtitle="Cała firma - łącznie z Tobą.">
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 {ZESPOLY.map(z => (
                                     <button
@@ -519,7 +519,7 @@ function ResultCard({
                 ) : (
                     <div className="flex items-center gap-3">
                         <CheckCircle size={20} className="text-lime" />
-                        <span className="text-sm text-black">Dzięki — wynik i case study dotrą w ciągu 5 minut.</span>
+                        <span className="text-sm text-black">Dzięki - wynik i case study dotrą w ciągu 5 minut.</span>
                     </div>
                 )}
             </div>

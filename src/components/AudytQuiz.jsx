@@ -138,10 +138,10 @@ export function AudytQuiz() {
     const trackStart = () => {
         if (!startedRef.current) {
             startedRef.current = true;
-            // "Realny start" (analytics) — nie bramkowany zgodą marketingową.
+            // "Realny start" (analytics) - nie bramkowany zgodą marketingową.
             track(EVENTS.AUDIT_START, { source: 'quiz' });
         }
-        // InitiateCheckout (pixel + CAPI, dedup) — idempotentne per załadowanie
+        // InitiateCheckout (pixel + CAPI, dedup) - idempotentne per załadowanie
         // strony. Jeśli user kliknął wcześniej „Rozpocznij audyt", policzyło się tam;
         // tu łapiemy tych, co przewinęli do quizu i wybrali branżę bez klikania CTA.
         // Meta optymalizuje pod ten event + audience „zaczął, nie skończył".
@@ -237,7 +237,7 @@ export function AudytQuiz() {
                                 Jaka jest Twoja branża?
                             </h3>
                             <p className="text-muted-dark mb-6">Dobierzemy rekomendacje pod Twój kontekst.</p>
-                            {/* 2 kolumny już na mobile: 6 kafli w 3 rzędach zamiast 6 —
+                            {/* 2 kolumny już na mobile: 6 kafli w 3 rzędach zamiast 6 -
                                 mieszczą się nad bannerem cookies (bottom-fixed ~290px). */}
                             <div className="grid grid-cols-2 gap-3">
                                 {BRANZE.map((b) => (

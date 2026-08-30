@@ -127,7 +127,7 @@ export function DataMetricsSection() {
                     animate={isInView ? { opacity: 1 } : {}}
                     transition={{ delay: 1.5, duration: 0.6 }}
                 >
-                    Dane szacowane na podstawie raportów McKinsey, Asana "Anatomy of Work" i wewnętrznych wdrożeń Workshift. Wartości dotyczą firm 10–200 pracowników.
+                    Dane szacowane na podstawie raportów McKinsey, Asana "Anatomy of Work" i wewnętrznych wdrożeń Workshift. Wartości dotyczą firm 10-200 pracowników.
                 </motion.p>
 
             </div>

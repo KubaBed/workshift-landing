@@ -1,10 +1,10 @@
 /**
- * Analytics helper — thin wrapper around Vercel Analytics.
+ * Analytics helper - thin wrapper around Vercel Analytics.
  *
  * Why a wrapper:
  * 1. `track()` import-błąd (ad blocker, network) nie powinien crashować
  *    handler-a klienta. Try/catch izoluje SDK od logiki biznesowej.
- * 2. Centralizuje nazwy eventów — chcemy je trzymać w jednym miejscu jako
+ * 2. Centralizuje nazwy eventów - chcemy je trzymać w jednym miejscu jako
  *    enum-podobne stałe, żeby uniknąć typo w stringach po całym codebase.
  * 3. Debug w localhost: `console.log` zamiast wysyłki, bez konfiguracji.
  *
@@ -54,7 +54,7 @@ export const EVENTS = {
 export function track(name, props = {}) {
     if (typeof window === 'undefined') return;
 
-    // Filter complex types — Vercel Analytics przyjmuje tylko proste primitywy.
+    // Filter complex types - Vercel Analytics przyjmuje tylko proste primitywy.
     const safeProps = {};
     for (const [k, v] of Object.entries(props)) {
         if (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean') {
@@ -79,7 +79,7 @@ export function track(name, props = {}) {
     }
 
     // Drugi sink: PostHog. `window.posthog` istnieje TYLKO gdy user dał zgodę
-    // "analytics"/"recordings" (ładowany w consent.js:loadPostHog) — więc sam fakt
+    // "analytics"/"recordings" (ładowany w consent.js:loadPostHog) - więc sam fakt
     // jego obecności jest bramką zgody, nie trzeba jej tu sprawdzać ani ruszać
     // bramki marketingowej Meta. W przeciwieństwie do Vercel Hobby (custom eventy
     // nieprzechowywane) PostHog realnie zapisuje event → dopiero to daje widoczny

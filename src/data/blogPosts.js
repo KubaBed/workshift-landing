@@ -94,17 +94,17 @@ export const blogPosts = [
     content: `
 Myślę, że warto docenić zespół z Ministerstwa Cyfryzacji pracujący nad PLLuM za kawał świetnej roboty. 👏
 
-Właśnie wyszła nowa odsłona rodziny – 11 modeli w 4 rozmiarach, wszystkie po polsku, wszystkie do lokalnych wdrożeń. To już nie koncept ładnie wyglądający na slajdach, a realne narzędzie, które można wdrożyć u siebie.
+Właśnie wyszła nowa odsłona rodziny - 11 modeli w 4 rozmiarach, wszystkie po polsku, wszystkie do lokalnych wdrożeń. To już nie koncept ładnie wyglądający na slajdach, a realne narzędzie, które można wdrożyć u siebie.
 
-Zanim wejdę w szczegóły, krótkie wyjaśnienie. Im więcej parametrów (te „B" to miliardy), tym lepszy kontekst i jakość generowanych odpowiedzi. Ale przy lokalnym wdrożeniu – a o to właśnie chodzi w PLLuM – oznacza to też większe wymagania sprzętowe. To zawsze kompromis, a nie wyścig na liczby.
+Zanim wejdę w szczegóły, krótkie wyjaśnienie. Im więcej parametrów (te „B" to miliardy), tym lepszy kontekst i jakość generowanych odpowiedzi. Ale przy lokalnym wdrożeniu - a o to właśnie chodzi w PLLuM - oznacza to też większe wymagania sprzętowe. To zawsze kompromis, a nie wyścig na liczby.
 
 ### Oto jak to rozumieć w praktyce:
 
-**4B (baza: Gemma od Google)** – kompaktowy i szybki. Uruchomisz go praktycznie na dowolnym urządzeniu. Ten model idealnie sprawdzi się do wąskich, konkretnych zadań albo jako test bez wielkich inwestycji w infrastrukturę. A wbrew pozorom do prostych zadań w stylu tworzenia maila nie trzeba od razu korzystać z Opusa 4.7. Co ciekawe, ta kategoria to świeży dodatek, który powstał po zgłoszeniach od partnerów z rynku.
+**4B (baza: Gemma od Google)** - kompaktowy i szybki. Uruchomisz go praktycznie na dowolnym urządzeniu. Ten model idealnie sprawdzi się do wąskich, konkretnych zadań albo jako test bez wielkich inwestycji w infrastrukturę. A wbrew pozorom do prostych zadań w stylu tworzenia maila nie trzeba od razu korzystać z Opusa 4.7. Co ciekawe, ta kategoria to świeży dodatek, który powstał po zgłoszeniach od partnerów z rynku.
 
-**8B i 12B (baza: Llama 3.1 i Mistral-Nemo)** – tu zaczyna się prawdziwa produkcja. Najlepszy kompromis między jakością a kosztem infrastruktury. Świetnie sprawdzą się jako silnik RAG pracujący nad wewnątrzfirmową bazą wiedzy.
+**8B i 12B (baza: Llama 3.1 i Mistral-Nemo)** - tu zaczyna się prawdziwa produkcja. Najlepszy kompromis między jakością a kosztem infrastruktury. Świetnie sprawdzą się jako silnik RAG pracujący nad wewnątrzfirmową bazą wiedzy.
 
-**70B (baza: Llama 3.1)** – model flagowy, w teorii powinien działać bardzo dobrze, w zasadzie bez konieczności dodatkowego dostrajania. Wymaga GPU, ale radzi sobie z najbardziej złożonymi zadaniami.
+**70B (baza: Llama 3.1)** - model flagowy, w teorii powinien działać bardzo dobrze, w zasadzie bez konieczności dodatkowego dostrajania. Wymaga GPU, ale radzi sobie z najbardziej złożonymi zadaniami.
 
 Każdy rozmiar (poza 70B) dostępny jest w 3 wariantach (base, instruct, chat).
 
@@ -114,7 +114,7 @@ Powiedzmy sobie wprost: naszymi lokalnymi modelami nie wygramy wyścigu zbrojeń
 
 ### Dla kogo to jest szczególnie ciekawe?
 
-Kancelarie, biura księgowe, firmy obsługujące administrację publiczną – tu PLLuM ma realną przewagę nad modelami z USA. Przede wszystkim dlatego, że:
+Kancelarie, biura księgowe, firmy obsługujące administrację publiczną - tu PLLuM ma realną przewagę nad modelami z USA. Przede wszystkim dlatego, że:
 
 - **Rozumie polski kontekst urzędowy.** Nie tylko „mówi po polsku", ale ogarnia specyfikę naszych pism, formularzy i procedur.
 - **Posiada pełną dokumentację zgodną z AI Act** (źródła danych, metody treningu). Nie zaczynasz analizy compliance od zera. No i jest na otwartej licencji.
@@ -286,7 +286,7 @@ Pilnowanie spójności wizualnej to często organizacyjny koszmar, zwłaszcza gd
 
 Też tak czasem mam, dlatego z czystym sercem mogę polecić proste narzędzie od Google:
 
-**Pomelli** ([labs.google.com/pomelli](https://labs.google.com/pomelli)) – od wczoraj dostępne w UE (wcześniej trzeba było korzystać z VPN, żeby uzyskać dostęp).
+**Pomelli** ([labs.google.com/pomelli](https://labs.google.com/pomelli)) - od wczoraj dostępne w UE (wcześniej trzeba było korzystać z VPN, żeby uzyskać dostęp).
 
 ### W skrócie - Pomelli:
 
@@ -331,7 +331,7 @@ Na scenie mocny skład praktyków:
 
 Ja też dorzucę coś od siebie i podzielę się krótką, życiową historią: **"Jak stracić przyjaciół i zaoszczędzić 35 000 PLN, budując aplikacje z Claude i Lovable"**.
 
-Jeśli macie ochotę posłuchać wystąpień, ale przede wszystkim zbić piątkę, wymienić się doświadczeniami i poznać super ludzi – gorąco zapraszam.
+Jeśli macie ochotę posłuchać wystąpień, ale przede wszystkim zbić piątkę, wymienić się doświadczeniami i poznać super ludzi - gorąco zapraszam.
 
 ---
 
@@ -359,7 +359,7 @@ Ale Google niedawno zaprezentowało coś, co jednoznacznie kojarzy się z takim 
 
 Kiedy piszesz z AI, model zapisuje całą waszą rozmowę w tymczasowej pamięci (tzw. KV cache). Przy długiej rozmowie, ta "ściągawka" dla jednego użytkownika potrafi zżerać 40 GB pamięci. Czyli połowę serwerowej karty graficznej za 30 000$. Tylko po to, żeby model pamiętał, że godzinę temu prosiłeś go o tabelkę w Excelu.
 
-Gdy pamięć w chmurze się zapycha – system nie przyjmuje nowych zapytań. To obecnie największe "wąskie gardło" AI.
+Gdy pamięć w chmurze się zapycha - system nie przyjmuje nowych zapytań. To obecnie największe "wąskie gardło" AI.
 
 ### Rozwiązanie: TurboQuant
 
@@ -422,7 +422,7 @@ AI właśnie demokratyzuje budowanie oprogramowania. A "good enough" dowiezione 
 Zatrudnię Juniora za 2000$ miesięcznie! 
 Takiego, co pracuje 24/7, nie bierze L4 i nie zapomina o żadnym zadaniu.
 
-Brzmi nieźle? Jest tylko mały twist – ten junior to (oczywiście) AI.
+Brzmi nieźle? Jest tylko mały twist - ten junior to (oczywiście) AI.
 
 Niedawno premierę miał serwis **junior.so**. Niby nic specjalnego, kolejny startup oparty o AI. Ale tym razem jest jakoś dziwnie - usługa pozwala nam zatrudnić niemal prawdziwego pracownika. Z własnym firmowym mailem, kontem na Slacku i ludzkim awatarem. Takiego, który przychodzi na calle na Zoomie, robi notatki, wychodzi z inicjatywą i realizuje zadania.
 

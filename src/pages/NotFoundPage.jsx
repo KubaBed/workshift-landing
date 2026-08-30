@@ -59,7 +59,7 @@ export default function NotFoundPage() {
                         Ten proces chyba <br /><span className="text-muted-dark">sam się zautomatyzował.</span>
                     </h1>
                     <p className="text-lg md:text-xl text-muted-dark mb-12 leading-relaxed max-w-xl mx-auto">
-                        Nie znaleźliśmy strony pod tym adresem. Mogła zostać przeniesiona albo zniknąć przy ostatnim refactorze — wybierz najszybszą drogę powrotną poniżej.
+                        Nie znaleźliśmy strony pod tym adresem. Mogła zostać przeniesiona albo zniknąć przy ostatnim refactorze - wybierz najszybszą drogę powrotną poniżej.
                     </p>
                 </motion.div>
 

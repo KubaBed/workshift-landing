@@ -67,7 +67,7 @@ export default function PromptyPage() {
         track(EVENTS.LIBRARY_VIEW);
     }, []);
 
-    // Lekki indeks — lista + wyszukiwarka renderują się natychmiast.
+    // Lekki indeks - lista + wyszukiwarka renderują się natychmiast.
     useEffect(() => {
         let alive = true;
         fetch('/prompty-data/index.json')
@@ -238,7 +238,7 @@ export default function PromptyPage() {
                             Baza promptów i person AI
                         </h1>
                         <p className="mt-6 text-lg md:text-xl text-muted-dark max-w-2xl mx-auto leading-relaxed">
-                            200 starannie dobranych polskich promptów i 12 person AI do ChatGPT, Claude i Gemini —
+                            200 starannie dobranych polskich promptów i 12 person AI do ChatGPT, Claude i Gemini -
                             w tym autorskie prompty od Workshift pod konkretne branże. Przeszukuj, kopiuj, wdrażaj.
                         </p>
                     </motion.div>
@@ -293,7 +293,7 @@ export default function PromptyPage() {
                                 </button>
                             </div>
 
-                            {/* Branże (ICP Workshift) — wyróżnione, na pierwszym miejscu */}
+                            {/* Branże (ICP Workshift) - wyróżnione, na pierwszym miejscu */}
                             <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
                                 <CategoryChip
                                     label="Wszystkie"
@@ -563,7 +563,7 @@ function PersonasTab({ personas, onOpen, onCopy }) {
                 <p className="text-muted-dark leading-relaxed">
                     Gotowe instrukcje, które wklejasz jako <strong>opis gema w Gemini</strong>, instrukcje{' '}
                     <strong>Custom GPT</strong> lub system prompt. Definiują, jak model ma się zachowywać, na co
-                    zwracać uwagę i jaki output proponować — raz ustawiasz, a potem masz wyspecjalizowanego asystenta.
+                    zwracać uwagę i jaki output proponować - raz ustawiasz, a potem masz wyspecjalizowanego asystenta.
                 </p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -603,7 +603,7 @@ function PersonasTab({ personas, onOpen, onCopy }) {
                 ))}
             </div>
             <p className="text-center text-xs text-muted-light mt-10 font-mono">
-                Persony autorskie Workshift. Dopisujemy kolejne — masz pomysł na konkretną? Napisz.
+                Persony autorskie Workshift. Dopisujemy kolejne - masz pomysł na konkretną? Napisz.
             </p>
         </div>
     );
@@ -612,7 +612,7 @@ function PersonasTab({ personas, onOpen, onCopy }) {
 function Attribution() {
     return (
         <p className="text-center text-xs text-muted-light mt-12 font-mono">
-            Prompty na licencji CC0 1.0 — źródło:{' '}
+            Prompty na licencji CC0 1.0 - źródło:{' '}
             <a href="https://prompts.chat" target="_blank" rel="noopener noreferrer" className="underline hover:text-muted-dark">
                 prompts.chat
             </a>

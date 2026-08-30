@@ -27,7 +27,7 @@ export default function PhoneMockupCard({
   highlight = "spatial intention",
   secondaryText = "Typography that breathes. Motion that guides. Surfaces that know the light.",
   metrics = [
-    { label: "Tracking", value: "–0.02" },
+    { label: "Tracking", value: "-0.02" },
     { label: "Leading", value: "1.65" },
     { label: "Weight", value: "420" },
   ],

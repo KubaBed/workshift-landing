@@ -15,7 +15,7 @@ const processSteps = [
     },
     {
         num: "02",
-        time: "Tygodnie 2–4",
+        time: "Tygodnie 2-4",
         icon: <Wrench className="w-6 h-6" />,
         title: "Budowa i Wdrożenie",
         tagline: "Dostarczamy. Bez przestojów.",

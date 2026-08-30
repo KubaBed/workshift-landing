@@ -96,7 +96,7 @@ export default function AudytAiPage() {
                             <button
                                 onClick={() => {
                                     track(EVENTS.AUDIT_SCROLL_TO_QUIZ, { source: 'hero' });
-                                    // InitiateCheckout o krok wcześniej niż wybór branży —
+                                    // InitiateCheckout o krok wcześniej niż wybór branży -
                                     // klik „Rozpocznij" = intencja startu. audit_start (Vercel)
                                     // nadal liczy realny start (1. odpowiedź). IC jest dedupowany
                                     // i idempotentny, więc nie zdubluje się z wyborem branży.
