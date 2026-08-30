@@ -1,6 +1,6 @@
 # Agent Context: workshift-landing
 
-> **Last updated**: 2026-04-28
+> **Last updated**: 2026-08-30
 > **Project**: High-conversion landing page for Workshift — AI Automation Agency
 >
 > **📌 Aktywny handoff (2026-07-13):** kampania „Mikro-audyt AI" + posty social z bloga —
@@ -18,7 +18,7 @@ Premium landing page for **Workshift** (AI Automation Agency). Focus: outcome-ba
 
 ### Core
 - **Vite 7** + **React 19** + JSX (no TypeScript)
-- **React Router v7** (HashRouter)
+- **React Router v7** (BrowserRouter - prawdziwe ścieżki, nie `/#/`; na tym stoi SEO)
 - **Tailwind CSS 4** (via `@tailwindcss/vite`)
 - **Framer Motion** + **GSAP** + **Lenis** (animations)
 - **shadcn/ui** components (via `components.json`)
@@ -46,6 +46,11 @@ Premium landing page for **Workshift** (AI Automation Agency). Focus: outcome-ba
 | `npm run build` | Production build |
 | `npm run preview` | Preview production build |
 | `npm run lint` | ESLint |
+| `npm run seo:html` | Sam post-build SEO (bez `vite build`) - szybki test generatora |
+
+> `npm run build` = `vite build` + `scripts/build-seo-html.mjs`. Ten drugi krok jest
+> **obowiązkowy** - bez niego każdy URL dostaje ten sam `<head>` i pustą treść dla crawlerów.
+> Build **przerywa się**, gdy tytuł trasy przekroczy 60 znaków (dopisz `seoTitle` do wpisu).
 
 ## 4. Architecture
 
@@ -119,6 +124,11 @@ api/
 ## 8. Git History (recent)
 
 ```
+78f28e8 Merge PR #12: fix(seo) - treść i linki w fallbacku + krótsze tytuły
+630344f fix(seo): fallback z realnej treści strony, 0 orphanów, tytuły <= 60 znaków
+55877ed feat(seo): treść per trasa w statycznym fallbacku + czystka pauz
+55ea06b feat(seo): meta i canonical per trasa + generowana sitemapa
+7b414f4 feat: /showcase, wpisy bloga i wariant pion
 8904c33 fix(analytics): update Clarity tag ID
 d1259e5 refactor(welcome-email): bigger hero, deliverability ask, PL typography
 d5d3169 fix(welcome-email): avatar + image padding
@@ -138,8 +148,13 @@ e0862a4 fix(api): contact form multi-recipient + emailId logging
 - [ ] **Cleanup DNS**: old `send` TXT (Amazon SES) + `send` MX in Vercel DNS
 - [ ] **Optional**: change `RESEND_FROM_EMAIL` to `formularz@workshift.pl`
 - [ ] **Newsletter content**: add `src/data/newsletterIssues.js` for regular editions
-- [ ] **ROI Calculator**: interactive savings calculator on landing page
 - [ ] **"Klienci" section**: case study component
+- [ ] **Opis `/uslugi/kreacje`**: najkrótsze copy w serwisie (291 wyrazów w fallbacku wobec
+      320-412 na pozostałych usługach). Audyt tego nie zgłasza, ale to najsłabsza strona usługi -
+      fix to rozszerzenie `expandedDescription` / `innerCards` w `services.js`, fallback pójdzie za tym
+
+> **ROI Calculator** - zrobione, `/kalkulator` (`src/pages/KalkulatorStratPage.jsx`,
+> dane w `src/data/kalkulator.js`).
 
 ## 10. Environment Variables
 

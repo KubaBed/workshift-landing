@@ -1,6 +1,6 @@
 # Workshift Landing Page — Project Wiki
 
-> **Last updated**: 2026-04-28
+> **Last updated**: 2026-08-30
 > **Stack**: Vite 7 + React 19 + Tailwind CSS 4 + Framer Motion + GSAP + Lenis
 
 ## Core Philosophy
@@ -11,7 +11,7 @@
 
 ```
 ┌─────────────────────────────────────────────────┐
-│  App.jsx (HashRouter)                            │
+│  App.jsx (BrowserRouter + RouteMeta)             │
 ├─────────────────────────────────────────────────┤
 │  Home Route  │  ServicePage  │  BlogPages        │
 │  /           │  /service/:id │  /blog, /blog/:slug│
@@ -134,13 +134,71 @@ User clicks link
 - **Favicon**: Multi-size set (16-512px) + SVG + site.webmanifest
 - **Design docs**: `DESIGN.md`, `BRAND.md`, `BRAND.pdf`
 
+## SEO (statyczny prerender dla crawlerów)
+
+> Wdrożone 2026-08-30 (commity 55ea06b, 55877ed, 630344f) po audycie OpenSEO.
+
+### Problem
+
+Aplikacja jest SPA. `vercel.json` przepisuje `/(.*)` na `/index.html`, więc bez dodatkowej
+warstwy **każdy URL zwraca ten sam shell**: ten sam `<title>`, ta sama meta description,
+`og:url` wskazujący stronę główną. Google renderuje JS i to wybacza, ale **scrapery Facebooka,
+LinkedIna, Slacka, LLM-ów i audyty SEO nie wykonują JS w ogóle**.
+
+Potwierdzone empirycznie: liczby wyrazów raportowane przez audyt zgadzają się co do jednego
+z tym, co generuje build. Crawler czyta wyłącznie statyczny HTML.
+
+### Rozwiązanie
+
+`npm run build` = `vite build` + `node scripts/build-seo-html.mjs`. Post-build zapisuje
+prawdziwy plik pod `dist/<trasa>/index.html` z własnym `<head>` i `<body>`.
+**Vercel sprawdza filesystem PRZED regułami `rewrites`**, więc taki plik wygrywa z fallbackiem SPA.
+
+| Plik | Rola |
+|------|------|
+| `src/lib/seo.js` | Jedno źródło meta. `STATIC_ROUTE_META`, `postMeta()`, `pageTitle()`, `MAX_TITLE_LENGTH`. Używane i przez build, i przez `<RouteMeta />` w SPA. |
+| `scripts/seo-routes.mjs` | Tabela 23 tras indeksowalnych + treść fallbacku i linki wewnętrzne. |
+| `scripts/build-seo-html.mjs` | Generuje `dist/<trasa>/index.html`, `sitemap.xml`, `robots.txt`. Zawiera kontrolę regresji. |
+| `scripts/privacy-policy-text.mjs` | Wyciąga tekst polityki prywatności wprost z `PrivacyPolicyPage.jsx` (dokument prawny - nie duplikujemy go do `src/data/`). |
+
+### Zasada: fallback to ta sama treść, nie druga wersja strony
+
+`fallbackSections` składamy z **danych, które aplikacja i tak renderuje**: `innerCards` usług,
+pytania mikro-audytu (`audytQuestions.js`), parametry kalkulatora (`kalkulator.js`),
+kategorie i persony bazy promptów, pełny tekst polityki prywatności. Nie piszemy tekstu
+pod crawlera - to byłoby cloaking i natychmiastowy dryf względem tego, co widzi użytkownik.
+
+Wyjątek: `body` i `lead` stron statycznych (`STATIC_FALLBACK`) są pisane ręcznie, bo te strony
+nie mają jednego pola z opisem. Odnotowane w `PAPERCUTS.md`.
+
+### Kontrola regresji w buildzie
+
+- **Tytuł powyżej 60 znaków przerywa build** z podpowiedzią, gdzie go skrócić.
+  Wpis bloga może podać krótszy `seoTitle`; sufiks `| Workshift` doklejamy tylko, gdy się mieści.
+- **Ostrzeżenie** przy trasie bez linku przychodzącego (orphan page) i przy fallbacku
+  poniżej 250 wyrazów. Ostrzeżenie, nie błąd - długość treści to decyzja redakcyjna.
+
+### Linkowanie wewnętrzne
+
+Sitemapa wystawia 23 URL-e. Żeby żaden nie był orphanem w oczach crawlera bez JS:
+usługa linkuje do siostrzanych usług, wpis do `/blog` i pokrewnych wpisów, hub `/blog`
+wystawia pełną listę wpisów, a `SITE_NAV` w generatorze dokłada mapę serwisu do stopki
+każdej strony.
+
+### Czego NIE ma w sitemapie
+
+`/oferta/*` (prywatne oferty klientów), `/thank-you`, `/showcase` (noindex), `/uslugi`
+(redirect na sekcję strony głównej).
+
 ## Development Notes
 
 ### Gotchas
 - **Vite `public/` directory**: Files served from `/` (not `/public/`). Paths in code: `/blog/img.png` not `/public/blog/img.png`.
 - **Em-dashes**: Use standard hyphens `-` in CSS pseudo-elements to avoid encoding issues.
 - **No PHP on Vercel**: PHP files in `public/` are dead code from the Brevo era — served as static assets, return 405 on POST.
-- **HashRouter**: React Router uses hash routing (`/#/path`) for Vercel static hosting compatibility.
+- **BrowserRouter, nie HashRouter**: trasy to prawdziwe ścieżki (`/blog/slug`), a nie `/#/blog/slug`.
+  Na tym stoi cała warstwa SEO - przy hash-routingu crawler dostaje jeden URL na cały serwis.
+  Wymaga rewrite `/(.*) -> /index.html` w `vercel.json` (jest) i generatora statycznych plików per trasa (patrz sekcja SEO).
 
 ### Session Workflow
 1. `npm run dev` → local dev at localhost
