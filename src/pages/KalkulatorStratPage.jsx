@@ -5,67 +5,17 @@ import { Button } from '../components/ui/Button';
 import { Logo } from '../components/ui/Logo';
 import { ArrowLeft, ArrowRight, Calculator, CheckCircle, Calendar, Mail, Sparkles } from 'lucide-react';
 import { track, EVENTS } from '../lib/analytics';
+import {
+    BRANZE,
+    ZESPOLY,
+    KOSZTY,
+    REKOMENDACJE,
+    RECOVERY_RATE,
+    WEEKS_PER_MONTH,
+    HOURS_PER_REPORT_DAY,
+} from '../data/kalkulator';
 
 const STEPS = ['branza', 'zespol', 'godziny', 'raporty', 'koszt', 'wynik'];
-
-const BRANZE = [
-    { id: 'kancelaria', label: 'Kancelaria prawna', emoji: '⚖️' },
-    { id: 'ecommerce', label: 'E-commerce / sklep online', emoji: '🛒' },
-    { id: 'produkcja', label: 'Firma produkcyjna / dystrybucyjna', emoji: '🏭' },
-    { id: 'agencja', label: 'Agencja marketingowa / kreatywna', emoji: '🎨' },
-    { id: 'uslugi', label: 'Usługi B2B / konsulting', emoji: '💼' },
-    { id: 'inne', label: 'Inna branża', emoji: '🔧' },
-];
-
-const ZESPOLY = [
-    { id: 1, label: '1-5 osób', value: 3 },
-    { id: 2, label: '6-15 osób', value: 10 },
-    { id: 3, label: '16-50 osób', value: 30 },
-    { id: 4, label: '51-150 osób', value: 90 },
-    { id: 5, label: '150+ osób', value: 200 },
-];
-
-const KOSZTY = [
-    { label: '50 PLN/h', value: 50, hint: 'asystenci, młodsi specjaliści' },
-    { label: '100 PLN/h', value: 100, hint: 'specjaliści, mid-level' },
-    { label: '150 PLN/h', value: 150, hint: 'seniorzy, kierownicy' },
-    { label: '200 PLN/h', value: 200, hint: 'eksperci, partnerzy' },
-    { label: '300 PLN/h', value: 300, hint: 'C-level, top talent' },
-];
-
-// Personalizowane rekomendacje per branża (mapowane na usługi Workshift).
-const REKOMENDACJE = {
-    kancelaria: [
-        'Automatyczne notatki ze spotkań (oszczędza ~40 min/spotkanie)',
-        'Anonimizacja dokumentów RODO (sekundy zamiast minut)',
-        'Monitoring legislacji + alerty (ręcznie 2-4h/tyg → 0)',
-    ],
-    ecommerce: [
-        'Agent BOK na "gdzie moja paczka" (40% zapytań solved bez człowieka)',
-        'Automatyczne kreacje reklamowe (200 wariantów w 2 dni)',
-        'Synchronizacja zamówień ↔ księgowość ↔ magazyn',
-    ],
-    produkcja: [
-        'OCR faktur przychodzących + auto-kategoryzacja (16h/tyg → 0.5h)',
-        'Raporty miesięczne automatycznie z 5 systemów (2 dni → 15 min)',
-        'Synchronizacja CRM ↔ kalendarz ↔ mail',
-    ],
-    agencja: [
-        'Pipeline kreacji AI z brandbookiem (LoRA) - setki wariantów reklam',
-        'Automatyczne briefy i propozycje na bazie historii klienta',
-        'Generatywne wideo i animacje produktowe',
-    ],
-    uslugi: [
-        'Onboarding klienta - automatyczne maile, dokumenty, kalendarze',
-        'Raportowanie projektów na podstawie danych z narzędzi',
-        'Wewnętrzny asystent wiedzy firmowej (RAG)',
-    ],
-    inne: [
-        'Audyt procesów wskaże 2-3 najszybsze automatyzacje (ROI w 3-6 mies)',
-        'Integracja narzędzi w jeden workflow - bez zmiany SaaSów',
-        'Szkolenie zespołu - od jutra korzystają z AI w codziennej pracy',
-    ],
-};
 
 export default function KalkulatorStratPage() {
     const [step, setStep] = useState(0);
@@ -86,11 +36,11 @@ export default function KalkulatorStratPage() {
 
     // Obliczenia
     const wielkoscZespolu = ZESPOLY.find(z => z.id === data.zespol)?.value || 0;
-    const godzinyMies = (data.godzinyTyg * 4.33 + data.dniRaportow * 8) * wielkoscZespolu;
+    const godzinyMies =
+        (data.godzinyTyg * WEEKS_PER_MONTH + data.dniRaportow * HOURS_PER_REPORT_DAY) * wielkoscZespolu;
     const kosztMies = Math.round(godzinyMies * data.kosztH);
     const kosztRok = kosztMies * 12;
-    // Konserwatywnie: automatyzacja zwykle zwraca 40-60% straconych godzin.
-    const odzyskMies = Math.round(godzinyMies * 0.4);
+    const odzyskMies = Math.round(godzinyMies * RECOVERY_RATE);
     const odzyskKwoteMies = Math.round(odzyskMies * data.kosztH);
     const odzyskKwoteRok = odzyskKwoteMies * 12;
 

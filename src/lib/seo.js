@@ -68,7 +68,7 @@ export const STATIC_ROUTE_META = {
     type: 'website',
   },
   '/kalkulator': {
-    title: 'Kalkulator strat czasowych - ile traci Twoja firma | Workshift',
+    title: 'Kalkulator strat czasowych w firmie | Workshift',
     description:
       'Bezpłatny kalkulator: zobacz w 60 sekund ile czasu i pieniędzy traci Twoja firma na powtarzalnych zadaniach.',
     image: DEFAULT_META.image,
@@ -90,10 +90,28 @@ export const STATIC_ROUTE_META = {
   },
 };
 
+/** Google ucina tytuł w SERP-ach ok. 60 znaków - dłuższy to zmarnowany snippet. */
+export const MAX_TITLE_LENGTH = 60;
+
+/**
+ * Tytuł wpisu do <title>.
+ *
+ * Nagłówki wpisów są pisane pod czytelnika i bywają dwa razy dłuższe niż
+ * to, co zmieści się w wynikach wyszukiwania. Dlatego wpis może podać krótszy
+ * `seoTitle`; sufiks z marką doklejamy tylko wtedy, gdy nadal mieści się
+ * w limicie - w wyniku wyszukiwania nazwa domeny i tak stoi obok tytułu,
+ * więc lepiej poświęcić markę niż uciąć słowa kluczowe w połowie.
+ */
+export function pageTitle(post) {
+  const base = post.seoTitle || post.title;
+  const branded = `${base} | Workshift`;
+  return branded.length <= MAX_TITLE_LENGTH ? branded : base;
+}
+
 /** Meta wpisu bloga. Używane identycznie przez build i przez SPA. */
 export function postMeta(post) {
   return {
-    title: `${post.title} | Workshift`,
+    title: pageTitle(post),
     description: clampDescription(post.excerpt),
     image: post.image || DEFAULT_META.image,
     type: 'article',

@@ -2,6 +2,7 @@ export const blogPosts = [
   {
     slug: 'baza-wiedzy-ktora-przekonala-sceptykow',
     title: 'Sceptyka nie przekona prezentacja o AI. Przekona go firmowa baza wiedzy',
+    seoTitle: 'Jak przekonać zespół do AI: firmowa baza wiedzy',
     category: 'Wiedza',
     date: '2026-08-30',
     author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.webp' },
@@ -120,6 +121,7 @@ export const blogPosts = [
   {
     slug: 'firmowa-baza-wiedzy-dobre-praktyki',
     title: 'Baza wiedzy, która odpowiada na 15 000 pytań dziennie - co warto z niej skopiować do Twojej firmy',
+    seoTitle: 'Firmowa baza wiedzy AI - dobre praktyki',
     category: 'Wiedza',
     date: '2026-07-17',
     author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.webp' },
@@ -193,6 +195,7 @@ A jeśli wolisz to policzyć i zaplanować na spokojnie - [zacznij od bezpłatne
   {
     slug: 'oszczedzanie-tokenow-ai-agent',
     title: 'Ciągle brakuje tokenów? Naucz swojego agenta AI oszczędnego gospodarowania zasobami',
+    seoTitle: 'Jak oszczędzać tokeny w agencie AI',
     category: 'Wiedza',
     date: '2026-07-04',
     author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.webp' },
@@ -248,6 +251,7 @@ A jeśli robisz to wszystko na raz - prawdopodobnie czas pomyśleć o second bra
   {
     slug: 'open-knowledge-format-google-cloud',
     title: 'Jak nakarmić agenta wiedzą o Twojej firmie? - Open Knowledge Format',
+    seoTitle: 'Open Knowledge Format - wiedza dla agentów AI',
     category: 'Wiedza',
     date: '2026-06-14',
     author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.webp' },
@@ -331,6 +335,7 @@ A jeśli robisz to wszystko na raz - prawdopodobnie czas pomyśleć o second bra
   {
     slug: 'polskie-modele-pllum-w-firmie',
     title: 'Koniec z wysyłaniem danych do USA. Jak (i po co) wdrożyć polskie modele PLLuM w firmie?',
+    seoTitle: 'PLLuM w firmie - polskie modele językowe AI',
     category: 'Wiedza',
     date: '2026-05-22',
     author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.webp' },
@@ -427,6 +432,7 @@ Agenci AI są ekscytujący właśnie dlatego, że są nieprzewidywalni. I to sam
   {
     slug: 'value-builders-talks-pm-w-erze-ai',
     title: 'PM w erze AI - moja rozmowa w Value Builders Talks #16',
+    seoTitle: 'PM w erze AI - Value Builders Talks #16',
     category: 'Wiedza',
     date: '2026-05-03',
     author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.webp' },
@@ -519,6 +525,7 @@ A jeśli zastanawiasz się, jak AI może realnie pomóc Twojemu zespołowi - zac
   {
     slug: 'pomelli-od-dzis-w-eu',
     title: 'Pomelli od Google: koniec z szukaniem logo_final_final_v2.png',
+    seoTitle: 'Pomelli od Google - kreacje reklamowe z AI',
     category: 'Wiedza',
     date: '2026-04-24',
     author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.webp' },
@@ -553,6 +560,7 @@ Ale jako mocny punkt wyjścia, który sprawdzi się w codziennej komunikacji? Sp
   {
     slug: 'brave-ai-community-meetup-poznan',
     title: 'II Meetup BRAVE AI Poznań: Build fast. Validate faster',
+    seoTitle: 'Meetup BRAVE AI Poznań - walidacja pomysłów',
     category: 'Wydarzenia',
     date: '2026-04-13',
     author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.webp' },
@@ -590,6 +598,7 @@ Jeśli macie ochotę posłuchać wystąpień, ale przede wszystkim zbić piątk�
   {
     slug: 'google-turboquant-kompresja-ai',
     title: 'Google TurboQuant: Algorytm, który zmieści potężne AI w Twoim telefonie',
+    seoTitle: 'Google TurboQuant - kompresja AI w telefonie',
     category: 'Wiedza',
     date: '2026-04-10',
     author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.webp' },
@@ -626,6 +635,7 @@ Google mogło to schować do szuflady i wykorzystywać tylko dla siebie, ale udo
   {
     slug: 'vibe-coding-demokratyzacja-software',
     title: 'Vibe-coding: Dlaczego "good enough" dowiezione dzisiaj jest lepsze niż perfekcja',
+    seoTitle: 'Vibe-coding i demokratyzacja tworzenia software',
     category: 'Wiedza',
     date: '2026-04-05',
     author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.webp' },
@@ -658,6 +668,7 @@ AI właśnie demokratyzuje budowanie oprogramowania. A "good enough" dowiezione 
   {
     slug: 'zatrudnie-juniora-ai',
     title: 'Zatrudnię Juniora za 2000$ miesięcznie! (Z małym twistem)',
+    seoTitle: 'Junior AI za 2000$ - agenci zamiast etatu',
     category: 'Wiedza',
     date: '2026-03-01',
     author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.webp' },
