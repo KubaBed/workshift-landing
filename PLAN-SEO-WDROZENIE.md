@@ -109,7 +109,7 @@ nie zobaczy**. To jest najłatwiejsza pułapka w tym sprincie.
 - [x] `npm run build` przechodzi bez ostrzeżeń thin/orphan, lint bez nowych błędów
       (2 zastane `no-unused-vars` na baseline)
 
-Pozostało: review copy przez Kubę na dev (:5183) → push → za 4-6 tyg. odczyt GSC.
+WYPCHNIĘTE NA PRODUKCJĘ 31.08 (3d4fa03..5b55b64) i zweryfikowane na żywo: title A0, 1167 słów w fallbacku, FAQPage JSON-LD. Odczyt GSC: od ~28.09.2026.
 
 ---
 
