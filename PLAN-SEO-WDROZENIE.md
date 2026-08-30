@@ -70,8 +70,10 @@ Sekcje do dołożenia (kolejność sugerowana):
    o liczby przed/po. Liczby, których wolno używać, są w kontekście OpenSEO (sekcja
    `positioning`, „claimy, których bronimy"): +32% odzyskanego czasu, MMLC 12 h/tydz.
    **Nie wymyślać nowych.**
-4. **Cena wejścia** - audyt 4 900 PLN. Większość polskich agencji AI nie publikuje cen;
-   to wyróżnik, nie ryzyko.
+4. ~~**Cena wejścia** - audyt 4 900 PLN.~~ **WYPADA - decyzja Kuby 30.08: bez ceny
+   na stronie.** Zostaje spójne framing „darmowa diagnoza / darmowy audyt". FAQ łapie
+   intencję kosztową odpowiedzią o wycenie po diagnozie + kosztach utrzymania (200-600
+   PLN/mies., claim z FAQ strony głównej).
 5. **FAQ** - 4-6 pytań pod People Also Ask. Podwójny zwrot: bloki PAA w SERP-ie
    plus materiał dla AI Overview i LLM-ów.
 
@@ -95,13 +97,19 @@ Statyczny fallback bierze treść z `scripts/seo-routes.mjs` (`plainText` z `exp
 i `expandedDescription`) - jeśli rozbudujesz treść tylko w `innerCards`, **crawler bez JS jej
 nie zobaczy**. To jest najłatwiejsza pułapka w tym sprincie.
 
-### Kryteria ukończenia
+### Kryteria ukończenia (✓ wszystkie spełnione 30.08, wdrożenie lokalne)
 
-- [ ] `metaTitle` celuje w `automatyzacja ai`, `metaDescription` bez nazw stacku, oba w limicie
-- [ ] Treść widoczna dla crawlera bez JS ≥ 800 słów (sprawdź w `dist/`, nie w źródle)
-- [ ] Sekcja FAQ istnieje
-- [ ] Zero pauz (kontrola wyżej zwraca `0`)
-- [ ] `npm run build` przechodzi, `npm run lint` bez nowych błędów
+- [x] `metaTitle` celuje w `automatyzacja ai` („Automatyzacja AI dla firm - audyt i wdrożenie
+      | Workshift", 58 zn.), `metaDescription` bez nazw stacku (150 zn.)
+- [x] Treść widoczna dla crawlera bez JS: **1098 słów** w `dist/uslugi/automatyzacja/index.html`
+      (było 290)
+- [x] Sekcja FAQ istnieje (6 pytań, `ServiceFaq` z `keepMounted` - odpowiedzi w DOM przy
+      zwiniętym akordeonie) + **FAQPage JSON-LD** w statycznym `<head>`
+- [x] Zero pauz (services.js i dist: `0`)
+- [x] `npm run build` przechodzi bez ostrzeżeń thin/orphan, lint bez nowych błędów
+      (2 zastane `no-unused-vars` na baseline)
+
+Pozostało: review copy przez Kubę na dev (:5183) → push → za 4-6 tyg. odczyt GSC.
 
 ---
 

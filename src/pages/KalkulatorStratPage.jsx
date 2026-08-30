@@ -474,6 +474,15 @@ function ResultCard({
                 )}
             </div>
 
+            {/* Link do usługi - jak realnie odzyskujemy policzone godziny */}
+            <p className="text-center text-base text-muted-dark">
+                Ciekawi Cię, jak te godziny wracają w praktyce?{' '}
+                <Link to="/uslugi/automatyzacja" className="text-black underline underline-offset-4 hover:text-lime transition-colors">
+                    Zobacz, jak działa automatyzacja AI
+                </Link>
+                {' '}- procesy, wdrożenie i przykład z liczbami.
+            </p>
+
             {/* Reset */}
             <div className="text-center pt-4">
                 <Link

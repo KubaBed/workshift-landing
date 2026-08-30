@@ -5,6 +5,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Logo } from '@/components/ui/Logo';
 import { GradientDivider } from '@/components/ui/GradientDivider';
 import { Highlighter } from '@/components/ui/Highlighter';
+import { ServiceArticle } from '@/components/ui/ServiceArticle';
+import { ServiceFaq } from '@/components/ui/ServiceFaq';
+import { getServiceById } from '@/data/services';
 
 /**
  * /showcase - katalog komponentów Workshift.
@@ -196,6 +199,24 @@ export default function ShowcasePage() {
               Zdanie z <Highlighter isView>podkreśloną frazą</Highlighter> - highlighter
               wchodzi w akcję po wejściu w viewport.
             </p>
+          </div>
+        </Section>
+
+        <Section
+          id="service-article"
+          title="ServiceArticle + ServiceFaq"
+          note="src/components/ui/ServiceArticle.jsx i ServiceFaq.jsx - sekcja artykułowa i FAQ strony usługi (Sprint 1 SEO). Dane z services.js (seoSections/faq), tu na przykładzie usługi automatyzacja. Żywy render: /uslugi/automatyzacja."
+        >
+          <div className="rounded-lg border border-black/10 bg-white px-6 py-2">
+            <ServiceArticle
+              sections={getServiceById('automatyzacja')?.seoSections?.slice(0, 1)}
+              related={[
+                { href: '/audyt-ai', label: 'Mikro-audyt AI (4 minuty)' },
+                { href: '/kalkulator', label: 'Kalkulator strat czasowych' },
+              ]}
+            />
+            <ServiceFaq faq={getServiceById('automatyzacja')?.faq?.slice(0, 2)} />
+            <div className="h-8" />
           </div>
         </Section>
 

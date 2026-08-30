@@ -12,10 +12,10 @@ export const SERVICES = [
 
         categoryTag: 'Nasza flagowa usługa',
         expandedTitle: 'Od diagnozy procesu - do działającego workflow.',
-        expandedDescription: 'Zaczynamy od 30-minutowej darmowej diagnozy i mapy Twoich procesów. Wskazujemy 2-3 miejsca, gdzie automatyzacja da najszybszy, policzalny zwrot. Potem budujemy pipeline: n8n, Make i dedykowane skrypty, które wpinają się w to, jak już pracujesz. Bez zmiany przyzwyczajeń, bez wdrażania nowego "systemu" - dane płyną same.',
+        expandedDescription: 'Zaczynamy od 30-minutowej darmowej diagnozy i mapy Twoich procesów. Wskazujemy 2-3 miejsca, gdzie automatyzacja AI da najszybszy, policzalny zwrot. Potem budujemy workflow, który wpina się w to, jak już pracujesz: dane z maili, faktur i formularzy same trafiają tam, gdzie mają być. Bez zmiany przyzwyczajeń, bez wdrażania nowego "systemu" - dane płyną same.',
         heroMetric: { value: '10h+', label: 'oszczędności na pracowniku tygodniowo - średnia z naszych wdrożeń', subtext: 'Przy zespole 5-osobowym to 200h+ miesięcznie.' },
-        metaTitle: 'Audyt i automatyzacja procesów biznesowych | Workshift',
-        metaDescription: 'Darmowy audyt procesów + wdrożenie automatyzacji z n8n, Make i AI. Oszczędność 10h+ tygodniowo na pracownika.',
+        metaTitle: 'Automatyzacja AI dla firm - audyt i wdrożenie | Workshift',
+        metaDescription: 'Automatyzacja AI w praktyce: darmowy audyt procesów, wdrożenie w 1-2 tygodnie i 10h+ oszczędności tygodniowo na pracownika. Zobacz, od czego zacząć.',
 
         innerCards: [
             {
@@ -70,6 +70,80 @@ export const SERVICES = [
                 headline: 'Zacznij od darmowej diagnozy',
                 subline: '30 minut Twojego czasu. Zero zobowiązań. Konkretne rekomendacje od razu.',
                 ctaLabel: 'Umów diagnozę',
+            },
+        ],
+
+        // Treść artykułowa pod bento (Sprint 1 SEO, fraza: automatyzacja ai).
+        // Konsumenci: ServiceArticle/ServiceFaq na ServicePage ORAZ statyczny
+        // fallback w scripts/seo-routes.mjs - crawler bez JS musi widzieć to samo.
+        seoSections: [
+            {
+                heading: 'Czym jest automatyzacja AI?',
+                paragraphs: [
+                    'Automatyzacja AI to połączenie klasycznej automatyzacji procesów z modelami sztucznej inteligencji. Zwykła automatyzacja przenosi dane między narzędziami według sztywnych reguł. AI dodaje do tego rozumienie treści: odczytuje fakturę z załącznika, klasyfikuje maila od klienta, wyciąga ustalenia z notatki ze spotkania. Dzięki temu automatyzacja procesów AI obejmuje także zadania, które dotąd wymagały człowieka - czytanie, ocenianie i przepisywanie informacji.',
+                    'W praktyce polskiego MŚP oznacza to jedno: powtarzalne czynności biurowe dzieją się same, a zespół zajmuje się pracą, która wymaga decyzji. Średnia z naszych wdrożeń to ponad 10 godzin odzyskanych tygodniowo na pracownika.',
+                ],
+            },
+            {
+                heading: 'Które procesy automatyzujemy najczęściej',
+                items: [
+                    {
+                        title: 'Obieg faktur',
+                        desc: 'Faktura przychodzi mailem, ktoś ją pobiera, przepisuje dane do systemu księgowego i odkłada plik do folderu. Przy 80 fakturach tygodniowo to dwa dni pracy. Po wdrożeniu system sam odczytuje załącznik, kategoryzuje koszt i zapisuje dane - człowiek tylko zatwierdza wyjątki.',
+                    },
+                    {
+                        title: 'Synchronizacja CRM, maila i kalendarza',
+                        desc: 'Notatka po spotkaniu, status szansy sprzedażowej i follow-up żyją w trzech miejscach naraz. Automatyzacja spina je w jeden przepływ: po spotkaniu CRM dostaje podsumowanie, a handlowiec przypomnienie - bez ręcznego klikania.',
+                    },
+                    {
+                        title: 'Raporty z rozproszonych danych',
+                        desc: 'Comiesięczne zestawienie składane z pięciu źródeł w arkuszu potrafi zająć dwa dni. Zautomatyzowany raport buduje się sam w nocy i rano czeka w skrzynce - zawsze w tym samym formacie, zawsze na czas.',
+                    },
+                    {
+                        title: 'Powiadomienia i eskalacje',
+                        desc: 'Niezapłacona faktura, zlecenie bez odpowiedzi, kończący się termin umowy - system pilnuje tego za Ciebie i eskaluje do właściwej osoby, zanim problem urośnie.',
+                    },
+                ],
+            },
+            {
+                heading: 'Sztuczna inteligencja w firmie - od czego zaczynamy',
+                paragraphs: [
+                    'Nie zaczynamy od technologii, tylko od mapy procesów. W 30-minutowej darmowej diagnozie wskazujemy 2-3 miejsca, w których sztuczna inteligencja w firmie zwróci się najszybciej - policzalnie, w godzinach i złotówkach. Potem budujemy pierwszy workflow i testujemy go na Twoich danych przez 1-2 tygodnie. Dopiero gdy widzisz wynik na własnym procesie, decydujesz o kolejnych krokach.',
+                    'Jeśli chcesz sprawdzić potencjał przed rozmową, zrób bezpłatny mikro-audyt AI (12 pytań, 4 minuty) albo policz koszt powtarzalnych zadań w kalkulatorze strat czasowych.',
+                ],
+            },
+            {
+                heading: 'Przykład wdrożenia: 80 faktur tygodniowo bez przepisywania',
+                paragraphs: [
+                    'Firma produkcyjna, 30 osób. Dział księgowości przepisywał dane z ponad 80 faktur tygodniowo ręcznie - z maili do systemu finansowo-księgowego. Wąskie gardło rosło z każdym nowym dostawcą.',
+                    'Wdrożyliśmy workflow: mail przychodzący, automatyczny odczyt faktury przez AI, kategoryzacja kosztu i zapis w systemie. Czas operacji spadł z 2 dni roboczych do 15 minut, a księgowość zamiast przepisywać dane, kontroluje wyjątki. Ten sam wzorzec przenosimy do handlu, usług i logistyki - zmienia się dokument, mechanika zostaje.',
+                ],
+            },
+        ],
+        faq: [
+            {
+                q: 'Czym różni się automatyzacja AI od zwykłej automatyzacji?',
+                a: 'Zwykła automatyzacja działa według sztywnych reguł: jeśli A, to B. Automatyzacja AI rozumie treść - odczyta fakturę z PDF-a, sklasyfikuje maila, streści dokument. Dzięki temu automatyzować można też procesy oparte na czytaniu i ocenie informacji, nie tylko na przenoszeniu danych między narzędziami.',
+            },
+            {
+                q: 'Które procesy w firmie da się zautomatyzować?',
+                a: 'Najlepiej automatyzują się procesy powtarzalne i oparte na danych: obieg faktur i dokumentów, przepisywanie danych między narzędziami, raportowanie, obsługa powtarzalnych zapytań, pilnowanie terminów. Jeśli zadanie da się opisać krok po kroku, prawie na pewno da się je zautomatyzować.',
+            },
+            {
+                q: 'Jak szybko widać efekty automatyzacji AI?',
+                a: 'Pierwszy działający workflow budujemy i testujemy w 1-2 tygodnie od diagnozy. Efekt widzisz od razu na własnych danych - średnia z naszych wdrożeń to ponad 10 godzin odzyskanych tygodniowo na pracownika, czyli ponad 200 godzin miesięcznie przy zespole 5-osobowym.',
+            },
+            {
+                q: 'Czy automatyzacja AI jest bezpieczna dla danych firmy?',
+                a: 'Tak, jeśli jest dobrze zaprojektowana. Rozwiązania budujemy w oparciu o zamknięte instancje i rygorystyczne polityki dostępu, a dane dokumentowe i finansowe nie służą do trenowania globalnych modeli. Zgodność z RODO sprawdzamy na etapie projektowania, nie po wdrożeniu.',
+            },
+            {
+                q: 'Ile kosztuje automatyzacja procesów AI?',
+                a: 'Koszt zależy od liczby i złożoności procesów, dlatego zaczynamy od darmowej diagnozy, po której dostajesz konkretną wycenę. Samo utrzymanie działających automatyzacji to najczęściej 200-600 PLN miesięcznie za subskrypcje narzędzi - przy kilku procesach w firmie 20-osobowej.',
+            },
+            {
+                q: 'Od czego zacząć automatyzację w swojej firmie?',
+                a: 'Od zmierzenia, gdzie uciekają godziny. Zrób bezpłatny mikro-audyt AI (4 minuty) albo policz koszt powtarzalnych zadań w kalkulatorze strat czasowych. Potem umów 30-minutową darmową diagnozę - dostaniesz mapę 2-3 procesów, od których warto zacząć.',
             },
         ],
     },

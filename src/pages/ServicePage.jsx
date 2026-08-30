@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getServiceById } from '../data/services';
 import { ExpandedServiceView } from '../components/InteractiveServicesBento';
+import { ServiceArticle } from '../components/ui/ServiceArticle';
+import { ServiceFaq } from '../components/ui/ServiceFaq';
 
 export default function ServicePage() {
     const { serviceId } = useParams();
@@ -67,6 +69,14 @@ export default function ServicePage() {
                         service={service}
                         onClose={handleClose}
                     />
+                    <ServiceArticle
+                        sections={service.seoSections}
+                        related={[
+                            { href: '/audyt-ai', label: 'Mikro-audyt AI (4 minuty)' },
+                            { href: '/kalkulator', label: 'Kalkulator strat czasowych' },
+                        ]}
+                    />
+                    <ServiceFaq faq={service.faq} />
                 </div>
             </div>
         </main>

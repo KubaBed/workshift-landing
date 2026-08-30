@@ -80,10 +80,24 @@ function patchHead(shell, route) {
   }
 
   // Canonical nie istnieje w index.html, więc go dopisujemy zamiast podmieniać.
-  return html.replace(
-    /<\/head>/,
-    `  <link rel="canonical" href="${escapeAttr(url)}" />\n  </head>`,
-  );
+  const extras = [`  <link rel="canonical" href="${escapeAttr(url)}" />`];
+
+  // FAQPage tylko dla tras, których dane niosą pole `faq` (dziś: usługa
+  // automatyzacja, Sprint 1 SEO). Pozostałe schematy żyją w PAPERCUTS.md.
+  if (route.faq?.length) {
+    const jsonLd = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: route.faq.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    }).replace(/</g, '\\u003c');
+    extras.push(`  <script type="application/ld+json">${jsonLd}</script>`);
+  }
+
+  return html.replace(/<\/head>/, `${extras.join('\n')}\n  </head>`);
 }
 
 /* ---------- render fallbacku ---------- */

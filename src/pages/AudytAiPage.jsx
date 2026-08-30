@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     ArrowRight,
@@ -378,6 +379,13 @@ export default function AudytAiPage() {
                             WhatsApp
                         </a>
                     </div>
+                    <p className="mt-8 text-base text-muted-dark">
+                        Wolisz najpierw poczytać?{' '}
+                        <Link to="/uslugi/automatyzacja" className="text-black underline underline-offset-4 hover:text-lime transition-colors">
+                            Zobacz, jak działa automatyzacja AI
+                        </Link>
+                        {' '}- procesy, wdrożenie i przykład z liczbami.
+                    </p>
                 </div>
             </section>
 

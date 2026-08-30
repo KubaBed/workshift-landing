@@ -179,6 +179,23 @@ function serviceSections(service) {
     }
   }
 
+  // Treść artykułowa i FAQ (Sprint 1 SEO) - te pola żyją obok innerCards,
+  // renderują je ServiceArticle/ServiceFaq. Bez tego bloku crawler bez JS
+  // nie zobaczy najdłuższej treści strony.
+  for (const section of service.seoSections ?? []) {
+    sections.push({
+      heading: section.heading,
+      text: (section.paragraphs ?? []).map(sentence).join(' ') || undefined,
+      items: section.items?.map((item) => `${stripEmoji(item.title)} - ${sentence(item.desc)}`),
+    });
+  }
+  if (service.faq?.length) {
+    sections.push({
+      heading: 'Najczęstsze pytania',
+      items: service.faq.map((f) => `${stripEmoji(f.q)} ${sentence(f.a)}`),
+    });
+  }
+
   return sections;
 }
 
@@ -312,6 +329,18 @@ const STATIC_FALLBACK = {
         ],
       },
     ],
+    links: [
+      {
+        href: '/uslugi/automatyzacja',
+        label: 'Automatyzacja AI dla firm',
+        note: 'Co automatyzujemy, jak wygląda wdrożenie i przykład z liczbami.',
+      },
+      {
+        href: '/kalkulator',
+        label: 'Kalkulator strat czasowych',
+        note: 'Policz w 60 sekund, ile kosztują Cię powtarzalne zadania.',
+      },
+    ],
   },
 
   '/kalkulator': {
@@ -344,6 +373,18 @@ const STATIC_FALLBACK = {
           const tips = REKOMENDACJE[b.id] ?? REKOMENDACJE.inne;
           return `${key} - ${tips.map(sentence).join(' ')}`;
         }),
+      },
+    ],
+    links: [
+      {
+        href: '/uslugi/automatyzacja',
+        label: 'Automatyzacja AI dla firm',
+        note: 'Zobacz, jak odzyskujemy policzone tu godziny: procesy, wdrożenie, przykład z liczbami.',
+      },
+      {
+        href: '/audyt-ai',
+        label: 'Mikro-audyt AI',
+        note: 'Sprawdź w 4 minuty, gdzie tracisz czas.',
       },
     ],
   },
@@ -411,6 +452,7 @@ export const routes = [
     type: 'website',
     priority: '0.8',
     changefreq: 'monthly',
+    faq: service.faq,
     fallbackHeading: service.title,
     fallbackLead: service.tagline,
     fallbackBody: plainText([service.expandedTitle, service.expandedDescription].filter(Boolean).join(' ')),
