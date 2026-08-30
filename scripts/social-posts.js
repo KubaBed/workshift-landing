@@ -81,6 +81,12 @@ const POSTS = [
       link: 'https://luma.com/sp9da9rc', linkLabel: '👉 Zapisy:',
       fb: 'Wiedza w firmie zwykle jest. Problem w tym, że siedzi w głowie jednej osoby, która akurat jest na urlopie. 🌴\n\nA że sezon urlopowy w pełni, to zapraszam 11 sierpnia na ai use_case, gdzie opowiem, jak sobie z tym poradziłem (Pawel Sieczkiewicz, dzięki za zaproszenie).\nPrzyjdźcie pogadać po prelekcji i wymienić się doświadczeniami.\n\nA jeżeli chodzi o konkrety:\n- Po pierwsze, firmowa baza wiedzy zbudowana z tego, co firma i tak już miała. Blog, stare oferty, transkrypty rozmów z klientami, stawki opłat. Nic nowego nie trzeba było pisać, trzeba było to poukładać. W efekcie, cały zespół odpowiada klientom tak samo, niezależnie od tego, kto odbiera telefon.\n- Po drugie, inny problem, ale ta sama choroba. Każda kancelaria to zna: dokumenty przychodzą mailem jako skany, często niewyraźne zdjęcia zrobione telefonem pod kątem. O wersji edytowalnej można pomarzyć, więc nie da się znaleźć niczego, dopóki ktoś nie przejrzy tego ręcznie, strona po stronie.\nWdrożyliśmy OCR, który to rozwiązuje. Wysyłasz maila ze skanami na wewnętrzny adres, w odpowiedzi dostajesz plik z edytowalnym tekstem, obrobiony przez bezpieczny, lokalny model.\n\nOpowiem o tym, co zadziałało, ile trwało i gdzie się po drodze wyłożyłem.\n\n11 sierpnia, 18:00, Toast, Targowa 76, Warszawa.',
       ig: 'Wiedza w firmie zwykle jest. Tylko siedzi w głowie jednej osoby, która akurat jest na urlopie. 🌴\n\nA że sezon urlopowy w pełni - 11 sierpnia w Warszawie opowiem, jak sobie z tym poradziłem.\n\n🧠 Firmowa baza wiedzy zbudowana z tego, co firma i tak już miała: bloga, starych ofert, transkryptów rozmów z klientami. Cały zespół odpowiada klientom tak samo, niezależnie od tego, kto odbiera telefon.\n\n📄 OCR dla kancelarii. Wysyłasz maila ze skanami na wewnętrzny adres, w odpowiedzi dostajesz plik z edytowalnym tekstem - obrobiony przez bezpieczny, lokalny model.\n\nBez działu IT. Bez wdrożenia na pół roku.\n\nOpowiem, co zadziałało, ile trwało i gdzie się po drodze wyłożyłem. Przyjdźcie pogadać po prelekcji.\n\n📍 ai use_case · 11.08, 18:00 · Toast, Targowa 76, Warszawa\n\n🔗 Zapisy - link w komentarzu 👇\n.\n#AI #sztucznainteligencja #automatyzacja #MŚP #biznes #kancelaria #legaltech #bazawiedzy #OCR #Warszawa #wydarzenie #przedsiębiorczość' },
+    // ── Wpis z 30.08: baza wiedzy, ktora przekonala sceptykow ────────────────
+    // Link idzie w PIERWSZYM KOMENTARZU na obu kanalach (FB przez --fb-now).
+    { slug: 'baza-wiedzy-ktora-przekonala-sceptykow', img: 'WS-post-09-baza-wiedzy-1080x1080.png', story: 'WS-story-09-baza-wiedzy-1080x1920.png', publishAt: '2026-08-30T10:00:00+02:00',
+      fb: 'Sceptyka w zespole nie przekona prezentacja o agentach AI. Przekona go pierwszy moment, w którym coś realnie oszczędza mu czas.\n\nSpisałem całe nasze wdrożenie firmowej bazy wiedzy - uczciwie, z porażką włącznie. Baza poległa na najprostszym pytaniu świata: ile wynosi opłata roczna. W środku siedział stary wpis z bloga ze stawką 100 zł zamiast 200. Trafiło na nową osobę, która nie miała jak wiedzieć, że to nieaktualne.\n\nWe wpisie: z czego zbudowaliśmy bazę (nie napisaliśmy ani jednego nowego dokumentu), ile to naprawdę trwało i dlaczego akurat takie nudne wdrożenie przekonuje sceptyków szybciej niż ambitny projekt.',
+      ig: 'Sceptyka w zespole nie przekona prezentacja o agentach AI. 🤷\n\nPrzekona go pierwszy moment, w którym coś realnie oszczędza mu czas.\n\nOpisałem nasze wdrożenie firmowej bazy wiedzy: co zadziałało, ile naprawdę trwało i na czym poległo. Na najprostszym pytaniu świata: ile wynosi opłata roczna. 100 zamiast 200 zł, stary wpis z bloga i nowa osoba, która nie miała jak wiedzieć.\n\nPlus rzecz, w którą naprawdę wierzę: takie z pozoru błahe wdrożenie robi dla adopcji AI więcej niż niejeden ambitny projekt.\n\n🔗 Cały wpis - link w komentarzu 👇\n.\n#AI #bazawiedzy #automatyzacja #sztucznainteligencja #MŚP #biznes #wdrożenieAI #NotebookLM' },
+
 ];
 
 async function graph(pathname, { method = 'GET', params, token = TOKEN } = {}) {
@@ -141,6 +147,32 @@ async function scheduleFacebook({ pageId, pageToken }) {
     }
 }
 
+// FB natychmiast + link w PIERWSZYM KOMENTARZU (zamiast w treści posta).
+// Zaplanowanemu postowi nie da się dodać komentarza przed publikacją, więc ten
+// tryb publikuje od razu i dopiero wtedy komentuje. Do postów, gdzie zależy nam
+// na zasięgu - link w treści go obniża.
+async function publishFacebookNow({ pageId, pageToken }, forceSlug) {
+    const state = loadState();
+    for (const p of POSTS) {
+        if (forceSlug && p.slug !== forceSlug) continue;
+        const key = `fb:${p.slug}`;
+        if (state[key]) { console.log(`FB pominięty (już opublikowany/zaplanowany): ${p.slug}`); continue; }
+        const res = await graph(`/${pageId}/photos`, {
+            method: 'POST',
+            token: pageToken,
+            params: { url: imgUrl(p.fbImg || p.img), caption: p.fb, published: 'true' },
+        });
+        const postId = res.post_id || res.id;
+        state[key] = { id: postId, at: new Date().toISOString(), mode: 'now' };
+        saveState(state);
+        console.log(`FB opublikowany: ${p.slug} (${postId})`);
+        try {
+            const c = await graph(`/${postId}/comments`, { method: 'POST', token: pageToken, params: { message: fbLinkLine(p) } });
+            console.log(`  komentarz z linkiem dodany (${c.id})`);
+        } catch (e) { console.log(`  (komentarz FB nie dodany: ${e.message})`); }
+    }
+}
+
 // Kontener IG przetwarza się asynchronicznie - media_publish przed FINISHED
 // zwraca code 9007 "Media ID is not available". Czekamy do skutku (max ~60 s).
 async function waitForContainer(creationId) {
@@ -172,7 +204,10 @@ async function publishInstagram({ igId }, forceSlug) {
             state[feedKey] = { id: pub.id, at: new Date().toISOString() };
             saveState(state);
             // Link jako pierwszy komentarz (IG nie lubi linków w caption).
-            try { await graph(`/${pub.id}/comments`, { method: 'POST', params: { message: `Cały wpis 👉 ${linkFor(p.slug)}` } }); } catch (e) { console.log(`  (komentarz IG nie dodany: ${e.message})`); }
+            // BYŁO: linkFor(p.slug) - linkFor oczekuje obiektu posta, nie stringa.
+            // Dla stringa `p.link` trafiało w String.prototype.link, więc komentarz
+            // publikował się jako "Cały wpis 👉 function link() { [native code] }".
+            try { await graph(`/${pub.id}/comments`, { method: 'POST', params: { message: igLinkLine(p) } }); } catch (e) { console.log(`  (komentarz IG nie dodany: ${e.message})`); }
             console.log(`IG feed opublikowany: ${p.slug} (${pub.id})`);
         }
         // Story
@@ -198,12 +233,14 @@ if (has('--plan') || args.length === 0) {
     for (const p of POSTS) console.log(`  ${p.publishAt}  ${p.slug}\n      FB: ${p.fb.split('\n')[0].slice(0, 70)}...\n      IG: ${p.ig.split('\n')[0].slice(0, 70)}...`);
     console.log('\nObrazki (muszą być wdrożone na workshift.pl/social/ PRZED publikacją):');
     console.log(`  baza: ${ASSET_BASE}`);
-    console.log('\nUżycie: --fb (planuje FB), --ig (publikuje dojrzałe IG, do crona), --ig --force <slug> (1 od razu)');
+    console.log('\nUżycie: --fb (planuje FB, link w treści), --fb-now --force <slug> (FB od razu, link w komentarzu),');
+    console.log('       --ig (publikuje dojrzałe IG, do crona), --ig --force <slug> (1 od razu)');
     process.exit(0);
 }
 
 const targets = await resolveTargets();
 console.log(`Strona FB: ${targets.pageId}${targets.igId ? ` · IG: ${targets.igId}` : ' · brak IG'}\n`);
 if (has('--fb')) await scheduleFacebook(targets);
+if (has('--fb-now')) await publishFacebookNow(targets, forceSlug);
 if (has('--ig')) await publishInstagram(targets, forceSlug);
 console.log('\nGotowe. Stan zapisany w .social-state.json (idempotencja).');
