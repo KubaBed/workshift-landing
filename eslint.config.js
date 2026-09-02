@@ -5,7 +5,8 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  // Build output, tooling agentów (per-developer) i katalogi z materiałami poza kodem strony.
+  globalIgnores(['dist', '.agents', '.claude', 'skills', 'docs', 'assets', 'offers', '_archive', 'src/lib/ogl']),
   {
     files: ['**/*.{js,jsx}'],
     extends: [
@@ -25,5 +26,11 @@ export default defineConfig([
     rules: {
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
     },
+  },
+  {
+    // Kod uruchamiany w Node (Vercel Functions, skrypty build/marketing, generatory PDF).
+    files: ['api/**/*.js', 'scripts/**/*.{js,mjs}', 'lead-magnets/**/*.mjs', 'vite.config.js', 'vite-api-middleware.mjs'],
+    languageOptions: { globals: { ...globals.node } },
+    rules: { 'react-refresh/only-export-components': 'off' },
   },
 ])

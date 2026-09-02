@@ -169,7 +169,7 @@ bottom polygon: 141,333  371,333  333,397  103,397   → muted fill
 
 Package for external parties (agencies, partners): `public/Workshift_Brand_Assets.zip`.
 
-> **Note on the duplicate:** the `Workshift_logo/` directory in the project root holds the same three SVGs under Polish filenames. Verified: identical geometry and identical colours. It is a working export, **not** a separate brand version - always edit `public/brand-assets/` and regenerate from there.
+> **Single source of logo files:** `public/brand-assets/`. Working exports under other names (the former `Workshift_logo/`) were removed on 2026-09-03 - edit `public/brand-assets/` only and regenerate from there.
 
 ### 2.4 Usage rules
 
@@ -542,7 +542,7 @@ The hook **„A GDYBY TAK..."** is the shared element across every campaign grap
 - Lead offer: a free 30-minute diagnostic call
 - Form: instant form, GDPR/RODO consent required whenever an email address is captured
 
-> Live campaign status, copy decks and schedules live in `KAMPANIA-V2-LEADGEN.md`, `KAMPANIA-V3-KONCEPT.md` and `campaign-brief.md` (all gitignored). This document covers **brand rules** only, not campaign state.
+> Live campaign status, copy decks and schedules live in `docs/internal/kampanie/` (`KAMPANIA-V2-LEADGEN.md`, `KAMPANIA-V3-KONCEPT.md`, `campaign-brief.md`; the whole directory is gitignored). This document covers **brand rules** only, not campaign state.
 
 ---
 
@@ -577,9 +577,9 @@ Order of operations: `BRAND.md` → mirror into `docs/brand/BRAND.en.md` → car
 
 | File | Status |
 |------|--------|
-| `Workshift_logo/` | Working export - duplicate of `public/brand-assets/`, identical content. Do not edit here |
 | `brand-profile.json` | Brand DNA for campaign tooling (`/ads`). **Gitignored** - local only |
-| `campaign-brief.md`, `KAMPANIA-*.md` | Campaign strategy. **Gitignored** |
+| `docs/internal/kampanie/` | Campaign strategy (`campaign-brief.md`, `KAMPANIA-*.md`). **Gitignored** |
+| `~/Projekty/workshift-marketing/` | Creatives (`ad-creatives/`), `brand-components/`, `frame-pack/` - a separate project outside this repo |
 
 ### ⛔ LEGACY - archived 28 July 2026
 

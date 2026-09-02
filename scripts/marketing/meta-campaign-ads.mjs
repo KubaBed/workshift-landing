@@ -5,7 +5,8 @@
  * Idempotentny: obrazy deduplikowane hashem po stronie Meta, creatives i ads
  * pomijane po nazwie. Wszystkie reklamy powstają PAUSED - włączasz w Ads Managerze.
  *
- * Kreacje PNG bierze z katalogu podanego w AD_CREATIVES_DIR (default: ./ad-creatives).
+ * Kreacje PNG bierze z katalogu podanego w AD_CREATIVES_DIR
+ * (default: ../workshift-marketing/ad-creatives - osobny projekt, poza tym repo).
  *
  * Wymagane env (.env.local): META_SYSTEM_USER_TOKEN, META_AD_ACCOUNT_ID
  * Uruchomienie: AD_CREATIVES_DIR=<dir> node --env-file=.env.local scripts/meta-campaign-ads.mjs
@@ -18,7 +19,7 @@ const API = 'https://graph.facebook.com/v21.0';
 const TOKEN = process.env.META_SYSTEM_USER_TOKEN;
 const ACCOUNT = process.env.META_AD_ACCOUNT_ID?.startsWith('act_')
     ? process.env.META_AD_ACCOUNT_ID : `act_${process.env.META_AD_ACCOUNT_ID}`;
-const DIR = process.env.AD_CREATIVES_DIR || './ad-creatives';
+const DIR = process.env.AD_CREATIVES_DIR || '../workshift-marketing/ad-creatives';
 
 const PAGE_ID = '1117204771471948';
 const PROSPECTING_ADSET = '120247366435870240';

@@ -160,7 +160,7 @@ dolny  polygon: 141,333  371,333  333,397  103,397   → wypełnienie tłumione
 
 Paczka do wysyłki na zewnątrz (agencje, partnerzy): `public/Workshift_Brand_Assets.zip`.
 
-> **Uwaga o duplikacie:** katalog `Workshift_logo/` w rootcie projektu zawiera te same trzy SVG pod polskimi nazwami. Zweryfikowane: identyczna geometria i identyczne kolory. To eksport roboczy, **nie** osobna wersja marki - przy edycji zawsze zmieniaj `public/brand-assets/` i regeneruj resztę.
+> **Jedno źródło plików logo:** `public/brand-assets/`. Robocze eksporty pod innymi nazwami (dawny `Workshift_logo/`) zostały usunięte 2026-09-03 - przy edycji zmieniaj tylko `public/brand-assets/` i regeneruj resztę.
 
 ### 2.4 Zasady użycia
 
@@ -527,7 +527,7 @@ Hook **„A GDYBY TAK..."** jest wspólnym elementem wszystkich grafik kampanii 
 - Oferta wejściowa: bezpłatna 30-minutowa rozmowa diagnostyczna
 - Formularz: instant form, zgoda RODO wymagana przy zostawianiu maila
 
-> Operacyjny stan kampanii, copy decki i harmonogramy żyją w `KAMPANIA-V2-LEADGEN.md`, `KAMPANIA-V3-KONCEPT.md` i `campaign-brief.md` (gitignored). Ten dokument opisuje wyłącznie **reguły marki**, nie stan kampanii.
+> Operacyjny stan kampanii, copy decki i harmonogramy żyją w `docs/internal/kampanie/` (`KAMPANIA-V2-LEADGEN.md`, `KAMPANIA-V3-KONCEPT.md`, `campaign-brief.md`; cały katalog gitignored). Ten dokument opisuje wyłącznie **reguły marki**, nie stan kampanii.
 
 ---
 
@@ -564,9 +564,9 @@ Trzy kopie tej samej treści to dług, którego świadomie nie spłacam teraz (P
 
 | Plik | Status |
 |------|--------|
-| `Workshift_logo/` | Eksport roboczy - duplikat `public/brand-assets/`, identyczna treść. Nie edytuj tutaj |
 | `brand-profile.json` | Brand DNA dla narzędzi kampanijnych (`/ads`). **Gitignored** - lokalny |
-| `campaign-brief.md`, `KAMPANIA-*.md` | Strategia kampanii. **Gitignored** |
+| `docs/internal/kampanie/` | Strategia kampanii (`campaign-brief.md`, `KAMPANIA-*.md`). **Gitignored** |
+| `~/Projekty/workshift-marketing/` | Kreacje (`ad-creatives/`), `brand-components/`, `frame-pack/` - osobny projekt poza tym repo |
 
 ### ⛔ LEGACY - zarchiwizowane 28.07.2026
 
