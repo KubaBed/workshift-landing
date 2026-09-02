@@ -7,7 +7,7 @@
  * Usage:
  *   node lead-magnets/build-offer-pdf.mjs informax
  *
- * Output: offers-pdf/<slug>-<YYYY-MM-DD>.pdf (gitignored)
+ * Output: offers/out/<slug>-<YYYY-MM-DD>.pdf (katalog offers/ jest gitignored)
  *
  * Plik PDF zostaje LOKALNIE — żaden skrypt nie wysyła go nigdzie automatycznie.
  */
@@ -106,11 +106,19 @@ function renderNextSteps(steps) {
 
 function renderHTML(offer) {
     const clientShort = offer.client.name.replace(' Sp. z o.o.', '');
+    // Etykiety sekcji - domyślne z pierwszej oferty, nadpisywalne per klient przez offer.labels.
+    const L = {
+        problems: 'Dwa procesy do automatyzacji',
+        timelineTitle: 'Od startu do działającego asystenta - ok. 5 miesięcy',
+        pricingTitle: 'Pilotaż pierwszego procesu',
+        nextStepsTitle: 'Następne 4 kroki',
+        ...(offer.labels || {}),
+    };
     return `<!doctype html>
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<title>${esc(offer.meta.title)} — ${esc(clientShort)}</title>
+<title>${esc(offer.meta.title)} - ${esc(clientShort)}</title>
 <style>
     /* ─── Workshift design tokens ─── */
     :root {
@@ -586,6 +594,14 @@ function renderHTML(offer) {
             <div class="hero-meta">${esc(offer.meta.dateSent)} · ${esc(offer.meta.author)}</div>
         </section>
 
+        ${Array.isArray(offer.tldr) && offer.tldr.length ? `
+        <!-- TL;DR -->
+        <section>
+            <span class="label-mono">W skrócie</span>
+            <ul class="phase-deliverables">${renderDeliverables(offer.tldr)}</ul>
+        </section>
+        ` : ''}
+
         <!-- CONTEXT -->
         <section>
             <span class="label-mono">Kontekst</span>
@@ -595,7 +611,7 @@ function renderHTML(offer) {
 
         <!-- PROBLEMS -->
         <section>
-            <span class="label-mono">Dwa procesy do automatyzacji</span>
+            <span class="label-mono">${esc(L.problems)}</span>
             <h2>Co rozwiązujemy</h2>
             <div class="problems">${renderProblems(offer.problems)}</div>
         </section>
@@ -624,8 +640,9 @@ function renderHTML(offer) {
                     <div class="phase-price">${esc(offer.pilot.price)}</div>
                     <div class="phase-price-note">${esc(offer.pilot.priceNote)}</div>
                 </div>
-                <div class="phase-deliverables-label">Co dostajesz</div>
+                <div class="phase-deliverables-label">${esc(offer.pilot.deliverablesLabel || 'Co dostajesz')}</div>
                 <ul class="phase-deliverables">${renderDeliverables(offer.pilot.deliverables)}</ul>
+                ${offer.pilot.callout ? `<div class="phase-callout">${esc(offer.pilot.callout)}</div>` : ''}
             </div>
 
             <div class="phase">
@@ -639,23 +656,33 @@ function renderHTML(offer) {
                     <div class="phase-price">${esc(offer.asysta.price)}</div>
                     <div class="phase-price-note">${esc(offer.asysta.priceNote)}</div>
                 </div>
-                <div class="phase-deliverables-label">Co dostajesz</div>
+                <div class="phase-deliverables-label">${esc(offer.asysta.deliverablesLabel || 'Co dostajesz')}</div>
                 <ul class="phase-deliverables">${renderDeliverables(offer.asysta.deliverables)}</ul>
                 ${offer.asysta.callout ? `<div class="phase-callout">${esc(offer.asysta.callout)}</div>` : ''}
             </div>
         </section>
 
+        ${offer.needs && Array.isArray(offer.needs.items) && offer.needs.items.length ? `
+        <!-- NEEDS -->
+        <section>
+            <span class="label-mono">${esc(offer.needs.label || 'Po Państwa stronie')}</span>
+            <h2>${esc(offer.needs.title || 'Czego potrzebujemy od Państwa')}</h2>
+            <ul class="phase-deliverables">${renderDeliverables(offer.needs.items)}</ul>
+            ${offer.needs.note ? `<p class="pricing-footnote">${esc(offer.needs.note)}</p>` : ''}
+        </section>
+        ` : ''}
+
         <!-- TIMELINE -->
         <section>
             <span class="label-mono">Harmonogram</span>
-            <h2>Od startu do działającego asystenta — ok. 5 miesięcy</h2>
+            <h2>${esc(L.timelineTitle)}</h2>
             <div class="timeline">${renderTimeline(offer.timeline)}</div>
         </section>
 
         <!-- PRICING -->
         <section>
             <span class="label-mono">Podsumowanie finansowe</span>
-            <h2>Pilotaż pierwszego procesu</h2>
+            <h2>${esc(L.pricingTitle)}</h2>
             <table class="pricing-table">
                 ${renderPricingRows(offer.pricing.rows)}
                 <tr class="total-row">
@@ -689,7 +716,7 @@ function renderHTML(offer) {
         <!-- NEXT STEPS -->
         <section>
             <span class="label-mono">Co dalej</span>
-            <h2>Następne 4 kroki</h2>
+            <h2>${esc(L.nextStepsTitle)}</h2>
             <ol class="next-steps">${renderNextSteps(offer.nextSteps)}</ol>
 
             <div class="contact-block">
@@ -701,7 +728,7 @@ function renderHTML(offer) {
                 <div class="accept-cta">Akceptuję ofertę → jakub@workshift.pl</div>
             </div>
 
-            <p class="doc-footer">Oferta ważna do ${esc(offer.meta.validUntil)}. Strona prywatna, nieindeksowana. Dokument do druku wewnętrznego — nie do dystrybucji publicznej.</p>
+            <p class="doc-footer">Oferta ważna do ${esc(offer.meta.validUntil)}. Strona prywatna, nieindeksowana. Dokument do druku wewnętrznego - nie do dystrybucji publicznej.</p>
         </section>
 
     </div>
@@ -729,7 +756,7 @@ async function build() {
 
     const html = renderHTML(offer);
 
-    const outDir = path.join(ROOT, 'offers-pdf');
+    const outDir = path.join(ROOT, 'offers', 'out');
     await fs.mkdir(outDir, { recursive: true });
     const today = new Date().toISOString().slice(0, 10);
     const outPath = path.join(outDir, `${slug}-${today}.pdf`);
@@ -740,8 +767,11 @@ async function build() {
     console.log(`▶ HTML: ${htmlPath}`);
 
     console.log(`▶ Startuję Puppeteer...`);
+    // Systemowy Chrome (channel) zamiast pobieranego przez Puppeteera - ten sam
+    // wzorzec co offers/source/tiguar/build-oferta.mjs; bundlowany Chrome bywa niezainstalowany.
     const browser = await puppeteer.launch({
         headless: 'new',
+        channel: process.env.PUPPETEER_EXECUTABLE_PATH ? undefined : 'chrome',
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
     try {

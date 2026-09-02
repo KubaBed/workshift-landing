@@ -13,6 +13,7 @@ import {
     SaldeoSection,
     NextStepsSection,
     StatusBanner,
+    NeedsSection,
 } from '../components/offer/OfferSections';
 import NotFoundPage from './NotFoundPage';
 
@@ -136,14 +137,16 @@ export default function OfferPage() {
             <HeroSection meta={offer.meta} client={offer.client} video={offer.video} />
             <TldrSection tldr={offer.tldr} />
             <ContextSection context={offer.context} />
-            <ProblemsSection problems={offer.problems} />
+            <ProblemsSection problems={offer.problems} label={offer.labels?.problems} />
             <ApproachSection approach={offer.approach} />
             <PilotSection pilot={offer.pilot} asysta={offer.asysta} />
-            <TimelineSection timeline={offer.timeline} />
-            <PricingSection pricing={offer.pricing} />
+            {offer.needs && <NeedsSection needs={offer.needs} />}
+            <TimelineSection timeline={offer.timeline} title={offer.labels?.timelineTitle} />
+            <PricingSection pricing={offer.pricing} title={offer.labels?.pricingTitle} />
             {offer.saldeo && <SaldeoSection saldeo={offer.saldeo} />}
             <NextStepsSection
                 steps={offer.nextSteps}
+                title={offer.labels?.nextStepsTitle}
                 validUntil={offer.meta.validUntil}
                 contact={CONTACT}
                 client={offer.client}

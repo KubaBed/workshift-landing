@@ -166,11 +166,11 @@ export function ContextSection({ context }) {
   );
 }
 
-export function ProblemsSection({ problems }) {
+export function ProblemsSection({ problems, label }) {
   return (
     <SectionWrap>
       <motion.div {...fadeUp}>
-        <SectionLabel>Dwa procesy do automatyzacji</SectionLabel>
+        <SectionLabel>{label || 'Dwa procesy do automatyzacji'}</SectionLabel>
         <h2 className="text-3xl md:text-5xl font-display tracking-tight text-black mb-12 leading-tight">
           Co rozwiązujemy
         </h2>
@@ -259,7 +259,7 @@ function PhaseCard({ phase }) {
         </div>
       </div>
 
-      <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-dark mb-4">Co dostajecie</p>
+      <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-dark mb-4">{phase.deliverablesLabel || 'Co dostajecie'}</p>
       <ul className="flex flex-col gap-3">
         {phase.deliverables.map((d, i) => (
           <li key={i} className="flex gap-3 items-start">
@@ -293,13 +293,38 @@ export function PilotSection({ pilot, asysta }) {
   );
 }
 
-export function TimelineSection({ timeline }) {
+export function NeedsSection({ needs }) {
+  if (!needs || !Array.isArray(needs.items) || needs.items.length === 0) return null;
+  return (
+    <SectionWrap>
+      <motion.div {...fadeUp}>
+        <SectionLabel>{needs.label || 'Po Państwa stronie'}</SectionLabel>
+        <h2 className="text-3xl md:text-5xl font-display tracking-tight text-black mb-12 leading-tight max-w-3xl">
+          {needs.title || 'Czego potrzebujemy od Państwa'}
+        </h2>
+        <ul className="flex flex-col gap-3 max-w-3xl">
+          {needs.items.map((d, i) => (
+            <li key={i} className="flex gap-3 items-start">
+              <span className="mt-2 w-1.5 h-1.5 rounded-full bg-lime shrink-0" />
+              <span className="text-base text-black leading-relaxed">{d}</span>
+            </li>
+          ))}
+        </ul>
+        {needs.note && (
+          <p className="mt-8 text-sm text-muted-dark leading-relaxed max-w-3xl">{needs.note}</p>
+        )}
+      </motion.div>
+    </SectionWrap>
+  );
+}
+
+export function TimelineSection({ timeline, title }) {
   return (
     <SectionWrap>
       <motion.div {...fadeUp}>
         <SectionLabel>Harmonogram</SectionLabel>
         <h2 className="text-3xl md:text-5xl font-display tracking-tight text-black mb-12 leading-tight max-w-3xl">
-          Od startu do działającego asystenta - ok. 4 tygodnie
+          {title || 'Od startu do działającego asystenta - ok. 4 tygodnie'}
         </h2>
         <div className="relative">
           <div className="absolute left-3 top-2 bottom-2 w-px bg-black/15 md:left-1/2 md:-translate-x-px" aria-hidden />
@@ -331,13 +356,13 @@ export function TimelineSection({ timeline }) {
   );
 }
 
-export function PricingSection({ pricing }) {
+export function PricingSection({ pricing, title }) {
   return (
     <SectionWrap>
       <motion.div {...fadeUp}>
         <SectionLabel>Podsumowanie finansowe</SectionLabel>
         <h2 className="text-3xl md:text-5xl font-display tracking-tight text-black mb-12 leading-tight">
-          Pilotaż pierwszego procesu
+          {title || 'Pilotaż pierwszego procesu'}
         </h2>
         <div className="rounded-2xl border border-black/10 bg-white/60 overflow-hidden">
           {pricing.rows.map((row, i) => (
@@ -404,14 +429,14 @@ export function SaldeoSection({ saldeo }) {
   );
 }
 
-export function NextStepsSection({ steps, validUntil, contact, client }) {
+export function NextStepsSection({ steps, validUntil, contact, client, title }) {
   const subject = encodeURIComponent(`Akceptacja oferty pilotażu - ${client?.name?.replace(' Sp. z o.o.', '') || ''}`);
   return (
     <SectionWrap className="pb-32">
       <motion.div {...fadeUp}>
         <SectionLabel>Co dalej</SectionLabel>
         <h2 className="text-3xl md:text-5xl font-display tracking-tight text-black mb-12 leading-tight">
-          Następne 4 kroki
+          {title || 'Następne 4 kroki'}
         </h2>
         <ol className="flex flex-col gap-6 mb-16">
           {steps.map((step, i) => (
