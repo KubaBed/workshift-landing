@@ -24,13 +24,13 @@ poza repo (vault, `~/Projekty/workshift-marketing/`). Mapa katalogów: `CLAUDE.m
 - Statyczny fallback SEO w `#root` ukryty dla przeglądarek z JS (`baf1ca3`, 02.09).
 - Porządki repo 2026-09-03: root z 62 do ~25 wpisów, `.gitignore` na wzorcach katalogowych,
   Replit/sandbox/screeny skasowane, kreacje wyprowadzone do `workshift-marketing`.
-- Oferty: renderer web + PDF (`lead-magnets/build-offer-pdf.mjs`), MG Projekt v2.2 w toku
-  (zmiany w `api/_lib/offerAuth.js`, `OfferSections.jsx`, `OfferPage.jsx` NIEZACOMMITOWANE).
+- Oferty: renderer web + PDF (`lead-magnets/build-offer-pdf.mjs`) z etykietami per klient i sekcją potrzeb,
+  na produkcji (`7cac906`, 03.09). MG Projekt v2.2 czeka na wysyłkę.
 
 ## Next Action
 
 Sprint 2 SEO: wpis definicyjny na `/blog` pod „automatyzacja procesów biznesowych"
-wg `docs/seo/PLAN-SEO-WDROZENIE.md`. Przedtem: commit zmian renderera ofert po review Kuby.
+wg `docs/seo/PLAN-SEO-WDROZENIE.md`.
 
 ## Links & Resources
 
