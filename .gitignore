@@ -22,39 +22,30 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-files.zip
-dist/
-pre-shadcn-backup.zip
 
 # Secrets
-public/config.env.php
 .env
 .env.*
 !.env.example
+# Pliki z sekretami konczace sie na .env (np. PostHog_API.env) - regula `.env.*`
+# lapie tylko te ZACZYNAJACE sie od `.env`. Sekrety trzymaj w ~/.secrets/workshift/, nie w repo.
+*.env
+*.env.rtf
 
-# Agent / AI tooling (per-developer)
-.claude/worktrees/
-.claude/skills/
-.agents/
-.kiro/
-skills/
-skills-lock.json
-file_tree.txt
+# --- Niepubliczne (repo jest PUBLICZNE) - poziom KATALOGU, nie wyliczaj plikow ---
+# Nowy plan kampanii, handoff, notatka sprzedazowa -> docs/internal/<podkatalog>/, nie root.
+docs/internal/
+# Oferty klientow: zrodla (analizy, drafty maili, generatory) i wygenerowane PDF-y
+offers/
+# Wizytowki i materialy do druku (binaria + zdjecie prywatne)
+assets/print/
+# Notatki projektowe z nazwami klientow i cenami; kontekst agenta z pipeline'em
+NOTES.md
 CLAUDE.md
-
-# Local stash + journals (not for repo)
-stash/
 diary/
+stash/
 
-# Heavy media never goes in repo
-*.mp4
-*.mov
-*.avi
-*.mkv
-
-# Client offer data — NEVER commits (RODO + business sensitivity)
-# Kod ofert (komponenty, route, gate) jest publiczny.
-# Treść konkretnych klientów + ich dane osobowe — gitignored.
+# Dane ofert w kodzie (kod publiczny, tresc klientow nie - RODO)
 src/data/offers/*.js
 !src/data/offers/index.js
 !src/data/offers/*.example.js
@@ -63,66 +54,35 @@ api/_data/offers/_views.json
 !api/_data/offers/*.example.js
 public/offers/
 
-# Generated PDF exports of offers (mogą zawierać dane klientów)
-offers-pdf/
+# Root ma byc czysty: zadnych binariow ani dokumentow luzem na najwyzszym poziomie.
+# Dokumenty -> docs/, assety -> assets/ lub public/. Wzorce z "/" dzialaja TYLKO w roocie.
+/*.pdf
+/*.doc
+/*.docx
+/*.zip
+/*.png
+/*.jpg
+/*.rtf
+/*.txt
 
-# Wewnętrzne notatki strategiczne — NIE do publicznego repo.
-# Jeśli chcesz przenieść do repo, usuń z tej listy i sprawdź czy nie zawierają
-# wrażliwych nazwisk / cen / strategii konkurencyjnej.
-SALES_PLAN.md
-TOOLS_DEEP_DIVE.md
+# Agent / AI tooling (per-developer)
+.claude/worktrees/
+.claude/skills/
+.agents/
+.kiro/
+skills/
+skills-lock.json
 .vercel
 .social-state.json
 
-# Kreacje reklamowe Meta (zawierają wizerunek + strategię) - lokalnie, nie do repo
-ad-creatives/
-KAMPANIA-AUDYT-AI.md
-KAMPANIA-AUDYT-AI-LOG.md
-
-# Fonty TTF dla generatora BRAND.pdf (pobierz: bash scripts/fetch-fonts.sh)
-scripts/fonts/
-scripts/__pycache__/
-
-# Pliki z sekretami konczace sie na .env (np. PostHog_API.env) - regula
-# `.env.*` powyzej lapie tylko te ZACZYNAJACE sie od `.env`, wiec ich nie obejmuje.
-*.env
-*.env.rtf
-Vercel.env.rtf
-
-# --- Materialy niepubliczne / ciezkie (repo jest PUBLICZNE) ---
-# Oferty klientow: analizy robocze, drafty maili, PDF-y. Nigdy do repo.
-oferty/
-NOTES.md
-
-# Kampanie v3b i v4 - strategia, spojnie z regulami dla v2/v3 wyzej
-KAMPANIA-V3B-NO-FOUNDER.md
-KAMPANIA-V4-KONCEPTY.md
-
-# Wizytowki i materialy do druku: kilka MB binariow + zdjecie prywatne
-print/
-Wizytówka do druku/
-drukomat_wizytowki-Premium_1106.pdf
-inner_DMT_1.kfpx.pdf
-
-# Frame pack i duplikaty assetow marki (kanoniczne sa w public/brand-assets/)
-workshift-frame-showcase-16-9-landscape-frame-pack/
-workshift-frame-showcase-16-9-landscape-frame-pack.zip
-Workshift_logo/
-brand-components/
-public/favicon-512x512-kopia.png
-
-# Cache Pythona w dowolnym katalogu
+# Python: venvy i cache; fonty TTF dla generatora BRAND.pdf (bash scripts/fetch-fonts.sh)
+.venv*/
 __pycache__/
 *.pyc
+scripts/fonts/
 
-# Kampanie v2/v3 - research, blueprint, copy deck (strategia, nie do repo)
-KAMPANIA-V2-LEADGEN.md
-KAMPANIA-V3-KONCEPT.md
-campaign-brief.md
-brand-profile.json
-
-# Social engagement - lista targetow, drafty, statusy
-social-engagement.md
-
-# PostHog personal API key
-PostHog_API.env
+# Ciezkie media nigdy do repo
+*.mp4
+*.mov
+*.avi
+*.mkv
