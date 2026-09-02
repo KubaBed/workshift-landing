@@ -131,8 +131,8 @@ User clicks link
 - **Colors**: Dark (#0a0a0a-base) + Lime green accent (#a3ff12 or similar)
 - **Typography**: System fonts, Polish hyphenation standards
 - **Brand**: Full asset set in `public/brand-assets/` (SVG + PNG for dark/light/icon)
-- **Favicon**: Multi-size set (16-512px) + SVG + site.webmanifest
-- **Design docs**: `DESIGN.md`, `BRAND.md`, `BRAND.pdf`
+- **Favicon**: `favicon-96x96.png` + `favicon.svg` + `apple-touch-icon.png` + site.webmanifest
+- **Design docs**: `BRAND.md`, `docs/brand/DESIGN.md`, `docs/brand/BRAND.pdf`
 
 ## SEO (statyczny prerender dla crawlerów)
 
@@ -195,7 +195,7 @@ każdej strony.
 ### Gotchas
 - **Vite `public/` directory**: Files served from `/` (not `/public/`). Paths in code: `/blog/img.png` not `/public/blog/img.png`.
 - **Em-dashes**: Use standard hyphens `-` in CSS pseudo-elements to avoid encoding issues.
-- **No PHP on Vercel**: PHP files in `public/` are dead code from the Brevo era — served as static assets, return 405 on POST.
+- **No PHP on Vercel**: the Brevo-era PHP files were removed (2026-05-03, 2026-09-03). Mail goes through Resend via `api/`.
 - **BrowserRouter, nie HashRouter**: trasy to prawdziwe ścieżki (`/blog/slug`), a nie `/#/blog/slug`.
   Na tym stoi cała warstwa SEO - przy hash-routingu crawler dostaje jeden URL na cały serwis.
   Wymaga rewrite `/(.*) -> /index.html` w `vercel.json` (jest) i generatora statycznych plików per trasa (patrz sekcja SEO).

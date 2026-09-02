@@ -118,8 +118,8 @@ api/
 - **Color scheme**: Dark background (#0a0a0a range), lime green (#a3ff12 or similar) accents
 - **Typography**: System fonts, Polish typography rules (hyphen `-` not em-dash `—` per PWN)
 - **Brand assets**: `public/brand-assets/` (logos in dark/light/icon variants)
-- **Favicon**: Full set (16-512px) + SVG + site.webmanifest
-- **Design system**: `DESIGN.md`, `BRAND.md`, `design-system.css`
+- **Favicon**: `favicon-96x96.png` + `favicon.svg` + `apple-touch-icon.png` + site.webmanifest
+- **Design system**: `BRAND.md` (normatywny), `docs/brand/DESIGN.md`, `docs/brand/design-system.css`
 
 ## 8. Git History (recent)
 
@@ -144,7 +144,7 @@ e0862a4 fix(api): contact form multi-recipient + emailId logging
 ## 9. Open Items
 
 - [ ] **Verify analytics**: hard reload + accept consent → check GA4 Realtime (10-30s) + Clarity (30min-2h)
-- [ ] **Cleanup PHP files**: `public/send_email.php`, `public/subscribe_newsletter.php`, `public/confirm_newsletter.php` — dead code
+- [x] **Cleanup PHP files** - done 2026-05-03 (`f02ee6c`) + `config.env.php`/`.htaccess` 2026-09-03
 - [ ] **Cleanup DNS**: old `send` TXT (Amazon SES) + `send` MX in Vercel DNS
 - [ ] **Optional**: change `RESEND_FROM_EMAIL` to `formularz@workshift.pl`
 - [ ] **Newsletter content**: add `src/data/newsletterIssues.js` for regular editions

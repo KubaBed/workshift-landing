@@ -555,23 +555,23 @@ This section exists so nobody has to wonder again which file is current.
 | File | Role |
 |------|------|
 | `BRAND.md` | **The brand book. Normative.** |
-| `BRAND.en.md` | This document - the English mirror of `BRAND.md` |
+| `docs/brand/BRAND.en.md` | This document - the English mirror of `BRAND.md` |
 | `src/index.css` | **Source of truth for tokens** - `@theme` (brand) + `:root` (shadcn semantics) |
 | `public/brand-assets/logo-{light,dark,icon}.{svg,png}` | **Source of truth for the logo** |
 | `public/favicon.svg` + PNG/ICO variants | Favicons (the mark, lime palette) |
 | `public/fonts/*.woff2` | Self-hosted Inter + IBM Plex Mono |
 | `public/Workshift_Brand_Assets.zip` | Package for external parties |
-| `design-system.css` | CSS documentation of the current system (reference, not part of the build) |
+| `docs/brand/design-system.css` | CSS documentation of the current system (reference, not part of the build) |
 | `scripts/fetch-fonts.sh` | Downloads Inter + IBM Plex Mono TTFs into `scripts/fonts/` (gitignored) - needed only to generate the PDF |
 | `src/components/ui/` | CVA + BaseUI + shadcn components |
-| `DESIGN.md` | Condensed design system |
-| `scripts/generate_brand_pdf.py` | Generates `BRAND.pdf` - run it after changing the brand book |
+| `docs/brand/DESIGN.md` | Condensed design system |
+| `scripts/generate_brand_pdf.py` | Generates `docs/brand/BRAND.pdf` - run it after changing the brand book |
 
 ### ⚠️ Editing trap
 
 **`scripts/generate_brand_pdf.py` does NOT parse the Markdown** - it holds its own hard-coded copy of the content across ~1400 lines of ReportLab. Every substantive change to `BRAND.md` must be carried over there by hand, otherwise the PDF and the Markdown drift apart. That is exactly how the v1.1 (PDF) versus v2.0 (Markdown) split happened.
 
-Order of operations: `BRAND.md` → mirror into `BRAND.en.md` → carry over to the generator by hand → `python3 scripts/generate_brand_pdf.py` → eyeball the PDF.
+Order of operations: `BRAND.md` → mirror into `docs/brand/BRAND.en.md` → carry over to the generator by hand → `python3 scripts/generate_brand_pdf.py` → eyeball the PDF.
 
 ### 📁 Working / local
 
@@ -589,7 +589,6 @@ The entire v1.0 brand system sits in **`_archive/brand-v1/`** (with its own READ
 |------|-----|
 | `Workshift-Brand-Bible.docx` | v1.0 (March 2026): navy `#0A2540`, Satoshi + Plus Jakarta Sans, orange→violet gradient, an explicit ban on Inter. **The whole system was replaced.** The only survivors: the mark's metaphor and the onliness statement - both already in this document |
 | `workshift-c1-parallelogram-export/` + `.zip` | Logo export for Brand Bible v1.0 - old gradient palette (`#ee703d → #cc7cab → #8530d1`). **Same geometry, obsolete colours** - which is precisely why it kept getting confused for the current files |
-| `design-system-legacy.css` | CSS tokens of the old system |
 
 Outside the archive, removed from the codebase (commits `33aa059`, `321c051`):
 
@@ -609,7 +608,7 @@ Outside the archive, removed from the codebase (commits `33aa059`, `321c051`):
 1. Colour / radius / typeface → **only** `src/index.css`
 2. Logo → **only** `public/brand-assets/`, then re-render the PNGs and sync `public/favicon.svg`
 3. A rule, a meaning, a tone, a prohibition → `BRAND.md`, then mirror here
-4. After changing the brand book: `python3 scripts/generate_brand_pdf.py` → refreshed `BRAND.pdf`
+4. After changing the brand book: `python3 scripts/generate_brand_pdf.py` → refreshed `docs/brand/BRAND.pdf`
 
 ---
 

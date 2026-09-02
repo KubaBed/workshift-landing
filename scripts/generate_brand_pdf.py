@@ -1497,10 +1497,10 @@ def section_files():
     items.append(info_table([
         ['Plik', 'Zawartość'],
         ['src/index.css',            'Source of truth - Tailwind CSS v4 @theme tokens'],
-        ['design-system.css',        'CSS reference / dokumentacja aktualnego systemu'],
+        ['docs/brand/design-system.css', 'CSS reference / dokumentacja aktualnego systemu'],
         ['BRAND.md',                 'Jedyny brand book (normatywny) - sekcja 0 to skrót dla agentów AI'],
-        ['BRAND.en.md',              'Wersja EN dla niepolskojęzycznych wykonawców - copy marki nietłumaczone'],
-        ['BRAND.pdf',                'Ten dokument - pełny brand book PDF'],
+        ['docs/brand/BRAND.en.md',   'Wersja EN dla niepolskojęzycznych wykonawców - copy marki nietłumaczone'],
+        ['docs/brand/BRAND.pdf',     'Ten dokument - pełny brand book PDF'],
         ['public/favicon.svg',       'Favicon (sygnet, paleta lime)'],
         ['public/fonts/',            'Self-hostowane Inter + IBM Plex Mono (woff2)'],
         ['src/components/ui/',       'Komponenty CVA + BaseUI primitives'],
@@ -1546,7 +1546,7 @@ def section_files():
 # ASSEMBLE
 # ─────────────────────────────────────────────────────────────────────────────
 
-OUTPUT = os.path.join(ROOT, 'BRAND.pdf')
+OUTPUT = os.path.join(ROOT, 'docs', 'brand', 'BRAND.pdf')
 
 doc = SimpleDocTemplate(
     OUTPUT,

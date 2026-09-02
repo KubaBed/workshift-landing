@@ -3,7 +3,7 @@
 > **Jedyne źródło prawdy** dla tożsamości marki, designu i komunikacji.
 > Wersja **2.0** · lipiec 2026 · zastępuje `Workshift-Brand-Bible.docx` (v1.0) i `brand.md`.
 >
-> 🇬🇧 Wersja angielska: [`BRAND.en.md`](BRAND.en.md) - **ten plik jest normatywny**, tamten to
+> 🇬🇧 Wersja angielska: [`docs/brand/BRAND.en.md`](docs/brand/BRAND.en.md) - **ten plik jest normatywny**, tamten to
 > tłumaczenie dla niepolskojęzycznych wykonawców i agencji. Copy marki (tagline, nagłówki,
 > zakazane zwroty) celowo **nie jest** tam przetłumaczone - przy zmianie treści zaktualizuj oba.
 >
@@ -540,23 +540,23 @@ Sekcja istnieje po to, żeby nigdy więcej nie było wątpliwości, który plik 
 | Plik | Rola |
 |------|------|
 | `BRAND.md` | **Ten dokument. Jedyny brand book, wersja normatywna.** |
-| `BRAND.en.md` | Wersja angielska dla niepolskojęzycznych wykonawców. Copy marki nieprzetłumaczone (celowo) |
+| `docs/brand/BRAND.en.md` | Wersja angielska dla niepolskojęzycznych wykonawców. Copy marki nieprzetłumaczone (celowo) |
 | `src/index.css` | **Source of truth dla tokenów** - `@theme` (marka) + `:root` (semantyka shadcn) |
 | `public/brand-assets/logo-{light,dark,icon}.{svg,png}` | **Source of truth dla logo** |
 | `public/favicon.svg` + warianty PNG/ICO | Favicony (sygnet, paleta lime) |
 | `public/fonts/*.woff2` | Self-hostowane Inter + IBM Plex Mono |
 | `public/Workshift_Brand_Assets.zip` | Paczka do wysyłki na zewnątrz |
-| `design-system.css` | Dokumentacja CSS aktualnego systemu (referencja, nie build) |
+| `docs/brand/design-system.css` | Dokumentacja CSS aktualnego systemu (referencja, nie build) |
 | `scripts/fetch-fonts.sh` | Pobiera TTF-y Inter + IBM Plex Mono do `scripts/fonts/` (gitignored) - potrzebne tylko do generowania PDF-a |
 | `src/components/ui/` | Komponenty CVA + BaseUI + shadcn |
-| `DESIGN.md` | Skrót systemu designu |
-| `scripts/generate_brand_pdf.py` | Generator `BRAND.pdf` - odpalaj po zmianie tego dokumentu |
+| `docs/brand/DESIGN.md` | Skrót systemu designu |
+| `scripts/generate_brand_pdf.py` | Generator `docs/brand/BRAND.pdf` - odpalaj po zmianie tego dokumentu |
 
 ### ⚠️ Pułapka przy edycji
 
 **`scripts/generate_brand_pdf.py` NIE parsuje tego pliku** - trzyma własną kopię treści na sztywno w ~1400 liniach ReportLab. Każdą zmianę merytoryczną w `BRAND.md` musisz przenieść tam ręcznie, inaczej PDF i Markdown się rozjadą. Dokładnie tak powstał rozjazd v1.1 (PDF) vs v2.0 (Markdown).
 
-Kolejność przy zmianie: `BRAND.md` → lustrzana zmiana w `BRAND.en.md` → ręczne przeniesienie do generatora → `python3 scripts/generate_brand_pdf.py` → wizualna kontrola PDF-a.
+Kolejność przy zmianie: `BRAND.md` → lustrzana zmiana w `docs/brand/BRAND.en.md` → ręczne przeniesienie do generatora → `python3 scripts/generate_brand_pdf.py` → wizualna kontrola PDF-a.
 
 Trzy kopie tej samej treści to dług, którego świadomie nie spłacam teraz (PDF wymagałby przepisania generatora na parser Markdown). Dopóki istnieje, jedyną obroną jest ta lista kroków.
 
@@ -576,7 +576,6 @@ Cały system marki v1.0 leży w **`_archive/brand-v1/`** (z własnym README wyja
 |------|----------|
 | `Workshift-Brand-Bible.docx` | v1.0 (marzec 2026): navy `#0A2540`, font Satoshi + Plus Jakarta Sans, gradient pomarańcz→fiolet, jawny zakaz Intera. **Cały system zastąpiony.** Jedyne, co przetrwało: metafora sygnetu i onliness statement - oba są już w tym dokumencie |
 | `workshift-c1-parallelogram-export/` + `.zip` | Eksport logo do Brand Bible v1.0 - stara paleta gradientu (`#ee703d → #cc7cab → #8530d1`). **Geometria ta sama, kolory nieaktualne** - stąd brała się pomyłka |
-| `design-system-legacy.css` | Tokeny CSS starego systemu |
 
 Poza archiwum, usunięte z kodu (commity `33aa059`, `321c051`):
 
@@ -596,7 +595,7 @@ Poza archiwum, usunięte z kodu (commity `33aa059`, `321c051`):
 1. Kolor / radius / font → **wyłącznie** `src/index.css`
 2. Logo → **wyłącznie** `public/brand-assets/`, potem przerenderuj PNG i zsynchronizuj `public/favicon.svg`
 3. Reguła, znaczenie, ton, zakaz → **ten plik**
-4. Po zmianie tego pliku: `python scripts/generate_brand_pdf.py` → odświeżony `BRAND.pdf`
+4. Po zmianie tego pliku: `python scripts/generate_brand_pdf.py` → odświeżony `docs/brand/BRAND.pdf`
 
 ---
 

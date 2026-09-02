@@ -25,5 +25,5 @@ npm run dev
 - `AGENT_CONTEXT.md` — Agent reference with full architecture
 - `WIKI.md` — Development wiki with component/API documentation
 - `CLAUDE.md` — Project context for AI assistants
-- `DESIGN.md` — Design system specification
+- `docs/brand/DESIGN.md` — Design system specification
 - `BRAND.md` — Brand guidelines
