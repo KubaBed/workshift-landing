@@ -30,7 +30,7 @@ Build dodaje do rekordów: `lang`, `source`, `actPl`, `promptPl`. Index: `act`/`
 
 ## Persony (DONE 2026-06-08) — zamiast „Skilli"
 
-Zakładka **„Skille" (link-out) zastąpiona „Persony"** — autorskie system prompty PL do wklejenia jako opis gema (Gemini) / instrukcje Custom GPT / system prompt. Treść: `scripts/personas-pl.json` (generowana przez `scripts/gen-personas.py`), build emituje `public/prompty/personas.json`. **12 person** (asystent operacyjny, strateg treści, copywriter, analityk automatyzacji, asystent prawny, HR, obsługa klienta, sprzedaż B2B, mentor produktowy, redaktor PL, nauczyciel, krytyczny recenzent). UI: karty + modal (reuse `PromptModal`, przycisk „Kopiuj instrukcję").
+Zakładka **„Skille" (link-out) zastąpiona „Persony"** — autorskie system prompty PL do wklejenia jako opis gema (Gemini) / instrukcje Custom GPT / system prompt. Treść: `scripts/personas-pl.json` (generowana przez `scripts/gen-personas.py`), build emituje `public/prompty-data/personas.json`. **12 person** (asystent operacyjny, strateg treści, copywriter, analityk automatyzacji, asystent prawny, HR, obsługa klienta, sprzedaż B2B, mentor produktowy, redaktor PL, nauczyciel, krytyczny recenzent). UI: karty + modal (reuse `PromptModal`, przycisk „Kopiuj instrukcję").
 
 ## Toggle „Tylko polskie" (DONE)
 

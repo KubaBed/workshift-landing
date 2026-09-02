@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Generator treści person (system prompty PL). Zapisuje scripts/personas-pl.json,
-który build-prompts-data.py emituje do public/prompty/personas.json."""
+który build-prompts-data.py emituje do public/prompty-data/personas.json."""
 import json, os
 OUT = os.path.join(os.path.dirname(__file__), "personas-pl.json")
 

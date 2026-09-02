@@ -12,7 +12,7 @@
  *     optymalizowany pod dokończenie audytu (CompleteRegistration).
  *     Kreacje/reklamy dodajesz w Ads Managerze po finalizacji statyków i reels.
  *  4. Ad set prospectingowy fazy 1 (PAUSED) z targetingiem persony "Marek"
- *     wg MARKETING_SALES_PLAN.md §9.3: PL, 30-55, zainteresowania biznes/AI/
+ *     wg docs/internal/sales/MARKETING_SALES_PLAN.md §9.3: PL, 30-55, zainteresowania biznes/AI/
  *     automatyzacja + stack e-commerce. ID zainteresowań wyszukiwane w API
  *     w momencie uruchomienia (są dynamiczne, nie da się ich zahardkodować).
  *
@@ -38,7 +38,7 @@ const RETARGETING_DAILY_BUDGET = 1000;
 const PROSPECTING_ADSET_NAME = 'Prospecting - MŚP decydenci (faza 1)';
 // ~22 PLN/dzień wg planu testu (300 PLN / 14 dni, faza 1).
 const PROSPECTING_DAILY_BUDGET = 2200;
-// Persona "Marek" (MARKETING_SALES_PLAN §9.3) + stack e-commerce (draft kreacji).
+// Persona "Marek" (docs/internal/sales/MARKETING_SALES_PLAN.md §9.3) + stack e-commerce (draft kreacji).
 // Frazy do wyszukania w Meta Targeting Search - brakujące są pomijane z logiem.
 const INTEREST_QUERIES = [
     // Polskie nazwy = trafniejsze pierwsze wyniki w Targeting Search (locale pl_PL).

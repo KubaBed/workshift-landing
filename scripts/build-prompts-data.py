@@ -11,7 +11,7 @@ Usage:
   python3 scripts/build-prompts-data.py [SCIEZKA_DO_prompts.csv]
 
 Default source: ~/Projekty/_scratch/awesome-chatgpt-prompts/prompts.csv
-Output:         public/prompty/prompts.json
+Output:         public/prompty-data/prompts.json
 """
 import csv, sys, json, re, os
 from datetime import date
