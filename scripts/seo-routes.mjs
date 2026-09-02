@@ -267,12 +267,11 @@ const STATIC_FALLBACK = {
     heading: 'Workshift',
     lead: 'Wdrażamy AI, które po prostu działa',
     body:
-      'Workshift to boutique AI consulting dla polskich MŚP. Pomagamy firmom wdrażać pragmatyczne innowacje AI, ' +
-      'oszczędzać czas (+32% odzyskanego czasu operacyjnego), optymalizować procesy oraz budować dedykowanych ' +
-      'agentów AI pracujących 24/7. Bez buzzwordów, bez przestojów, z mierzalnymi rezultatami. ' +
-      'Pracujemy w czterech obszarach: audyt i automatyzacja procesów, dedykowane aplikacje, agenci AI ' +
-      'oraz szkolenia dla zespołów. Zaczynamy od bezpłatnej diagnozy procesu i mapy miejsc, w których ' +
-      'automatyzacja zwróci się najszybciej.',
+      'Workshift wdraża agentów i automatyzacje AI dla firm w Poznaniu i całej Polsce. Pracujemy w czterech ' +
+      'obszarach: audyt i automatyzacja procesów, dedykowane aplikacje, agenci AI oraz szkolenia dla zespołów. ' +
+      'Każde wdrożenie zaczyna się od bezpłatnej diagnozy procesu, a kończy narzędziem, z którego Twój zespół ' +
+      'korzysta na co dzień. Diagnoza trwa 30 minut online i daje mapę miejsc, w których automatyzacja ' +
+      'zwróci się najszybciej.',
     sections: [
       {
         heading: 'Co robimy',
