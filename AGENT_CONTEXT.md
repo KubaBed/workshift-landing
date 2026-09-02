@@ -1,12 +1,16 @@
 # Agent Context: workshift-landing
 
-> **Last updated**: 2026-08-30
+> **Last updated**: 2026-09-03
 > **Project**: High-conversion landing page for Workshift — AI Automation Agency
 >
-> **📌 Aktywny handoff (2026-07-13):** kampania „Mikro-audyt AI" + posty social z bloga —
-> stan, ID kont Meta, skrypty i następne kroki opisane w
-> [`HANDOFF-2026-07-13-kampania-social.md`](HANDOFF-2026-07-13-kampania-social.md).
-> Przeczytaj go przy wznawianiu tematu kampanii/social.
+> **📌 Handoffy kampanii/social** (stan, ID kont Meta, skrypty, następne kroki) leżą w
+> `docs/internal/handoffs/` (gitignored): `HANDOFF-2026-07-13-kampania-social.md`,
+> `workshift-kampania-v3b-handoff-2026-09-02.md`. Czytaj przy wznawianiu tematu kampanii.
+>
+> **📁 Układ repo** (po porządkach 2026-09-03): kod w `src/ api/ public/ scripts/`, dokumenty
+> w `docs/{brand,seo,plans}` (tracked) i `docs/internal/` (ignored), oferty w `offers/`,
+> druk w `assets/print/`, kreacje w osobnym projekcie `~/Projekty/workshift-marketing/`.
+> Pełna tabela: `CLAUDE.md` → "Mapa katalogów". Nowe pliki nie lądują w roocie.
 
 ---
 

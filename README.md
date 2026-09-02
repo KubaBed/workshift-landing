@@ -20,6 +20,27 @@ npm install
 npm run dev
 ```
 
+## Repo Layout
+
+```
+src/            app source (React, Tailwind tokens in src/index.css)
+api/            Vercel Functions (Resend mail, newsletter DOI, offers, Meta CAPI)
+public/         served assets (fonts, brand-assets, blog images, prompty-data)
+scripts/        build (SEO head/body per route, sitemap) + data/PDF generators
+  marketing/    Meta API + social scripts (one-off / dormant)
+emails/         react-email templates
+lead-magnets/   PDF builders for lead magnets and client offers
+docs/brand/     BRAND.en.md, BRAND.pdf, design-system.css, DESIGN.md
+docs/seo/       keyword map and SEO/AEO plans
+docs/plans/     feature plans
+docs/internal/  campaign plans, handoffs, sales notes   (gitignored)
+offers/         client offer sources and generated PDFs (gitignored)
+assets/blog/    Canva-side blog assets
+assets/print/   business cards                          (gitignored)
+_archive/       brand v1, reference only
+BRAND.md        the normative brand book
+```
+
 ## Project Docs
 
 - `AGENT_CONTEXT.md` — Agent reference with full architecture
