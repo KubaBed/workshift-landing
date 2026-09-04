@@ -4,7 +4,7 @@ name: Workshift Landing (workshift.pl)
 type: personal
 status: active
 started: 2026-03-09
-last_worked: 2026-09-03
+last_worked: 2026-09-04
 client: personal
 ---
 
@@ -24,6 +24,8 @@ poza repo (vault, `~/Projekty/workshift-marketing/`). Mapa katalogów: `CLAUDE.m
 - Statyczny fallback SEO w `#root` ukryty dla przeglądarek z JS (`baf1ca3`, 02.09).
 - Porządki repo 2026-09-03: root z 62 do ~25 wpisów, `.gitignore` na wzorcach katalogowych,
   Replit/sandbox/screeny skasowane, kreacje wyprowadzone do `workshift-marketing`.
+- 04.09: `public/email-assets/` przywrócone (`75c2024`) - porządki skasowały je jako martwe,
+  a stopka mailowa ładuje je po URL. Assety w `public/` sprawdzaj `rg` po nazwie, nie po imporcie.
 - Oferty: renderer web + PDF (`lead-magnets/build-offer-pdf.mjs`) z etykietami per klient i sekcją potrzeb,
   na produkcji (`7cac906`, 03.09). MG Projekt v2.2 czeka na wysyłkę.
 
