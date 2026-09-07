@@ -612,11 +612,12 @@ function renderHTML(offer) {
         </section>
 
         <!-- PROBLEMS -->
+        ${offer.problems?.length ? `
         <section>
             <span class="label-mono">${esc(L.problems)}</span>
             <h2>${esc(L.problemsSubtitle)}</h2>
             <div class="problems">${renderProblems(offer.problems, L.problemsBadge)}</div>
-        </section>
+        </section>` : ''}
 
         <!-- APPROACH -->
         <section class="approach">
