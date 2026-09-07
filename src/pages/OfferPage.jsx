@@ -137,7 +137,12 @@ export default function OfferPage() {
             <HeroSection meta={offer.meta} client={offer.client} video={offer.video} />
             <TldrSection tldr={offer.tldr} />
             <ContextSection context={offer.context} />
-            <ProblemsSection problems={offer.problems} label={offer.labels?.problems} />
+            <ProblemsSection
+                problems={offer.problems}
+                label={offer.labels?.problems}
+                subtitle={offer.labels?.problemsSubtitle}
+                badge={offer.labels?.problemsBadge}
+            />
             <ApproachSection approach={offer.approach} />
             <PilotSection pilot={offer.pilot} asysta={offer.asysta} />
             {offer.needs && <NeedsSection needs={offer.needs} />}

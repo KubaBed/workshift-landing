@@ -166,13 +166,13 @@ export function ContextSection({ context }) {
   );
 }
 
-export function ProblemsSection({ problems, label }) {
+export function ProblemsSection({ problems, label, subtitle, badge }) {
   return (
     <SectionWrap>
       <motion.div {...fadeUp}>
         <SectionLabel>{label || 'Dwa procesy do automatyzacji'}</SectionLabel>
         <h2 className="text-3xl md:text-5xl font-display tracking-tight text-black mb-12 leading-tight">
-          Co rozwiązujemy
+          {subtitle || 'Co rozwiązujemy'}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           {problems.map((p) => (
@@ -184,7 +184,7 @@ export function ProblemsSection({ problems, label }) {
                 <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-dark">{p.label}</p>
                 {p.selected && (
                   <span className="font-mono text-[10px] uppercase tracking-[0.18em] bg-lime text-black px-2 py-1 rounded-full">
-                    Pilotaż
+                    {badge || 'Pilotaż'}
                   </span>
                 )}
               </div>

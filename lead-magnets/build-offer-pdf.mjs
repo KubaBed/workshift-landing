@@ -48,12 +48,12 @@ function renderStats(stats) {
     `).join('');
 }
 
-function renderProblems(problems) {
+function renderProblems(problems, badge = 'PILOTAŻ') {
     return problems.map((p) => `
         <div class="problem ${p.selected ? 'is-selected' : ''}">
             <div class="problem-header">
                 <span class="problem-label">${esc(p.label)}</span>
-                ${p.selected ? '<span class="badge-pilot">PILOTAŻ</span>' : ''}
+                ${p.selected ? `<span class="badge-pilot">${esc(badge)}</span>` : ''}
             </div>
             <h3>${esc(p.title)}</h3>
             <p class="problem-metric">${esc(p.metric)}</p>
@@ -109,6 +109,8 @@ function renderHTML(offer) {
     // Etykiety sekcji - domyślne z pierwszej oferty, nadpisywalne per klient przez offer.labels.
     const L = {
         problems: 'Dwa procesy do automatyzacji',
+        problemsSubtitle: 'Co rozwiązujemy',
+        problemsBadge: 'PILOTAŻ',
         timelineTitle: 'Od startu do działającego asystenta - ok. 5 miesięcy',
         pricingTitle: 'Pilotaż pierwszego procesu',
         nextStepsTitle: 'Następne 4 kroki',
@@ -612,8 +614,8 @@ function renderHTML(offer) {
         <!-- PROBLEMS -->
         <section>
             <span class="label-mono">${esc(L.problems)}</span>
-            <h2>Co rozwiązujemy</h2>
-            <div class="problems">${renderProblems(offer.problems)}</div>
+            <h2>${esc(L.problemsSubtitle)}</h2>
+            <div class="problems">${renderProblems(offer.problems, L.problemsBadge)}</div>
         </section>
 
         <!-- APPROACH -->
