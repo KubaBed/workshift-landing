@@ -160,6 +160,13 @@ function renderHTML(offer) {
         margin: 0 auto;
     }
 
+    /* ─── Justowanie akapitów ciągłych (nie list, nie tabel) ─── */
+    .callout, .phase-callout, .pricing-footnote, .problem-body {
+        text-align: justify;
+        hyphens: auto;
+        -webkit-hyphens: auto;
+    }
+
     /* ─── Section ─── */
     section {
         padding: 0 0 20mm;

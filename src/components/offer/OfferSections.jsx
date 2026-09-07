@@ -223,7 +223,7 @@ export function ApproachSection({ approach }) {
           ))}
         </ul>
         <div className="border-l-3 border-lime pl-6 py-3 max-w-3xl">
-          <p className="text-base italic text-muted-dark leading-relaxed">{approach.callout}</p>
+          <p className="text-base italic text-muted-dark leading-relaxed md:text-justify hyphens-auto">{approach.callout}</p>
         </div>
       </motion.div>
     </SectionWrap>
@@ -271,7 +271,7 @@ function PhaseCard({ phase }) {
 
       {phase.callout && (
         <div className="mt-8 border-l-3 border-lime pl-6 py-3">
-          <p className="text-base italic text-muted-dark leading-relaxed">{phase.callout}</p>
+          <p className="text-base italic text-muted-dark leading-relaxed md:text-justify hyphens-auto">{phase.callout}</p>
         </div>
       )}
     </motion.div>
@@ -386,7 +386,7 @@ export function PricingSection({ pricing, title }) {
             </p>
           </div>
         </div>
-        <p className="mt-6 text-sm text-muted-dark">{pricing.footnote}</p>
+        <p className="mt-6 text-sm text-muted-dark md:text-justify hyphens-auto">{pricing.footnote}</p>
       </motion.div>
     </SectionWrap>
   );
@@ -420,7 +420,7 @@ export function SaldeoSection({ saldeo }) {
               {saldeo.value}
             </p>
             <div className="border-l-3 border-lime pl-5 py-2">
-              <p className="text-base italic text-muted-dark leading-relaxed">{saldeo.note}</p>
+              <p className="text-base italic text-muted-dark leading-relaxed md:text-justify hyphens-auto">{saldeo.note}</p>
             </div>
           </div>
         </div>
