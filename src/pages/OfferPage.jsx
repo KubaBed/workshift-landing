@@ -17,6 +17,25 @@ import {
 } from '../components/offer/OfferSections';
 import NotFoundPage from './NotFoundPage';
 
+// Niełamliwe spacje w kwotach i jednostkach („14 400 PLN", „7 dni", „modułu 1")
+// oraz niełamliwy dywiz w „e-commerce" - żeby wąska kolumna nie rozbijała ich na
+// dwa wiersze. Ten sam zestaw reguł co w lead-magnets/build-offer-pdf.mjs.
+function nbspText(s) {
+    return s
+        .replace(/(\d) (\d{3})\b/g, '$1\u00a0$2')
+        .replace(/(\d) (PLN|zł|dni|tyg\.?|lekcj\w*|film\w*)/g, '$1\u00a0$2')
+        .replace(/\b(modu\u0142\w*|Modu\u0142) (\d)\b/g, '$1\u00a0$2')
+        .replace(/\be-(commerce|mail|book|learning)\b/g, 'e\u2011$1');
+}
+function nbspDeep(v) {
+    if (typeof v === 'string') return nbspText(v);
+    if (Array.isArray(v)) return v.map(nbspDeep);
+    if (v && typeof v === 'object') {
+        return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, nbspDeep(x)]));
+    }
+    return v;
+}
+
 // Kontakt w stopce - używamy bezpośredniego maila Jakuba zamiast kontakt@.
 const CONTACT = {
     name: 'Jakub Bednarz · Workshift',
@@ -50,7 +69,7 @@ export default function OfferPage() {
                 return;
             }
             const data = await res.json();
-            setState({ status: 'ready', offer: data.offer });
+            setState({ status: 'ready', offer: nbspDeep(data.offer) });
         } catch {
             setState({ status: 'error', offer: null });
         }

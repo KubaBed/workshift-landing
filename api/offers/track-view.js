@@ -70,7 +70,10 @@ export default async function handler(req, res) {
         await writeViews(views);
         return res.status(200).json({ ok: true, ...views[slug] });
     } catch (err) {
-        console.error('track-view: write failed', err.message);
-        return res.status(500).json({ error: 'Write failed' });
+        // Na Vercel system plików jest read-only, więc licznik nie zapisuje się
+        // do czasu migracji na KV/Postgres. To nie jest błąd po stronie klienta,
+        // więc odpowiadamy 204 zamiast 500 - konsola przeglądarki zostaje czysta.
+        console.warn('track-view: write skipped', err.message);
+        return res.status(204).end();
     }
 }

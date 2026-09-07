@@ -25,6 +25,13 @@ function SectionLabel({ children }) {
   );
 }
 
+// „2026-09-14" -> „14 września 2026". Gdy nie da się sparsować, zwraca oryginał.
+function fmtDatePL(iso) {
+  const d = new Date(String(iso) + 'T00:00:00');
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
 function LimeDivider() {
   return <div className="w-12 h-px bg-lime mb-6" />;
 }
@@ -56,7 +63,7 @@ export function StatusBanner({ views, validUntil }) {
         {validUntil && (
           <span className="flex items-center gap-1.5">
             <Calendar size={12} />
-            Ważna do {validUntil}
+            Ważna do {fmtDatePL(validUntil)}
           </span>
         )}
       </div>
@@ -404,7 +411,7 @@ export function SaldeoSection({ saldeo }) {
 
         <div className="grid md:grid-cols-2 gap-10">
           <div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-dark mb-4">Co zbudujemy</p>
+            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-dark mb-4">{saldeo.deliverablesLabel || 'Co zbudujemy'}</p>
             <ul className="flex flex-col gap-3">
               {saldeo.deliverables.map((d, i) => (
                 <li key={i} className="flex gap-3 items-start">
@@ -415,7 +422,7 @@ export function SaldeoSection({ saldeo }) {
             </ul>
           </div>
           <div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-dark mb-4">Szacowana wartość</p>
+            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-dark mb-4">{saldeo.valueLabel || 'Szacowana wartość'}</p>
             <p className="text-2xl md:text-3xl font-display tracking-tight text-black leading-tight mb-6">
               {saldeo.value}
             </p>

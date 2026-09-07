@@ -30,12 +30,30 @@ if (!slug) {
 // znaczników (na wszelki wypadek — to dane wewnętrzne, ale hygiene).
 function esc(s) {
     if (s === null || s === undefined) return '';
-    return String(s)
+    return nbsp(String(s))
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
+}
+
+// Niełamliwe spacje tam, gdzie złamanie wiersza rozbija sens: tysiące w kwotach
+// („14 400"), liczba + jednostka („500 PLN", „7 dni"), numer modułu („modułu 1"),
+// oraz niełamliwy dywiz w złożeniach typu „e-commerce". Dotyczy wszystkich ofert.
+function nbsp(s) {
+    return s
+        .replace(/(\d) (\d{3})\b/g, '$1\u00a0$2')
+        .replace(/(\d) (PLN|zł|dni|tyg\.?|lekcj\w*|film\w*)/g, '$1\u00a0$2')
+        .replace(/\b(modu\u0142\w*|Modu\u0142) (\d)\b/g, '$1\u00a0$2')
+        .replace(/\be-(commerce|mail|book|learning)\b/g, 'e\u2011$1');
+}
+
+// „2026-09-14" -> „14 września 2026". Gdy nie da się sparsować, zwraca oryginał.
+function fmtDatePL(iso) {
+    const d = new Date(String(iso) + 'T00:00:00');
+    if (Number.isNaN(d.getTime())) return iso;
+    return d.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
 function renderStats(stats) {
@@ -713,11 +731,11 @@ function renderHTML(offer) {
             <p class="saldeo-subtitle">${esc(offer.saldeo.subtitle)}</p>
             <div class="saldeo-grid">
                 <div>
-                    <div class="phase-deliverables-label">Co zbudujemy</div>
+                    <div class="phase-deliverables-label">${esc(offer.saldeo.deliverablesLabel || 'Co zbudujemy')}</div>
                     <ul class="phase-deliverables">${renderDeliverables(offer.saldeo.deliverables)}</ul>
                 </div>
                 <div>
-                    <div class="phase-deliverables-label">Szacowana wartość</div>
+                    <div class="phase-deliverables-label">${esc(offer.saldeo.valueLabel || 'Szacowana wartość')}</div>
                     <p style="font-size:14pt;line-height:1.3;margin:0 0 5mm;">${esc(offer.saldeo.value)}</p>
                     <div class="callout">${esc(offer.saldeo.note)}</div>
                 </div>
@@ -740,7 +758,7 @@ function renderHTML(offer) {
                 <div class="accept-cta">Akceptuję ofertę → jakub@workshift.pl</div>
             </div>
 
-            <p class="doc-footer">Oferta ważna do ${esc(offer.meta.validUntil)}. Strona prywatna, nieindeksowana. Dokument do druku wewnętrznego - nie do dystrybucji publicznej.</p>
+            <p class="doc-footer">Oferta ważna do ${esc(fmtDatePL(offer.meta.validUntil))}. Strona prywatna, nieindeksowana. Dokument do druku wewnętrznego - nie do dystrybucji publicznej.</p>
         </section>
 
     </div>
