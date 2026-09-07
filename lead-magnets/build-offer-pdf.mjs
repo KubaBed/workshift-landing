@@ -111,6 +111,8 @@ function renderHTML(offer) {
         problems: 'Dwa procesy do automatyzacji',
         problemsSubtitle: 'Co rozwiązujemy',
         problemsBadge: 'PILOTAŻ',
+        scopeLabel: 'Co budujemy',
+        scopeTitle: 'Pilotaż + asysta wdrożeniowa',
         timelineTitle: 'Od startu do działającego asystenta - ok. 5 miesięcy',
         pricingTitle: 'Pilotaż pierwszego procesu',
         nextStepsTitle: 'Następne 4 kroki',
@@ -629,8 +631,8 @@ function renderHTML(offer) {
 
         <!-- PILOT + ASYSTA -->
         <section>
-            <span class="label-mono">Co budujemy</span>
-            <h2>Pilotaż + asysta wdrożeniowa</h2>
+            <span class="label-mono">${esc(L.scopeLabel)}</span>
+            <h2>${esc(L.scopeTitle)}</h2>
 
             <div class="phase">
                 <div class="phase-header">

@@ -278,12 +278,12 @@ function PhaseCard({ phase }) {
   );
 }
 
-export function PilotSection({ pilot, asysta }) {
+export function PilotSection({ pilot, asysta, label, title }) {
   return (
     <SectionWrap>
-      <SectionLabel>Co budujemy</SectionLabel>
+      <SectionLabel>{label || 'Co budujemy'}</SectionLabel>
       <h2 className="text-3xl md:text-5xl font-display tracking-tight text-black mb-12 leading-tight">
-        Pilotaż + asysta wdrożeniowa
+        {title || 'Pilotaż + asysta wdrożeniowa'}
       </h2>
       <div className="grid gap-6">
         <PhaseCard phase={pilot} />

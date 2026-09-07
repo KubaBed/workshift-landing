@@ -146,7 +146,12 @@ export default function OfferPage() {
                 />
             )}
             <ApproachSection approach={offer.approach} />
-            <PilotSection pilot={offer.pilot} asysta={offer.asysta} />
+            <PilotSection
+                pilot={offer.pilot}
+                asysta={offer.asysta}
+                label={offer.labels?.scopeLabel}
+                title={offer.labels?.scopeTitle}
+            />
             {offer.needs && <NeedsSection needs={offer.needs} />}
             <TimelineSection timeline={offer.timeline} title={offer.labels?.timelineTitle} />
             <PricingSection pricing={offer.pricing} title={offer.labels?.pricingTitle} />
