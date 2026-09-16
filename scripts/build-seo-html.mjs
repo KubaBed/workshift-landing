@@ -285,7 +285,7 @@ for (const route of routes) {
 await writeFile(join(DIST, 'sitemap.xml'), buildSitemap(), 'utf8');
 await writeFile(
   join(DIST, 'robots.txt'),
-  `User-agent: *\nAllow: /\nDisallow: /showcase\nDisallow: /oferta/\nDisallow: /thank-you\n\nSitemap: ${SITE_ORIGIN}/sitemap.xml\n`,
+  `User-agent: *\nAllow: /\nDisallow: /showcase\nDisallow: /thank-you\n\nSitemap: ${SITE_ORIGIN}/sitemap.xml\n`,
   'utf8',
 );
 
