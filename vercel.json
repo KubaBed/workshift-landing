@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/cdv-warsztaty",
+      "destination": "/cdv-warsztaty/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
@@ -17,6 +21,15 @@
     },
     {
       "source": "/oferta/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive"
+        }
+      ]
+    },
+    {
+      "source": "/cdv-warsztaty(/.*)?",
       "headers": [
         {
           "key": "X-Robots-Tag",
