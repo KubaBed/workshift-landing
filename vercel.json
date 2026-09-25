@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/demo/pet-sales/",
+      "destination": "/demo/pet-sales/index.html"
+    },
+    {
       "source": "/demo/pet-sales",
       "destination": "/demo/pet-sales/index.html"
     },

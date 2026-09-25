@@ -104,6 +104,10 @@ export default async function middleware(request) {
     // Brak konfiguracji = brak dostepu (nigdy nie serwujemy demo "przypadkiem").
     if (!password || !secret) return new Response('Demo not configured', { status: 404 });
 
+    // Adres bez ukosnika na koncu lamie wzgledne sciezki (styles.css -> /demo/styles.css). Zawsze na /demo/<slug>/.
+    if (url.pathname === `/demo/${slug}`) {
+        return new Response(null, { status: 308, headers: { location: `/demo/${slug}/${url.search}`, 'cache-control': 'no-store' } });
+    }
     const isLogin = url.pathname === `/demo/${slug}/login`;
     if (isLogin && request.method === 'POST') {
         let provided = '';
@@ -116,7 +120,7 @@ export default async function middleware(request) {
         if (!timingSafeEqual(provided, password)) return loginPage(slug, true);
         const token = await mint(secret, slug);
         const cookie = `${cookieName(slug)}=${token}; Path=/demo/${slug}; Max-Age=${COOKIE_DAYS * 86400}; HttpOnly; SameSite=Lax; Secure`;
-        return new Response(null, { status: 303, headers: { location: `/demo/${slug}`, 'set-cookie': cookie, 'cache-control': 'no-store' } });
+        return new Response(null, { status: 303, headers: { location: `/demo/${slug}/`, 'set-cookie': cookie, 'cache-control': 'no-store' } });
     }
 
     const ok = await verify(secret, getCookie(request.headers.get('cookie'), cookieName(slug)), slug);
