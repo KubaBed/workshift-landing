@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/demo/pet-sales",
+      "destination": "/demo/pet-sales/index.html"
+    },
+    {
       "source": "/cdv-warsztaty",
       "destination": "/cdv-warsztaty/index.html"
     },
@@ -30,6 +34,15 @@
     },
     {
       "source": "/cdv-warsztaty(/.*)?",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive"
+        }
+      ]
+    },
+    {
+      "source": "/demo/(.*)",
       "headers": [
         {
           "key": "X-Robots-Tag",

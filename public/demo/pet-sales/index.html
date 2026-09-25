@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>PET Sales · makieta koncepcyjna</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23E9531F'/%3E%3Ctext x='16' y='21' font-family='Inter,Arial' font-size='13' font-weight='600' fill='white' text-anchor='middle'%3EPET%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="sig">PET</div>
+      <div><div class="name">PET Sales</div><div class="sub">platforma działu sprzedaży</div></div>
+    </div>
+    <div class="search" id="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="q" type="search" placeholder="Szukaj" autocomplete="off"><kbd>/</kbd>
+      <div class="sugg" id="sugg"></div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="legend" id="legend">
+      <div class="row"><span class="tag beta">Etap 1</span><span>w zakresie narzędzia</span></div>
+      <div class="row"><span class="tag e2">Etap 2</span><span>do dołożenia</span></div>
+      <div class="row"><span class="tag ms">M365</span><span>integracja Microsoft</span></div>
+      <div class="row"><span class="tag ai">AI</span><span>opcja, po polityce AI</span></div>
+    </div>
+    <div class="footer-ws">Koncepcja i wykonanie: <b>Workshift</b></div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="ttl" id="ttl"></div>
+      <span class="demo-chip">dane przykładowe</span>
+      <div class="role">
+        <label for="roleSel">Patrzysz jako</label>
+        <select id="roleSel"></select>
+        <div class="avatar" id="avatar">MZ</div>
+      </div>
+      <button class="guide-btn" id="guideBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 3 14 9-14 9V3z"/></svg>Przewodnik <kbd>G</kbd></button>
+    </header>
+    <main class="content" id="view"></main>
+  </div>
+</div>
+<div class="spot" id="spot"></div>
+<aside class="guide" id="guide" aria-live="polite"></aside>
+<div class="toast" id="toast"></div>
+<div id="modalRoot"></div>
+<script src="data.js"></script>
+<script src="map.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
