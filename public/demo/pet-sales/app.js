@@ -546,7 +546,7 @@
   window.addEventListener('scroll', () => { if (state.guide) { const s = STEPS[state.step], el = document.querySelector(s.spot); if (el) { const r = el.getBoundingClientRect(); spot.style.left = (r.left - 8) + 'px'; spot.style.top = (r.top - 8) + 'px'; } } }, { passive: true });
 
   function startScreen() {
-    $('#modalRoot').innerHTML = `<div class="gstart" id="gs"><div class="box"><span class="tag acc">makieta koncepcyjna</span><h1 style="margin-top:12px">PET Sales: tak może działać platforma Waszego działu sprzedaży</h1>
+    $('#modalRoot').innerHTML = `<div class="gstart" id="gs"><div class="box"><span class="tag bad">Makieta · wizualizacja koncepcji, nie działający program</span><h1 style="margin-top:12px">PET Sales: tak może działać platforma Waszego działu sprzedaży</h1>
       <p>To nie jest gotowy program, tylko klikalna makieta na dane przykładowe. Pokazuje mechanikę: od zapytania, przez inżynierów i rewizje oferty, po zlecenie, 13 etapów realizacji i serwis. Znaczniki mówią, co jest w etapie 1, co można dołożyć w etapie 2, a co jest integracją z Waszym Microsoft 365.</p>
       <div class="row"><button class="btn primary" id="gsStart">${ic('play')}Przewodnik, 10 kroków</button><button class="btn" id="gsFree">Klikam sam</button></div>
       <div class="meta"><span><kbd>G</kbd> przewodnik</span><span><kbd>←</kbd> <kbd>→</kbd> kroki</span><span><kbd>Esc</kbd> zamknij</span><span>Przełącznik roli w górnym pasku pokazuje uprawnienia.</span></div></div></div>`;
