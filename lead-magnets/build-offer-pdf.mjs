@@ -76,7 +76,7 @@ function renderProblems(problems, badge = 'PILOTAŻ') {
             <h3>${esc(p.title)}</h3>
             <p class="problem-metric">${esc(p.metric)}</p>
             <p class="problem-body">${esc(p.body)}</p>
-            <blockquote>${esc(p.quote)}</blockquote>
+            ${p.quote ? `<blockquote>${esc(p.quote)}</blockquote>` : ''}
         </div>
     `).join('');
 }
@@ -116,7 +116,7 @@ function renderPricingRows(rows) {
 // Karta fazy (etap / retainer). Cena opcjonalna: faza bez `price` renderuje sie bez bloku ceny.
 function renderPhase(phase) {
     if (!phase) return '';
-    const long = Array.isArray(phase.deliverables) && phase.deliverables.length > 10;
+    const long = (Array.isArray(phase.deliverables) && phase.deliverables.length > 10) || (Array.isArray(phase.blocks) && phase.blocks.length > 1);
     return `
             <div class="phase${long ? ' long' : ''}">
                 <div class="phase-top">
@@ -131,10 +131,35 @@ function renderPhase(phase) {
                     <div class="phase-price">${esc(phase.price)}</div>
                     ${phase.priceNote ? `<div class="phase-price-note">${esc(phase.priceNote)}</div>` : ''}
                 </div>` : ''}
-                <div class="phase-deliverables-label">${esc(phase.deliverablesLabel || 'Co dostajesz')}</div>
+                ${Array.isArray(phase.blocks) && phase.blocks.length ? '' : `<div class="phase-deliverables-label">${esc(phase.deliverablesLabel || 'Co dostajesz')}</div>`}
                 </div>
-                <ul class="phase-deliverables">${renderDeliverables(phase.deliverables || [])}</ul>
+                ${Array.isArray(phase.blocks) && phase.blocks.length
+                    ? phase.blocks.map(renderPhaseBlock).join('')
+                    : `<ul class="phase-deliverables">${renderDeliverables(phase.deliverables || [])}</ul>`}
                 ${phase.callout ? `<div class="phase-callout">${esc(phase.callout)}</div>` : ''}
+            </div>`;
+}
+
+// Blok w karcie fazy: `features` (siatka numer + tytul + opis z hairline'ami), `list` (1-2 kolumny), `text`.
+function renderPhaseBlock(block) {
+    let body = '';
+    if (block.type === 'features' && Array.isArray(block.items)) {
+        body = `<div class="features">${block.items.map((f, i) => `
+            <div class="feature">
+                <div class="feature-num">${String(i + 1).padStart(2, '0')}</div>
+                <div class="feature-title">${esc(f.title)}</div>
+                <div class="feature-desc">${esc(f.desc)}</div>
+            </div>`).join('')}</div>`;
+    } else if (block.type === 'list' && Array.isArray(block.items)) {
+        body = `<ul class="phase-deliverables${block.columns === 2 ? ' cols-2' : ''}">${renderDeliverables(block.items)}</ul>`;
+    } else if (block.type === 'text' && block.body) {
+        body = `<p class="section-intro">${esc(block.body)}</p>`;
+    }
+    return `
+            <div class="phase-block">
+                ${block.label ? `<div class="phase-deliverables-label">${esc(block.label)}</div>` : ''}
+                ${block.title ? `<h4 class="block-title">${esc(block.title)}</h4>` : ''}
+                ${body}
             </div>`;
 }
 
@@ -612,6 +637,39 @@ function renderHTML(offer) {
         margin: 0 0 6mm;
     }
 
+    /* ─── Bloki w karcie fazy ─── */
+    .phase-block { margin-top: 5mm; break-inside: avoid; }
+    .phase-block:first-of-type { margin-top: 0; }
+    .block-title { font-size: 13pt; margin-bottom: 3mm; }
+    .features {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        border-top: 1px solid rgba(0,0,0,0.12);
+        border-left: 1px solid rgba(0,0,0,0.12);
+    }
+    .feature {
+        border-right: 1px solid rgba(0,0,0,0.12);
+        border-bottom: 1px solid rgba(0,0,0,0.12);
+        padding: 4mm 4mm 4.5mm;
+        break-inside: avoid;
+    }
+    .feature-num {
+        font-family: var(--font-mono);
+        font-size: 8pt;
+        letter-spacing: 0.2em;
+        color: var(--color-muted);
+        margin-bottom: 2.5mm;
+    }
+    .feature-title { font-size: 10.5pt; font-weight: 500; line-height: 1.25; margin-bottom: 1.5mm; }
+    .feature-desc { font-size: 8.5pt; color: var(--color-muted); line-height: 1.4; }
+    .phase-deliverables.cols-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 6mm;
+    }
+    .phase-deliverables.cols-2 li { font-size: 9pt; padding: 0.8mm 0; }
+    .phase.long .phase-block { break-inside: avoid; }
+
     /* ─── Sekcje dodatkowe (tabele, grupy) ─── */
     .section-intro {
         font-size: 11pt;
@@ -767,7 +825,7 @@ function renderHTML(offer) {
 
         <!-- FAZY (phases[] albo pilot + asysta) -->
         ${(Array.isArray(offer.phases) && offer.phases.length ? offer.phases : [offer.pilot, offer.asysta]).filter(Boolean).map((phase, i) => `
-        <section class="phase-sec ${Array.isArray(phase.deliverables) && phase.deliverables.length > 10 ? 'long' : 'keep'}">
+        <section class="phase-sec ${(Array.isArray(phase.deliverables) && phase.deliverables.length > 10) || (Array.isArray(phase.blocks) && phase.blocks.length > 1) ? 'long' : 'keep'}">
             ${i === 0 ? `<div class="section-head"><span class="label-mono">${esc(L.scopeLabel)}</span><h2>${esc(L.scopeTitle)}</h2></div>` : ''}
             ${renderPhase(phase)}
         </section>`).join('')}

@@ -199,10 +199,12 @@ export function ProblemsSection({ problems, label, subtitle, badge }) {
                 {p.title}
               </h3>
               <p className="text-sm font-mono text-black mb-4">{p.metric}</p>
-              <p className="text-base text-muted-dark leading-relaxed mb-5">{p.body}</p>
-              <blockquote className="border-l-2 border-lime pl-4 text-sm italic text-muted-dark">
-                {p.quote}
-              </blockquote>
+              <p className={`text-base text-muted-dark leading-relaxed ${p.quote ? 'mb-5' : ''}`}>{p.body}</p>
+              {p.quote && (
+                <blockquote className="border-l-2 border-lime pl-4 text-sm italic text-muted-dark">
+                  {p.quote}
+                </blockquote>
+              )}
             </div>
           ))}
         </div>
@@ -237,6 +239,46 @@ export function ApproachSection({ approach }) {
   );
 }
 
+// Blok wewnatrz karty fazy: `features` (siatka: numer, tytul, opis, cienkie linie),
+// `list` (punkty, opcjonalnie w 2 kolumnach). Wzorzec: sekcje "features" z Mobbin
+// (naglowek + siatka z hairline'ami), dziala tak samo w PDF.
+function PhaseBlock({ block }) {
+  return (
+    <div>
+      {block.label && (
+        <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-dark mb-2">{block.label}</p>
+      )}
+      {block.title && (
+        <h4 className="text-xl md:text-2xl font-display tracking-tight text-black mb-4 leading-tight">{block.title}</h4>
+      )}
+      {block.type === 'features' && Array.isArray(block.items) && (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 border-t border-l border-black/10">
+          {block.items.map((f, i) => (
+            <div key={i} className="border-b border-r border-black/10 p-5 md:p-6">
+              <p className="font-mono text-[11px] tracking-[0.2em] text-muted-dark mb-3">{String(i + 1).padStart(2, '0')}</p>
+              <p className="text-base md:text-lg text-black font-medium leading-snug mb-2">{f.title}</p>
+              <p className="text-sm text-muted-dark leading-relaxed">{f.desc}</p>
+            </div>
+          ))}
+        </div>
+      )}
+      {block.type === 'list' && Array.isArray(block.items) && (
+        <ul className={`grid gap-x-8 gap-y-2.5 ${block.columns === 2 ? 'md:grid-cols-2' : ''}`}>
+          {block.items.map((d, i) => (
+            <li key={i} className="flex gap-3 items-start">
+              <span className="mt-2 w-1.5 h-1.5 rounded-full bg-lime shrink-0" />
+              <span className="text-[15px] text-black leading-relaxed">{d}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+      {block.type === 'text' && block.body && (
+        <p className="text-base text-muted-dark leading-relaxed">{block.body}</p>
+      )}
+    </div>
+  );
+}
+
 function PhaseCard({ phase }) {
   return (
     <motion.div
@@ -268,15 +310,23 @@ function PhaseCard({ phase }) {
         </div>
       )}
 
-      <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-dark mb-4">{phase.deliverablesLabel || 'Co dostajecie'}</p>
-      <ul className="flex flex-col gap-3">
-        {phase.deliverables.map((d, i) => (
-          <li key={i} className="flex gap-3 items-start">
-            <span className="mt-2 w-1.5 h-1.5 rounded-full bg-lime shrink-0" />
-            <span className="text-base text-black leading-relaxed">{d}</span>
-          </li>
-        ))}
-      </ul>
+      {Array.isArray(phase.blocks) && phase.blocks.length > 0 ? (
+        <div className="flex flex-col gap-10">
+          {phase.blocks.map((block, bi) => <PhaseBlock key={bi} block={block} />)}
+        </div>
+      ) : (
+        <>
+          <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-dark mb-4">{phase.deliverablesLabel || 'Co dostajecie'}</p>
+          <ul className="flex flex-col gap-3">
+            {(phase.deliverables || []).map((d, i) => (
+              <li key={i} className="flex gap-3 items-start">
+                <span className="mt-2 w-1.5 h-1.5 rounded-full bg-lime shrink-0" />
+                <span className="text-base text-black leading-relaxed">{d}</span>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
 
       {phase.callout && (
         <div className="mt-8 border-l-3 border-lime pl-6 py-3">
