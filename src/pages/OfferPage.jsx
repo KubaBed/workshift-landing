@@ -14,6 +14,7 @@ import {
     NextStepsSection,
     StatusBanner,
     NeedsSection,
+    ExtraSections,
 } from '../components/offer/OfferSections';
 import NotFoundPage from './NotFoundPage';
 
@@ -168,11 +169,17 @@ export default function OfferPage() {
             <PilotSection
                 pilot={offer.pilot}
                 asysta={offer.asysta}
+                phases={offer.phases}
                 label={offer.labels?.scopeLabel}
                 title={offer.labels?.scopeTitle}
             />
             {offer.needs && <NeedsSection needs={offer.needs} />}
-            <TimelineSection timeline={offer.timeline} title={offer.labels?.timelineTitle} />
+            <ExtraSections sections={offer.sections} />
+            <TimelineSection
+                timeline={offer.timeline}
+                title={offer.labels?.timelineTitle}
+                label={offer.labels?.timelineLabel}
+            />
             <PricingSection pricing={offer.pricing} title={offer.labels?.pricingTitle} />
             {offer.saldeo && <SaldeoSection saldeo={offer.saldeo} />}
             <NextStepsSection
@@ -181,6 +188,7 @@ export default function OfferPage() {
                 validUntil={offer.meta.validUntil}
                 contact={CONTACT}
                 client={offer.client}
+                ctaSubject={offer.labels?.ctaSubject}
             />
         </main>
     );

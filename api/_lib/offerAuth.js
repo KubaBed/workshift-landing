@@ -149,6 +149,8 @@ export function sanitizeOfferForClient(offer) {
         approach: offer.approach || null,
         pilot: offer.pilot || null,
         asysta: offer.asysta || null,
+        phases: offer.phases || null,
+        sections: offer.sections || null,
         needs: offer.needs || null,
         timeline: offer.timeline || [],
         pricing: offer.pricing || null,

@@ -181,7 +181,7 @@ export function ProblemsSection({ problems, label, subtitle, badge }) {
         <h2 className="text-3xl md:text-5xl font-display tracking-tight text-black mb-12 leading-tight">
           {subtitle || 'Co rozwiązujemy'}
         </h2>
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className={`grid gap-6 ${problems.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
           {problems.map((p) => (
             <div
               key={p.id}
@@ -256,15 +256,17 @@ function PhaseCard({ phase }) {
         {phase.title}
       </h3>
 
-      <div className="grid md:grid-cols-[1fr_auto] gap-8 mb-8 items-end">
-        <div>
-          <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-dark mb-2">Cena</p>
-          <p className="text-3xl md:text-4xl font-display tracking-tight text-black leading-none">
-            {phase.price}
-          </p>
-          <p className="text-sm text-muted-dark mt-2">{phase.priceNote}</p>
+      {phase.price && (
+        <div className="grid md:grid-cols-[1fr_auto] gap-8 mb-8 items-end">
+          <div>
+            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-dark mb-2">Cena</p>
+            <p className="text-3xl md:text-4xl font-display tracking-tight text-black leading-none">
+              {phase.price}
+            </p>
+            {phase.priceNote && <p className="text-sm text-muted-dark mt-2">{phase.priceNote}</p>}
+          </div>
         </div>
-      </div>
+      )}
 
       <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-dark mb-4">{phase.deliverablesLabel || 'Co dostajecie'}</p>
       <ul className="flex flex-col gap-3">
@@ -285,7 +287,11 @@ function PhaseCard({ phase }) {
   );
 }
 
-export function PilotSection({ pilot, asysta, label, title }) {
+// `phases` (tablica dowolnej długości) ma pierwszeństwo; `pilot` + `asysta`
+// zostają dla starszych ofert. Faza bez `price` renderuje się bez bloku ceny.
+export function PilotSection({ pilot, asysta, phases, label, title }) {
+  const list = Array.isArray(phases) && phases.length ? phases : [pilot, asysta].filter(Boolean);
+  if (!list.length) return null;
   return (
     <SectionWrap>
       <SectionLabel>{label || 'Co budujemy'}</SectionLabel>
@@ -293,10 +299,100 @@ export function PilotSection({ pilot, asysta, label, title }) {
         {title || 'Pilotaż + asysta wdrożeniowa'}
       </h2>
       <div className="grid gap-6">
-        <PhaseCard phase={pilot} />
-        <PhaseCard phase={asysta} />
+        {list.map((phase, i) => <PhaseCard key={i} phase={phase} />)}
       </div>
     </SectionWrap>
+  );
+}
+
+// Sekcje dodatkowe sterowane danymi: `sections: [{ type: 'table' | 'groups' | 'list', ... }]`.
+// Renderowane po fazach (i sekcji "Po Państwa stronie"), przed przebiegiem prac.
+function TableBlock({ section }) {
+  return (
+    <div className="overflow-x-auto rounded-2xl border border-black/10 bg-white/60">
+      <table className="w-full text-left text-sm md:text-base border-collapse">
+        {Array.isArray(section.columns) && section.columns.length > 0 && (
+          <thead>
+            <tr className="border-b border-black/10">
+              {section.columns.map((c, i) => (
+                <th key={i} className="px-5 md:px-6 py-4 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-dark font-normal align-bottom">{c}</th>
+              ))}
+            </tr>
+          </thead>
+        )}
+        <tbody>
+          {section.rows.map((row, ri) => (
+            <tr key={ri} className={ri !== section.rows.length - 1 ? 'border-b border-black/10' : ''}>
+              {row.map((cell, ci) => (
+                <td key={ci} className={`px-5 md:px-6 py-4 align-top leading-relaxed ${ci === 0 ? 'text-black' : 'text-muted-dark'}`}>{cell}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function GroupsBlock({ section }) {
+  return (
+    <div className="grid md:grid-cols-2 gap-x-10 gap-y-10">
+      {section.groups.map((g, gi) => (
+        <div key={gi}>
+          <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-dark mb-4">{g.title}</p>
+          <ul className="flex flex-col gap-3">
+            {g.items.map((item, ii) => (
+              <li key={ii} className="flex gap-3 items-start">
+                <span className="mt-2 w-1.5 h-1.5 rounded-full bg-lime shrink-0" />
+                <span className="text-base text-black leading-relaxed">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ListBlock({ section }) {
+  return (
+    <ul className="flex flex-col gap-3 max-w-3xl">
+      {section.items.map((item, i) => (
+        <li key={i} className="flex gap-3 items-start">
+          <span className="mt-2 w-1.5 h-1.5 rounded-full bg-lime shrink-0" />
+          <span className="text-base text-black leading-relaxed">{item}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export function ExtraSections({ sections }) {
+  if (!Array.isArray(sections) || sections.length === 0) return null;
+  return (
+    <>
+      {sections.map((section, i) => (
+        <SectionWrap key={i}>
+          <motion.div {...fadeUp}>
+            {section.label && <SectionLabel>{section.label}</SectionLabel>}
+            {section.title && (
+              <h2 className="text-3xl md:text-5xl font-display tracking-tight text-black mb-6 leading-tight max-w-3xl">
+                {section.title}
+              </h2>
+            )}
+            {section.intro && (
+              <p className="text-lg text-muted-dark mb-10 max-w-3xl leading-relaxed">{section.intro}</p>
+            )}
+            {section.type === 'table' && Array.isArray(section.rows) && <TableBlock section={section} />}
+            {section.type === 'groups' && Array.isArray(section.groups) && <GroupsBlock section={section} />}
+            {section.type === 'list' && Array.isArray(section.items) && <ListBlock section={section} />}
+            {section.footnote && (
+              <p className="mt-6 text-sm text-muted-dark md:text-justify hyphens-auto max-w-3xl">{section.footnote}</p>
+            )}
+          </motion.div>
+        </SectionWrap>
+      ))}
+    </>
   );
 }
 
@@ -325,11 +421,12 @@ export function NeedsSection({ needs }) {
   );
 }
 
-export function TimelineSection({ timeline, title }) {
+export function TimelineSection({ timeline, title, label }) {
+  if (!Array.isArray(timeline) || timeline.length === 0) return null;
   return (
     <SectionWrap>
       <motion.div {...fadeUp}>
-        <SectionLabel>Harmonogram</SectionLabel>
+        <SectionLabel>{label || 'Harmonogram'}</SectionLabel>
         <h2 className="text-3xl md:text-5xl font-display tracking-tight text-black mb-12 leading-tight max-w-3xl">
           {title || 'Od startu do działającego asystenta - ok. 4 tygodnie'}
         </h2>
@@ -393,7 +490,19 @@ export function PricingSection({ pricing, title }) {
             </p>
           </div>
         </div>
-        <p className="mt-6 text-sm text-muted-dark md:text-justify hyphens-auto">{pricing.footnote}</p>
+        {Array.isArray(pricing.terms) && pricing.terms.length > 0 && (
+          <ul className="mt-8 flex flex-col gap-3 max-w-3xl">
+            {pricing.terms.map((t, i) => (
+              <li key={i} className="flex gap-3 items-start">
+                <span className="mt-2 w-1.5 h-1.5 rounded-full bg-lime shrink-0" />
+                <span className="text-base text-black leading-relaxed">{t}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+        {pricing.footnote && (
+          <p className="mt-6 text-sm text-muted-dark md:text-justify hyphens-auto">{pricing.footnote}</p>
+        )}
       </motion.div>
     </SectionWrap>
   );
@@ -436,8 +545,8 @@ export function SaldeoSection({ saldeo }) {
   );
 }
 
-export function NextStepsSection({ steps, validUntil, contact, client, title }) {
-  const subject = encodeURIComponent(`Akceptacja oferty pilotażu - ${client?.name?.replace(' Sp. z o.o.', '') || ''}`);
+export function NextStepsSection({ steps, validUntil, contact, client, title, ctaSubject }) {
+  const subject = encodeURIComponent(ctaSubject || `Akceptacja oferty - ${client?.name?.replace(' Sp. z o.o.', '') || ''}`);
   return (
     <SectionWrap className="pb-32">
       <motion.div {...fadeUp}>
@@ -481,7 +590,7 @@ export function NextStepsSection({ steps, validUntil, contact, client, title }) 
         </div>
 
         <p className="mt-10 text-sm text-muted-light">
-          Oferta ważna do {validUntil}. Strona prywatna, nieindeksowana.
+          Oferta ważna do {fmtDatePL(validUntil)}. Strona prywatna, nieindeksowana.
         </p>
       </motion.div>
     </SectionWrap>

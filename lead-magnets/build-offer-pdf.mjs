@@ -113,6 +113,60 @@ function renderPricingRows(rows) {
     `).join('');
 }
 
+// Karta fazy (etap / retainer). Cena opcjonalna: faza bez `price` renderuje sie bez bloku ceny.
+function renderPhase(phase) {
+    if (!phase) return '';
+    const long = Array.isArray(phase.deliverables) && phase.deliverables.length > 10;
+    return `
+            <div class="phase${long ? ' long' : ''}">
+                <div class="phase-top">
+                <div class="phase-header">
+                    <span class="phase-badge">${esc(phase.label)}</span>
+                    <span class="phase-duration">${esc(phase.duration || '')}</span>
+                </div>
+                <h3>${esc(phase.title)}</h3>
+                ${phase.price ? `
+                <div class="phase-price-block">
+                    <div class="phase-price-label">Cena</div>
+                    <div class="phase-price">${esc(phase.price)}</div>
+                    ${phase.priceNote ? `<div class="phase-price-note">${esc(phase.priceNote)}</div>` : ''}
+                </div>` : ''}
+                <div class="phase-deliverables-label">${esc(phase.deliverablesLabel || 'Co dostajesz')}</div>
+                </div>
+                <ul class="phase-deliverables">${renderDeliverables(phase.deliverables || [])}</ul>
+                ${phase.callout ? `<div class="phase-callout">${esc(phase.callout)}</div>` : ''}
+            </div>`;
+}
+
+// Sekcje dodatkowe sterowane danymi: `sections: [{ type: 'table' | 'groups' | 'list', ... }]`.
+function renderExtraSection(section) {
+    let body = '';
+    if (section.type === 'table' && Array.isArray(section.rows)) {
+        const head = Array.isArray(section.columns) && section.columns.length
+            ? `<thead><tr>${section.columns.map((c) => `<th>${esc(c)}</th>`).join('')}</tr></thead>`
+            : '';
+        body = `<table class="data-table">${head}<tbody>${section.rows.map((row) => `<tr>${row.map((cell, ci) => `<td class="${ci === 0 ? 'cell-main' : 'cell-muted'}">${esc(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+    } else if (section.type === 'groups' && Array.isArray(section.groups)) {
+        body = `<div class="groups">${section.groups.map((g) => `
+            <div class="group">
+                <div class="phase-deliverables-label">${esc(g.title)}</div>
+                <ul class="phase-deliverables">${renderDeliverables(g.items || [])}</ul>
+            </div>`).join('')}</div>`;
+    } else if (section.type === 'list' && Array.isArray(section.items)) {
+        body = `<ul class="phase-deliverables">${renderDeliverables(section.items)}</ul>`;
+    }
+    return `
+        <section class="extra keep">
+            <div class="section-head">
+            ${section.label ? `<span class="label-mono">${esc(section.label)}</span>` : ''}
+            ${section.title ? `<h2>${esc(section.title)}</h2>` : ''}
+            ${section.intro ? `<p class="section-intro">${esc(section.intro)}</p>` : ''}
+            </div>
+            ${body}
+            ${section.footnote ? `<p class="pricing-footnote">${esc(section.footnote)}</p>` : ''}
+        </section>`;
+}
+
 function renderNextSteps(steps) {
     return steps.map((s, i) => `
         <li>
@@ -164,8 +218,8 @@ function renderHTML(offer) {
 
     body {
         font-family: var(--font-sans);
-        font-size: 11pt;
-        line-height: 1.5;
+        font-size: 10pt;
+        line-height: 1.42;
         color: var(--color-black);
         background: var(--color-bg);
         margin: 0;
@@ -187,9 +241,18 @@ function renderHTML(offer) {
 
     /* ─── Section ─── */
     section {
-        padding: 0 0 20mm;
-        break-inside: avoid;
+        padding: 0 0 7mm;
+        break-inside: auto;
     }
+    section.keep { break-inside: avoid; }
+    section.long, .phase.long { break-inside: auto; }
+    .section-head { break-inside: avoid; break-after: avoid; }
+    .phase:not(.long) { break-inside: avoid; }
+    .phase-top, .stat, .problem, .timeline-row, .group, .pricing-table, .phase-callout, .callout,
+    .phase-deliverables li, .terms li, .data-table tr, .next-steps li { break-inside: avoid; }
+    .problems.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .problems.cols-3 .problem { padding: 5mm; }
+    .problems.cols-3 h3 { font-size: 12pt; }
 
     .label-mono {
         font-family: var(--font-mono);
@@ -200,14 +263,15 @@ function renderHTML(offer) {
         background: rgba(0,0,0,0.05);
         padding: 3pt 8pt;
         border-radius: 99px;
-        display: inline-block;
-        margin-bottom: 6mm;
+        display: block;
+        width: fit-content;
+        margin-bottom: 4mm;
     }
 
     h1, h2, h3, h4 { font-weight: 400; letter-spacing: -0.02em; margin: 0; }
-    h1 { font-size: 32pt; line-height: 1.05; margin-bottom: 4mm; }
-    h2 { font-size: 22pt; line-height: 1.1; margin-bottom: 6mm; }
-    h3 { font-size: 14pt; line-height: 1.2; margin-bottom: 3mm; }
+    h1 { font-size: 28pt; line-height: 1.05; margin-bottom: 4mm; }
+    h2 { font-size: 18pt; line-height: 1.1; margin-bottom: 4mm; }
+    h3 { font-size: 13pt; line-height: 1.2; margin-bottom: 2.5mm; }
 
     /* ─── Hero ─── */
     .hero {
@@ -260,7 +324,7 @@ function renderHTML(offer) {
         margin-bottom: 2mm;
     }
     .stat-value {
-        font-size: 18pt;
+        font-size: 16pt;
         line-height: 1.1;
         margin-bottom: 2mm;
         letter-spacing: -0.02em;
@@ -311,11 +375,11 @@ function renderHTML(offer) {
     }
     .problem-metric {
         font-family: var(--font-mono);
-        font-size: 10pt;
+        font-size: 8.5pt;
         margin: 0 0 3mm;
     }
     .problem-body {
-        font-size: 10pt;
+        font-size: 9pt;
         color: var(--color-muted);
         line-height: 1.5;
         margin: 0 0 4mm;
@@ -325,7 +389,7 @@ function renderHTML(offer) {
         padding-left: 4mm;
         font-style: italic;
         color: var(--color-muted);
-        font-size: 10pt;
+        font-size: 9pt;
         margin: 0;
     }
 
@@ -339,9 +403,9 @@ function renderHTML(offer) {
     .approach li {
         display: flex;
         gap: 4mm;
-        padding: 2mm 0;
-        font-size: 12pt;
-        line-height: 1.5;
+        padding: 1.2mm 0;
+        font-size: 10.5pt;
+        line-height: 1.45;
     }
     .check {
         display: inline-flex;
@@ -362,7 +426,7 @@ function renderHTML(offer) {
         padding-left: 5mm;
         font-style: italic;
         color: var(--color-muted);
-        font-size: 11pt;
+        font-size: 10pt;
         max-width: 160mm;
     }
 
@@ -371,8 +435,8 @@ function renderHTML(offer) {
         border: 1px solid rgba(0,0,0,0.1);
         background: rgba(255,255,255,0.6);
         border-radius: 4mm;
-        padding: 8mm;
-        margin-bottom: 5mm;
+        padding: 5mm 6mm;
+        margin-bottom: 4mm;
         break-inside: avoid;
     }
     .phase-header {
@@ -409,7 +473,7 @@ function renderHTML(offer) {
         margin-bottom: 1mm;
     }
     .phase-price {
-        font-size: 22pt;
+        font-size: 20pt;
         letter-spacing: -0.02em;
         line-height: 1;
         margin-bottom: 1mm;
@@ -434,8 +498,8 @@ function renderHTML(offer) {
     .phase-deliverables li {
         display: flex;
         gap: 3mm;
-        padding: 1.5mm 0;
-        font-size: 10pt;
+        padding: 0.8mm 0;
+        font-size: 9.5pt;
         line-height: 1.5;
     }
     .bullet {
@@ -445,12 +509,12 @@ function renderHTML(offer) {
         flex-shrink: 0;
     }
     .phase-callout {
-        margin-top: 5mm;
+        margin-top: 3mm;
         border-left: 3px solid var(--color-lime);
         padding-left: 4mm;
         font-style: italic;
         color: var(--color-muted);
-        font-size: 10pt;
+        font-size: 9pt;
     }
 
     /* ─── Timeline ─── */
@@ -461,7 +525,7 @@ function renderHTML(offer) {
         display: grid;
         grid-template-columns: 30mm 1fr;
         gap: 6mm;
-        padding: 3mm 0;
+        padding: 2mm 0;
         border-left: 1px solid var(--color-border);
         padding-left: 6mm;
         position: relative;
@@ -504,13 +568,13 @@ function renderHTML(offer) {
         overflow: hidden;
     }
     .pricing-table td {
-        padding: 5mm 6mm;
+        padding: 2.8mm 5mm;
         border-bottom: 1px solid rgba(0,0,0,0.08);
         vertical-align: top;
     }
     .pricing-table tr:last-child td { border-bottom: none; }
     .row-label {
-        font-size: 11pt;
+        font-size: 10pt;
         margin-bottom: 1mm;
     }
     .row-note {
@@ -518,7 +582,7 @@ function renderHTML(offer) {
         color: var(--color-muted);
     }
     .row-price {
-        font-size: 16pt;
+        font-size: 14pt;
         text-align: right;
         white-space: nowrap;
         letter-spacing: -0.02em;
@@ -527,13 +591,13 @@ function renderHTML(offer) {
         background: rgba(156, 224, 105, 0.3);
         border-top: 2px solid var(--color-lime);
     }
-    .total-row td { padding-top: 6mm; padding-bottom: 6mm; }
+    .total-row td { padding-top: 4mm; padding-bottom: 4mm; }
     .total-label { font-size: 12pt; font-weight: 600; }
-    .total-value { font-size: 20pt; }
+    .total-value { font-size: 18pt; }
     .pricing-footnote {
         font-size: 9pt;
         color: var(--color-muted);
-        margin-top: 4mm;
+        margin-top: 3mm;
     }
 
     /* ─── Saldeo ─── */
@@ -548,6 +612,60 @@ function renderHTML(offer) {
         margin: 0 0 6mm;
     }
 
+    /* ─── Sekcje dodatkowe (tabele, grupy) ─── */
+    .section-intro {
+        font-size: 11pt;
+        color: var(--color-muted);
+        margin: 0 0 6mm;
+        max-width: 160mm;
+    }
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid rgba(0,0,0,0.1);
+        background: rgba(255,255,255,0.6);
+        font-size: 9.5pt;
+        line-height: 1.45;
+    }
+    .data-table th {
+        font-family: var(--font-mono);
+        font-size: 7.5pt;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        color: var(--color-muted);
+        font-weight: 400;
+        text-align: left;
+        padding: 2.8mm 4mm;
+        border-bottom: 1px solid rgba(0,0,0,0.12);
+        vertical-align: bottom;
+    }
+    .data-table td {
+        padding: 2.8mm 4mm;
+        border-bottom: 1px solid rgba(0,0,0,0.08);
+        vertical-align: top;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table .cell-muted { color: var(--color-muted); }
+    .groups {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6mm 8mm;
+    }
+    .group { break-inside: avoid; }
+    section.phases, section.extra.long { break-inside: auto; }
+    .terms {
+        list-style: none;
+        padding: 0;
+        margin: 5mm 0 0;
+    }
+    .terms li {
+        display: flex;
+        gap: 3mm;
+        padding: 0.8mm 0;
+        font-size: 9pt;
+        line-height: 1.45;
+    }
+
     /* ─── Next steps ─── */
     .next-steps {
         list-style: none;
@@ -557,11 +675,11 @@ function renderHTML(offer) {
     .next-steps li {
         display: flex;
         gap: 5mm;
-        padding: 3mm 0;
-        font-size: 12pt;
+        padding: 1.5mm 0;
+        font-size: 10.5pt;
     }
     .step-num {
-        font-size: 22pt;
+        font-size: 18pt;
         color: var(--color-lime);
         line-height: 1;
         flex-shrink: 0;
@@ -574,8 +692,8 @@ function renderHTML(offer) {
     }
     .contact-block {
         border-top: 1px solid var(--color-border);
-        padding-top: 6mm;
-        margin-top: 8mm;
+        padding-top: 5mm;
+        margin-top: 5mm;
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
@@ -596,18 +714,14 @@ function renderHTML(offer) {
         border-radius: 2mm;
     }
     .doc-footer {
-        margin-top: 8mm;
+        margin-top: 5mm;
         font-size: 9pt;
         color: var(--color-muted-light);
     }
 
     /* ─── Print specifics ─── */
     @media print {
-        section { break-inside: avoid; }
         h2, h3 { break-after: avoid; }
-        .phase, .problem { break-inside: avoid; }
-        .pricing-table { break-inside: avoid; }
-        .timeline-row { break-inside: avoid; }
     }
 </style>
 </head>
@@ -632,87 +746,53 @@ function renderHTML(offer) {
         ` : ''}
 
         <!-- CONTEXT -->
-        <section>
-            <span class="label-mono">Kontekst</span>
-            <h2>${esc(offer.context.headline)}</h2>
+        <section class="keep">
+            <div class="section-head"><span class="label-mono">Kontekst</span><h2>${esc(offer.context.headline)}</h2></div>
             <div class="stats">${renderStats(offer.context.stats)}</div>
         </section>
 
         <!-- PROBLEMS -->
         ${offer.problems?.length ? `
-        <section>
-            <span class="label-mono">${esc(L.problems)}</span>
-            <h2>${esc(L.problemsSubtitle)}</h2>
-            <div class="problems">${renderProblems(offer.problems, L.problemsBadge)}</div>
+        <section class="keep">
+            <div class="section-head"><span class="label-mono">${esc(L.problems)}</span><h2>${esc(L.problemsSubtitle)}</h2></div>
+            <div class="problems${offer.problems.length === 3 ? ' cols-3' : ''}">${renderProblems(offer.problems, L.problemsBadge)}</div>
         </section>` : ''}
 
         <!-- APPROACH -->
-        <section class="approach">
-            <span class="label-mono">Nasze podejście</span>
-            <h2>${esc(offer.approach.headline)}</h2>
+        <section class="approach keep">
+            <div class="section-head"><span class="label-mono">Nasze podejście</span><h2>${esc(offer.approach.headline)}</h2></div>
             <ul>${renderReasons(offer.approach.reasons)}</ul>
             <div class="callout">${esc(offer.approach.callout)}</div>
         </section>
 
-        <!-- PILOT + ASYSTA -->
-        <section>
-            <span class="label-mono">${esc(L.scopeLabel)}</span>
-            <h2>${esc(L.scopeTitle)}</h2>
-
-            <div class="phase">
-                <div class="phase-header">
-                    <span class="phase-badge">${esc(offer.pilot.label)}</span>
-                    <span class="phase-duration">${esc(offer.pilot.duration)}</span>
-                </div>
-                <h3>${esc(offer.pilot.title)}</h3>
-                <div class="phase-price-block">
-                    <div class="phase-price-label">Cena</div>
-                    <div class="phase-price">${esc(offer.pilot.price)}</div>
-                    <div class="phase-price-note">${esc(offer.pilot.priceNote)}</div>
-                </div>
-                <div class="phase-deliverables-label">${esc(offer.pilot.deliverablesLabel || 'Co dostajesz')}</div>
-                <ul class="phase-deliverables">${renderDeliverables(offer.pilot.deliverables)}</ul>
-                ${offer.pilot.callout ? `<div class="phase-callout">${esc(offer.pilot.callout)}</div>` : ''}
-            </div>
-
-            <div class="phase">
-                <div class="phase-header">
-                    <span class="phase-badge">${esc(offer.asysta.label)}</span>
-                    <span class="phase-duration">${esc(offer.asysta.duration)}</span>
-                </div>
-                <h3>${esc(offer.asysta.title)}</h3>
-                <div class="phase-price-block">
-                    <div class="phase-price-label">Cena</div>
-                    <div class="phase-price">${esc(offer.asysta.price)}</div>
-                    <div class="phase-price-note">${esc(offer.asysta.priceNote)}</div>
-                </div>
-                <div class="phase-deliverables-label">${esc(offer.asysta.deliverablesLabel || 'Co dostajesz')}</div>
-                <ul class="phase-deliverables">${renderDeliverables(offer.asysta.deliverables)}</ul>
-                ${offer.asysta.callout ? `<div class="phase-callout">${esc(offer.asysta.callout)}</div>` : ''}
-            </div>
-        </section>
+        <!-- FAZY (phases[] albo pilot + asysta) -->
+        ${(Array.isArray(offer.phases) && offer.phases.length ? offer.phases : [offer.pilot, offer.asysta]).filter(Boolean).map((phase, i) => `
+        <section class="phase-sec ${Array.isArray(phase.deliverables) && phase.deliverables.length > 10 ? 'long' : 'keep'}">
+            ${i === 0 ? `<div class="section-head"><span class="label-mono">${esc(L.scopeLabel)}</span><h2>${esc(L.scopeTitle)}</h2></div>` : ''}
+            ${renderPhase(phase)}
+        </section>`).join('')}
 
         ${offer.needs && Array.isArray(offer.needs.items) && offer.needs.items.length ? `
         <!-- NEEDS -->
         <section>
-            <span class="label-mono">${esc(offer.needs.label || 'Po Państwa stronie')}</span>
-            <h2>${esc(offer.needs.title || 'Czego potrzebujemy od Państwa')}</h2>
+            <div class="section-head"><span class="label-mono">${esc(offer.needs.label || 'Po Państwa stronie')}</span><h2>${esc(offer.needs.title || 'Czego potrzebujemy od Państwa')}</h2></div>
             <ul class="phase-deliverables">${renderDeliverables(offer.needs.items)}</ul>
             ${offer.needs.note ? `<p class="pricing-footnote">${esc(offer.needs.note)}</p>` : ''}
         </section>
         ` : ''}
 
+        ${Array.isArray(offer.sections) ? offer.sections.map(renderExtraSection).join('') : ''}
+
+        ${Array.isArray(offer.timeline) && offer.timeline.length ? `
         <!-- TIMELINE -->
         <section>
-            <span class="label-mono">Harmonogram</span>
-            <h2>${esc(L.timelineTitle)}</h2>
+            <div class="section-head"><span class="label-mono">${esc(L.timelineLabel || 'Harmonogram')}</span><h2>${esc(L.timelineTitle)}</h2></div>
             <div class="timeline">${renderTimeline(offer.timeline)}</div>
-        </section>
+        </section>` : ''}
 
         <!-- PRICING -->
         <section>
-            <span class="label-mono">Podsumowanie finansowe</span>
-            <h2>${esc(L.pricingTitle)}</h2>
+            <div class="section-head"><span class="label-mono">Podsumowanie finansowe</span><h2>${esc(L.pricingTitle)}</h2></div>
             <table class="pricing-table">
                 ${renderPricingRows(offer.pricing.rows)}
                 <tr class="total-row">
@@ -720,14 +800,14 @@ function renderHTML(offer) {
                     <td class="row-price total-value">${esc(offer.pricing.total)}</td>
                 </tr>
             </table>
-            <p class="pricing-footnote">${esc(offer.pricing.footnote)}</p>
+            ${Array.isArray(offer.pricing.terms) && offer.pricing.terms.length ? `<ul class="terms">${renderDeliverables(offer.pricing.terms)}</ul>` : ''}
+            ${offer.pricing.footnote ? `<p class="pricing-footnote">${esc(offer.pricing.footnote)}</p>` : ''}
         </section>
 
         ${offer.saldeo ? `
         <!-- SALDEO -->
         <section>
-            <span class="label-mono">${esc(offer.saldeo.label)}</span>
-            <h2>${esc(offer.saldeo.title)}</h2>
+            <div class="section-head"><span class="label-mono">${esc(offer.saldeo.label)}</span><h2>${esc(offer.saldeo.title)}</h2></div>
             <p class="saldeo-subtitle">${esc(offer.saldeo.subtitle)}</p>
             <div class="saldeo-grid">
                 <div>
@@ -744,9 +824,8 @@ function renderHTML(offer) {
         ` : ''}
 
         <!-- NEXT STEPS -->
-        <section>
-            <span class="label-mono">Co dalej</span>
-            <h2>${esc(L.nextStepsTitle)}</h2>
+        <section class="keep">
+            <div class="section-head"><span class="label-mono">Co dalej</span><h2>${esc(L.nextStepsTitle)}</h2></div>
             <ol class="next-steps">${renderNextSteps(offer.nextSteps)}</ol>
 
             <div class="contact-block">
@@ -814,9 +893,9 @@ async function build() {
             path: outPath,
             format: 'A4',
             printBackground: true,
-            margin: { top: '12mm', bottom: '14mm', left: '10mm', right: '10mm' },
+            margin: { top: '11mm', bottom: '12mm', left: '10mm', right: '10mm' },
             displayHeaderFooter: true,
-            headerTemplate: `<div style="font-size:8px;color:#888;width:100%;text-align:right;padding-right:10mm;font-family:Inter,sans-serif">Workshift → ${esc(offer.client.name.replace(' Sp. z o.o.', ''))} · ${today}</div>`,
+            headerTemplate: `<div style="font-size:8px;color:#888;width:100%;text-align:right;padding-right:10mm;font-family:Inter,sans-serif">Workshift → ${esc(offer.client.name.replace(' Sp. z o.o.', ''))} · ${esc(offer.meta.dateSent || today)}</div>`,
             footerTemplate: `<div style="font-size:8px;color:#888;width:100%;text-align:center;font-family:Inter,sans-serif">Strona <span class="pageNumber"></span> z <span class="totalPages"></span> · Oferta prywatna, dokument wewnętrzny</div>`,
         });
 
