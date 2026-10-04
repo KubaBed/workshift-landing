@@ -4,7 +4,7 @@ export const blogPosts = [
     title: 'Nagranie z webinaru: Drugi mózg agenta, czyli jak ciąć tokeny bez utraty kontekstu',
     seoTitle: 'Drugi mózg agenta - nagranie z webinaru',
     category: 'Wiedza',
-    date: '2026-10-03',
+    date: '2026-10-04',
     author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.webp' },
     image: 'https://i.ytimg.com/vi/i1sN9PiTeBk/maxresdefault.jpg',
     excerpt:
