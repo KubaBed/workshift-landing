@@ -1,14 +1,14 @@
 export const blogPosts = [
   {
     slug: 'drugi-mozg-agenta-jak-ciac-tokeny',
-    title: 'Drugi mózg agenta: jak ciąć tokeny bez utraty kontekstu',
-    seoTitle: 'Drugi mózg agenta AI - jak ciąć tokeny',
+    title: 'Nagranie z webinaru: Drugi mózg agenta, czyli jak ciąć tokeny bez utraty kontekstu',
+    seoTitle: 'Drugi mózg agenta - nagranie z webinaru',
     category: 'Wiedza',
     date: '2026-10-03',
     author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.webp' },
-    image: '/images/blog/drugi-mozg-agenta.webp',
+    image: 'https://i.ytimg.com/vi/i1sN9PiTeBk/maxresdefault.jpg',
     excerpt:
-      'Mój agent spalał 28 686 tokenów, zanim padło pierwsze pytanie. Na webinarze AI Now Polska pokazałem, jak drugi mózg zbił to do kilkuset. Najważniejsze tezy, zmierzone liczby i porażki, o których nie piszą w dokumentacji narzędzi.',
+      'Nagranie mojego wystąpienia na webinarze AI Now Polska jest już na YouTube. Mój agent spalał 28 686 tokenów, zanim padło pierwsze pytanie - pokazuję, jak drugi mózg zbił to do kilkuset. Do tego najważniejsze tezy, pomiary i porażki.',
     content: `
   15 września opowiadałem na webinarze AI Now Polska o tym, jak zbudowałem swojemu agentowi drugi mózg i co to zrobiło z rachunkiem za tokeny. Nagranie jest już na YouTube, a poniżej zbieram najważniejsze tezy i liczby z tego wystąpienia.
 
