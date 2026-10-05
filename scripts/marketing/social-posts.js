@@ -22,10 +22,10 @@
  *                         domyślnie https://workshift.pl/social
  *
  * Tryby:
- *  node --env-file=.env.local scripts/social-posts.js --plan       # tylko pokazuje harmonogram
- *  node --env-file=.env.local scripts/social-posts.js --fb         # planuje wszystkie posty FB
- *  node --env-file=.env.local scripts/social-posts.js --ig         # publikuje dojrzałe IG (feed+story) - do crona
- *  node --env-file=.env.local scripts/social-posts.js --ig --force <slug>  # publikuje 1 pozycję IG od razu
+ *  node --env-file=.env.local scripts/marketing/social-posts.js --plan       # tylko pokazuje harmonogram
+ *  node --env-file=.env.local scripts/marketing/social-posts.js --fb         # planuje wszystkie posty FB
+ *  node --env-file=.env.local scripts/marketing/social-posts.js --ig         # publikuje dojrzałe IG (feed+story) - do crona
+ *  node --env-file=.env.local scripts/marketing/social-posts.js --ig --force <slug>  # publikuje 1 pozycję IG od razu
  */
 
 import fs from 'node:fs';
@@ -38,7 +38,7 @@ const STATE_FILE = path.join(process.cwd(), '.social-state.json');
 const BLOG_BASE = 'https://workshift.pl/blog';
 
 if (!TOKEN) {
-    console.error('Brak SOCIAL_ACCESS_TOKEN. node --env-file=.env.local scripts/social-posts.js --plan');
+    console.error('Brak SOCIAL_ACCESS_TOKEN. node --env-file=.env.local scripts/marketing/social-posts.js --plan');
     process.exit(1);
 }
 
@@ -90,8 +90,8 @@ const POSTS = [
     // FB: --fb planuje natywnie na 8:00 (link w treści). IG: --ig z crona albo
     // --ig --force drugi-mozg-agenta-jak-ciac-tokeny ręcznie o 8:00.
     { slug: 'drugi-mozg-agenta-jak-ciac-tokeny', img: 'WS-post-10-drugi-mozg-1080x1080.png', story: 'WS-story-10-drugi-mozg-1080x1920.png', publishAt: '2026-10-05T08:00:00+02:00',
-      fb: 'Mój agent AI spalał 28 686 tokenów, zanim padło pierwsze pytanie. W każdej sesji.\n\nNa webinarze AI Now Polska pokazywałem, jak zbudowałem mu „drugi mózg" i zbiłem to do około 400. Nagranie jest już dostępne, a na blogu spisałem najważniejsze tezy:\n\n- kontekst to RAM, baza wiedzy to dysk: agent sięga tylko po to, czego naprawdę potrzebuje\n- zmierzone, nie obiecane: 73% mniej tokenów w oknie i 53% niższy rachunek\n- ile naprawdę dają popularne narzędzia do oszczędzania tokenów (dużo mniej, niż obiecują w dokumentacji)\n- gdzie się wyłożyłem, łącznie z pamięcią, która milczała przez 3,5 miesiąca\n\nNagranie i cały wpis 👇',
-      ig: '28 686 tokenów, zanim agent AI zrobi cokolwiek. W każdej sesji. 😬\n\nNa webinarze AI Now Polska pokazałem, jak „drugi mózg" zbija to do ~400. Agent sięga do bazy wiedzy tylko po to, czego naprawdę potrzebuje.\n\n📉 73% mniej tokenów w oknie i 53% niższy rachunek. Zmierzone, nie obiecane.\n🧪 Ile naprawdę dają narzędzia do oszczędzania tokenów (dużo mniej, niż obiecują).\n🙈 Gdzie się wyłożyłem.\n\nNagranie jest już na YouTube, a najważniejsze tezy spisałem na blogu.\n\n🔗 Nagranie i cały wpis - link w komentarzu 👇\n.\n#AI #agentAI #sztucznainteligencja #automatyzacja #bazawiedzy #ClaudeCode #tokeny #webinar #MŚP' },
+      fb: 'Mój agent AI spalał 28 686 tokenów, zanim padło pierwsze pytanie. W każdej sesji.\n\nNa webinarze AI Now Polska pokazywałem, jak zbudowałem mu „drugi mózg” i zbiłem to do około 400. Nagranie jest już dostępne, a na blogu spisałem najważniejsze tezy:\n\n- kontekst to RAM, baza wiedzy to dysk: agent sięga tylko po to, czego naprawdę potrzebuje\n- zmierzyłem to: 73% mniej tokenów w oknie i 53% niższy rachunek\n- ile naprawdę dają popularne narzędzia do oszczędzania tokenów (dużo mniej, niż obiecują w dokumentacji)\n- gdzie się wyłożyłem, łącznie z pamięcią, która milczała przez 3,5 miesiąca\n\nNagranie i cały wpis 👇',
+      ig: '28 686 tokenów, zanim agent AI zrobi cokolwiek. W każdej sesji. 😬\n\nNa webinarze AI Now Polska pokazałem, jak „drugi mózg” zbija to do ~400. Agent sięga do bazy wiedzy tylko po to, czego naprawdę potrzebuje.\n\n📉 Zmierzyłem: 73% mniej tokenów w oknie i 53% niższy rachunek.\n🧪 Ile naprawdę dają narzędzia do oszczędzania tokenów (dużo mniej, niż obiecują).\n🙈 Gdzie się wyłożyłem.\n\nNagranie jest już na YouTube, a najważniejsze tezy spisałem na blogu.\n\n🔗 Nagranie i cały wpis - link w komentarzu 👇\n.\n#AI #agentAI #sztucznainteligencja #automatyzacja #bazawiedzy #ClaudeCode #tokeny #webinar #MŚP' },
 
 ];
 
