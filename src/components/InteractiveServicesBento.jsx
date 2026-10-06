@@ -4,7 +4,7 @@ import { SERVICES } from '../data/services';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion } from 'framer-motion';
-import { ArrowUpRight, ArrowLeft, ArrowRight, Check, Play, Pause, X, Zap, Sparkles, BookOpen, Lock } from 'lucide-react';
+import { ArrowUpRight, ArrowLeft, ArrowRight, Check, Play, Zap, BookOpen, Lock } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Logo } from './ui/Logo';
@@ -16,7 +16,6 @@ function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
-import { ThreeDMarquee } from './ui/ThreeDMarquee';
 import { Terminal, AnimatedSpan, TypingAnimation } from './ui/Terminal';
 import { CircularGallery } from './ui/CircularGallery';
 import PhoneMockupCard from './PhoneMockupCard';
@@ -57,113 +56,6 @@ function GlareCard({ children, className, onClick, isExpanded }) {
             className={`relative ${!isExpanded ? 'cursor-pointer hover:shadow-md hover:border-black/15' : ''} bg-white border border-black/10 shadow-sm rounded-[10px] overflow-hidden flex flex-col transition-all duration-300 ${className}`}
         >
             {children}
-        </div>
-    );
-}
-
-// ─── Orbit Hub: half-visible cropped layout (ruixen-style) ────────────────
-const ORBIT_ICONS = [
-    // Ring 1 (inner, 4 icons)
-    { label: 'Gmail',    color: '#EA4335', ring: 0, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="18" height="18"><path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg> },
-    { label: 'Slack',    color: '#4A154B', ring: 0, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="18" height="18"><path strokeLinecap="round" d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5zM9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5zM14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5zM10 9.5C10 8.67 9.33 8 8.5 8h-5C2.67 8 2 8.67 2 9.5S2.67 11 3.5 11h5c.83 0 1.5-.67 1.5-1.5z"/></svg> },
-    { label: 'Excel',    color: '#217346', ring: 0, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="18" height="18"><path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> },
-    { label: 'CRM',      color: '#000', ring: 0, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="18" height="18"><path strokeLinecap="round" strokeLinejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg> },
-    // Ring 2 (mid, 5 icons)
-    { label: 'Calendar', color: '#1a73e8', ring: 1, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="16" height="16"><rect x="3" y="4" width="18" height="18" rx="2"/><path strokeLinecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg> },
-    { label: 'n8n',      color: '#ea6b00', ring: 1, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="16" height="16"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="12" r="2"/><path strokeLinecap="round" d="M7 12h10"/><circle cx="12" cy="6" r="2"/><path strokeLinecap="round" d="M12 8v4"/></svg> },
-    { label: 'Docs',     color: '#4285F4', ring: 1, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="16" height="16"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6M9 16h6M9 8h3M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/></svg> },
-    { label: 'API',      color: '#d946ef', ring: 1, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="16" height="16"><path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg> },
-    { label: 'Chat',     color: '#0ea5e9', ring: 1, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="16" height="16"><path strokeLinecap="round" strokeLinejoin="round" d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg> },
-    // Ring 3 (outer, 6 icons)
-    { label: 'Zapier',   color: '#FF4A00', ring: 2, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="14" height="14"><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> },
-    { label: 'Teams',    color: '#6264A7', ring: 2, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="14" height="14"><path strokeLinecap="round" strokeLinejoin="round" d="M17 20H7a2 2 0 01-2-2v-2a4 4 0 014-4h6a4 4 0 014 4v2a2 2 0 01-2 2z"/><circle cx="12" cy="7" r="3"/></svg> },
-    { label: 'Drive',    color: '#0F9D58', ring: 2, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="14" height="14"><path strokeLinecap="round" strokeLinejoin="round" d="M3 17l3-6 3 6M15 11l-3-6-3 6M21 17H3M9 17l6-12"/></svg> },
-    { label: 'Webhook',  color: '#6366f1', ring: 2, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="14" height="14"><circle cx="12" cy="12" r="3"/><path strokeLinecap="round" d="M12 2v4M12 18v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M2 12h4M18 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg> },
-    { label: 'Notion',   color: '#000000', ring: 2, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="14" height="14"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6M9 16h6M9 8h3M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/></svg> },
-    { label: 'Office',   color: '#D83B01', ring: 2, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" width="14" height="14"><path strokeLinecap="round" strokeLinejoin="round" d="M4 4h6v16H4zM14 8h6v12h-6zM14 4h6v2h-6z"/></svg> },
-];
-
-const RING_CONFIGS = [
-    { radius: 90,  speed: 12, iconSize: 34, borderW: '1.5px dashed rgba(0,0,0,0.1)' },
-    { radius: 148, speed: 18, iconSize: 30, borderW: '1.5px dashed rgba(0,0,0,0.1)' },
-    { radius: 210, speed: 24, iconSize: 26, borderW: '1.5px dashed rgba(0,0,0,0.1)' },
-];
-
-function AutomationPreview() {
-    const icons = [
-        ORBIT_ICONS.filter(i => i.ring === 0),
-        ORBIT_ICONS.filter(i => i.ring === 1),
-        ORBIT_ICONS.filter(i => i.ring === 2),
-    ];
-
-    return (
-        <div className="w-full h-full relative overflow-visible pointer-events-none select-none pt-12 -mt-12" style={{ minHeight: 200 }}>
-            <style>{`
-                @keyframes hs-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-                @keyframes ws-hub-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(238,112,61,0); } 50% { box-shadow: 0 0 28px 6px rgba(238,112,61,0.18); } }
-            `}</style>
-            
-            {/* Orbit system - center pushed to right edge (50% translateX) so only left half visible */}
-            <div style={{
-                position: 'absolute',
-                top: '50%', right: 0,
-                transform: 'translate(50%, -50%)',
-                width: 500, height: 500,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-                {/* Rings */}
-                {RING_CONFIGS.map((ring, ri) => (
-                    <div key={ri} style={{
-                        position: 'absolute',
-                        width: ring.radius * 2, height: ring.radius * 2,
-                        borderRadius: '50%',
-                        border: ring.borderW,
-                        animation: `hs-spin ${ring.speed}s linear infinite`,
-                        transformOrigin: 'center',
-                        willChange: 'transform',
-                    }}>
-                        {icons[ri].map((item, ii) => {
-                            const angle = (ii / icons[ri].length) * (2 * Math.PI);
-                            const x = ring.radius + ring.radius * Math.cos(angle) - ring.iconSize / 2;
-                            const y = ring.radius + ring.radius * Math.sin(angle) - ring.iconSize / 2;
-                            return (
-                                <div key={item.label} style={{
-                                    position: 'absolute', left: x, top: y,
-                                    width: ring.iconSize, height: ring.iconSize,
-                                    borderRadius: '50%',
-                                    background: 'white',
-                                    border: `1px solid ${item.color}22`,
-                                    boxShadow: `0 2px 8px ${item.color}18`,
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    color: item.color,
-                                    /* counter-rotate so icon stays upright */
-                                    animation: `hs-spin ${ring.speed}s linear infinite reverse`,
-                                    transformOrigin: 'center',
-                                    willChange: 'transform',
-                                }}>
-                                    {item.icon}
-                                </div>
-                            );
-                        })}
-                    </div>
-                ))}
-
-                {/* Central Workshift hub */}
-                <div style={{
-                    position: 'relative', zIndex: 10,
-                    width: 72, height: 72,
-                    borderRadius: '50%',
-                    background: 'white',
-                    border: '2px solid rgba(156,224,105,0.3)',
-                    animation: 'ws-hub-pulse 3s ease-in-out infinite',
-                    willChange: 'transform, box-shadow',
-                    display: 'flex', flexDirection: 'column',
-                    alignItems: 'center', justifyContent: 'center',
-                }}>
-                    <Logo size={40} showWordmark={false} />
-                    <span style={{ fontSize: 7, fontWeight: 800, letterSpacing: '0.05em', color: '#000', marginTop: 1, fontFamily: 'Inter' }}>WORKSHIFT</span>
-                </div>
-            </div>
         </div>
     );
 }
@@ -239,14 +131,14 @@ function AuditPreview() {
                         <Zap className="w-4 h-4 text-black" strokeWidth={2} fill="currentColor" />
                     </div>
                     <div className="flex-1 min-w-0">
-                        <p className="text-[11px] font-semibold text-black tracking-tight leading-tight">Raport z audytu</p>
+                        <p className="text-[11px] font-semibold text-black tracking-tight leading-tight">Przykładowy raport z audytu</p>
                         <p className="text-[10px] text-black/50 font-medium leading-tight mt-0.5">
                             3 procesy do automatyzacji
                         </p>
                     </div>
                     <div className="flex items-center gap-1 text-[9px] font-mono uppercase tracking-wider text-emerald-700 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded">
                         <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
-                        live
+                        na żywo
                     </div>
                 </div>
 
@@ -302,7 +194,7 @@ function TrainingPreview() {
                         <BookOpen className="w-4 h-4 text-black" strokeWidth={2} />
                     </div>
                     <div className="flex-1 min-w-0">
-                        <p className="text-[11px] font-semibold text-black tracking-tight leading-tight">Workshift Academy</p>
+                        <p className="text-[11px] font-semibold text-black tracking-tight leading-tight">Szkolenie Workshift</p>
                         <p className="text-[10px] text-black/50 font-medium leading-tight mt-0.5">Ścieżka: AI dla zespołów</p>
                     </div>
                     <span className="text-[10px] font-semibold text-black/45 tabular-nums font-mono">2 / 5</span>
@@ -691,8 +583,6 @@ function AppDevPreview() {
 // Map Preview components to service IDs.
 // `automatyzacja` uses AuditPreview (Raport z audytu panel) to match the
 // concrete before/after visual style of TrainingPreview and AppDevPreview.
-// AutomationPreview (orbital 200+ tools ring) is kept for possible re-use
-// but currently unmapped.
 const SERVICE_PREVIEWS = {
     automatyzacja: AuditPreview,
     aplikacja: AppDevPreview,
@@ -706,310 +596,6 @@ const SERVICES_WITH_PREVIEWS = SERVICES.map(s => ({
     ...s,
     Preview: SERVICE_PREVIEWS[s.id],
 }));
-
-const _SERVICES_LEGACY = [
-    {
-        id: 'automatyzacja',
-        title: 'Audyt i automatyzacja procesów',
-        tagline: 'Najpierw pokażemy gdzie tracisz czas. Potem zbudujemy pipeline, który odda go Twojemu zespołowi.',
-        colSpan: 'lg:col-span-6',
-        minHeight: 'min-h-[420px] lg:min-h-[480px]',
-        Preview: AutomationPreview,
-
-        categoryTag: 'Nasza flagowa usługa',
-        expandedTitle: 'Od diagnozy procesu - do działającego workflow.',
-        expandedDescription: 'Zaczynamy od bezpłatnej 30-minutowej rozmowy diagnostycznej i mapy Twoich procesów. Wskazujemy 2-3 miejsca, gdzie automatyzacja da najszybszy, policzalny zwrot. Potem budujemy pipeline: n8n, Make i dedykowane skrypty, które wpinają się w to, jak już pracujesz. Bez zmiany przyzwyczajeń, bez wdrażania nowego "systemu" - dane płyną same.',
-        heroMetric: { value: '10h+', label: 'oszczędności na pracowniku tygodniowo - średnia z naszych wdrożeń', subtext: 'Przy zespole 5-osobowym to 200h+ miesięcznie.' },
-
-        innerCards: [
-            {
-                type: 'features',
-                colSpan: 'lg:col-span-4',
-                label: 'Co automatyzujemy',
-                items: [
-                    'Obieg faktur - od maila do księgowości',
-                    'Synchronizacja CRM ↔ mail ↔ kalendarz',
-                    'Generowanie raportów z danych rozproszonych w narzędziach',
-                    'Powiadomienia i eskalacje (np. niezapłacona faktura → alert dla CFO)',
-                ],
-            },
-            {
-                type: 'process',
-                colSpan: 'lg:col-span-4',
-                label: '3 kroki do pierwszego workflow',
-                steps: [
-                    { num: '01', title: 'Diagnoza', desc: 'Bezpłatna 30-minutowa rozmowa diagnostyczna online i przegląd procesów.' },
-                    { num: '02', title: 'Mapujemy i budujemy', desc: 'Workflow + testy na Twoich danych (1-2 tygodnie).' },
-                    { num: '03', title: 'Odpalamy', desc: 'Workflow działa, dostajesz dashboard z wynikami.' },
-                ]
-            },
-            {
-                type: 'stack',
-                colSpan: 'lg:col-span-4',
-                label: 'Narzędzia, których używamy',
-                subtitle: 'Integrujemy się z 200+ narzędziami.',
-                tools: ['n8n', 'Make', 'Zapier', 'Google Workspace', 'Slack', 'API']
-            },
-            {
-                type: 'insights',
-                colSpan: 'lg:col-span-8',
-                label: 'Co najczęściej znajdujemy w audycie',
-                cards: [
-                    { icon: '🕐', title: 'Ręczne przepisywanie danych', desc: 'Pracownicy kopiują te same dane między 3-4 narzędziami. 5-8h/tydzień na osobę.' },
-                    { icon: '📧', title: 'Chaos w skrzynkach', desc: 'Zlecenia, faktury, pytania klientów - wszystko w jednym inboxie, bez filtrów.' },
-                    { icon: '📊', title: 'Raporty robione ręcznie', desc: 'Comiesięczne zestawienia składane z 5 źródeł w arkuszu. 2 dni pracy.' }
-                ]
-            },
-            {
-                type: 'case',
-                colSpan: 'lg:col-span-8',
-                label: 'Przykład wdrożenia',
-                title: 'Firma produkcyjna, 30 osób',
-                content: 'Dział księgowości przepisywał dane z 80+ faktur tygodniowo ręcznie z maili do systemu. Wdrożyliśmy pipeline: mail przychodzący → OCR (AI odczytuje fakturę) → automatyczna kategoryzacja → zapis w systemie FK. Czas operacji spadł z 2 dni roboczych do 15 minut.',
-                beforeAfter: { before: '16h / tydz.', after: '0.5h / tydz.' }
-            },
-            {
-                type: 'cta',
-                colSpan: 'lg:col-span-4',
-                headline: 'Zacznij od bezpłatnej rozmowy diagnostycznej',
-                subline: '30 minut Twojego czasu. Zero zobowiązań. Konkretne rekomendacje od razu.',
-                ctaLabel: 'Umów diagnozę',
-            },
-        ],
-    },
-    {
-        id: 'aplikacja',
-        title: 'Dedykowana aplikacja',
-        tagline: 'Gotowe narzędzia nie ogarniają Twojego procesu? Budujemy aplikację skrojoną pod Twoją firmę.',
-        colSpan: 'lg:col-span-6',
-        minHeight: 'min-h-[420px] lg:min-h-[480px]',
-        Preview: AppDevPreview,
-
-        categoryTag: 'Rozwiązanie szyte na miarę',
-        expandedTitle: 'Twój proces jest unikalny - oprogramowanie też powinno być.',
-        expandedDescription: 'Są procesy, których żaden SaaS nie obsłuży dobrze. Zamiast naginać firmę do narzędzia, budujemy aplikację skrojoną pod Twój workflow. Panel dla zespołu, integracje z Twoimi systemami, moduł AI do zadań, na które nie masz czasu. Wdrożenie w 4-8 tygodni - używamy AI-wspomaganego developmentu, więc koszt i czas są kilkukrotnie niższe niż w klasycznym software house.',
-        heroMetric: { value: '4-8 tyg.', label: 'od briefu do działającej aplikacji w produkcji', subtext: 'Tam, gdzie tradycyjny software house liczy miesiące.' },
-
-        innerCards: [
-            {
-                type: 'features',
-                colSpan: 'lg:col-span-4',
-                label: 'Co budujemy',
-                items: [
-                    'Wewnętrzny panel operacyjny (CRM / ERP / workflow)',
-                    'Aplikacja kliencka (portal, konfigurator, self-service)',
-                    'Dashboardy z danymi z Twoich narzędzi w czasie rzeczywistym',
-                    'Moduły AI wpięte w proces (klasyfikacja, OCR, asystent)',
-                ],
-            },
-            {
-                type: 'process',
-                colSpan: 'lg:col-span-4',
-                label: 'Jak pracujemy',
-                steps: [
-                    { num: '01', title: 'Discovery', desc: 'Warsztat + mapa procesu, makieta głównych ekranów (3-5 dni).' },
-                    { num: '02', title: 'MVP', desc: 'Pierwsza działająca wersja w 2-3 tygodnie - na Twoich danych.' },
-                    { num: '03', title: 'Iteracje', desc: 'Kolejne moduły co tydzień, feedback na bieżąco od zespołu.' },
-                ]
-            },
-            {
-                type: 'stack',
-                colSpan: 'lg:col-span-4',
-                label: 'Stack technologiczny',
-                subtitle: 'Nowoczesny, utrzymywany przez lata.',
-                tools: ['Next.js', 'React', 'Supabase', 'Postgres', 'Vercel', 'AI SDK']
-            },
-            {
-                type: 'usp',
-                colSpan: 'lg:col-span-8',
-                label: 'Dlaczego nie kupić gotowego SaaS-u?',
-                points: [
-                    { title: 'Masz unikalny proces', desc: 'SaaS narzuca swój model pracy. My budujemy pod to, jak faktycznie działa Twoja firma.' },
-                    { title: 'Zero abonamentów per user', desc: 'Jedno wdrożenie, Twój kod. Żadnych niespodzianek przy skalowaniu zespołu.' },
-                    { title: 'AI w rdzeniu aplikacji', desc: 'Nie dokręcamy AI do starego UI - od początku projektujemy proces wokół modeli.' },
-                ]
-            },
-            {
-                type: 'cta',
-                colSpan: 'lg:col-span-4',
-                headline: 'Masz pomysł na aplikację?',
-                subline: 'Pokażemy wstępną architekturę i szacunek kosztu w 1 rozmowie.',
-                ctaLabel: 'Porozmawiajmy',
-            },
-        ],
-    },
-    {
-        id: 'szkolenia',
-        title: 'Szkolenia AI',
-        tagline: 'Zbuduj zespół operacyjny odporny na przyszłość. Praktyczny warsztat, odwracający opór przed AI w chęć do pracy.',
-        colSpan: 'lg:col-span-4',
-        minHeight: 'min-h-[380px] lg:min-h-[420px]',
-        Preview: TrainingPreview,
-
-        categoryTag: 'Rozwój zespołu',
-        expandedTitle: 'Twój zespół nie boi się AI. Po prostu nikt im nie pokazał, jak korzystać.',
-        expandedDescription: 'Nie robimy wykładów. Robimy warsztaty, na których Twój zespół pracuje na SWOICH danych, w SWOICH narzędziach. Po jednym dniu - wiedzą jak promptować, jak zautomatyzować powtarzalną robotę, i jak AI wbudować w swój dzień pracy. Bez teoretyzowania.',
-        heroMetric: { value: '2-3x', label: 'wzrost produktywności pracownika po szkoleniu - raportowany przez naszych klientów' },
-
-        innerCards: [
-            {
-                type: 'features',
-                colSpan: 'lg:col-span-4',
-                label: 'Formaty',
-                items: [
-                    'Warsztat onsite (1 dzień, u Ciebie w biurze)',
-                    'Warsztat online (2x po 3h, rozłożone na tydzień)',
-                    'Konsultacja 1:1 dla kadry zarządzającej',
-                    'Materiały follow-up + 30 dni wsparcia po szkoleniu'
-                ],
-            },
-            {
-                type: 'features',
-                colSpan: 'lg:col-span-4',
-                label: 'Tematy',
-                items: [
-                    'ChatGPT / Claude w codziennej pracy',
-                    'Prompt engineering dla Twojej branży',
-                    'AI w mailu, raportach, analizie danych',
-                    'Budowanie prostych automatyzacji (bez kodu)'
-                ],
-            },
-            {
-                type: 'personas',
-                colSpan: 'lg:col-span-4',
-                label: 'Dla kogo to jest',
-                roles: [
-                    { title: 'Zespoły operacyjne', desc: 'Przetwarzają codziennie duże zbiory danych' },
-                    { title: 'Kadra zarządzająca', desc: 'Chce zrozumieć szeroko co AI może zmienić' },
-                    { title: 'Działy marketingu/sprzed.', desc: 'Do skalowania swojego outreachu z asystentem' }
-                ]
-            },
-            {
-                type: 'usp',
-                colSpan: 'lg:col-span-8',
-                label: 'Dlaczego nasze szkolenia działają',
-                points: [
-                    { title: 'Na Twoich danych', desc: 'Nie uczymy na abstrakcyjnych przykładach. Bierzemy TWOJE maile, TWOJE arkusze, TWOJE procesy.' },
-                    { title: 'Efekt od razu', desc: 'Po warsztacie każdy bierze do ręki 2-3 własne prompty, które od jutra oszczędzają mu konkretny czas.' },
-                    { title: 'Nie zostawiamy samych', desc: '30 dni wsparcia po ukończeniu szkolenia. Pytania, problemy, fine-tuning - jesteśmy dostępni.' },
-                ]
-            },
-            {
-                type: 'cta',
-                colSpan: 'lg:col-span-4',
-                headline: 'Umów szkolenie dla zespołu',
-                subline: 'Dostosowujemy program do Twojej branży i poziomu zaawansowania.',
-                ctaLabel: 'Zapytaj o termin',
-            },
-        ],
-    },
-    {
-        id: 'agenty',
-        title: 'Agenci AI',
-        tagline: 'Rozwiąż problem wypalenia personelu i obsługuj klientów o 3 w nocy, bez błędów i spóźnień.',
-        colSpan: 'lg:col-span-4',
-        minHeight: 'min-h-[520px] lg:min-h-[420px]',
-        Preview: AgentPreview,
-
-        categoryTag: 'Automatyzacja komunikacji',
-        expandedTitle: 'Agent, który rozwiązuje - nie przekierowuje.',
-        expandedDescription: 'Budujemy boty, które działają na Twoich danych, respektują Twoje procedury i rozwiązują prawdziwe problemy klientów. Nie chodzi o chatbota, który mówi "przekierowuję do konsultanta". Chodzi o agenta, który odpowiada, wystawia, wysyła - i dopiero gdy nie wie, eskaluje do człowieka.',
-        heroMetric: { value: '40%', label: 'zapytań rozwiązanych autonomicznie - bez udziału człowieka' },
-
-        innerCards: [
-            {
-                type: 'features',
-                colSpan: 'lg:col-span-4',
-                label: 'Rodzaje agentów',
-                items: [
-                    'Chatbot na stronę / Messenger / WhatsApp',
-                    'Voicebot do obsługi linii telefonicznej',
-                    'Email bot - kategoryzacja, odpowiedzi, forwarding',
-                    'Wewnętrzny asystent wiedzy firmowej'
-                ],
-            },
-            {
-                type: 'features', // Reusing simple text list logic but naming it learning
-                colSpan: 'lg:col-span-4',
-                label: 'Jak to działa',
-                items: [
-                    'Trenujemy agenta na Twoich FAQ i procedurach',
-                    'Korzysta z bazy wiedzy (RAG) - zero halucynacji',
-                    'Monitoring w czasie rzeczywistym w dashboardzie',
-                    'Agent uczy się z feedbacku ewaluując rozmowy'
-                ],
-            },
-            {
-                type: 'integrations',
-                colSpan: 'lg:col-span-4',
-                label: 'Integracje gotowe pod klucz',
-                badges: ['Strona WWW', 'Messenger', 'WhatsApp', 'Slack', 'Email', 'Telefon (Voice)']
-            },
-            {
-                type: 'case',
-                colSpan: 'lg:col-span-8',
-                label: 'Przykład wdrożenia',
-                title: 'E-commerce, BOK z 200+ zapytaniami dziennie',
-                content: 'Zespół BOK tonął w powtarzalnych pytaniach: "gdzie moja paczka?", "jak zwrócić?", "jaki rozmiar wybrać?". Agent od Workshift obsługuje ~40% zapytań od ręki na pierwszej linii. Reszta trafia do ludzi z pełnym kontekstem rozmowy. Pracownicy przestali odchodzić z wypalenia z powodu monotonii.',
-            },
-            {
-                type: 'cta',
-                colSpan: 'lg:col-span-4',
-                headline: 'Zbuduj swojego agenta',
-                subline: 'Od prototypu do działającego bota - 2-4 tygodnie.',
-                ctaLabel: 'Porozmawiajmy',
-            },
-        ],
-    },
-    {
-        id: 'kreacje',
-        title: 'Kreacje reklamowe AI',
-        tagline: 'Zastąp drogą agencję pipeline\'m. Dni ucinamy do godzin, budżety zmniejszamy o połowę.',
-        colSpan: 'lg:col-span-4',
-        minHeight: 'min-h-[380px] lg:min-h-[420px]',
-        Preview: CreativePreview,
-
-        categoryTag: 'Content i Visual',
-        expandedTitle: 'Skaluj produkcję kreacji, bez działu grafików.',
-        expandedDescription: 'Zastępujemy drogie sesje zdjęciowe i tygodnie czekania na grafika dedykowanymi pipeline\'ami generatywnymi. Tworzysz brief, a my dostarczamy setki wariantów spójnych z Twoim brandbookiem - packshoty, reklamy social, wideo. W dni, nie w miesiące.',
-        heroMetric: { value: 'Dni', label: 'zamiast miesięcy produkcji kreacji reklamowych', subtext: 'Średnio 10x szybciej niż tradycyjny proces agencji.' },
-
-        innerCards: [
-            {
-                type: 'features',
-                colSpan: 'lg:col-span-6',
-                label: 'Co tworzymy za Ciebie',
-                items: [
-                    'Packshoty i trójwymiarowe wizualizacje produktów',
-                    'Personalizowane warianty reklam na skalę dużego A/B',
-                    'Utrzymana spójność z brandbookiem (modele LoRA)',
-                    'Materiały wideo i generatywne animacje'
-                ],
-            },
-            {
-                type: 'stack', // reuse visual
-                colSpan: 'lg:col-span-6',
-                label: 'Stack technologiczny',
-                subtitle: 'Dobieramy narzędzia pod brief.',
-                tools: ['ComfyUI', 'Midjourney', 'Runway', 'DALL-E', 'LoRA', 'Kling']
-            },
-            {
-                type: 'comparison',
-                colSpan: 'lg:col-span-8',
-                label: 'Jak zmieniamy proces dostarczania (Before/After)',
-                before: { title: 'Tradycyjnie', desc: 'Briefing → Studio zdjęciowe → Obróbka w Lightroom → Wersjonowanie dla social (4-6 tygodni, duże koszty).', highlight: 'Miesiące' },
-                after: { title: 'Z Workshift AI', desc: 'Brief z wymaganiami → Własny AI pipeline → Setki wariantów brandowych renderowane od razu (3-5 dni pracy).', highlight: 'Dni' }
-            },
-            {
-                type: 'cta',
-                colSpan: 'lg:col-span-4',
-                headline: 'Zobacz demo kreacji AI',
-                subline: 'Pokażemy na żywo, jak generujemy content na bazie Twojego brandbooka.',
-                ctaLabel: 'Umów demo',
-            },
-        ],
-    },
-];
 
 /**
  * Kafelek karty insights: ikona z zestawu AnimatedProcessIcon (animuje się
@@ -1546,8 +1132,8 @@ export function InteractiveServicesBento() {
                             <span className="text-lg">🧩</span>
                         </div>
                         <div>
-                            <p className="font-medium text-black text-sm mb-0.5">Kupujesz tylko to, czego naprawdę potrzebujesz</p>
-                            <p className="text-muted-dark text-sm">Każdą usługę możesz zamówić osobno - sam audyt, samo wdrożenie, samo szkolenie. Bez pakietów, bez nadmuchanych scope'ów.</p>
+                            <p className="font-medium text-black text-sm mb-0.5">Kupujesz tylko to, czego potrzebujesz</p>
+                            <p className="text-muted-dark text-sm">Każdą usługę możesz zamówić osobno: sam audyt, samo wdrożenie albo samo szkolenie. Zakres ustalamy razem przed startem.</p>
                         </div>
                     </div>
                     <Link to="/#kontakt" className="inline-flex items-center gap-2 bg-white border border-black/10 text-black px-5 py-2.5 rounded-[10px] font-medium text-sm shadow-sm hover:border-lime/40 hover:bg-lime/10 active:scale-[0.96] transition-all duration-200 shrink-0 whitespace-nowrap">

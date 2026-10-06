@@ -17,7 +17,7 @@ const testimonials = [
         company: "Mądry Maśliński Law & Consulting",
         avatar: tymoteuszImg,
         accentColor: '#9CE069',
-        tags: ["AI w kancelarii", "Automatyzacja notatek", "Custom Chat"],
+        tags: ["AI w kancelarii", "Automatyzacja notatek", "Czat AI z bazą wiedzy"],
     },
     {
         id: 'zuzanna',
@@ -27,7 +27,7 @@ const testimonials = [
         company: "BusinessQuest",
         avatar: zuzannaImg,
         accentColor: '#9CE069',
-        tags: ["HR Tech", "Ścieżki kariery", "Matryce kompetencji"],
+        tags: ["Narzędzia HR", "Ścieżki kariery", "Matryce kompetencji"],
     },
     {
         id: 'bogdan',
@@ -323,7 +323,7 @@ export function TestimonialsSection() {
                         viewport={{ once: true }}
                         className="font-mono text-xs uppercase tracking-wider text-lime mb-4"
                     >
-                        Referencje
+                        Klienci
                     </motion.p>
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
@@ -332,10 +332,11 @@ export function TestimonialsSection() {
                         transition={{ delay: 0.05 }}
                         className="text-3xl md:text-5xl font-display tracking-tight text-black"
                     >
-                        Zamiast teorii. Co już{' '}
+                        Co już{' '}
                         <span className="text-muted-dark font-light italic pr-2">
-                            zautomatyzowaliśmy.
+                            zautomatyzowaliśmy
                         </span>
+                        u klientów.
                     </motion.h2>
                     <motion.p
                         initial={{ opacity: 0, y: 10 }}
@@ -344,7 +345,7 @@ export function TestimonialsSection() {
                         transition={{ delay: 0.1 }}
                         className="mt-4 text-lg text-muted-dark max-w-xl"
                     >
-                        Realne wyniki. Realni ludzie. Zero marketingowego bełkotu.
+                        Opinie klientów podpisane imieniem, nazwiskiem i nazwą firmy.
                     </motion.p>
                 </div>
 

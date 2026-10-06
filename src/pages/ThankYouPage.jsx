@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { Logo } from '../components/ui/Logo';
-import { ArrowLeft, BookOpen, Home } from 'lucide-react';
+import { BookOpen, Home } from 'lucide-react';
 
 export default function ThankYouPage() {
     useEffect(() => {
@@ -43,13 +43,13 @@ export default function ThankYouPage() {
                     transition={{ duration: 0.6, delay: 0.1 }}
                 >
                     <span className="inline-block font-mono text-xs uppercase tracking-[0.2em] text-black bg-lime px-3 py-1 rounded-full mb-6 shadow-sm">
-                        Potwierdzono pomyślnie
+                        Adres potwierdzony
                     </span>
                     <h1 className="text-4xl md:text-6xl font-display tracking-tight text-black mb-6 leading-tight">
-                        Witaj w gronie <br /><span className="text-muted-dark">subskrybentów Workshift.</span>
+                        Dziękujemy <br /><span className="text-muted-dark">za potwierdzenie.</span>
                     </h1>
                     <p className="text-lg md:text-xl text-muted-dark mb-12 leading-relaxed max-w-xl mx-auto">
-                        Twoja subskrypcja została aktywowana. Co dwa tygodnie otrzymasz od nas konkretne case study, narzędzia AI i gotowe procesy do wdrożenia. No-nonsense, just results.
+                        Twój adres e-mail jest potwierdzony. Artykuły o automatyzacji i wdrożeniach AI znajdziesz na blogu.
                     </p>
                 </motion.div>
 
@@ -70,18 +70,6 @@ export default function ThankYouPage() {
                             <Home size={18} />
                             Strona główna
                         </Button>
-                    </Link>
-                </motion.div>
-
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 1, delay: 0.5 }}
-                    className="mt-24"
-                >
-                    <Link to="/blog" className="text-sm font-mono text-muted-dark hover:text-black transition-colors flex items-center justify-center gap-2 group">
-                        <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-                        Wróć do przeglądania artykułów
                     </Link>
                 </motion.div>
             </div>

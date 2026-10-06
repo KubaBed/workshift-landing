@@ -5,14 +5,14 @@
 export const SERVICES = [
     {
         id: 'automatyzacja',
-        title: 'Audyt i automatyzacja procesów',
-        tagline: 'Najpierw pokażemy gdzie tracisz czas. Potem zbudujemy pipeline, który odda go Twojemu zespołowi.',
+        title: 'Automatyzacja AI i audyt procesów',
+        tagline: 'Najpierw pokażemy, gdzie tracisz czas. Potem zbudujemy workflow, który odda te godziny Twojemu zespołowi.',
         colSpan: 'lg:col-span-6',
         minHeight: 'min-h-[420px] lg:min-h-[480px]',
 
         categoryTag: 'Nasza flagowa usługa',
-        expandedTitle: 'Od diagnozy procesu - do działającego workflow.',
-        expandedDescription: 'Zaczynamy od bezpłatnej 30-minutowej rozmowy diagnostycznej i mapy Twoich procesów. Wskazujemy 2-3 miejsca, gdzie automatyzacja AI da najszybszy, policzalny zwrot. Potem budujemy workflow, który wpina się w to, jak już pracujesz: dane z maili, faktur i formularzy same trafiają tam, gdzie mają być. Bez zmiany przyzwyczajeń, bez wdrażania nowego "systemu" - dane płyną same.',
+        expandedTitle: 'Od diagnozy procesu do działającego workflow.',
+        expandedDescription: 'Zaczynamy od bezpłatnej 30-minutowej rozmowy diagnostycznej i mapy Twoich procesów. Wskazujemy 2-3 miejsca, gdzie automatyzacja AI da najszybszy, policzalny zwrot. Potem budujemy workflow, który wpina się w to, jak już pracujesz: dane z maili, faktur i formularzy same trafiają tam, gdzie mają być. Twój zespół pracuje w tych samych programach co dziś.',
         heroMetric: { value: '10h+', label: 'oszczędności na pracowniku tygodniowo - średnia z naszych wdrożeń', subtext: 'Przy zespole 5-osobowym to 200h+ miesięcznie.' },
         metaTitle: 'Automatyzacja AI dla firm - audyt i wdrożenie | Workshift',
         metaDescription: 'Automatyzacja AI w praktyce: bezpłatna rozmowa diagnostyczna, wdrożenie w 1-2 tygodnie i 10h+ oszczędności tygodniowo na pracownika. Zobacz, od czego zacząć.',
@@ -26,7 +26,7 @@ export const SERVICES = [
                     'Obieg faktur - od maila do księgowości',
                     'Synchronizacja CRM ↔ mail ↔ kalendarz',
                     'Generowanie raportów z danych rozproszonych w narzędziach',
-                    'Powiadomienia i eskalacje (np. niezapłacona faktura → alert dla CFO)',
+                    'Powiadomienia i eskalacje (np. niezapłacona faktura → alert dla właściciela lub księgowej)',
                 ],
             },
             {
@@ -35,15 +35,15 @@ export const SERVICES = [
                 label: '3 kroki do pierwszego workflow',
                 steps: [
                     { num: '01', title: 'Diagnoza', desc: 'Bezpłatna 30-minutowa rozmowa diagnostyczna online i przegląd procesów.' },
-                    { num: '02', title: 'Mapujemy i budujemy', desc: 'Workflow + testy na Twoich danych (1-2 tygodnie).' },
-                    { num: '03', title: 'Odpalamy', desc: 'Workflow działa, dostajesz dashboard z wynikami.' },
+                    { num: '02', title: 'Mapujemy i budujemy', desc: 'Budujemy workflow i testujemy go na Twoich danych (1-2 tygodnie).' },
+                    { num: '03', title: 'Uruchamiamy', desc: 'Workflow działa, a wyniki widzisz w dashboardzie.' },
                 ]
             },
             {
                 type: 'toolsMarquee',
                 colSpan: 'lg:col-span-12',
                 label: 'Wpinamy się w Twoje narzędzia',
-                intro: 'Nie wdrażamy nowego systemu. Automatyzacja podpina się pod narzędzia, w których Twoja firma już pracuje: pocztę, arkusze, CRM i program do faktur. Ty pracujesz jak dotąd - dane zaczynają płynąć same.',
+                intro: 'Automatyzacja podpina się pod narzędzia, w których Twoja firma już pracuje: pocztę, arkusze, CRM i program do faktur. Zespół zostaje przy swoich programach, a dane przechodzą między nimi automatycznie.',
                 glue: {
                     label: 'Spinamy je przez',
                     tools: [
@@ -85,10 +85,10 @@ export const SERVICES = [
             {
                 type: 'insights',
                 colSpan: 'lg:col-span-8',
-                label: 'Co najczęściej znajdujemy w audycie',
+                label: 'Gdzie firmy najczęściej tracą czas',
                 cards: [
                     { icon: 'clock', title: 'Ręczne przepisywanie danych', desc: 'Pracownicy kopiują te same dane między 3-4 narzędziami. 5-8h/tydzień na osobę.' },
-                    { icon: 'inbox', title: 'Chaos w skrzynkach', desc: 'Zlecenia, faktury, pytania klientów - wszystko w jednym inboxie, bez filtrów.' },
+                    { icon: 'inbox', title: 'Chaos w skrzynkach', desc: 'Zlecenia, faktury i pytania klientów trafiają do jednej skrzynki bez filtrów.' },
                     { icon: 'report', title: 'Raporty robione ręcznie', desc: 'Comiesięczne zestawienia składane z 5 źródeł w arkuszu. 2 dni pracy.' }
                 ]
             },
@@ -104,8 +104,8 @@ export const SERVICES = [
                 type: 'cta',
                 colSpan: 'lg:col-span-4',
                 headline: 'Zacznij od bezpłatnej rozmowy diagnostycznej',
-                subline: '30 minut Twojego czasu. Zero zobowiązań. Konkretne rekomendacje od razu.',
-                ctaLabel: 'Umów diagnozę',
+                subline: 'Rozmowa trwa 30 minut i jest bezpłatna. Na koniec wiesz, od których 2-3 procesów zacząć.',
+                ctaLabel: 'Umów rozmowę',
             },
         ],
 
@@ -122,8 +122,8 @@ export const SERVICES = [
                 reveal: true,
                 highlights: ['rozumienie treści', 'czytanie, ocenianie i przepisywanie informacji'],
                 paragraphs: [
-                    'Automatyzacja AI to połączenie klasycznej automatyzacji procesów z modelami sztucznej inteligencji. Zwykła automatyzacja przenosi dane między narzędziami według sztywnych reguł. AI dodaje do tego rozumienie treści: odczytuje fakturę z załącznika, klasyfikuje maila od klienta, wyciąga ustalenia z notatki ze spotkania. Dzięki temu automatyzacja procesów AI obejmuje także zadania, które dotąd wymagały człowieka - czytanie, ocenianie i przepisywanie informacji.',
-                    'W praktyce polskiego MŚP oznacza to jedno: powtarzalne czynności biurowe dzieją się same, a zespół zajmuje się pracą, która wymaga decyzji. Średnia z naszych wdrożeń to ponad 10 godzin odzyskanych tygodniowo na pracownika.',
+                    'Automatyzacja AI to połączenie klasycznej automatyzacji procesów z modelami sztucznej inteligencji. Zwykła automatyzacja przenosi dane między narzędziami według sztywnych reguł. AI dodaje do tego rozumienie treści: odczytuje fakturę z załącznika, klasyfikuje maila od klienta, wyciąga ustalenia z notatki ze spotkania. Dzięki temu automatyzacja procesów AI obejmuje także zadania, które dotąd wymagały człowieka, czyli czytanie, ocenianie i przepisywanie informacji.',
+                    'W polskim MŚP oznacza to, że powtarzalne czynności biurowe wykonuje system, a zespół zajmuje się pracą, która wymaga decyzji. Średnia z naszych wdrożeń to ponad 10 godzin odzyskanych tygodniowo na pracownika.',
                 ],
             },
             {
@@ -133,30 +133,30 @@ export const SERVICES = [
                     {
                         icon: 'invoice',
                         title: 'Obieg faktur',
-                        desc: 'Faktura przychodzi mailem, ktoś ją pobiera, przepisuje dane do systemu księgowego i odkłada plik do folderu. Przy 80 fakturach tygodniowo to dwa dni pracy. Po wdrożeniu system sam odczytuje załącznik, kategoryzuje koszt i zapisuje dane - człowiek tylko zatwierdza wyjątki.',
+                        desc: 'Faktura przychodzi mailem, ktoś ją pobiera, przepisuje dane do systemu księgowego i odkłada plik do folderu. Przy 80 fakturach tygodniowo to dwa dni pracy. Po wdrożeniu system sam odczytuje załącznik, kategoryzuje koszt i zapisuje dane, a człowiek zatwierdza tylko wyjątki.',
                     },
                     {
                         icon: 'sync',
                         title: 'Synchronizacja CRM, maila i kalendarza',
-                        desc: 'Notatka po spotkaniu, status szansy sprzedażowej i follow-up żyją w trzech miejscach naraz. Automatyzacja spina je w jeden przepływ: po spotkaniu CRM dostaje podsumowanie, a handlowiec przypomnienie - bez ręcznego klikania.',
+                        desc: 'Notatka po spotkaniu, status szansy sprzedażowej i follow-up żyją w trzech miejscach naraz. Automatyzacja spina je w jeden przepływ: po spotkaniu CRM dostaje podsumowanie, a handlowiec przypomnienie o follow-upie.',
                     },
                     {
                         icon: 'report',
                         title: 'Raporty z rozproszonych danych',
-                        desc: 'Comiesięczne zestawienie składane z pięciu źródeł w arkuszu potrafi zająć dwa dni. Zautomatyzowany raport buduje się sam w nocy i rano czeka w skrzynce - zawsze w tym samym formacie, zawsze na czas.',
+                        desc: 'Comiesięczne zestawienie składane z pięciu źródeł w arkuszu potrafi zająć dwa dni. Zautomatyzowany raport składa się w nocy i rano czeka w skrzynce, co miesiąc w tym samym formacie.',
                     },
                     {
                         icon: 'alert',
                         title: 'Powiadomienia i eskalacje',
-                        desc: 'Niezapłacona faktura, zlecenie bez odpowiedzi, kończący się termin umowy - system pilnuje tego za Ciebie i eskaluje do właściwej osoby, zanim problem urośnie.',
+                        desc: 'System pilnuje niezapłaconych faktur, zleceń bez odpowiedzi i kończących się umów, a przed terminem powiadamia właściwą osobę.',
                     },
                 ],
             },
             {
-                heading: 'Sztuczna inteligencja w firmie - od czego zaczynamy',
+                heading: 'Sztuczna inteligencja w firmie: od czego zaczynamy',
                 eyebrow: 'Jak pracujemy',
                 paragraphs: [
-                    'Nie zaczynamy od technologii, tylko od mapy procesów. W bezpłatnej 30-minutowej rozmowie diagnostycznej wskazujemy 2-3 miejsca, w których sztuczna inteligencja w firmie zwróci się najszybciej - policzalnie, w godzinach i złotówkach. Potem budujemy pierwszy workflow i testujemy go na Twoich danych przez 1-2 tygodnie. Dopiero gdy widzisz wynik na własnym procesie, decydujesz o kolejnych krokach.',
+                    'Zaczynamy od mapy procesów. W bezpłatnej 30-minutowej rozmowie diagnostycznej wskazujemy 2-3 miejsca, w których sztuczna inteligencja w firmie zwróci się najszybciej - policzalnie, w godzinach i złotówkach. Potem budujemy pierwszy workflow i testujemy go na Twoich danych przez 1-2 tygodnie. Dopiero gdy widzisz wynik na własnym procesie, decydujesz o kolejnych krokach.',
                     'Jeśli chcesz sprawdzić potencjał przed rozmową, zrób bezpłatny mikro-audyt AI (12 pytań, 4 minuty) albo policz koszt powtarzalnych zadań w kalkulatorze strat czasowych.',
                 ],
             },
@@ -173,18 +173,19 @@ export const SERVICES = [
                 },
                 paragraphs: [
                     'Firma produkcyjna, 30 osób. Dział księgowości przepisywał dane z ponad 80 faktur tygodniowo ręcznie - z maili do systemu finansowo-księgowego. Wąskie gardło rosło z każdym nowym dostawcą.',
-                    'Wdrożyliśmy workflow: mail przychodzący, automatyczny odczyt faktury przez AI, kategoryzacja kosztu i zapis w systemie. Czas operacji spadł z 2 dni roboczych do 15 minut, a księgowość zamiast przepisywać dane, kontroluje wyjątki. Ten sam wzorzec przenosimy do handlu, usług i logistyki - zmienia się dokument, mechanika zostaje.',
+                    'Wdrożyliśmy workflow: mail przychodzący, automatyczny odczyt faktury przez AI, kategoryzacja kosztu i zapis w systemie. Czas operacji spadł z 2 dni roboczych do 15 minut, a księgowość zamiast przepisywać dane, kontroluje wyjątki. Ten sam wzorzec stosujemy w handlu, usługach i logistyce, zmieniając tylko typ dokumentu.',
                 ],
             },
         ],
+        faqHeading: 'Pytania o automatyzację AI',
         faq: [
             {
                 q: 'Czym różni się automatyzacja AI od zwykłej automatyzacji?',
-                a: 'Zwykła automatyzacja działa według sztywnych reguł: jeśli A, to B. Automatyzacja AI rozumie treść - odczyta fakturę z PDF-a, sklasyfikuje maila, streści dokument. Dzięki temu automatyzować można też procesy oparte na czytaniu i ocenie informacji, nie tylko na przenoszeniu danych między narzędziami.',
+                a: 'Zwykła automatyzacja działa według sztywnych reguł: jeśli A, to B. Automatyzacja AI rozumie treść: odczyta fakturę z PDF-a, sklasyfikuje maila albo streści dokument. Dzięki temu automatyzować można też procesy oparte na czytaniu i ocenie informacji, nie tylko na przenoszeniu danych między narzędziami.',
             },
             {
                 q: 'Które procesy w firmie da się zautomatyzować?',
-                a: 'Najlepiej automatyzują się procesy powtarzalne i oparte na danych: obieg faktur i dokumentów, przepisywanie danych między narzędziami, raportowanie, obsługa powtarzalnych zapytań, pilnowanie terminów. Jeśli zadanie da się opisać krok po kroku, prawie na pewno da się je zautomatyzować.',
+                a: 'Najlepiej automatyzują się procesy powtarzalne i oparte na danych: obieg faktur i dokumentów, przepisywanie danych między narzędziami, raportowanie, obsługa powtarzalnych zapytań, pilnowanie terminów. Jeśli zadanie da się opisać krok po kroku, jest dobrym kandydatem do automatyzacji.',
             },
             {
                 q: 'Jak szybko widać efekty automatyzacji AI?',
@@ -192,11 +193,11 @@ export const SERVICES = [
             },
             {
                 q: 'Czy automatyzacja AI jest bezpieczna dla danych firmy?',
-                a: 'Tak, jeśli jest dobrze zaprojektowana. Rozwiązania budujemy w oparciu o zamknięte instancje i rygorystyczne polityki dostępu, a dane dokumentowe i finansowe nie służą do trenowania globalnych modeli. Zgodność z RODO sprawdzamy na etapie projektowania, nie po wdrożeniu.',
+                a: 'Tak, jeśli jest dobrze zaprojektowana. Rozwiązania budujemy na zamkniętych instancjach, a dostęp do danych dostają tylko osoby i systemy, które go potrzebują. Dane dokumentowe i finansowe nie służą do trenowania globalnych modeli. Zgodność z RODO sprawdzamy już na etapie projektowania.',
             },
             {
                 q: 'Ile kosztuje automatyzacja procesów AI?',
-                a: 'Koszt zależy od liczby i złożoności procesów, dlatego zaczynamy od bezpłatnej rozmowy diagnostycznej, po której dostajesz konkretną wycenę. Samo utrzymanie działających automatyzacji to najczęściej 200-600 PLN miesięcznie za subskrypcje narzędzi - przy kilku procesach w firmie 20-osobowej.',
+                a: 'Koszt zależy od liczby i złożoności procesów, dlatego zaczynamy od bezpłatnej rozmowy diagnostycznej, po której dostajesz konkretną wycenę. Utrzymanie kilku działających automatyzacji w firmie 20-osobowej to zwykle 200-600 PLN miesięcznie za subskrypcje narzędzi.',
             },
             {
                 q: 'Od czego zacząć automatyzację w swojej firmie?',
@@ -207,16 +208,16 @@ export const SERVICES = [
     {
         id: 'aplikacja',
         title: 'Dedykowana aplikacja',
-        tagline: 'Gotowe narzędzia nie ogarniają Twojego procesu? Budujemy aplikację skrojoną pod Twoją firmę.',
+        tagline: 'Budujemy aplikację pod proces, którego gotowe narzędzia nie obsługują.',
         colSpan: 'lg:col-span-6',
         minHeight: 'min-h-[420px] lg:min-h-[480px]',
 
         categoryTag: 'Rozwiązanie szyte na miarę',
-        expandedTitle: 'Twój proces jest unikalny - oprogramowanie też powinno być.',
-        expandedDescription: 'Są procesy, których żaden SaaS nie obsłuży dobrze. Zamiast naginać firmę do narzędzia, budujemy aplikację skrojoną pod Twój workflow. Panel dla zespołu, integracje z Twoimi systemami, moduł AI do zadań, na które nie masz czasu. Wdrożenie w 4-8 tygodni - używamy AI-wspomaganego developmentu, więc koszt i czas są kilkukrotnie niższe niż w klasycznym software house.',
-        heroMetric: { value: '4-8 tyg.', label: 'od briefu do działającej aplikacji w produkcji', subtext: 'Tam, gdzie tradycyjny software house liczy miesiące.' },
+        expandedTitle: 'Aplikacja zbudowana pod Twój proces.',
+        expandedDescription: 'Są procesy, których żaden SaaS nie obsłuży dobrze. Zamiast naginać firmę do narzędzia, budujemy aplikację skrojoną pod Twój workflow. Panel dla zespołu, integracje z Twoimi systemami, moduł AI do zadań, na które nie masz czasu. Wdrożenie trwa 4-8 tygodni. Kod piszemy z pomocą narzędzi AI, więc koszt i czas są kilkukrotnie niższe niż w klasycznym software house.',
+        heroMetric: { value: '4-8 tyg.', label: 'od briefu do działającej aplikacji w produkcji', subtext: 'Pierwsza wersja na Twoich danych po 2-3 tygodniach.' },
         metaTitle: 'Dedykowana aplikacja AI na zamówienie | Workshift',
-        metaDescription: 'Budujemy aplikacje skrojone pod Twój workflow w 4-8 tygodni. Next.js, React, Supabase, AI SDK.',
+        metaDescription: 'Budujemy aplikacje webowe pod Twój proces: panel dla zespołu, portal dla klientów, moduły AI. Od briefu do wersji produkcyjnej w 4-8 tygodni.',
 
         innerCards: [
             {
@@ -235,8 +236,8 @@ export const SERVICES = [
                 colSpan: 'lg:col-span-4',
                 label: 'Jak pracujemy',
                 steps: [
-                    { num: '01', title: 'Discovery', desc: 'Warsztat + mapa procesu, makieta głównych ekranów (3-5 dni).' },
-                    { num: '02', title: 'MVP', desc: 'Pierwsza działająca wersja w 2-3 tygodnie - na Twoich danych.' },
+                    { num: '01', title: 'Analiza', desc: 'Warsztat, mapa procesu i makieta głównych ekranów (3-5 dni).' },
+                    { num: '02', title: 'MVP', desc: 'Pierwsza działająca wersja na Twoich danych w 2-3 tygodnie.' },
                     { num: '03', title: 'Iteracje', desc: 'Kolejne moduły co tydzień, feedback na bieżąco od zespołu.' },
                 ]
             },
@@ -244,7 +245,7 @@ export const SERVICES = [
                 type: 'stack',
                 colSpan: 'lg:col-span-4',
                 label: 'Stack technologiczny',
-                subtitle: 'Nowoczesny, utrzymywany przez lata.',
+                subtitle: 'Technologie, które zna większość zespołów programistycznych.',
                 tools: ['Next.js', 'React', 'Supabase', 'Postgres', 'Vercel', 'AI SDK']
             },
             {
@@ -252,16 +253,16 @@ export const SERVICES = [
                 colSpan: 'lg:col-span-8',
                 label: 'Dlaczego nie kupić gotowego SaaS-u?',
                 points: [
-                    { title: 'Masz unikalny proces', desc: 'SaaS narzuca swój model pracy. My budujemy pod to, jak faktycznie działa Twoja firma.' },
-                    { title: 'Zero abonamentów per user', desc: 'Jedno wdrożenie, Twój kod. Żadnych niespodzianek przy skalowaniu zespołu.' },
-                    { title: 'AI w rdzeniu aplikacji', desc: 'Nie dokręcamy AI do starego UI - od początku projektujemy proces wokół modeli.' },
+                    { title: 'Masz unikalny proces', desc: 'SaaS narzuca swój model pracy. Budujemy pod to, jak działa Twoja firma.' },
+                    { title: 'Bez opłat za użytkownika', desc: 'Płacisz za wdrożenie, a kod należy do Ciebie. Opłata nie rośnie z liczbą użytkowników.' },
+                    { title: 'AI w rdzeniu aplikacji', desc: 'Proces projektujemy od początku z myślą o modelach AI.' },
                 ]
             },
             {
                 type: 'cta',
                 colSpan: 'lg:col-span-4',
                 headline: 'Masz pomysł na aplikację?',
-                subline: 'Pokażemy wstępną architekturę i szacunek kosztu w 1 rozmowie.',
+                subline: 'Pokażemy wstępną architekturę i szacunek kosztu podczas jednej rozmowy.',
                 ctaLabel: 'Porozmawiajmy',
             },
         ],
@@ -269,13 +270,13 @@ export const SERVICES = [
     {
         id: 'szkolenia',
         title: 'Szkolenia AI',
-        tagline: 'Zbuduj zespół operacyjny odporny na przyszłość. Praktyczny warsztat, odwracający opór przed AI w chęć do pracy.',
+        tagline: 'Praktyczne szkolenia AI dla firm: warsztat na danych i narzędziach Twojego zespołu.',
         colSpan: 'lg:col-span-4',
         minHeight: 'min-h-[380px] lg:min-h-[420px]',
 
         categoryTag: 'Rozwój zespołu',
-        expandedTitle: 'Twój zespół nie boi się AI. Po prostu nikt im nie pokazał, jak korzystać.',
-        expandedDescription: 'Nie robimy wykładów. Robimy warsztaty, na których Twój zespół pracuje na SWOICH danych, w SWOICH narzędziach. Po jednym dniu - wiedzą jak promptować, jak zautomatyzować powtarzalną robotę, i jak AI wbudować w swój dzień pracy. Bez teoretyzowania.',
+        expandedTitle: 'Pokazujemy Twojemu zespołowi, jak używać AI w codziennej pracy.',
+        expandedDescription: 'Prowadzimy warsztaty, na których Twój zespół pracuje na własnych danych i w swoich narzędziach. Po warsztacie uczestnicy wiedzą, jak pisać prompty, jak zautomatyzować powtarzalne zadania i jak włączyć AI do codziennej pracy.',
         heroMetric: { value: '2-3x', label: 'wzrost produktywności pracownika w wybranych procesach, które automatyzujemy - raportowany przez naszych klientów' },
         metaTitle: 'Szkolenia AI dla firm - praktyczne warsztaty | Workshift',
         metaDescription: 'Warsztaty AI na Twoich danych i narzędziach. ChatGPT, Claude, automatyzacje. 2-3x wzrost produktywności zespołu.',
@@ -289,7 +290,7 @@ export const SERVICES = [
                     'Warsztat onsite (1 dzień, u Ciebie w biurze)',
                     'Warsztat online (2x po 3h, rozłożone na tydzień)',
                     'Konsultacja 1:1 dla kadry zarządzającej',
-                    'Materiały follow-up + 30 dni wsparcia po szkoleniu'
+                    'Materiały po szkoleniu i 30 dni wsparcia'
                 ],
             },
             {
@@ -309,8 +310,8 @@ export const SERVICES = [
                 label: 'Dla kogo to jest',
                 roles: [
                     { title: 'Zespoły operacyjne', desc: 'Przetwarzają codziennie duże zbiory danych' },
-                    { title: 'Kadra zarządzająca', desc: 'Chce zrozumieć szeroko co AI może zmienić' },
-                    { title: 'Działy marketingu/sprzed.', desc: 'Do skalowania swojego outreachu z asystentem' }
+                    { title: 'Kadra zarządzająca', desc: 'Chce zrozumieć, co AI może zmienić w firmie' },
+                    { title: 'Marketing i sprzedaż', desc: 'Przygotowują więcej spersonalizowanych wiadomości z pomocą asystenta AI' }
                 ]
             },
             {
@@ -318,9 +319,9 @@ export const SERVICES = [
                 colSpan: 'lg:col-span-8',
                 label: 'Dlaczego nasze szkolenia działają',
                 points: [
-                    { title: 'Na Twoich danych', desc: 'Nie uczymy na abstrakcyjnych przykładach. Bierzemy TWOJE maile, TWOJE arkusze, TWOJE procesy.' },
-                    { title: 'Efekt od razu', desc: 'Po warsztacie każdy bierze do ręki 2-3 własne prompty, które od jutra oszczędzają mu konkretny czas.' },
-                    { title: 'Nie zostawiamy samych', desc: '30 dni wsparcia po ukończeniu szkolenia. Pytania, problemy, fine-tuning - jesteśmy dostępni.' },
+                    { title: 'Na Twoich danych', desc: 'Ćwiczymy na mailach, arkuszach i procesach Twojego zespołu.' },
+                    { title: 'Efekt od razu', desc: 'Każdy uczestnik wychodzi z 2-3 promptami do swoich zadań, gotowymi do użycia następnego dnia.' },
+                    { title: '30 dni wsparcia', desc: 'Przez 30 dni po szkoleniu odpowiadamy na pytania zespołu i pomagamy poprawiać prompty.' },
                 ]
             },
             {
@@ -335,13 +336,13 @@ export const SERVICES = [
     {
         id: 'agenty',
         title: 'Agenci AI',
-        tagline: 'Rozwiąż problem wypalenia personelu i obsługuj klientów o 3 w nocy, bez błędów i spóźnień.',
+        tagline: 'Agent AI odpowiada klientom także o 3 w nocy, a trudniejsze sprawy przekazuje Twojemu zespołowi.',
         colSpan: 'lg:col-span-4',
         minHeight: 'min-h-[520px] lg:min-h-[420px]',
 
         categoryTag: 'Automatyzacja komunikacji',
-        expandedTitle: 'Agent, który rozwiązuje - nie przekierowuje.',
-        expandedDescription: 'Budujemy boty, które działają na Twoich danych, respektują Twoje procedury i rozwiązują prawdziwe problemy klientów. Nie chodzi o chatbota, który mówi "przekierowuję do konsultanta". Chodzi o agenta, który odpowiada, wystawia, wysyła - i dopiero gdy nie wie, eskaluje do człowieka.',
+        expandedTitle: 'Agent AI jako pierwsza linia obsługi klienta.',
+        expandedDescription: 'Budujemy agentów, którzy działają na Twoich danych i trzymają się Twoich procedur. Agent odpowiada, wystawia i wysyła, a do człowieka eskaluje wtedy, gdy nie zna odpowiedzi.',
         heroMetric: { value: '40%', label: 'zapytań rozwiązanych autonomicznie - bez udziału człowieka' },
         metaTitle: 'Agenci AI - chatboty i voiceboty dla firm | Workshift',
         metaDescription: 'Budujemy agentów AI, którzy obsługują klientów 24/7. Chatboty, voiceboty, email boty. 40% zapytań bez człowieka.',
@@ -363,10 +364,10 @@ export const SERVICES = [
                 colSpan: 'lg:col-span-4',
                 label: 'Jak to działa',
                 items: [
-                    'Trenujemy agenta na Twoich FAQ i procedurach',
-                    'Korzysta z bazy wiedzy (RAG) - zero halucynacji',
+                    'Agent odpowiada na podstawie Twoich FAQ i procedur',
+                    'Odpowiada na podstawie bazy wiedzy firmy (RAG) i wskazuje źródło',
                     'Monitoring w czasie rzeczywistym w dashboardzie',
-                    'Agent uczy się z feedbacku ewaluując rozmowy'
+                    'Oceniamy rozmowy agenta i na tej podstawie poprawiamy jego odpowiedzi'
                 ],
             },
             {
@@ -380,7 +381,7 @@ export const SERVICES = [
                 colSpan: 'lg:col-span-8',
                 label: 'Przykład wdrożenia',
                 title: 'E-commerce, BOK z 200+ zapytaniami dziennie',
-                content: 'Zespół BOK tonął w powtarzalnych pytaniach: "gdzie moja paczka?", "jak zwrócić?", "jaki rozmiar wybrać?". Agent od Workshift obsługuje ~40% zapytań od ręki na pierwszej linii. Reszta trafia do ludzi z pełnym kontekstem rozmowy. Pracownicy przestali odchodzić z wypalenia z powodu monotonii.',
+                content: 'Zespół BOK tonął w powtarzalnych pytaniach: "gdzie moja paczka?", "jak zwrócić?", "jaki rozmiar wybrać?". Nasz agent obsługuje ~40% zapytań od ręki na pierwszej linii. Reszta trafia do ludzi z pełnym kontekstem rozmowy. Pracownicy przestali odchodzić z wypalenia z powodu monotonii.',
             },
             {
                 type: 'cta',
@@ -399,8 +400,8 @@ export const SERVICES = [
         minHeight: 'min-h-[380px] lg:min-h-[420px]',
 
         categoryTag: 'Content i Visual',
-        expandedTitle: 'Skaluj produkcję kreacji, bez działu grafików.',
-        expandedDescription: 'Zastępujemy drogie sesje zdjęciowe i tygodnie czekania na grafika dedykowanymi pipeline\'ami generatywnymi. Tworzysz brief, a my dostarczamy setki wariantów spójnych z Twoim brandbookiem - packshoty, reklamy social, wideo. W dni, nie w miesiące.',
+        expandedTitle: 'Więcej wariantów kreacji bez rozbudowy działu graficznego.',
+        expandedDescription: 'Zastępujemy drogie sesje zdjęciowe i tygodnie czekania na grafika dedykowanymi pipeline\'ami generatywnymi. Ty przygotowujesz brief, a my dostarczamy setki wariantów zgodnych z Twoim brandbookiem: packshoty, reklamy do social mediów i wideo. Pierwsze materiały dostajesz po 3-5 dniach pracy.',
         heroMetric: { value: 'Dni', label: 'zamiast miesięcy produkcji kreacji reklamowych', subtext: 'Średnio 10x szybciej niż tradycyjny proces agencji.' },
         metaTitle: 'Kreacje reklamowe AI - packshoty, wideo, social | Workshift',
         metaDescription: 'AI pipeline do produkcji kreacji reklamowych. Packshoty, reklamy social, wideo. 10x szybciej niż agencja.',
@@ -412,8 +413,8 @@ export const SERVICES = [
                 label: 'Co tworzymy za Ciebie',
                 items: [
                     'Packshoty i trójwymiarowe wizualizacje produktów',
-                    'Personalizowane warianty reklam na skalę dużego A/B',
-                    'Utrzymana spójność z brandbookiem (modele LoRA)',
+                    'Warianty reklam do testów A/B na dużą skalę',
+                    'Spójność z brandbookiem dzięki modelom LoRA',
                     'Materiały wideo i generatywne animacje'
                 ],
             },
@@ -427,15 +428,15 @@ export const SERVICES = [
             {
                 type: 'comparison',
                 colSpan: 'lg:col-span-8',
-                label: 'Jak zmieniamy proces dostarczania (Before/After)',
-                before: { title: 'Tradycyjnie', desc: 'Briefing → Studio zdjęciowe → Obróbka w Lightroom → Wersjonowanie dla social (4-6 tygodni, duże koszty).', highlight: 'Miesiące' },
-                after: { title: 'Z Workshift AI', desc: 'Brief z wymaganiami → Własny AI pipeline → Setki wariantów brandowych renderowane od razu (3-5 dni pracy).', highlight: 'Dni' }
+                label: 'Jak zmieniamy proces produkcji',
+                before: { title: 'Tradycyjnie', desc: 'Briefing → Studio zdjęciowe → Obróbka w Lightroom → Wersjonowanie dla social (4-6 tygodni, duże koszty).', highlight: 'Tygodnie' },
+                after: { title: 'Z Workshift AI', desc: 'Brief z wymaganiami → nasz pipeline AI → setki wariantów zgodnych z brandbookiem (3-5 dni pracy).', highlight: 'Dni' }
             },
             {
                 type: 'cta',
                 colSpan: 'lg:col-span-4',
                 headline: 'Zobacz demo kreacji AI',
-                subline: 'Pokażemy na żywo, jak generujemy content na bazie Twojego brandbooka.',
+                subline: 'Pokażemy na żywo, jak generujemy kreacje na podstawie Twojego brandbooka.',
                 ctaLabel: 'Umów demo',
             },
         ],

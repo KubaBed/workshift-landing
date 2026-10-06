@@ -71,7 +71,7 @@ const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({
 }[c]));
 
 const TIER_LABEL = {
-    green: '🟢 Działasz sprawnie',
+    green: '🟢 Mały potencjał',
     yellow: '🟡 Widać potencjał',
     red: '🔴 Pilna potrzeba',
 };

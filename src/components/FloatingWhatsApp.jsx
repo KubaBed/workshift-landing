@@ -20,7 +20,7 @@ export function FloatingWhatsApp() {
             >
                 {/* Tooltip */}
                 <div className="absolute right-full mr-4 px-3 py-1 bg-black text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                    Napisz do nas!
+                    Napisz na WhatsApp
                 </div>
 
                 <svg 

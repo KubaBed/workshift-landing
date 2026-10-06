@@ -36,6 +36,14 @@ function LimeDivider() {
   return <div className="w-12 h-px bg-lime mb-6" />;
 }
 
+// Polska odmiana: 1 otwarcie, 2-4 / 22-24 ... otwarcia, pozostałe otwarć.
+function pluralOtwarcie(n) {
+  if (n === 1) return 'otwarcie';
+  const d = n % 10;
+  const dd = n % 100;
+  return d >= 2 && d <= 4 && (dd < 12 || dd > 14) ? 'otwarcia' : 'otwarć';
+}
+
 // Mały status pasek u góry oferty - pokazuje liczbę otwarć i datę ważności.
 // Subtelny, tylko po odblokowaniu. Wykorzystuje dane z /api/offers/views.
 export function StatusBanner({ views, validUntil }) {
@@ -55,7 +63,7 @@ export function StatusBanner({ views, validUntil }) {
           {count > 0 && (
             <span className="flex items-center gap-1.5">
               <Eye size={12} className="text-lime" />
-              {count} {count === 1 ? 'otwarcie' : 'otwarć'}
+              {count} {pluralOtwarcie(count)}
               {lastLabel && <span className="text-muted-light normal-case tracking-normal ml-1">· ostatnio {lastLabel}</span>}
             </span>
           )}
@@ -177,7 +185,7 @@ export function ProblemsSection({ problems, label, subtitle, badge }) {
   return (
     <SectionWrap>
       <motion.div {...fadeUp}>
-        <SectionLabel>{label || 'Dwa procesy do automatyzacji'}</SectionLabel>
+        <SectionLabel>{label || (problems.length === 2 ? 'Dwa procesy do automatyzacji' : 'Procesy do automatyzacji')}</SectionLabel>
         <h2 className="text-3xl md:text-5xl font-display tracking-tight text-black mb-12 leading-tight">
           {subtitle || 'Co rozwiązujemy'}
         </h2>
@@ -602,7 +610,7 @@ export function NextStepsSection({ steps, validUntil, contact, client, title, ct
       <motion.div {...fadeUp}>
         <SectionLabel>Co dalej</SectionLabel>
         <h2 className="text-3xl md:text-5xl font-display tracking-tight text-black mb-12 leading-tight">
-          {title || 'Następne 4 kroki'}
+          {title || (steps.length === 4 ? 'Następne 4 kroki' : 'Następne kroki')}
         </h2>
         <ol className="flex flex-col gap-6 mb-16">
           {steps.map((step, i) => (

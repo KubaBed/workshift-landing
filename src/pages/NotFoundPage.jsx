@@ -59,7 +59,7 @@ export default function NotFoundPage() {
                         Ten proces chyba <br /><span className="text-muted-dark">sam się zautomatyzował.</span>
                     </h1>
                     <p className="text-lg md:text-xl text-muted-dark mb-12 leading-relaxed max-w-xl mx-auto">
-                        Nie znaleźliśmy strony pod tym adresem. Mogła zostać przeniesiona albo zniknąć przy ostatnim refactorze - wybierz najszybszą drogę powrotną poniżej.
+                        Nie znaleźliśmy strony pod tym adresem. Mogła zmienić adres albo zostać usunięta. Wybierz jedną z dróg poniżej.
                     </p>
                 </motion.div>
 
@@ -91,7 +91,7 @@ export default function NotFoundPage() {
                 >
                     <Link to="/#kontakt" className="text-sm font-mono text-muted-dark hover:text-black transition-colors flex items-center justify-center gap-2 group">
                         <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-                        Szukałeś czegoś konkretnego? Napisz do nas
+                        Szukasz czegoś konkretnego? Napisz do nas
                     </Link>
                 </motion.div>
             </div>

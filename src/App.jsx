@@ -19,7 +19,6 @@ const IndustriesSection = lazy(() => import('./components/IndustriesSection').th
 const DataMetricsSection = lazy(() => import('./components/DataMetricsSection').then(m => ({ default: m.DataMetricsSection })));
 const AboutUsSection = lazy(() => import('./components/AboutUsSection').then(m => ({ default: m.AboutUsSection })));
 const TestimonialsSection = lazy(() => import('./components/TestimonialsSection').then(m => ({ default: m.TestimonialsSection })));
-const NewsletterSection = lazy(() => import('./components/NewsletterSection').then(m => ({ default: m.NewsletterSection })));
 const ContactSection = lazy(() => import('./components/ContactSection').then(m => ({ default: m.ContactSection })));
 const FooterAndMiscModule = () => import('./components/FooterAndMisc');
 const FAQSection = lazy(() => FooterAndMiscModule().then(m => ({ default: m.FAQSection })));
@@ -108,7 +107,6 @@ const SECTION_MAP = {
   'about': AboutUsSection,
   'testimonials': TestimonialsSection,
   'faq': FAQSection,
-  'newsletter': NewsletterSection,
   'contact': ContactSection,
   'cta': CTASection,
   'footer': Footer,
@@ -148,7 +146,6 @@ function HomePage() {
           <DataMetricsSection />
           <AboutUsSection />
           <FAQSection />
-          <NewsletterSection />
           <ContactSection />
           <CTASection />
         </Suspense>

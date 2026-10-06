@@ -60,7 +60,7 @@ export function HeroTypographic() {
         {/* Eyebrow - Workshift section label pattern */}
         <FadeUp delay={0.1}>
           <span className="font-mono text-xs uppercase tracking-wider text-black mb-8 inline-block">
-            AI Consulting dla MŚP
+            Wdrożenia AI dla MŚP
           </span>
         </FadeUp>
 
@@ -101,8 +101,8 @@ export function HeroTypographic() {
               fontFamily: 'var(--font-sans)',
             }}
           >
-            Pomożemy przebić się przez szum. Konkretne wyniki, bez rewolucji
-            - odzyskaj czas na budowanie firmy, resztę zautomatyzujemy.
+            Automatyzujemy procesy w polskich MŚP. Zaczynamy od tego, który
+            zabiera Twojemu zespołowi najwięcej czasu.
           </p>
         </FadeUp>
 
@@ -111,10 +111,10 @@ export function HeroTypographic() {
           <div className="flex flex-col gap-6 mb-10">
             <div className="flex items-center gap-6">
               <a
-                href="#kontakt"
+                href="#darmowa-konsultacja"
                 className="inline-flex items-center gap-2 bg-black rounded-full py-2 pr-2 pl-4 text-white text-xs font-medium w-fit hover:bg-black/90 transition-all duration-300 active:scale-95 group shadow-lg"
               >
-                Kontakt
+                Umów bezpłatną rozmowę
                 <span className="w-7 h-7 rounded-full bg-lime flex items-center justify-center transition-transform group-hover:translate-x-1 group-hover:-translate-y-1">
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="black" strokeWidth="2">
                     <path d="M4 10L10 4M10 4H5M10 4V9" />

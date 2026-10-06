@@ -51,7 +51,7 @@ export const SECTIONS = [
                     { label: '0-2h - mamy to zautomatyzowane', p: 0 },
                     { label: '3-8h - trochę, ale akceptowalnie', p: 1 },
                     { label: '9-20h - to istotny problem', p: 2 },
-                    { label: '20+h - to praca pełnego etatu', p: 3 },
+                    { label: '20+h - co najmniej pół etatu', p: 3 },
                 ],
             },
             {
@@ -83,7 +83,7 @@ export const SECTIONS = [
         questions: [
             {
                 id: 'q4',
-                text: 'Jak długo średnio czekasz na pierwszą odpowiedź do klienta od momentu, gdy zostawił zapytanie (formularz, mail, telefon)?',
+                text: 'Ile średnio czeka klient na pierwszą odpowiedź od momentu, gdy zostawi zapytanie (formularz, mail, telefon)?',
                 options: [
                     { label: 'Poniżej 15 minut', p: 0 },
                     { label: '15 min - 2h', p: 1 },
@@ -95,10 +95,10 @@ export const SECTIONS = [
                 id: 'q5',
                 text: 'Jak wygląda kwalifikacja leadów (sprawdzenie firmy, ocena dopasowania) przed wpisaniem do CRM?',
                 options: [
-                    { label: 'Zautomatyzowana - enrichment + scoring', p: 0 },
+                    { label: 'Automatyczna: system uzupełnia dane firmy i ocenia dopasowanie', p: 0 },
                     { label: 'Robi to asystent/sekretariat, szybko', p: 1 },
                     { label: 'Robi to handlowiec, traci na to czas', p: 2 },
-                    { label: 'Nie kwalifikujemy - lecimy na każdy lead', p: 3 },
+                    { label: 'Nie kwalifikujemy, odpowiadamy na każde zapytanie', p: 3 },
                 ],
             },
             {
@@ -108,7 +108,7 @@ export const SECTIONS = [
                     { label: 'Wszystkie są zautomatyzowane', p: 0 },
                     { label: 'Kilka tygodniowo', p: 1 },
                     { label: 'Kilkanaście tygodniowo', p: 2 },
-                    { label: 'Kilkadziesiąt+ - to pół etatu', p: 3 },
+                    { label: 'Kilkadziesiąt lub więcej', p: 3 },
                     // Feedback z testu (Zuzia): brak takiej opcji zmuszał do zgadywania.
                     // 2 pkt, bo brak follow-upów = utracony pipeline, nie stan zdrowy.
                     { label: 'Nie wysyłamy follow-upów - leady zostają bez odpowiedzi', p: 2 },
@@ -137,7 +137,7 @@ export const SECTIONS = [
                 options: [
                     { label: 'Poniżej 1h dziennie', p: 0 },
                     { label: '1-3h', p: 1 },
-                    { label: '3-8h (cały etat)', p: 2 },
+                    { label: '3-8h (do pełnego etatu)', p: 2 },
                     { label: '8h+ (więcej niż pełny etat)', p: 3 },
                 ],
             },
@@ -172,8 +172,8 @@ export const SECTIONS = [
                 id: 'q11',
                 text: 'Skąd zbieracie dane do raportu zarządczego?',
                 options: [
-                    { label: 'Jeden dashboard, wszystko live', p: 0 },
-                    { label: '2-3 systemy, sklejam ręcznie raz w miesiącu', p: 1 },
+                    { label: 'Z jednego panelu, dane na bieżąco', p: 0 },
+                    { label: 'Z 2-3 systemów, łączone ręcznie raz w miesiącu', p: 1 },
                     { label: '4-6 systemów + Excel', p: 2 },
                     { label: 'Z wielu źródeł, za każdym razem inaczej', p: 3 },
                 ],
@@ -214,18 +214,18 @@ export const TOTAL_QUESTIONS = QUESTIONS.length; // 12
 
 // ── Rekomendacje per pytanie (gdy pytanie ma wysoki score 2-3) ─────────────
 export const RECOMMENDATIONS_BY_QUESTION = {
-    q1: 'Integracja systemów w jeden workflow (n8n / Make) - koniec ręcznego przepisywania.',
-    q2: 'OCR + walidacja danych - błędy w fakturach i zamówieniach spadają do zera.',
-    q3: 'Audyt procesów wskaże 1-3 „ciche" automatyzacje z najszybszym zwrotem.',
-    q4: 'Auto-responder + routing leadów - pierwsza odpowiedź w sekundy, nie godziny.',
-    q5: 'Enrichment + scoring leadów - handlowiec dostaje gotową, ocenioną listę.',
-    q6: 'Automatyczne sekwencje follow-up - przypomnienia wychodzą same, nic nie ginie.',
+    q1: 'Połączenie systemów w jeden workflow: dane przechodzą między nimi bez przepisywania.',
+    q2: 'Automatyczny odczyt dokumentów z kontrolą poprawności: mniej błędów z ręcznego przepisywania.',
+    q3: 'Rozmowa diagnostyczna wskaże 1-3 „ciche" automatyzacje z najszybszym zwrotem.',
+    q4: 'Automatyczna pierwsza odpowiedź na zapytanie i przekazanie go właściwej osobie.',
+    q5: 'Automatyczna ocena leadów: handlowiec dostaje gotową listę.',
+    q6: 'Automatyczne przypomnienia handlowe wysyłane według ustalonego harmonogramu.',
     q7: 'Chatbot / baza wiedzy na powtarzalne pytania - odpowiada bez angażowania zespołu.',
     q8: 'Agent AI na skrzynkę - rutynowe maile obsługiwane automatycznie 24/7.',
     q9: 'Uproszczenie ścieżki obsługi - kompletna odpowiedź za pierwszym razem.',
-    q10: 'Automatyczne raporty (Sheets / BI) - generują się same, bez sklejania ręcznie.',
-    q11: 'Integracja danych w jedno źródło - koniec silosów i ręcznego zbierania.',
-    q12: 'Live dashboard + zapytania w języku naturalnym (RAG) - odpowiedź od ręki.',
+    q10: 'Automatyczne raporty, które generują się same, bez ręcznego sklejania.',
+    q11: 'Dane z kilku systemów w jednym miejscu, gotowe do raportu.',
+    q12: 'Panel z aktualnymi danymi, w którym pytasz o liczby zwykłym zdaniem.',
 };
 
 // Fallback per branża (gdy mniej niż 3 pytania trafione wysoko).
@@ -252,13 +252,13 @@ export const REKOMENDACJE_BRANZA = {
     ],
     uslugi: [
         'Onboarding klienta - maile, dokumenty, kalendarze automatycznie.',
-        'Wewnętrzny asystent wiedzy firmowej (RAG).',
+        'Wewnętrzny asystent, który odpowiada na pytania o wiedzę firmową.',
         'Automatyczne raportowanie projektów z narzędzi.',
     ],
     inne: [
-        'Audyt procesów wskaże 2-3 najszybsze automatyzacje (ROI w 3-6 mies).',
-        'Integracja narzędzi w jeden workflow - bez zmiany SaaS-ów.',
-        'Szkolenie zespołu - korzystają z AI w codziennej pracy od jutra.',
+        'Rozmowa diagnostyczna wskaże 2-3 najszybsze automatyzacje (ROI w 3-6 mies).',
+        'Integracja narzędzi, których już używasz, w jeden workflow.',
+        'Szkolenie zespołu z AI na przykładach z jego codziennej pracy.',
     ],
 };
 
@@ -285,25 +285,25 @@ export const TIERS = {
     green: {
         key: 'green',
         emoji: '🟢',
-        label: 'Działasz sprawnie',
-        headline: 'Twoja firma działa sprawnie',
-        body: 'Masz uporządkowane procesy i większość rutyny już zautomatyzowaną. AI da Ci raczej punktowe usprawnienia niż wielkie skoki - i to dobra pozycja.',
-        cta: 'newsletter',
+        label: 'Mały potencjał',
+        headline: 'Mały potencjał automatyzacji',
+        body: 'Twoje odpowiedzi nie wskazują dużych strat czasu na rutynie. AI może tu dać punktowe usprawnienia, a rekomendacje poniżej pokazują, gdzie ich szukać.',
+        cta: 'result',
     },
     yellow: {
         key: 'yellow',
         emoji: '🟡',
         label: 'Widać potencjał',
         headline: 'Widać 2-3 obszary z wyraźnym potencjałem',
-        body: 'Są u Ciebie konkretne miejsca, gdzie AI dałoby szybki zwrot. Mogę przygotować imienny raport z rekomendacjami pod Twoją branżę - co zacząć, w jakiej kolejności, jaki ROI.',
-        cta: 'report',
+        body: 'W kilku miejscach AI może szybko odciążyć zespół. Rekomendacje poniżej pokazują, od których zacząć.',
+        cta: 'result',
     },
     red: {
         key: 'red',
         emoji: '🔴',
         label: 'Pilna potrzeba',
         headline: 'Twoja firma traci kilkadziesiąt godzin tygodniowo',
-        body: 'Przy Twoim poziomie nieefektywności audyt zwraca się zwykle w pierwszym wdrożeniu. To nie pytanie „czy" automatyzować, tylko „gdzie zacząć".',
+        body: 'Twoje odpowiedzi wskazują kilka obszarów, w których zespół wykonuje ręcznie dużo powtarzalnej pracy. Na rozmowie wybierzemy jeden z nich na początek.',
         cta: 'call',
     },
 };

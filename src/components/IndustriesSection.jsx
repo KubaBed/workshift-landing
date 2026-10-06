@@ -11,22 +11,22 @@ function cn(...inputs) {
 const industries = [
     {
         id: 'law',
-        title: "Kancelarie Prawne",
+        title: "Kancelarie prawne",
         icon: <Scale className="w-5 h-5" />,
         tagline: 'Mniej "ctrl+f", więcej czasu na merytorykę',
-        desc: "Błyskawiczne analizy dziesiątek umów naraz, błędoodporne przeszukiwanie orzecznictwa (\"RAG\") i półautomatyczne draftowanie opinii. Wszystko w izolowanym środowisku, bez ryzyka wycieku danych klientów.",
+        desc: "Analiza dziesiątek umów naraz, przeszukiwanie orzecznictwa z podaniem źródła i półautomatyczne szkice opinii. Dane klientów zostają w izolowanym środowisku.",
         metric: { value: '45+', label: 'godzin zaoszczędzonych', subtext: 'miesięcznie na researchu*' },
         useCases: [
-            'Analiza ryzyka w umowach (red-flagging)',
-            'Inteligentny RAG (wyszukiwanie w orzecznictwie)',
-            'Automatyczne draftowanie pism procesowych',
+            'Analiza ryzyka w umowach',
+            'Wyszukiwanie w orzecznictwie',
+            'Automatyczne szkice pism procesowych',
             'Anonimizacja danych w dokumentach (RODO)',
             'Ekstrakcja kluczowych terminów i dat z kontraktów',
             'Weryfikacja zgodności z aktualnymi przepisami',
             'Automatyczne streszczanie akt wielotomowych',
             'Klasyfikacja i tagowanie poczty przychodzącej',
             'Generator wstępnych opinii prawnych',
-            'Monitoring zmian w legislacji (alerting)'
+            'Monitoring zmian w legislacji'
         ],
         theme: { text: 'text-black', bg: 'bg-lime/20', border: 'border-lime/30' },
         gradient: 'from-lime to-[#b8e88a]',
@@ -35,9 +35,9 @@ const industries = [
     },
     {
         id: 'hr',
-        title: "Agencje Rekrutacyjne i HR",
+        title: "Agencje rekrutacyjne i HR",
         icon: <Users className="w-5 h-5" />,
-        tagline: 'Skaluj rekrutację bez obniżania Candidate Experience',
+        tagline: 'Prowadź więcej rekrutacji bez gorszego kontaktu z kandydatem',
         desc: "Automatyzujemy żmudny screening CV, umawianie spotkań i komunikację z kandydatami. AI ocenia dopasowanie profilu i prowadzi wstępny wywiad, oszczędzając setki godzin pracy rekruterów każdego miesiąca.",
         metric: { value: '15h', label: 'oszczędności na procesie', subtext: 'na każdego pomyślnie zatrudnionego kandydata' },
         useCases: [
@@ -45,12 +45,12 @@ const industries = [
             'Pre-screening i kwalifikacja przez AI',
             'Automatyczne umawianie rozmów (synchronizacja kalendarzy)',
             'Personalizowane kampanie sourcingowe np. LinkedIn',
-            'Podsumowania z wywiadów dla Hiring Managerów',
+            'Podsumowania z wywiadów dla menedżerów rekrutujących',
             'Natychmiastowy spersonalizowany feedback dla kandydatów',
             'Automatyzacja przygotowywania ofert pracy',
             'Generowanie raportów o trendach na rynku pracy',
-            'Usprawniony proces Onboardingu i list kontrolnych',
-            'Automatyczne ankiety satysfakcji i zaangażowania (Pulse)'
+            'Usprawniony proces onboardingu i list kontrolnych',
+            'Automatyczne ankiety satysfakcji i zaangażowania'
         ],
         theme: { text: 'text-[#4f46e5]', bg: 'bg-[#4f46e5]/10', border: 'border-[#4f46e5]/20' },
         gradient: 'from-[#4f46e5] to-[#818cf8]',
@@ -59,10 +59,10 @@ const industries = [
     },
     {
         id: 'ecommerce',
-        title: "E-Commerce",
+        title: "E-commerce",
         icon: <ShoppingCart className="w-5 h-5" />,
-        tagline: 'Zwiększ sprzedaż przez personalizację i świetną obsługę',
-        desc: "Od inteligentnej rekomendacji produktów, przez wsparcie obsługi zwrotów, aż po seryjne generowanie SEO opisów produktów w mgnieniu oka. Zwiększ konwersję ratując porzucone koszyki i odpowiadając na pytania 24/7.",
+        tagline: 'Personalizacja i obsługa klienta 24/7 w sklepie internetowym',
+        desc: "Rekomendacje produktów, obsługa zwrotów i seryjne opisy produktów pod SEO. Agent odpowiada na pytania klientów 24/7 i pomaga odzyskać porzucone koszyki.",
         metric: { value: 'do 25%', label: 'wyższa konwersja', subtext: 'u naszych klientów dzięki personalizacji i obsłudze 24/7' },
         useCases: [
             'Zaawansowane chatboty obsługi klienta / weryfikacja statusu zamówień',
@@ -83,21 +83,21 @@ const industries = [
     },
     {
         id: 'marketing',
-        title: "Agencje Reklamowe i Marketingowe",
+        title: "Agencje reklamowe i marketingowe",
         icon: <Megaphone className="w-5 h-5" />,
-        tagline: 'Uwolnij kreatywność, zostaw powtarzalne taski automatom',
-        desc: "Zautomatyzuj raportowanie kampanii, zarządzanie budżetami i dystrybucję wariantów reklam (A/B testing). AI tworzy spersonalizowane teksty reklamowe i analizuje trendy, oddając zespołom czas na strategię.",
-        metric: { value: '3x', label: 'szybszy time-to-market kampanii', subtext: 'u naszych klientów dzięki półautomatycznej kreacji' },
+        tagline: 'Powtarzalne zadania przejmuje automatyzacja, a zespół ma czas na strategię',
+        desc: "Zautomatyzuj raportowanie kampanii, zarządzanie budżetami i dystrybucję wariantów reklam (testy A/B). AI tworzy spersonalizowane teksty reklamowe i analizuje trendy, oddając zespołom czas na strategię.",
+        metric: { value: '3x', label: 'szybsze wejście kampanii na rynek', subtext: 'u naszych klientów dzięki półautomatycznej kreacji' },
         useCases: [
             'Seryjne generowanie wariantów copy reklamowego (FB/Google Ads)',
             'Automatyczne cykliczne raporty skuteczności dla klientów',
             'Monitorowanie oraz alerty o anomaliach w budżetach (PPC)',
             'Inteligentny research i analiza trendów w Social Mediach',
-            'Personalizacja treści na szeroką skalę (Mass Personalization)',
-            'Zautomatyzowane lejki marketingowe i Lead Nurturing',
+            'Personalizacja treści na szeroką skalę',
+            'Zautomatyzowane lejki marketingowe i dalsza komunikacja z leadami',
             'Błyskawiczne tłumaczenia i adaptacje formatów na nowe rynki',
-            'Analiza sentymentu i komentarzy pod marką (Social Listening)',
-            'Draftowanie ofert i rzuty briefów kreatywnych (RFP)',
+            'Analiza sentymentu i komentarzy pod marką',
+            'Szkice ofert i briefów kreatywnych',
             'Automatyczne tagowanie i kategoryzowanie zasobów graficznych'
         ],
         theme: { text: 'text-[#f43f5e]', bg: 'bg-[#f43f5e]/10', border: 'border-[#f43f5e]/20' },
@@ -124,7 +124,7 @@ function IndustryImagePanel({ activeData }) {
             >
                 <img
                     src={activeData.image}
-                    alt={`${activeData.title} AI Platform`}
+                    alt={`Przykład wdrożenia AI: ${activeData.title}`}
                     className="w-full max-w-[480px] rounded-[10px] shadow-2xl object-cover border border-black/10"
                     style={{ maxHeight: '420px', objectPosition: 'top' }}
                     loading="lazy"
@@ -153,7 +153,7 @@ export function IndustriesSection() {
                         AI skrojone pod Twoją branżę
                     </motion.h2>
                     <p className="text-lg text-muted-dark">
-                        Każda branża ma swoje "wąskie gardła". Poniżej - jak je usuwamy.
+                        Każda branża traci czas na czym innym. Poniżej przykłady, co w nich automatyzujemy.
                     </p>
                 </div>
 

@@ -232,14 +232,14 @@ export default function PromptyPage() {
                     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
                         <span className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-black bg-lime px-3 py-1 rounded-full mb-6">
                             <Library size={12} />
-                            Darmowa baza wiedzy
+                            Bezpłatna baza promptów
                         </span>
                         <h1 className="text-4xl md:text-6xl lg:text-7xl font-display tracking-tight text-black leading-[1.05] text-balance">
                             Baza promptów i person AI
                         </h1>
                         <p className="mt-6 text-lg md:text-xl text-muted-dark max-w-2xl mx-auto leading-relaxed">
-                            200 starannie dobranych polskich promptów i 12 person AI do ChatGPT, Claude i Gemini -
-                            w tym autorskie prompty od Workshift pod konkretne branże. Przeszukuj, kopiuj, wdrażaj.
+                            200 polskich promptów i 12 person AI do ChatGPT, Claude i Gemini, w tym 44 autorskie
+                            prompty Workshift pod konkretne branże. Znajdź prompt, skopiuj go i wklej do swojego narzędzia.
                         </p>
                     </motion.div>
 
@@ -334,7 +334,7 @@ export default function PromptyPage() {
 
                         {/* Licznik */}
                         <p className="text-center text-sm text-muted-dark mt-6 font-mono">
-                            {loading ? 'Ładowanie…' : `${filtered.length} promptów`}
+                            {loading ? 'Ładowanie…' : `${filtered.length} ${pluralPrompt(filtered.length)}`}
                         </p>
 
                         {/* Grid */}
@@ -406,6 +406,14 @@ export default function PromptyPage() {
     );
 }
 
+// Polska odmiana: 1 prompt, 2-4 / 22-24 ... prompty, pozostałe promptów.
+function pluralPrompt(n) {
+    if (n === 1) return 'prompt';
+    const d = n % 10;
+    const dd = n % 100;
+    return d >= 2 && d <= 4 && (dd < 12 || dd > 14) ? 'prompty' : 'promptów';
+}
+
 function TabButton({ active, onClick, icon: Icon, children }) {
     return (
         <button
@@ -474,7 +482,7 @@ function PromptCard({ p, onCopy, onOpen }) {
                 {p.forDevs && (
                     <span className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-wider text-black bg-lime/60 px-2 py-0.5 rounded-full">
                         <Code2 size={10} />
-                        Dev
+                        Kod
                     </span>
                 )}
             </div>
@@ -561,9 +569,9 @@ function PersonasTab({ personas, onOpen, onCopy }) {
             <div className="text-center mb-10 max-w-2xl mx-auto">
                 <h2 className="font-display text-3xl text-black mb-3">Persony AI</h2>
                 <p className="text-muted-dark leading-relaxed">
-                    Gotowe instrukcje, które wklejasz jako <strong>opis gema w Gemini</strong>, instrukcje{' '}
-                    <strong>Custom GPT</strong> lub system prompt. Definiują, jak model ma się zachowywać, na co
-                    zwracać uwagę i jaki output proponować - raz ustawiasz, a potem masz wyspecjalizowanego asystenta.
+                    Gotowe instrukcje do wklejenia jako <strong>opis gema w Gemini</strong>, instrukcje{' '}
+                    <strong>Custom GPT</strong> albo system prompt. Opisują, jak model ma pracować i czego pilnować.
+                    Ustawiasz je raz i dalej korzystasz z asystenta do jednego zadania.
                 </p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -603,7 +611,7 @@ function PersonasTab({ personas, onOpen, onCopy }) {
                 ))}
             </div>
             <p className="text-center text-xs text-muted-light mt-10 font-mono">
-                Persony autorskie Workshift. Dopisujemy kolejne - masz pomysł na konkretną? Napisz.
+                Persony autorskie Workshift. Masz pomysł na kolejną? Napisz na kontakt@workshift.pl.
             </p>
         </div>
     );
@@ -616,7 +624,7 @@ function Attribution() {
             <a href="https://prompts.chat" target="_blank" rel="noopener noreferrer" className="underline hover:text-muted-dark">
                 prompts.chat
             </a>
-            . Kuracja i polskie wdrożenie: Workshift.
+            . Wybór i tłumaczenie na polski: Workshift.
         </p>
     );
 }
@@ -625,17 +633,17 @@ function CTA() {
     return (
         <section className="relative px-4 py-16 bg-black text-sage">
             <div className="max-w-3xl mx-auto text-center">
-                <h2 className="font-display text-3xl md:text-4xl mb-4">Prompt to dopiero początek.</h2>
+                <h2 className="font-display text-3xl md:text-4xl mb-4">Od promptu do procesu</h2>
                 <p className="text-sage/70 leading-relaxed mb-8 max-w-xl mx-auto">
-                    Kopiowanie promptów oszczędza minuty. Wdrożenie AI w procesy firmy oszczędza etaty. Pokażemy
-                    Ci gdzie zacząć.
+                    Prompt przyspiesza pojedyncze zadanie. Jeśli to samo zadanie wraca co tydzień, można je
+                    zautomatyzować w procesie firmy. Pokażemy Ci, od czego zacząć.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                     <a
                         href="/audyt-ai"
                         className="px-6 py-3 rounded-full bg-lime text-black font-semibold hover:bg-lime/90 transition-colors"
                     >
-                        Zrób darmowy mikro-audyt AI
+                        Zrób bezpłatny mikro-audyt AI
                     </a>
                     <a
                         href={WHATSAPP_URL}

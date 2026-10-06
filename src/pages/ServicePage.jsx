@@ -5,6 +5,7 @@ import { ExpandedServiceView } from '../components/InteractiveServicesBento';
 import { ServiceArticle } from '../components/ui/ServiceArticle';
 import { ServiceFaq } from '../components/ui/ServiceFaq';
 import { GradientDivider } from '../components/ui/GradientDivider';
+import { DEFAULT_META } from '../lib/seo';
 
 export default function ServicePage() {
     const { serviceId } = useParams();
@@ -41,11 +42,11 @@ export default function ServicePage() {
 
         return () => {
             // Restore defaults when leaving
-            document.title = 'Workshift | Automatyzacja Procesów Biznesowych AI';
+            document.title = DEFAULT_META.title;
             const metaDesc = document.querySelector('meta[name="description"]');
-            if (metaDesc) metaDesc.setAttribute('content', 'Wdrażamy AI, które po prostu działa. Automatyzacja procesów, agenci AI, dedykowane aplikacje i szkolenia dla firm.');
+            if (metaDesc) metaDesc.setAttribute('content', DEFAULT_META.description);
             const ogTitle = document.querySelector('meta[property="og:title"]');
-            if (ogTitle) ogTitle.setAttribute('content', 'Workshift | Automatyzacja Procesów Biznesowych AI');
+            if (ogTitle) ogTitle.setAttribute('content', DEFAULT_META.title);
         };
     }, [service]);
 
@@ -82,7 +83,7 @@ export default function ServicePage() {
                             { href: '/kalkulator', label: 'Kalkulator strat czasowych' },
                         ]}
                     />
-                    <ServiceFaq faq={service.faq} />
+                    <ServiceFaq faq={service.faq} heading={service.faqHeading} />
                 </div>
             </div>
         </main>

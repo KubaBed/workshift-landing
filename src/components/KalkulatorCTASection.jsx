@@ -41,12 +41,12 @@ export function KalkulatorCTASection() {
                             </div>
 
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-display tracking-tight text-black leading-[1.05] mb-5">
-                                Sprawdź ile <span className="text-muted-dark">tracisz</span> <br className="hidden md:block" />
-                                zanim umówisz diagnozę.
+                                Sprawdź, ile <span className="text-muted-dark">tracisz</span>, <br className="hidden md:block" />
+                                zanim umówisz rozmowę diagnostyczną.
                             </h2>
 
                             <p className="text-base md:text-lg text-muted-dark leading-relaxed max-w-xl mb-8">
-                                Pięć pytań o Twoją firmę → konkretne liczby + 3 rekomendacje pod Twoją branżę. Bez maila, bez logowania, bez dzwonienia. Wynik dostaniesz od razu.
+                                Odpowiadasz na pięć pytań o firmę i widzisz wynik w liczbach oraz 3 rekomendacje dla swojej branży.
                             </p>
 
                             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
@@ -62,7 +62,7 @@ export function KalkulatorCTASection() {
                                     </Button>
                                 </Link>
                                 <span className="text-xs font-mono uppercase tracking-wider text-muted-dark">
-                                    60 sekund · zero zobowiązań
+                                    Wynik od razu na ekranie
                                 </span>
                             </div>
                         </div>

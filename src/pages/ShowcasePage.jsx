@@ -77,7 +77,7 @@ function Swatch({ name, value, token }) {
 // Sekcje strony głównej podglądane przez istniejący mechanizm ?preview=<key> w App.jsx
 const SECTION_KEYS = [
   'hero', 'quote', 'services', 'process', 'industries', 'metrics',
-  'about', 'testimonials', 'faq', 'newsletter', 'contact', 'cta', 'footer',
+  'about', 'testimonials', 'faq', 'contact', 'cta', 'footer',
 ];
 
 const BUTTON_VARIANTS = [

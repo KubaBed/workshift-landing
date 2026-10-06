@@ -8,28 +8,28 @@ const processSteps = [
         num: "01",
         time: "Tydzień 1",
         icon: <Search className="w-6 h-6" />,
-        title: "Analiza i Strategia",
+        title: "Analiza i strategia",
         tagline: "Najpierw słuchamy, potem projektujemy",
-        desc: "Analizujemy Twoje procesy od środka. Razem identyfikujemy \"wąskie gardła\" i miejsca największych strat czasu. Na koniec dostajesz konkretny raport z rekomendacjami i docelowy plan automatyzacji - bez żargonu, bez slajdów do szuflady.",
+        desc: "Analizujemy Twoje procesy od środka. Razem wskazujemy wąskie gardła i miejsca największych strat czasu. Na koniec dostajesz raport z rekomendacjami i docelowy plan automatyzacji.",
         detail: "Audyt procesów · Mapowanie workflow · Ocena ROI"
     },
     {
         num: "02",
         time: "Tygodnie 2-4",
         icon: <Wrench className="w-6 h-6" />,
-        title: "Budowa i Wdrożenie",
-        tagline: "Dostarczamy. Bez przestojów.",
-        desc: "Projektujemy i uruchamiamy dedykowane rozwiązania: workflow automatyzacji, agentów AI lub systemy obsługi dokumentów. Wpinamy je w Wasz istniejący sposób pracy, bez przestojów i bez zmuszania zespołu do nauki \"od zera\".",
+        title: "Budowa i wdrożenie",
+        tagline: "Wdrażamy w narzędziach, które już znasz",
+        desc: "Projektujemy i uruchamiamy workflow automatyzacji, agentów AI lub systemy obsługi dokumentów. Wpinamy je w Twój obecny sposób pracy, więc zespół nie musi uczyć się wszystkiego od zera.",
         detail: "Automatyzacje · Agenci AI · Integracje API"
     },
     {
         num: "03",
-        time: "Na zawsze",
+        time: "Po wdrożeniu",
         icon: <GraduationCap className="w-6 h-6" />,
-        title: "Szkolenia i Wsparcie",
-        tagline: "Zostawiamy wiedzę, nie zależność",
-        desc: "Szkolimy Twój zespół tak, żeby naprawdę potrafiło korzystać z nowych narzędzi - i w razie potrzeby modyfikować je samodzielnie. Jesteśmy dostępni, kiedy coś przestaje działać lub chcesz pójść o krok dalej.",
-        detail: "Szkolenia praktyczne · Dokumentacja · Support SLA"
+        title: "Szkolenia i wsparcie",
+        tagline: "Twój zespół obsługuje rozwiązanie sam",
+        desc: "Szkolimy Twój zespół tak, żeby potrafił korzystać z nowych narzędzi i w razie potrzeby samodzielnie je modyfikować. Jesteśmy dostępni, kiedy coś przestaje działać lub chcesz pójść o krok dalej.",
+        detail: "Szkolenia praktyczne · Dokumentacja · Wsparcie techniczne"
     }
 ];
 
@@ -64,7 +64,7 @@ export function ProcessSection() {
                         viewport={{ once: true }}
                         className="text-lg text-muted-dark max-w-md leading-relaxed md:pb-2"
                     >
-                        Żadnej "rocznej transformacji cyfrowej". 3 etapy, 4 tygodnie - i Twoja firma cały czas normalnie pracuje.
+                        Trzy etapy w cztery tygodnie. Twoja firma przez cały ten czas pracuje normalnie.
                     </motion.p>
                 </div>
 
@@ -131,8 +131,8 @@ export function ProcessSection() {
                     <div className="absolute -left-32 -top-32 w-64 h-64 bg-lime rounded-full blur-[100px] opacity-20 pointer-events-none" />
 
                     <div className="relative z-10 text-center md:text-left">
-                        <h4 className="text-xl md:text-2xl font-display text-white mb-2 tracking-tight">30 minut, które mogą zmienić kwartał.</h4>
-                        <p className="text-white/50 text-[15px] max-w-md">Bezpłatna rozmowa diagnostyczna zajmie 30 minut. Przyjrzymy się Twoim procesom bez budowania zobowiązań.</p>
+                        <h4 className="text-xl md:text-2xl font-display text-white mb-2 tracking-tight">Zacznij od bezpłatnej 30-minutowej rozmowy diagnostycznej.</h4>
+                        <p className="text-white/50 text-[15px] max-w-md">Przyjrzymy się Twoim procesom i wskażemy, co zautomatyzować najpierw. Rozmowa do niczego Cię nie zobowiązuje.</p>
                     </div>
                     <a
                         href="#darmowa-konsultacja"

@@ -23,7 +23,7 @@ const jakubPhoto = '/Jakub-Bednarz.webp';
 const PARTNER_LOGOS = [logo1, logo2, logo3, logo4, logo5];
 const PHONE_HUMAN = '+48 796 186 067';
 const PHONE_TEL = 'tel:+48796186067';
-const WHATSAPP_URL = 'https://wa.me/48796186067?text=' + encodeURIComponent('Cześć Kuba, chcę porozmawiać o audycie AI.');
+const WHATSAPP_URL = 'https://wa.me/48796186067?text=' + encodeURIComponent('Cześć Kuba, chcę umówić bezpłatną rozmowę diagnostyczną.');
 
 export default function AudytAiPage() {
     // Sticky CTA (mobile): tylko gdy user jest PONIŻEJ quizu - nad quizem
@@ -88,8 +88,8 @@ export default function AudytAiPage() {
                         </h1>
 
                         <p className="mt-6 text-lg md:text-xl text-muted-dark max-w-2xl mx-auto leading-relaxed">
-                            Zrób test i zobacz wynik natychmiast - bez podawania e-maila.
-                            12 pytań, 4 minuty, 3 rekomendacje dopasowane do Twojej branży.
+                            Odpowiadasz na 12 pytań (ok. 4 minuty), a wynik i 3 rekomendacje dopasowane do
+                            Twoich odpowiedzi widzisz od razu, bez podawania e-maila.
                         </p>
 
                         {/* Primary CTA */}
@@ -98,7 +98,7 @@ export default function AudytAiPage() {
                                 onClick={() => {
                                     track(EVENTS.AUDIT_SCROLL_TO_QUIZ, { source: 'hero' });
                                     // InitiateCheckout o krok wcześniej niż wybór branży -
-                                    // klik „Rozpocznij" = intencja startu. audit_start (Vercel)
+                                    // klik „Zacznij mikro-audyt" = intencja startu. audit_start (Vercel)
                                     // nadal liczy realny start (1. odpowiedź). IC jest dedupowany
                                     // i idempotentny, więc nie zdubluje się z wyborem branży.
                                     fireInitiateCheckout({ source: 'hero_cta' });
@@ -106,7 +106,7 @@ export default function AudytAiPage() {
                                 }}
                                 className="group inline-flex items-center gap-2 px-6 py-3.5 bg-black text-white rounded-full font-medium hover:bg-black/85 transition-colors"
                             >
-                                Rozpocznij audyt
+                                Zacznij mikro-audyt
                                 <ArrowRight
                                     size={18}
                                     className="group-hover:translate-x-1 transition-transform"
@@ -177,7 +177,7 @@ export default function AudytAiPage() {
                             Jak to działa
                         </span>
                         <h2 className="text-3xl md:text-5xl font-display tracking-tight text-black text-balance">
-                            Proste 3 kroki do wykonania
+                            Trzy kroki
                         </h2>
                     </div>
 
@@ -186,17 +186,17 @@ export default function AudytAiPage() {
                             {
                                 n: '01',
                                 title: 'Odpowiadasz na 12 pytań',
-                                body: 'Konkretne, oparte na liczbach (godziny, błędy, czasy reakcji). Bez "ocen w skali 1-10".',
+                                body: 'Pytania o godziny, błędy i czas reakcji, z gotowymi przedziałami do wyboru.',
                             },
                             {
                                 n: '02',
                                 title: 'Widzisz wynik od razu',
-                                body: 'Liczba 0-36 + interpretacja + 3 rekomendacje pod Twoją branżę.',
+                                body: 'Wynik w skali 0-36, jego opis i 3 rekomendacje dopasowane do Twoich odpowiedzi.',
                             },
                             {
                                 n: '03',
-                                title: 'Decydujesz co dalej',
-                                body: 'Newsletter, raport mailem albo rozmowa - w zależności od tego, jak dużo możemy zautomatyzować.',
+                                title: 'Decydujesz, co dalej',
+                                body: 'Wynik możesz dostać na e-mail albo od razu omówić go przez telefon lub WhatsApp.',
                             },
                         ].map((step) => (
                             <motion.div
@@ -244,16 +244,15 @@ export default function AudytAiPage() {
                         </h2>
                         <div className="space-y-4 text-base md:text-lg text-muted-dark leading-relaxed">
                             <p>
-                                Od kilku lat wdrażam automatyzacje AI dla małych i średnich firm w
-                                Polsce - księgowość, e-commerce, agencje, usługi B2B. Najczęstszy
-                                pierwszy krok? Krótki audyt, który pokazuje, gdzie 1 godzina pracy
-                                AI wyrzuca z kalendarza 20 godzin pracy ludzi.
+                                Od kilku lat wdrażam automatyzacje AI w małych i średnich firmach w
+                                Polsce. Najczęstszy pierwszy krok to bezpłatna 30-minutowa rozmowa
+                                diagnostyczna, która pokazuje, gdzie 1 godzina pracy AI wyrzuca
+                                z kalendarza 20 godzin pracy ludzi.
                             </p>
                             <p>
-                                Ten mikro-audyt to wersja "do samodzielnego sprawdzenia" - bez
-                                dzwonka do mnie, bez maila. Jeśli wyjdzie czerwono - porozmawiamy.
-                                Jeśli zielono - nie sprzedam Ci niczego, ale dostaniesz konkrety,
-                                co warto poczytać.
+                                Mikro-audyt robisz sam i wynik widzisz od razu na ekranie. Przy
+                                wyniku zielonym dostajesz listę rzeczy do sprawdzenia samodzielnie,
+                                a przy żółtym i czerwonym proponuję rozmowę.
                             </p>
                         </div>
                     </div>
@@ -268,7 +267,7 @@ export default function AudytAiPage() {
                             FAQ
                         </span>
                         <h2 className="text-3xl md:text-4xl font-display tracking-tight text-black text-balance">
-                            Krótko o tym, co się spodziewasz.
+                            Czego się spodziewać
                         </h2>
                     </div>
 
@@ -276,21 +275,21 @@ export default function AudytAiPage() {
                         {[
                             {
                                 q: 'Czy to naprawdę bezpłatne?',
-                                a: 'Tak - quiz, wynik i 3 rekomendacje są bezpłatne. Płatne są dopiero usługi, jeśli zdecydujesz że chcesz pracować razem (audyt szczegółowy od 4 900 PLN).',
+                                a: 'Tak. Quiz, wynik i 3 rekomendacje są bezpłatne.',
                             },
                             {
                                 q: 'Co z moimi danymi?',
-                                a: 'Nie zbieram danych do startu quizu. Email zostawiasz tylko jeśli sam chcesz wynik na maila. Zero list marketingowych ani spam-sekwencji bez Twojej zgody.',
+                                a: 'Quiz startuje bez podawania danych. E-mail podajesz tylko wtedy, gdy chcesz dostać wynik na skrzynkę.',
                             },
                             {
-                                q: 'Ile trwa pełny audyt (ten płatny)?',
-                                a: 'Od 2 do 4 tygodni - w zależności od rozmiaru firmy. Audyt kończy się raportem z konkretną listą automatyzacji w kolejności priorytetu, z ROI każdej z nich.',
+                                q: 'Co dalej, jeśli chcę wdrożyć rekomendacje?',
+                                a: 'Umów bezpłatną 30-minutową rozmowę diagnostyczną. Przejdziemy przez Twoje procesy i ustalimy, od czego zacząć.',
                             },
                             {
                                 q: 'Nie chcę quizu, wolę pogadać.',
                                 a: (
                                     <>
-                                        Spoko -{' '}
+                                        Jasne,{' '}
                                         <a
                                             href={PHONE_TEL}
                                             onClick={() =>
@@ -349,8 +348,8 @@ export default function AudytAiPage() {
                         Albo pomiń quiz i porozmawiajmy.
                     </h2>
                     <p className="text-lg text-muted-dark mb-8 max-w-xl mx-auto">
-                        Bezpłatna 30-minutowa rozmowa diagnostyczna pokaże więcej niż każdy formularz. Bez prezentacji
-                        PowerPointa.
+                        W bezpłatnej 30-minutowej rozmowie diagnostycznej przechodzimy przez Twoje procesy i wskazujemy
+                        2-3 miejsca, od których warto zacząć.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-3 items-center justify-center">
                         <a
@@ -384,7 +383,7 @@ export default function AudytAiPage() {
                         <Link to="/uslugi/automatyzacja" className="text-black underline underline-offset-4 hover:text-lime transition-colors">
                             Zobacz, jak działa automatyzacja AI
                         </Link>
-                        {' '}- procesy, wdrożenie i przykład z liczbami.
+                        .
                     </p>
                 </div>
             </section>
@@ -407,7 +406,7 @@ export default function AudytAiPage() {
                             }}
                             className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-black text-white rounded-full font-medium shadow-lg shadow-black/20"
                         >
-                            Zrób mikro-audyt - 4 minuty
+                            Zrób mikro-audyt (4 minuty)
                             <ArrowRight size={18} />
                         </button>
                     </motion.div>
