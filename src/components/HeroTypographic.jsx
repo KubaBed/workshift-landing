@@ -101,8 +101,8 @@ export function HeroTypographic() {
               fontFamily: 'var(--font-sans)',
             }}
           >
-            Automatyzujemy procesy w polskich MŚP. Zaczynamy od tego, który
-            zabiera Twojemu zespołowi najwięcej czasu.
+            Automatyzujemy żmudną pracę w polskich firmach, od faktur po
+            raporty. Zaczynamy tam, gdzie Twój zespół traci najwięcej godzin.
           </p>
         </FadeUp>
 
