@@ -283,7 +283,7 @@ export default function AudytAiPage() {
                             },
                             {
                                 q: 'Co dalej, jeśli chcę wdrożyć rekomendacje?',
-                                a: 'Umów bezpłatną 30-minutową rozmowę diagnostyczną. Przejdziemy przez Twoje procesy i ustalimy, od czego zacząć.',
+                                a: 'Napisz do nas przez formularz na stronie głównej albo zadzwoń. Zaproponujemy termin bezpłatnej 30-minutowej rozmowy diagnostycznej, na której przejdziemy przez Twoje procesy i ustalimy, od czego zacząć.',
                             },
                             {
                                 q: 'Nie chcę quizu, wolę pogadać.',

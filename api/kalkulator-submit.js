@@ -82,7 +82,7 @@ const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({
 }[c]));
 
 const formatPLN = (n) => new Intl.NumberFormat('pl-PL').format(n) + ' PLN';
-const CONSULT_URL = 'https://www.workshift.pl/#darmowa-konsultacja';
+const CONSULT_URL = 'https://www.workshift.pl/#kontakt';
 const SEND_ERROR = 'Nie udało się wysłać wyniku. Spróbuj ponownie albo napisz na kontakt@workshift.pl.';
 
 // Liczba całkowita w zakresie suwaka; poza zakresem → null (odrzucamy request).
@@ -195,7 +195,7 @@ export default async function handler(req, res) {
                     <h3>3 procesy do sprawdzenia w Twojej branży</h3>
                     ${listHtml(rekomendacje)}
                     <hr />
-                    <p>Jeśli chcesz sprawdzić, które z tych godzin da się odzyskać w Twojej firmie, umów bezpłatną 30-minutową rozmowę diagnostyczną: <a href="${CONSULT_URL}">${CONSULT_URL}</a>. Możesz też po prostu odpisać na tę wiadomość.</p>
+                    <p>Jeśli chcesz sprawdzić, które z tych godzin da się odzyskać w Twojej firmie, odpisz na tę wiadomość albo napisz przez formularz: <a href="${CONSULT_URL}">${CONSULT_URL}</a>. Zaproponujemy termin bezpłatnej 30-minutowej rozmowy diagnostycznej.</p>
                     <p>Pozdrawiam,<br/>Jakub Bednarz, Workshift</p>
                 `,
             },

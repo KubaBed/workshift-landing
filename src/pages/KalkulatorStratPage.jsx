@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { Logo } from '../components/ui/Logo';
-import { ArrowLeft, ArrowRight, Calculator, CheckCircle, Calendar, Loader2, Mail, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Calculator, CheckCircle, Loader2, Mail, Sparkles } from 'lucide-react';
 import { track, EVENTS } from '../lib/analytics';
 import { trackPixel, hasConsent } from '../lib/consent';
 import {
@@ -368,8 +368,8 @@ function ResultCard({
     const [errorMsg, setErrorMsg] = useState('');
     const [privacyAccepted, setPrivacyAccepted] = useState(false);
 
-    const handleCalendarClick = () => {
-        track(EVENTS.CALCULATOR_CTA_CLICK, { cta: 'calendar', branza: data.branza, kosztRok });
+    const handleContactClick = () => {
+        track(EVENTS.CALCULATOR_CTA_CLICK, { cta: 'contact_form', branza: data.branza, kosztRok });
     };
 
     const handleEmailSubmit = async (e) => {
@@ -494,25 +494,23 @@ function ResultCard({
             <div className="bg-black rounded-2xl p-6 md:p-10 text-white text-center">
                 <h2 className="text-2xl md:text-3xl font-display mb-3">Sprawdźmy, które z tych godzin da się odzyskać w Twojej firmie</h2>
                 <p className="text-base md:text-lg text-white/70 mb-6 max-w-xl mx-auto">
-                    Bezpłatna 30-minutowa rozmowa diagnostyczna online. Przechodzimy przez Twoje procesy i wskazujemy 2-3 miejsca, od których warto zacząć.
+                    Napisz kilka zdań o swoich procesach, a zaproponujemy termin bezpłatnej 30-minutowej rozmowy diagnostycznej online. Przechodzimy w niej przez Twoje procesy i wskazujemy 2-3 miejsca, od których warto zacząć.
                 </p>
                 <a
-                    href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3OTv0k-j2FsAJLC5Db_lhbNVoz1GK8Qk5Z62f3rI8SkRJ7DpdUBgyiIeKtmVIMVgDfI9cbQFkj"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={handleCalendarClick}
+                    href="/#kontakt"
+                    onClick={handleContactClick}
                 >
                     <Button
                         variant="accent"
                         size="lg"
                         className="h-14 px-8 text-base flex items-center gap-2 mx-auto shadow-lg shadow-lime/20"
                     >
-                        <Calendar size={18} />
-                        Umów bezpłatną rozmowę diagnostyczną
+                        Napisz do nas
+                        <ArrowRight size={18} />
                     </Button>
                 </a>
                 <p className="text-xs text-white/40 mt-4 font-mono uppercase tracking-wider">
-                    Pierwsza dostępna: zwykle w 3-5 dni
+                    Odpowiadamy w ciągu 24 godzin
                 </p>
             </div>
 

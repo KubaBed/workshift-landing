@@ -132,13 +132,13 @@ export function ProcessSection() {
 
                     <div className="relative z-10 text-center md:text-left">
                         <h4 className="text-xl md:text-2xl font-display text-white mb-2 tracking-tight">Zacznij od bezpłatnej 30-minutowej rozmowy diagnostycznej.</h4>
-                        <p className="text-white/50 text-[15px] max-w-md">Przyjrzymy się Twoim procesom i wskażemy, co zautomatyzować najpierw. Rozmowa do niczego Cię nie zobowiązuje.</p>
+                        <p className="text-white/50 text-[15px] max-w-md">Opisz krótko swój proces w formularzu, a zaproponujemy termin. Przyjrzymy się Twoim procesom i wskażemy, co zautomatyzować najpierw. Rozmowa do niczego Cię nie zobowiązuje.</p>
                     </div>
                     <a
-                        href="#darmowa-konsultacja"
+                        href="#kontakt"
                         className="relative z-10 inline-flex items-center gap-2 bg-white text-black hover:bg-white/90 px-6 py-3.5 rounded-full font-semibold text-[14px] transition-colors shrink-0"
                     >
-                        Umów rozmowę diagnostyczną
+                        Napisz do nas
                         <ArrowRight size={16} className="text-lime" />
                     </a>
                 </motion.div>
