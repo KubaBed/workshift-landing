@@ -112,9 +112,9 @@ export function HeroTypographic() {
             <div className="flex items-center gap-6">
               <a
                 href="#darmowa-konsultacja"
-                className="inline-flex items-center gap-2 bg-black rounded-full py-2 pr-2 pl-4 text-white text-xs font-medium w-fit hover:bg-black/90 transition-all duration-300 active:scale-95 group shadow-lg"
+                className="inline-flex items-center gap-2 whitespace-nowrap shrink-0 bg-black rounded-full py-2 pr-2 pl-4 text-white text-xs font-medium w-fit hover:bg-black/90 transition-all duration-300 active:scale-95 group shadow-lg"
               >
-                Umów bezpłatną rozmowę
+                Wybierz termin
                 <span className="w-7 h-7 rounded-full bg-lime flex items-center justify-center transition-transform group-hover:translate-x-1 group-hover:-translate-y-1">
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="black" strokeWidth="2">
                     <path d="M4 10L10 4M10 4H5M10 4V9" />
