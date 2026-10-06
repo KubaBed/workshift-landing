@@ -426,6 +426,78 @@ export const SERVICES = [
         metaTitle: 'Agenci AI - chatboty i voiceboty dla firm | Workshift',
         metaDescription: 'Budujemy agentów AI, którzy obsługują klientów 24/7. Chatboty, voiceboty, email boty. 40% zapytań bez człowieka.',
 
+        // Treść artykułowa (etap 4 SEO). Wnioski z researchu 30.08 i 01.09: brak
+        // popytu na "chatbot ai dla firmy", więc nazywamy kategorię (agent AI do
+        // obsługi klienta) i opisujemy ból (te same pytania, odpowiedzi po godzinach).
+        seoSections: [
+            {
+                heading: 'Agent AI do obsługi klienta',
+                eyebrow: 'Agenci AI',
+                paragraphs: [
+                    'Agent AI to program, który odpowiada klientom na stronie, w Messengerze, WhatsAppie, mailu albo przez telefon. Korzysta z wiedzy Twojej firmy: cennika, regulaminu, procedur i odpowiedzi na najczęstsze pytania. Pytania, na które nie zna odpowiedzi, przekazuje Twojemu zespołowi razem z całą rozmową.',
+                    'Agent sprawdza się tam, gdzie zespół codziennie odpowiada na te same pytania: o status zamówienia, zwroty, terminy, dostępność usług. Klient dostaje odpowiedź także wieczorem i w weekend, a zespół zajmuje się sprawami, które wymagają człowieka.',
+                ],
+            },
+            {
+                heading: 'Jak działa agent AI w firmie',
+                eyebrow: 'Mechanizm',
+                items: [
+                    {
+                        icon: 'inbox',
+                        title: 'Odpowiada na podstawie Twojej wiedzy',
+                        desc: 'Agent czyta firmowe dokumenty, FAQ i procedury. Przy odpowiedzi wskazuje, z którego dokumentu korzysta.',
+                    },
+                    {
+                        icon: 'alert',
+                        title: 'Przekazuje trudne sprawy ludziom',
+                        desc: 'Gdy pytanie wykracza poza jego wiedzę albo klient prosi o człowieka, agent przekazuje rozmowę zespołowi z pełnym kontekstem.',
+                    },
+                    {
+                        icon: 'sync',
+                        title: 'Działa w kanałach, które już masz',
+                        desc: 'Strona WWW, Messenger, WhatsApp, Slack, mail albo linia telefoniczna. Klient pisze tam, gdzie pisał wcześniej.',
+                    },
+                    {
+                        icon: 'report',
+                        title: 'Uczy się na ocenionych rozmowach',
+                        desc: 'Rozmowy agenta widać w panelu. Oceniamy je regularnie i na tej podstawie poprawiamy jego odpowiedzi.',
+                    },
+                ],
+            },
+            {
+                heading: 'Jak wygląda wdrożenie agenta',
+                eyebrow: 'Wdrożenie',
+                paragraphs: [
+                    'Zaczynamy od listy pytań, które klienci zadają najczęściej, i od dokumentów, z których zespół dziś odpowiada. Na tej podstawie budujemy prototyp i testujemy go na prawdziwych pytaniach, zanim agent porozmawia z pierwszym klientem.',
+                    'Potem ustalamy z zespołem zasady przekazywania rozmów, uruchamiamy agenta w jednym kanale i dokładamy kolejne, kiedy pierwszy działa stabilnie.',
+                ],
+            },
+        ],
+
+        faqHeading: 'Pytania o agentów AI',
+        faq: [
+            {
+                q: 'Czym agent AI różni się od zwykłego chatbota?',
+                a: 'Klasyczny chatbot prowadzi klienta po z góry ustalonym drzewku odpowiedzi. Agent AI rozumie pytanie zadane własnymi słowami, odpowiada na podstawie dokumentów firmy i potrafi wykonać prostą czynność, na przykład sprawdzić status zamówienia w systemie.',
+            },
+            {
+                q: 'Co się dzieje, gdy agent nie zna odpowiedzi?',
+                a: 'Przekazuje rozmowę Twojemu zespołowi razem z jej historią, więc klient nie musi powtarzać pytania. Zasady przekazywania ustalamy przed uruchomieniem.',
+            },
+            {
+                q: 'Skąd agent bierze wiedzę o firmie?',
+                a: 'Z dokumentów, które wskażesz: FAQ, cennika, regulaminu, procedur, bazy wiedzy. Gdy dokumenty się zmieniają, aktualizujemy wiedzę agenta.',
+            },
+            {
+                q: 'Czy agent może obsługiwać telefon?',
+                a: 'Tak. Oprócz czatu na stronie, Messengera, WhatsAppa i maila budujemy też agentów głosowych do obsługi linii telefonicznej.',
+            },
+            {
+                q: 'Ile kosztuje agent AI dla firmy?',
+                a: 'Cena zależy od liczby kanałów, integracji z Twoimi systemami i zakresu wiedzy, z której ma korzystać agent. Napisz do nas przez formularz, a wrócimy z propozycją zakresu i wyceną.',
+            },
+        ],
+
         innerCards: [
             {
                 type: 'features',
@@ -484,6 +556,73 @@ export const SERVICES = [
         heroMetric: { value: 'Dni', label: 'zamiast miesięcy produkcji kreacji reklamowych', subtext: 'Średnio 10x szybciej niż tradycyjny proces agencji.' },
         metaTitle: 'Kreacje reklamowe AI - packshoty, wideo, social | Workshift',
         metaDescription: 'AI pipeline do produkcji kreacji reklamowych. Packshoty, reklamy social, wideo. 10x szybciej niż agencja.',
+
+        // Treść artykułowa (etap 4 SEO). Najwęższa usługa: opis procesu i formatów,
+        // bez liczb-wyników i porównań procentowych (decyzje z 06.10.2026).
+        seoSections: [
+            {
+                heading: 'Kreacje reklamowe AI dla firm',
+                eyebrow: 'Kreacje AI',
+                paragraphs: [
+                    'Kampania potrzebuje wielu wariantów jednej reklamy: innych nagłówków, formatów i zdjęć do testów. Przygotowanie ich ręcznie zajmuje grafikowi dużo czasu. Produkujemy takie warianty z pomocą AI, zgodnie z identyfikacją wizualną Twojej marki.',
+                    'Część kreacji składamy w kodzie z gotowych elementów marki: logo, krojów pisma i kolorów. Dzięki temu każdy wariant trzyma się brandbooka, a zmiana nagłówka albo formatu w całej serii zajmuje chwilę.',
+                ],
+            },
+            {
+                heading: 'Co produkujemy',
+                eyebrow: 'Zakres',
+                items: [
+                    {
+                        icon: 'invoice',
+                        title: 'Grafiki do social mediów',
+                        desc: 'Posty i reklamy w formatach kwadratowych, pionowych 4:5 i 9:16 do stories i Reels, w wersji jasnej i ciemnej.',
+                    },
+                    {
+                        icon: 'sync',
+                        title: 'Warianty do testów A/B',
+                        desc: 'Serie reklam z różnymi nagłówkami i układami, przygotowane tak, żeby dało się je porównać w menedżerze reklam.',
+                    },
+                    {
+                        icon: 'report',
+                        title: 'Packshoty i wizualizacje produktów',
+                        desc: 'Zdjęcia produktów w nowych aranżacjach i wizualizacje bez organizowania sesji zdjęciowej.',
+                    },
+                    {
+                        icon: 'clock',
+                        title: 'Krótkie wideo i animacje',
+                        desc: 'Animowane reklamy i krótkie formy wideo zbudowane z tych samych elementów marki co grafiki.',
+                    },
+                ],
+            },
+            {
+                heading: 'Jak wygląda produkcja',
+                eyebrow: 'Proces',
+                paragraphs: [
+                    'Zaczynamy od briefu i materiałów marki. Najpierw przygotowujemy kilka kierunków wizualnych do akceptacji, a po wyborze jednego produkujemy pełną serię wariantów we wszystkich potrzebnych formatach.',
+                    'Każdą kreację sprawdza człowiek, zanim trafi do Ciebie. Dostajesz gotowe pliki do publikacji w uzgodnionych formatach.',
+                ],
+            },
+        ],
+
+        faqHeading: 'Pytania o kreacje reklamowe AI',
+        faq: [
+            {
+                q: 'Czy kreacje AI wyglądają jak wygenerowane przez AI?',
+                a: 'Kreacje opieramy na elementach Twojej marki i omijamy typowe klisze AI, takie jak roboty czy fioletowe gradienty. Każdą kreację przed wysłaniem sprawdza człowiek.',
+            },
+            {
+                q: 'Czy potrzebuję brandbooka?',
+                a: 'Wystarczy logo, kolory, kroje pisma i kilka przykładów materiałów, które Ci się podobają. Jeśli brandbooka nie ma, porządkujemy te elementy na początku współpracy.',
+            },
+            {
+                q: 'Na jakie formaty przygotowujecie kreacje?',
+                a: 'Na formaty, w których emitujesz reklamy: posty kwadratowe, pionowe 4:5, stories i Reels 9:16, banery i grafiki do newsletterów firmowych. Listę ustalamy przy briefie.',
+            },
+            {
+                q: 'Ile kosztują kreacje reklamowe AI?',
+                a: 'Cena zależy od liczby formatów, wariantów i tego, czy w serii są animacje. Napisz do nas przez formularz, a wrócimy z propozycją zakresu i wyceną.',
+            },
+        ],
 
         innerCards: [
             {
