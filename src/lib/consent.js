@@ -69,8 +69,8 @@ export function setConsent({ analytics = false, recordings = false, marketing = 
 
     if (analytics) loadGA4();
     if (recordings) loadClarity();
-    // PostHog: load if any consent given (both analytics and session replay)
-    if (analytics || recordings) loadPostHog();
+    // PostHog: analityka przy dowolnej zgodzie, nagrania sesji tylko przy zgodzie "recordings"
+    if (analytics || recordings) loadPostHog({ recordings });
     if (marketing) loadMetaPixel();
     // Note: nie odładowujemy skryptów po withdrawal - wymagałoby reload.
     // Banner pokazuje to userowi i sugeruje refresh.
@@ -127,7 +127,12 @@ function loadClarity() {
     });
 }
 
-function loadPostHog() {
+function loadPostHog({ recordings = false } = {}) {
+    // Już zainicjalizowany (np. zgoda rozszerzona w tej samej sesji): tylko włącz nagrania.
+    if (window.posthog?.__loaded) {
+        if (recordings) window.posthog.startSessionRecording();
+        return;
+    }
     loadOnce('posthog-loader', async (id) => {
         try {
             const { default: posthog } = await import('posthog-js');
@@ -137,7 +142,7 @@ function loadPostHog() {
                 autocapture: true,
                 capture_pageview: true,
                 capture_pageleave: true,
-                disable_session_recording: false,
+                disable_session_recording: !recordings,
             });
             window.posthog = posthog;
         } catch (err) {
@@ -200,6 +205,6 @@ export function bootstrapConsent() {
     if (!c) return;
     if (c.analytics) loadGA4();
     if (c.recordings) loadClarity();
-    if (c.analytics || c.recordings) loadPostHog();
+    if (c.analytics || c.recordings) loadPostHog({ recordings: c.recordings });
     if (c.marketing) loadMetaPixel();
 }
