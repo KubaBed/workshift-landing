@@ -269,8 +269,8 @@ const STATIC_FALLBACK = {
     body:
       'Workshift wdraża agentów i automatyzacje AI dla firm w Poznaniu i całej Polsce. Pracujemy w czterech ' +
       'obszarach: audyt i automatyzacja procesów, dedykowane aplikacje, agenci AI oraz szkolenia dla zespołów. ' +
-      'Każde wdrożenie zaczyna się od bezpłatnej diagnozy procesu, a kończy narzędziem, z którego Twój zespół ' +
-      'korzysta na co dzień. Diagnoza trwa 30 minut online i daje mapę miejsc, w których automatyzacja ' +
+      'Każde wdrożenie zaczyna się od bezpłatnej rozmowy diagnostycznej, a kończy narzędziem, z którego Twój zespół ' +
+      'korzysta na co dzień. Rozmowa trwa 30 minut online i daje mapę miejsc, w których automatyzacja ' +
       'zwróci się najszybciej.',
     sections: [
       {
