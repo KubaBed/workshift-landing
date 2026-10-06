@@ -82,8 +82,25 @@ function patchHead(shell, route) {
   // Canonical nie istnieje w index.html, więc go dopisujemy zamiast podmieniać.
   const extras = [`  <link rel="canonical" href="${escapeAttr(url)}" />`];
 
-  // FAQPage tylko dla tras, których dane niosą pole `faq` (dziś: usługa
-  // automatyzacja, Sprint 1 SEO). Pozostałe schematy żyją w PAPERCUTS.md.
+  // Service dla podstron usług. Organizacja i założyciel są w index.html
+  // (@graph, @id .../#organization), tu tylko się do nich odwołujemy.
+  if (route.serviceSchema) {
+    const serviceLd = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      name: route.serviceSchema.name,
+      description: route.serviceSchema.description,
+      url,
+      serviceType: route.serviceSchema.name,
+      provider: { '@id': `${SITE_ORIGIN}/#organization` },
+      areaServed: { '@type': 'Country', name: 'Polska' },
+      availableLanguage: 'pl',
+    }).replace(/</g, '\\u003c');
+    extras.push(`  <script type="application/ld+json">${serviceLd}</script>`);
+  }
+
+  // FAQPage tylko dla tras, których dane niosą pole `faq` (automatyzacja,
+  // szkolenia).
   if (route.faq?.length) {
     const jsonLd = JSON.stringify({
       '@context': 'https://schema.org',

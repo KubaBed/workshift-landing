@@ -464,6 +464,7 @@ export const routes = [
     priority: '0.8',
     changefreq: 'monthly',
     faq: service.faq,
+    serviceSchema: { name: service.title, description: plainText(service.tagline) },
     fallbackHeading: service.title,
     fallbackLead: service.tagline,
     fallbackBody: plainText([service.expandedTitle, service.expandedDescription].filter(Boolean).join(' ')),

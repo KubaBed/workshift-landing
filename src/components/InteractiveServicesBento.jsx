@@ -910,13 +910,14 @@ export function ExpandedServiceView({ service, onClose }) {
                     {/* Rząd 1: Header + Metric */}
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 mb-8 lg:mb-12">
                         <div className="lg:col-span-7">
-                            <p className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-black mb-5 bg-lime/20 px-3 py-1.5 rounded-md border border-lime/30">
+                            {/* H1 strony usługi = nazwa usługi (fraza SEO), nagłówek wizualny to h2. */}
+                            <h1 className="inline-flex items-center gap-2 text-[10px] font-mono font-normal uppercase tracking-[0.2em] text-black mb-5 bg-lime/20 px-3 py-1.5 rounded-md border border-lime/30">
                                 <span className="w-1.5 h-1.5 rounded-full bg-lime animate-pulse" />
-                                {service.categoryTag}
-                            </p>
-                            <h3 className="text-3xl md:text-4xl lg:text-5xl font-display text-black mb-6 tracking-tight leading-[1.05] text-balance">
+                                {service.title}
+                            </h1>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-display text-black mb-6 tracking-tight leading-[1.05] text-balance">
                                 {service.expandedTitle}
-                            </h3>
+                            </h2>
                             <p className="text-lg md:text-[19px] text-muted-dark leading-[1.6] max-w-2xl text-balance">
                                 {service.expandedDescription}
                             </p>

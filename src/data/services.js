@@ -281,6 +281,85 @@ export const SERVICES = [
         metaTitle: 'Szkolenia AI dla firm - praktyczne warsztaty | Workshift',
         metaDescription: 'Warsztaty AI na Twoich danych i narzędziach. ChatGPT, Claude, automatyzacje. 2-3x wzrost produktywności zespołu.',
 
+        // Treść artykułowa (etap 4 SEO, fraza: szkolenia ai dla firm). Kąt: warsztat
+        // pod procesy firmy, nie katalog kursów - SERP zajmują instytucje (PARP, EY).
+        // Bez liczb-wyników i bez cen (decyzje z 06.10.2026).
+        seoSections: [
+            {
+                heading: 'Szkolenia AI dla firm prowadzone na Twoich procesach',
+                eyebrow: 'Szkolenia AI',
+                paragraphs: [
+                    'Szkolenie AI dla firmy ma sens wtedy, gdy zespół wychodzi z niego z narzędziem do własnej pracy. Dlatego program układamy pod konkretny dział i jego zadania: księgowość ćwiczy na fakturach i zestawieniach, sprzedaż na mailach do klientów, zarząd na raportach i notatkach ze spotkań.',
+                    'Przed szkoleniem rozmawiamy z osobą, która je zamawia, i zbieramy zadania, które zespół wykonuje co tydzień. Na warsztacie pracujemy właśnie na nich, w narzędziach, z których firma już korzysta.',
+                ],
+            },
+            {
+                heading: 'Czego uczy warsztat',
+                eyebrow: 'Program',
+                items: [
+                    {
+                        icon: 'inbox',
+                        title: 'Prompty do własnych zadań',
+                        desc: 'Każdy uczestnik pisze prompty do zadań ze swojej listy i zapisuje je, żeby korzystać z nich następnego dnia.',
+                    },
+                    {
+                        icon: 'invoice',
+                        title: 'Praca z dokumentami i danymi',
+                        desc: 'Streszczanie dokumentów, porównywanie wersji umów, wyciąganie danych z załączników i analiza arkuszy w ChatGPT, Claude lub Copilocie.',
+                    },
+                    {
+                        icon: 'sync',
+                        title: 'Proste automatyzacje bez kodu',
+                        desc: 'Jak połączyć AI z mailem, arkuszem i kalendarzem, żeby powtarzalne zadanie wykonywało się samo.',
+                    },
+                    {
+                        icon: 'alert',
+                        title: 'Bezpieczne korzystanie z AI',
+                        desc: 'Jakich danych nie wklejać do narzędzi AI, jak ustawić konta firmowe i jak sprawdzić odpowiedź modelu, zanim trafi do klienta.',
+                    },
+                ],
+            },
+            {
+                heading: 'Formaty szkolenia',
+                eyebrow: 'Jak pracujemy',
+                paragraphs: [
+                    'Warsztat stacjonarny trwa jeden dzień i odbywa się w Twoim biurze. Wersja online to dwa trzygodzinne spotkania w ciągu tygodnia, z czasem na przećwiczenie materiału między nimi. Dla kadry zarządzającej prowadzimy konsultacje 1:1, na których omawiamy, gdzie AI może zmienić pracę firmy.',
+                    'Po szkoleniu uczestnicy dostają materiały, a przez 30 dni odpowiadamy na pytania zespołu i pomagamy poprawiać prompty.',
+                ],
+            },
+            {
+                heading: 'Szkolenie jako część wdrożenia',
+                eyebrow: 'Po szkoleniu',
+                paragraphs: [
+                    'Warsztat często pokazuje, które zadania warto zautomatyzować na stałe. Wtedy szkolenie może być częścią wdrożenia: najpierw budujemy automatyzację jednego procesu, a na koniec uczymy zespół z niej korzystać i ją utrzymywać.',
+                ],
+            },
+        ],
+
+        faqHeading: 'Pytania o szkolenia AI',
+        faq: [
+            {
+                q: 'Dla kogo jest szkolenie AI?',
+                a: 'Dla zespołów, które pracują na dokumentach, mailach i arkuszach: księgowości, administracji, sprzedaży, obsługi klienta i kadry zarządzającej. Uczestnicy nie muszą znać AI ani programować.',
+            },
+            {
+                q: 'Ile osób może wziąć udział w szkoleniu?',
+                a: 'Warsztat prowadzimy w małych grupach, zwykle do 12 osób, żeby każdy przećwiczył własne zadania. Większy zespół dzielimy na kilka grup.',
+            },
+            {
+                q: 'Na jakich narzędziach AI pracujemy?',
+                a: 'Na tych, które firma już ma albo planuje wdrożyć: ChatGPT, Claude, Microsoft Copilot lub Gemini. Jeśli firma nie ma jeszcze kont firmowych, ustalamy to przed szkoleniem.',
+            },
+            {
+                q: 'Czy dane firmy są bezpieczne podczas szkolenia?',
+                a: 'Ćwiczymy na materiałach, które wskaże firma. Jeśli zawierają dane osobowe, przed szkoleniem podpisujemy umowę powierzenia. Na warsztacie pokazujemy też, jakich informacji nie wklejać do narzędzi AI.',
+            },
+            {
+                q: 'Ile kosztuje szkolenie AI dla firmy?',
+                a: 'Cena zależy od formatu, liczby grup i przygotowania programu pod zadania zespołu. Napisz do nas przez formularz, a wrócimy z propozycją programu i wyceną.',
+            },
+        ],
+
         innerCards: [
             {
                 type: 'features',
@@ -347,6 +426,78 @@ export const SERVICES = [
         metaTitle: 'Agenci AI - chatboty i voiceboty dla firm | Workshift',
         metaDescription: 'Budujemy agentów AI, którzy obsługują klientów 24/7. Chatboty, voiceboty, email boty. 40% zapytań bez człowieka.',
 
+        // Treść artykułowa (etap 4 SEO). Wnioski z researchu 30.08 i 01.09: brak
+        // popytu na "chatbot ai dla firmy", więc nazywamy kategorię (agent AI do
+        // obsługi klienta) i opisujemy ból (te same pytania, odpowiedzi po godzinach).
+        seoSections: [
+            {
+                heading: 'Agent AI do obsługi klienta',
+                eyebrow: 'Agenci AI',
+                paragraphs: [
+                    'Agent AI to program, który odpowiada klientom na stronie, w Messengerze, WhatsAppie, mailu albo przez telefon. Korzysta z wiedzy Twojej firmy: cennika, regulaminu, procedur i odpowiedzi na najczęstsze pytania. Pytania, na które nie zna odpowiedzi, przekazuje Twojemu zespołowi razem z całą rozmową.',
+                    'Agent sprawdza się tam, gdzie zespół codziennie odpowiada na te same pytania: o status zamówienia, zwroty, terminy, dostępność usług. Klient dostaje odpowiedź także wieczorem i w weekend, a zespół zajmuje się sprawami, które wymagają człowieka.',
+                ],
+            },
+            {
+                heading: 'Jak działa agent AI w firmie',
+                eyebrow: 'Mechanizm',
+                items: [
+                    {
+                        icon: 'inbox',
+                        title: 'Odpowiada na podstawie Twojej wiedzy',
+                        desc: 'Agent czyta firmowe dokumenty, FAQ i procedury. Przy odpowiedzi wskazuje, z którego dokumentu korzysta.',
+                    },
+                    {
+                        icon: 'alert',
+                        title: 'Przekazuje trudne sprawy ludziom',
+                        desc: 'Gdy pytanie wykracza poza jego wiedzę albo klient prosi o człowieka, agent przekazuje rozmowę zespołowi z pełnym kontekstem.',
+                    },
+                    {
+                        icon: 'sync',
+                        title: 'Działa w kanałach, które już masz',
+                        desc: 'Strona WWW, Messenger, WhatsApp, Slack, mail albo linia telefoniczna. Klient pisze tam, gdzie pisał wcześniej.',
+                    },
+                    {
+                        icon: 'report',
+                        title: 'Uczy się na ocenionych rozmowach',
+                        desc: 'Rozmowy agenta widać w panelu. Oceniamy je regularnie i na tej podstawie poprawiamy jego odpowiedzi.',
+                    },
+                ],
+            },
+            {
+                heading: 'Jak wygląda wdrożenie agenta',
+                eyebrow: 'Wdrożenie',
+                paragraphs: [
+                    'Zaczynamy od listy pytań, które klienci zadają najczęściej, i od dokumentów, z których zespół dziś odpowiada. Na tej podstawie budujemy prototyp i testujemy go na prawdziwych pytaniach, zanim agent porozmawia z pierwszym klientem.',
+                    'Potem ustalamy z zespołem zasady przekazywania rozmów, uruchamiamy agenta w jednym kanale i dokładamy kolejne, kiedy pierwszy działa stabilnie.',
+                ],
+            },
+        ],
+
+        faqHeading: 'Pytania o agentów AI',
+        faq: [
+            {
+                q: 'Czym agent AI różni się od zwykłego chatbota?',
+                a: 'Klasyczny chatbot prowadzi klienta po z góry ustalonym drzewku odpowiedzi. Agent AI rozumie pytanie zadane własnymi słowami, odpowiada na podstawie dokumentów firmy i potrafi wykonać prostą czynność, na przykład sprawdzić status zamówienia w systemie.',
+            },
+            {
+                q: 'Co się dzieje, gdy agent nie zna odpowiedzi?',
+                a: 'Przekazuje rozmowę Twojemu zespołowi razem z jej historią, więc klient nie musi powtarzać pytania. Zasady przekazywania ustalamy przed uruchomieniem.',
+            },
+            {
+                q: 'Skąd agent bierze wiedzę o firmie?',
+                a: 'Z dokumentów, które wskażesz: FAQ, cennika, regulaminu, procedur, bazy wiedzy. Gdy dokumenty się zmieniają, aktualizujemy wiedzę agenta.',
+            },
+            {
+                q: 'Czy agent może obsługiwać telefon?',
+                a: 'Tak. Oprócz czatu na stronie, Messengera, WhatsAppa i maila budujemy też agentów głosowych do obsługi linii telefonicznej.',
+            },
+            {
+                q: 'Ile kosztuje agent AI dla firmy?',
+                a: 'Cena zależy od liczby kanałów, integracji z Twoimi systemami i zakresu wiedzy, z której ma korzystać agent. Napisz do nas przez formularz, a wrócimy z propozycją zakresu i wyceną.',
+            },
+        ],
+
         innerCards: [
             {
                 type: 'features',
@@ -405,6 +556,73 @@ export const SERVICES = [
         heroMetric: { value: 'Dni', label: 'zamiast miesięcy produkcji kreacji reklamowych', subtext: 'Średnio 10x szybciej niż tradycyjny proces agencji.' },
         metaTitle: 'Kreacje reklamowe AI - packshoty, wideo, social | Workshift',
         metaDescription: 'AI pipeline do produkcji kreacji reklamowych. Packshoty, reklamy social, wideo. 10x szybciej niż agencja.',
+
+        // Treść artykułowa (etap 4 SEO). Najwęższa usługa: opis procesu i formatów,
+        // bez liczb-wyników i porównań procentowych (decyzje z 06.10.2026).
+        seoSections: [
+            {
+                heading: 'Kreacje reklamowe AI dla firm',
+                eyebrow: 'Kreacje AI',
+                paragraphs: [
+                    'Kampania potrzebuje wielu wariantów jednej reklamy: innych nagłówków, formatów i zdjęć do testów. Przygotowanie ich ręcznie zajmuje grafikowi dużo czasu. Produkujemy takie warianty z pomocą AI, zgodnie z identyfikacją wizualną Twojej marki.',
+                    'Część kreacji składamy w kodzie z gotowych elementów marki: logo, krojów pisma i kolorów. Dzięki temu każdy wariant trzyma się brandbooka, a zmiana nagłówka albo formatu w całej serii zajmuje chwilę.',
+                ],
+            },
+            {
+                heading: 'Co produkujemy',
+                eyebrow: 'Zakres',
+                items: [
+                    {
+                        icon: 'invoice',
+                        title: 'Grafiki do social mediów',
+                        desc: 'Posty i reklamy w formatach kwadratowych, pionowych 4:5 i 9:16 do stories i Reels, w wersji jasnej i ciemnej.',
+                    },
+                    {
+                        icon: 'sync',
+                        title: 'Warianty do testów A/B',
+                        desc: 'Serie reklam z różnymi nagłówkami i układami, przygotowane tak, żeby dało się je porównać w menedżerze reklam.',
+                    },
+                    {
+                        icon: 'report',
+                        title: 'Packshoty i wizualizacje produktów',
+                        desc: 'Zdjęcia produktów w nowych aranżacjach i wizualizacje bez organizowania sesji zdjęciowej.',
+                    },
+                    {
+                        icon: 'clock',
+                        title: 'Krótkie wideo i animacje',
+                        desc: 'Animowane reklamy i krótkie formy wideo zbudowane z tych samych elementów marki co grafiki.',
+                    },
+                ],
+            },
+            {
+                heading: 'Jak wygląda produkcja',
+                eyebrow: 'Proces',
+                paragraphs: [
+                    'Zaczynamy od briefu i materiałów marki. Najpierw przygotowujemy kilka kierunków wizualnych do akceptacji, a po wyborze jednego produkujemy pełną serię wariantów we wszystkich potrzebnych formatach.',
+                    'Każdą kreację sprawdza człowiek, zanim trafi do Ciebie. Dostajesz gotowe pliki do publikacji w uzgodnionych formatach.',
+                ],
+            },
+        ],
+
+        faqHeading: 'Pytania o kreacje reklamowe AI',
+        faq: [
+            {
+                q: 'Czy kreacje AI wyglądają jak wygenerowane przez AI?',
+                a: 'Kreacje opieramy na elementach Twojej marki i omijamy typowe klisze AI, takie jak roboty czy fioletowe gradienty. Każdą kreację przed wysłaniem sprawdza człowiek.',
+            },
+            {
+                q: 'Czy potrzebuję brandbooka?',
+                a: 'Wystarczy logo, kolory, kroje pisma i kilka przykładów materiałów, które Ci się podobają. Jeśli brandbooka nie ma, porządkujemy te elementy na początku współpracy.',
+            },
+            {
+                q: 'Na jakie formaty przygotowujecie kreacje?',
+                a: 'Na formaty, w których emitujesz reklamy: posty kwadratowe, pionowe 4:5, stories i Reels 9:16, banery i grafiki do newsletterów firmowych. Listę ustalamy przy briefie.',
+            },
+            {
+                q: 'Ile kosztują kreacje reklamowe AI?',
+                a: 'Cena zależy od liczby formatów, wariantów i tego, czy w serii są animacje. Napisz do nas przez formularz, a wrócimy z propozycją zakresu i wyceną.',
+            },
+        ],
 
         innerCards: [
             {

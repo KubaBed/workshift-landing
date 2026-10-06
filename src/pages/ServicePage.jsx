@@ -5,7 +5,7 @@ import { ExpandedServiceView } from '../components/InteractiveServicesBento';
 import { ServiceArticle } from '../components/ui/ServiceArticle';
 import { ServiceFaq } from '../components/ui/ServiceFaq';
 import { GradientDivider } from '../components/ui/GradientDivider';
-import { DEFAULT_META } from '../lib/seo';
+import { applyMeta, clampDescription } from '../lib/seo';
 
 export default function ServicePage() {
     const { serviceId } = useParams();
@@ -19,35 +19,16 @@ export default function ServicePage() {
         window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     }, [serviceId]);
 
-    // Set SEO metadata
+    // Meta przez wspólne applyMeta() (to samo źródło co reszta tras i statyczny
+    // fallback), bez ręcznego przywracania starych wartości przy wyjściu.
     useEffect(() => {
-        if (service) {
-            document.title = service.metaTitle || `${service.title} | Workshift`;
-
-            // Update or create meta description
-            let metaDesc = document.querySelector('meta[name="description"]');
-            if (!metaDesc) {
-                metaDesc = document.createElement('meta');
-                metaDesc.setAttribute('name', 'description');
-                document.head.appendChild(metaDesc);
-            }
-            metaDesc.setAttribute('content', service.metaDescription || service.tagline);
-
-            // Update OG tags
-            const ogTitle = document.querySelector('meta[property="og:title"]');
-            if (ogTitle) ogTitle.setAttribute('content', service.metaTitle || service.title);
-            const ogDesc = document.querySelector('meta[property="og:description"]');
-            if (ogDesc) ogDesc.setAttribute('content', service.metaDescription || service.tagline);
-        }
-
-        return () => {
-            // Restore defaults when leaving
-            document.title = DEFAULT_META.title;
-            const metaDesc = document.querySelector('meta[name="description"]');
-            if (metaDesc) metaDesc.setAttribute('content', DEFAULT_META.description);
-            const ogTitle = document.querySelector('meta[property="og:title"]');
-            if (ogTitle) ogTitle.setAttribute('content', DEFAULT_META.title);
-        };
+        if (!service) return undefined;
+        applyMeta({
+            title: service.metaTitle || `${service.title} | Workshift`,
+            description: clampDescription(service.metaDescription || service.tagline),
+            path: `/uslugi/${service.id}`,
+        });
+        return () => applyMeta();
     }, [service]);
 
     // Redirect if service not found
