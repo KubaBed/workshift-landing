@@ -132,13 +132,13 @@ export function ProcessSection() {
 
                     <div className="relative z-10 text-center md:text-left">
                         <h4 className="text-xl md:text-2xl font-display text-white mb-2 tracking-tight">30 minut, które mogą zmienić kwartał.</h4>
-                        <p className="text-white/50 text-[15px] max-w-md">Rozmowa konsultacyjna zajmie 30 minut. Przyjrzymy się Twoim procesom bez budowania zobowiązań.</p>
+                        <p className="text-white/50 text-[15px] max-w-md">Bezpłatna rozmowa diagnostyczna zajmie 30 minut. Przyjrzymy się Twoim procesom bez budowania zobowiązań.</p>
                     </div>
                     <a
                         href="#darmowa-konsultacja"
                         className="relative z-10 inline-flex items-center gap-2 bg-white text-black hover:bg-white/90 px-6 py-3.5 rounded-full font-semibold text-[14px] transition-colors shrink-0"
                     >
-                        Zarezerwuj darmowy audyt
+                        Umów rozmowę diagnostyczną
                         <ArrowRight size={16} className="text-lime" />
                     </a>
                 </motion.div>

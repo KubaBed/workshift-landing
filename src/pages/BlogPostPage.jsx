@@ -193,13 +193,13 @@ export default function BlogPostPage() {
               Masz pomysł? Porozmawiajmy.
             </h2>
             <p className="text-muted-light text-lg mb-10 max-w-lg mx-auto">
-              Bezpłatna konsultacja - bez zobowiązań, bez haczyka.
+              Bezpłatna 30-minutowa rozmowa diagnostyczna, bez zobowiązań.
             </p>
             <Link
               to="/#kontakt"
               className="inline-flex items-center h-12 px-8 rounded-full bg-lime text-black font-medium text-base hover:opacity-90 transition-opacity"
             >
-              Zacznij od bezpłatnego audytu
+              Zacznij od bezpłatnej rozmowy diagnostycznej
             </Link>
           </FadeUp>
         </div>

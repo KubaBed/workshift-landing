@@ -1,0 +1,512 @@
+[
+ {
+  "file": "logo/ws-logo-light.svg",
+  "size": 4453,
+  "cat": "logo",
+  "title": "Logo poziome · light",
+  "desc": "Podstawowa wersja znaku, na jasne tła (sage, białe).",
+  "w": 863.32,
+  "h": 155.83
+ },
+ {
+  "file": "logo/ws-logo-stacked-light.svg",
+  "size": 4433,
+  "cat": "logo",
+  "title": "Logo pionowe · light",
+  "desc": "Sygnet nad napisem, do formatów kwadratowych i pionowych, na jasne tła (sage, białe).",
+  "w": 622.49,
+  "h": 301.13
+ },
+ {
+  "file": "logo/ws-sygnet-light.svg",
+  "size": 626,
+  "cat": "logo",
+  "title": "Sygnet · light",
+  "desc": "Sam znak, gdy nazwa stoi obok albo jest oczywista z kontekstu, na jasne tła (sage, białe).",
+  "w": 319,
+  "h": 256
+ },
+ {
+  "file": "logo/ws-avatar-light.svg",
+  "size": 737,
+  "cat": "logo",
+  "title": "Awatar · light",
+  "desc": "Sygnet na kwadratowym tle: profile, aplikacje, favicon.",
+  "w": 512,
+  "h": 512
+ },
+ {
+  "file": "logo/png/ws-logo-light-1600.png",
+  "size": 23241,
+  "w": 1600,
+  "h": 289,
+  "cat": "png",
+  "title": "Logo poziome PNG · light"
+ },
+ {
+  "file": "logo/png/ws-logo-stacked-light-1200.png",
+  "size": 24779,
+  "w": 1200,
+  "h": 580,
+  "cat": "png",
+  "title": "Logo pionowe PNG · light"
+ },
+ {
+  "file": "logo/png/ws-sygnet-light-1024.png",
+  "size": 21772,
+  "w": 1024,
+  "h": 822,
+  "cat": "png",
+  "title": "Sygnet PNG · light"
+ },
+ {
+  "file": "logo/png/ws-avatar-light-1024.png",
+  "size": 14954,
+  "w": 1024,
+  "h": 1024,
+  "cat": "png",
+  "title": "Awatar PNG · light"
+ },
+ {
+  "file": "logo/ws-logo-dark.svg",
+  "size": 4451,
+  "cat": "logo",
+  "title": "Logo poziome · dark",
+  "desc": "Podstawowa wersja znaku, na ciemne tła (czarne).",
+  "w": 863.32,
+  "h": 155.83
+ },
+ {
+  "file": "logo/ws-logo-stacked-dark.svg",
+  "size": 4431,
+  "cat": "logo",
+  "title": "Logo pionowe · dark",
+  "desc": "Sygnet nad napisem, do formatów kwadratowych i pionowych, na ciemne tła (czarne).",
+  "w": 622.49,
+  "h": 301.13
+ },
+ {
+  "file": "logo/ws-sygnet-dark.svg",
+  "size": 624,
+  "cat": "logo",
+  "title": "Sygnet · dark",
+  "desc": "Sam znak, gdy nazwa stoi obok albo jest oczywista z kontekstu, na ciemne tła (czarne).",
+  "w": 319,
+  "h": 256
+ },
+ {
+  "file": "logo/ws-avatar-dark.svg",
+  "size": 735,
+  "cat": "logo",
+  "title": "Awatar · dark",
+  "desc": "Sygnet na kwadratowym tle: profile, aplikacje, favicon.",
+  "w": 512,
+  "h": 512
+ },
+ {
+  "file": "logo/png/ws-logo-dark-1600.png",
+  "size": 24054,
+  "w": 1600,
+  "h": 289,
+  "cat": "png",
+  "title": "Logo poziome PNG · dark"
+ },
+ {
+  "file": "logo/png/ws-logo-stacked-dark-1200.png",
+  "size": 25959,
+  "w": 1200,
+  "h": 580,
+  "cat": "png",
+  "title": "Logo pionowe PNG · dark"
+ },
+ {
+  "file": "logo/png/ws-sygnet-dark-1024.png",
+  "size": 22889,
+  "w": 1024,
+  "h": 822,
+  "cat": "png",
+  "title": "Sygnet PNG · dark"
+ },
+ {
+  "file": "logo/png/ws-avatar-dark-1024.png",
+  "size": 15965,
+  "w": 1024,
+  "h": 1024,
+  "cat": "png",
+  "title": "Awatar PNG · dark"
+ },
+ {
+  "file": "logo/png/ws-favicon-32.png",
+  "size": 343,
+  "w": 32,
+  "h": 32,
+  "cat": "png",
+  "title": "Favicon 32 px"
+ },
+ {
+  "file": "logo/png/ws-favicon-180.png",
+  "size": 1889,
+  "w": 180,
+  "h": 180,
+  "cat": "png",
+  "title": "Favicon 180 px"
+ },
+ {
+  "file": "logo/png/ws-favicon-512.png",
+  "size": 5667,
+  "w": 512,
+  "h": 512,
+  "cat": "png",
+  "title": "Favicon 512 px"
+ },
+ {
+  "file": "motifs/ws-motif-01-warstwy-light.svg",
+  "size": 631,
+  "cat": "motif",
+  "title": "Warstwy · light",
+  "desc": "Geometria sygnetu bez napisu. Duży element przycięty krawędzią formatu.",
+  "w": 319,
+  "h": 256
+ },
+ {
+  "file": "motifs/ws-motif-01-warstwy-dark.svg",
+  "size": 629,
+  "cat": "motif",
+  "title": "Warstwy · dark",
+  "desc": "Geometria sygnetu bez napisu. Duży element przycięty krawędzią formatu.",
+  "w": 319,
+  "h": 256
+ },
+ {
+  "file": "motifs/ws-motif-02-warstwy-5-light.svg",
+  "size": 761,
+  "cat": "motif",
+  "title": "Pięć warstw · light",
+  "desc": "Gęstszy stos do formatów pionowych i plansz tytułowych.",
+  "w": 319,
+  "h": 448
+ },
+ {
+  "file": "motifs/ws-motif-02-warstwy-5-dark.svg",
+  "size": 759,
+  "cat": "motif",
+  "title": "Pięć warstw · dark",
+  "desc": "Gęstszy stos do formatów pionowych i plansz tytułowych.",
+  "w": 319,
+  "h": 448
+ },
+ {
+  "file": "motifs/ws-motif-03-pasy-light.svg",
+  "size": 637,
+  "cat": "motif",
+  "title": "Pasy · light",
+  "desc": "Wydłużone warstwy do banerów i nagłówków maili.",
+  "w": 1060,
+  "h": 256
+ },
+ {
+  "file": "motifs/ws-motif-03-pasy-dark.svg",
+  "size": 635,
+  "cat": "motif",
+  "title": "Pasy · dark",
+  "desc": "Wydłużone warstwy do banerów i nagłówków maili.",
+  "w": 1060,
+  "h": 256
+ },
+ {
+  "file": "motifs/ws-motif-04-kolumna-light.svg",
+  "size": 891,
+  "cat": "motif",
+  "title": "Kolumna · light",
+  "desc": "Wysoki stos przy krawędzi stories i slajdów.",
+  "w": 319,
+  "h": 640
+ },
+ {
+  "file": "motifs/ws-motif-04-kolumna-dark.svg",
+  "size": 889,
+  "cat": "motif",
+  "title": "Kolumna · dark",
+  "desc": "Wysoki stos przy krawędzi stories i slajdów.",
+  "w": 319,
+  "h": 640
+ },
+ {
+  "file": "motifs/ws-motif-05-akcent-light.svg",
+  "size": 500,
+  "cat": "motif",
+  "title": "Akcent · light",
+  "desc": "Pojedyncza warstwa lime: znacznik, podkreślenie, punkt na osi.",
+  "w": 268,
+  "h": 64
+ },
+ {
+  "file": "motifs/ws-motif-05-akcent-dark.svg",
+  "size": 498,
+  "cat": "motif",
+  "title": "Akcent · dark",
+  "desc": "Pojedyncza warstwa lime: znacznik, podkreślenie, punkt na osi.",
+  "w": 268,
+  "h": 64
+ },
+ {
+  "file": "templates/ws-bg-og-1200x630-light.svg",
+  "size": 5138,
+  "cat": "template",
+  "title": "Open Graph / link · light",
+  "desc": "Tło z motywem warstw i logo. Tekst dodajesz w lewej części.",
+  "w": 1200,
+  "h": 630
+ },
+ {
+  "file": "templates/png/ws-bg-og-1200x630-light.png",
+  "size": 11754,
+  "w": 1200,
+  "h": 630,
+  "cat": "template-png",
+  "title": "Open Graph / link PNG · light"
+ },
+ {
+  "file": "templates/ws-bg-og-1200x630-dark.svg",
+  "size": 5134,
+  "cat": "template",
+  "title": "Open Graph / link · dark",
+  "desc": "Tło z motywem warstw i logo. Tekst dodajesz w lewej części.",
+  "w": 1200,
+  "h": 630
+ },
+ {
+  "file": "templates/png/ws-bg-og-1200x630-dark.png",
+  "size": 12253,
+  "w": 1200,
+  "h": 630,
+  "cat": "template-png",
+  "title": "Open Graph / link PNG · dark"
+ },
+ {
+  "file": "templates/ws-bg-post-1080x1080-light.svg",
+  "size": 5140,
+  "cat": "template",
+  "title": "Post kwadratowy · light",
+  "desc": "Tło z motywem warstw i logo. Tekst dodajesz w lewej części.",
+  "w": 1080,
+  "h": 1080
+ },
+ {
+  "file": "templates/png/ws-bg-post-1080x1080-light.png",
+  "size": 21174,
+  "w": 1080,
+  "h": 1080,
+  "cat": "template-png",
+  "title": "Post kwadratowy PNG · light"
+ },
+ {
+  "file": "templates/ws-bg-post-1080x1080-dark.svg",
+  "size": 5136,
+  "cat": "template",
+  "title": "Post kwadratowy · dark",
+  "desc": "Tło z motywem warstw i logo. Tekst dodajesz w lewej części.",
+  "w": 1080,
+  "h": 1080
+ },
+ {
+  "file": "templates/png/ws-bg-post-1080x1080-dark.png",
+  "size": 22060,
+  "w": 1080,
+  "h": 1080,
+  "cat": "template-png",
+  "title": "Post kwadratowy PNG · dark"
+ },
+ {
+  "file": "templates/ws-bg-post-1080x1350-light.svg",
+  "size": 5410,
+  "cat": "template",
+  "title": "Post pionowy 4:5 · light",
+  "desc": "Tło z motywem warstw i logo. Tekst dodajesz w lewej części.",
+  "w": 1080,
+  "h": 1350
+ },
+ {
+  "file": "templates/png/ws-bg-post-1080x1350-light.png",
+  "size": 19218,
+  "w": 1080,
+  "h": 1350,
+  "cat": "template-png",
+  "title": "Post pionowy 4:5 PNG · light"
+ },
+ {
+  "file": "templates/ws-bg-post-1080x1350-dark.svg",
+  "size": 5406,
+  "cat": "template",
+  "title": "Post pionowy 4:5 · dark",
+  "desc": "Tło z motywem warstw i logo. Tekst dodajesz w lewej części.",
+  "w": 1080,
+  "h": 1350
+ },
+ {
+  "file": "templates/png/ws-bg-post-1080x1350-dark.png",
+  "size": 20579,
+  "w": 1080,
+  "h": 1350,
+  "cat": "template-png",
+  "title": "Post pionowy 4:5 PNG · dark"
+ },
+ {
+  "file": "templates/ws-bg-story-1080x1920-light.svg",
+  "size": 5397,
+  "cat": "template",
+  "title": "Story / Reels 9:16 · light",
+  "desc": "Tło z motywem warstw i logo. Tekst dodajesz w lewej części.",
+  "w": 1080,
+  "h": 1920
+ },
+ {
+  "file": "templates/png/ws-bg-story-1080x1920-light.png",
+  "size": 26078,
+  "w": 1080,
+  "h": 1920,
+  "cat": "template-png",
+  "title": "Story / Reels 9:16 PNG · light"
+ },
+ {
+  "file": "templates/ws-bg-story-1080x1920-dark.svg",
+  "size": 5393,
+  "cat": "template",
+  "title": "Story / Reels 9:16 · dark",
+  "desc": "Tło z motywem warstw i logo. Tekst dodajesz w lewej części.",
+  "w": 1080,
+  "h": 1920
+ },
+ {
+  "file": "templates/png/ws-bg-story-1080x1920-dark.png",
+  "size": 27652,
+  "w": 1080,
+  "h": 1920,
+  "cat": "template-png",
+  "title": "Story / Reels 9:16 PNG · dark"
+ },
+ {
+  "file": "templates/ws-bg-banner-1584x396-light.svg",
+  "size": 5139,
+  "cat": "template",
+  "title": "Baner LinkedIn · light",
+  "desc": "Tło z motywem warstw i logo. Tekst dodajesz w lewej części.",
+  "w": 1584,
+  "h": 396
+ },
+ {
+  "file": "templates/png/ws-bg-banner-1584x396-light.png",
+  "size": 12125,
+  "w": 1584,
+  "h": 396,
+  "cat": "template-png",
+  "title": "Baner LinkedIn PNG · light"
+ },
+ {
+  "file": "templates/ws-bg-banner-1584x396-dark.svg",
+  "size": 5135,
+  "cat": "template",
+  "title": "Baner LinkedIn · dark",
+  "desc": "Tło z motywem warstw i logo. Tekst dodajesz w lewej części.",
+  "w": 1584,
+  "h": 396
+ },
+ {
+  "file": "templates/png/ws-bg-banner-1584x396-dark.png",
+  "size": 12476,
+  "w": 1584,
+  "h": 396,
+  "cat": "template-png",
+  "title": "Baner LinkedIn PNG · dark"
+ },
+ {
+  "file": "templates/ws-bg-slide-1920x1080-light.svg",
+  "size": 5141,
+  "cat": "template",
+  "title": "Slajd 16:9 · light",
+  "desc": "Tło z motywem warstw i logo. Tekst dodajesz w lewej części.",
+  "w": 1920,
+  "h": 1080
+ },
+ {
+  "file": "templates/png/ws-bg-slide-1920x1080-light.png",
+  "size": 25191,
+  "w": 1920,
+  "h": 1080,
+  "cat": "template-png",
+  "title": "Slajd 16:9 PNG · light"
+ },
+ {
+  "file": "templates/ws-bg-slide-1920x1080-dark.svg",
+  "size": 5137,
+  "cat": "template",
+  "title": "Slajd 16:9 · dark",
+  "desc": "Tło z motywem warstw i logo. Tekst dodajesz w lewej części.",
+  "w": 1920,
+  "h": 1080
+ },
+ {
+  "file": "templates/png/ws-bg-slide-1920x1080-dark.png",
+  "size": 25956,
+  "w": 1920,
+  "h": 1080,
+  "cat": "template-png",
+  "title": "Slajd 16:9 PNG · dark"
+ },
+ {
+  "file": "tokens.css",
+  "size": 1517,
+  "cat": "code",
+  "title": "tokens.css",
+  "desc": "Zmienne CSS --ws-*"
+ },
+ {
+  "file": "tokens.json",
+  "size": 3097,
+  "cat": "code",
+  "title": "tokens.json",
+  "desc": "Tokeny w formacie W3C Design Tokens"
+ },
+ {
+  "file": "tailwind-theme.css",
+  "size": 478,
+  "cat": "code",
+  "title": "tailwind-theme.css",
+  "desc": "Blok @theme dla Tailwind v4"
+ },
+ {
+  "file": "tailwind.preset.js",
+  "size": 738,
+  "cat": "code",
+  "title": "tailwind.preset.js",
+  "desc": "Preset dla Tailwind v3"
+ },
+ {
+  "file": "ws.css",
+  "size": 12749,
+  "cat": "code",
+  "title": "ws.css",
+  "desc": "Pisma, tokeny i klasy komponentów .wsk-*"
+ },
+ {
+  "file": "DESIGN.md",
+  "size": 16705,
+  "cat": "doc",
+  "title": "DESIGN.md",
+  "desc": "Zasady i tokeny dla ludzi i agentów AI"
+ },
+ {
+  "file": "templates/ws-email.html",
+  "size": 5183,
+  "cat": "template",
+  "title": "Szablon maila",
+  "desc": "Tabele + style inline, 600 px, logo w PNG."
+ },
+ {
+  "file": "VOICE.md",
+  "size": 21179,
+  "cat": "doc",
+  "title": "VOICE.md",
+  "desc": "Głos marki: jak piszemy"
+ }
+]

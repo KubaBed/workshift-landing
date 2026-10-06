@@ -13,6 +13,14 @@
       "destination": "/cdv-warsztaty/index.html"
     },
     {
+      "source": "/brand",
+      "destination": "/brand/index.html"
+    },
+    {
+      "source": "/brand/",
+      "destination": "/brand/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
@@ -47,6 +55,15 @@
     },
     {
       "source": "/demo/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive"
+        }
+      ]
+    },
+    {
+      "source": "/brand(/.*)?",
       "headers": [
         {
           "key": "X-Robots-Tag",

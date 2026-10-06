@@ -21,7 +21,7 @@ const faqs = [
     },
     {
         q: "Od czego zacząć współpracę?",
-        a: "Od pierwszej darmowej wideokonferencji. Cel? Wymieniamy się informacjami, a my projektujemy co najmniej jeden pomysł (Quick Win) do wdrożenia na już. Bez zobowiązań, bez karty kredytowej, bez haczyka."
+        a: "Od bezpłatnej 30-minutowej rozmowy diagnostycznej online. Wymieniamy się informacjami, a my projektujemy co najmniej jeden pomysł (Quick Win) do wdrożenia od razu. Rozmowa nie zobowiązuje Cię do niczego."
     },
     {
         q: "Ile czasu trwa przeciętne wdrożenie?",
@@ -108,7 +108,7 @@ export function CTASection() {
                 </p>
                 <div className="flex flex-col items-center">
                     <Button onClick={() => { track(EVENTS.CALENDAR_OPEN, { source: 'cta_section' }); setIsModalOpen(true); }} variant="accent" size="lg" className="w-full sm:w-auto text-lg px-10 h-16 shadow-2xl shadow-lime/20 transition-transform active:scale-95">
-                        Wybierz termin darmowej konsultacji
+                        Wybierz termin bezpłatnej rozmowy diagnostycznej
                     </Button>
                     <p className="mt-6 text-sm text-white/40 font-mono tracking-wide text-center">
                         Wybierasz termin sam(a) - bez presji i bez telefonów.
@@ -135,7 +135,7 @@ export function CTASection() {
                         className="relative w-full max-w-4xl max-h-[90vh] bg-sage rounded-[10px] shadow-2xl overflow-hidden flex flex-col z-10"
                     >
                         <div className="flex justify-between items-center p-5 border-b border-black/5 bg-sage">
-                            <h3 className="text-lg font-display text-black">Wybierz termin: Darmowa Konsultacja</h3>
+                            <h3 className="text-lg font-display text-black">Wybierz termin: bezpłatna rozmowa diagnostyczna (30 min)</h3>
                             <button onClick={() => setIsModalOpen(false)} className="p-2 bg-sage hover:bg-sage/80 rounded-full transition-colors text-muted-dark hover:text-black cursor-pointer" aria-label="Zamknij">
                                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                             </button>

@@ -1,0 +1,169 @@
+/* Workshift - ws.css: pisma + tokeny + komponenty (.wsk-*). Generowane przez scripts/brand-kit/build.mjs. */
+/* Pisma hostowane lokalnie (OFL): Inter (zmienny 300-800) i IBM Plex Mono 400/500.
+   Ścieżki względne: trzymaj katalog fonts/ obok ws.css. Polskie znaki są w plikach latin-ext. */
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 300 800; font-display: swap; src: url("fonts/inter-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 300 800; font-display: swap; src: url("fonts/inter-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 400; font-display: swap; src: url("fonts/plex-mono-400-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 400; font-display: swap; src: url("fonts/plex-mono-400-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 500; font-display: swap; src: url("fonts/plex-mono-500-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 500; font-display: swap; src: url("fonts/plex-mono-500-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+/* Workshift - tokeny. Generowane przez scripts/brand-kit/build.mjs; nie edytuj ręcznie. */
+:root {
+  --ws-sage: #E6E8DD;
+  --ws-lime: #9CE069;
+  --ws-lime-deep: #81C44E;
+  --ws-ink: #000000;
+  --ws-white: #FFFFFF;
+  --ws-muted-dark: #595959;
+  --ws-muted-light: #AAAAAA;
+  --ws-destructive: #DD453D;
+
+  /* linie i tekst na czarnym */
+  --ws-line: rgba(0,0,0,0.12);
+  --ws-line-strong: rgba(0,0,0,0.2);
+  --ws-line-on-ink: rgba(255,255,255,0.16);
+  --ws-on-ink-body: rgba(255,255,255,0.72);
+  --ws-on-ink-label: rgba(255,255,255,0.55);
+
+  /* gradient - wyłącznie w sygnecie i przesuniętej warstwie motywu */
+  --ws-gradient-lime: linear-gradient(90deg, #9CE069, #81C44E);
+
+  /* pisma */
+  --ws-font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ws-font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* promienie */
+  --ws-radius-none: 0px;
+  --ws-radius-sm: 4px;
+  --ws-radius-md: 8px;
+  --ws-radius-default: 10px;
+  --ws-radius-card: 20px;
+  --ws-radius-panel: 24px;
+  --ws-radius-pill: 999px;
+
+  /* układ */
+  --ws-space-xs: 8px;
+  --ws-space-sm: 12px;
+  --ws-space-md: 24px;
+  --ws-space-lg: 48px;
+  --ws-space-xl: 96px;
+  --ws-space-section: 112px;
+  --ws-space-container: 1320px;
+  --ws-space-gutter: 24px;
+  --ws-space-gutter-mobile: 16px;
+
+  /* ruch */
+  --ws-ease: cubic-bezier(0.21, 0.47, 0.32, 0.98);
+  --ws-dur-fast: 0.2s;
+  --ws-dur-enter: 0.8s;
+}
+@media (max-width: 767px) { :root { --ws-space-gutter: 16px; --ws-space-section: 80px; } }
+
+/* ---------- baza: dodaj klasę .wsk na kontener ---------- */
+.wsk, .wsk * { box-sizing: border-box; }
+.wsk {
+  font-family: var(--ws-font-sans); font-weight: 400; color: var(--ws-ink); background: var(--ws-sage);
+  -webkit-font-smoothing: antialiased; font-optical-sizing: auto; overflow-wrap: break-word;
+}
+.wsk ::selection { background: var(--ws-lime); color: var(--ws-ink); }
+.wsk-dark { background: var(--ws-ink); color: var(--ws-white); }
+.wsk-white { background: var(--ws-white); }
+
+/* ---------- typografia (WWW i dokumenty): nagłówki zawsze 400 ---------- */
+.wsk-display { margin: 0; font-size: clamp(48px, 7vw, 96px); line-height: 1.02; letter-spacing: -0.04em; font-weight: 400; text-wrap: balance; }
+.wsk-h1 { margin: 0; font-size: clamp(40px, 5.6vw, 72px); line-height: 1.05; letter-spacing: -0.05em; font-weight: 400; text-wrap: balance; }
+.wsk-h2 { margin: 0; font-size: clamp(32px, 4vw, 48px); line-height: 1.1; letter-spacing: -0.025em; font-weight: 400; text-wrap: balance; }
+.wsk-h3 { margin: 0; font-size: clamp(24px, 2.4vw, 30px); line-height: 1.2; letter-spacing: -0.02em; font-weight: 400; text-wrap: pretty; }
+.wsk-title { margin: 0; font-size: 20px; line-height: 1.3; letter-spacing: -0.01em; font-weight: 500; }
+.wsk-lead { margin: 0; font-size: 18px; line-height: 1.6; color: var(--ws-muted-dark); max-width: 60ch; text-wrap: pretty; }
+.wsk-body { margin: 0; font-size: 16px; line-height: 1.6; color: var(--ws-muted-dark); max-width: 64ch; text-wrap: pretty; }
+.wsk-small { margin: 0; font-size: 14px; line-height: 1.55; color: var(--ws-muted-dark); }
+.wsk-strong { color: var(--ws-ink); font-weight: 500; }
+.wsk-dark .wsk-lead, .wsk-dark .wsk-body, .wsk-dark .wsk-small { color: var(--ws-on-ink-body); }
+.wsk-dark .wsk-strong, .wsk-dark .wsk-h1, .wsk-dark .wsk-h2, .wsk-dark .wsk-h3, .wsk-dark .wsk-display { color: var(--ws-white); }
+/* wyróżnienie słowa w nagłówku: kolor lime na czarnym, podkład lime na jasnym */
+.wsk-hl { color: var(--ws-ink); background: linear-gradient(transparent 58%, var(--ws-lime) 58%, var(--ws-lime) 92%, transparent 92%); padding: 0 .06em; }
+.wsk-dark .wsk-hl { color: var(--ws-lime); background: none; padding: 0; }
+
+.wsk-kicker, .wsk-label, .wsk-meta { font-family: var(--ws-font-mono); text-transform: uppercase; margin: 0; }
+.wsk-kicker { font-size: 11px; letter-spacing: 0.2em; line-height: 1.4; color: var(--ws-muted-dark); }
+.wsk-label { font-size: 12px; letter-spacing: 0.12em; font-weight: 500; }
+.wsk-meta { font-size: 12px; letter-spacing: 0.08em; line-height: 1.6; color: var(--ws-muted-dark); }
+.wsk-dark .wsk-kicker, .wsk-dark .wsk-meta { color: var(--ws-on-ink-label); }
+.wsk-numeral { font-family: var(--ws-font-mono); font-size: clamp(40px, 5vw, 56px); line-height: 1; letter-spacing: -0.02em; font-weight: 400; }
+
+/* ---------- typografia grafik (social, reklamy, slajdy tytułowe) ---------- */
+/* Rejestr plakatowy: Inter 800, wersaliki. Tylko w grafikach, nigdy na stronie ani w dokumencie. */
+.wsk-poster { margin: 0; font-size: clamp(56px, 9vw, 112px); line-height: .98; letter-spacing: -0.03em; font-weight: 800; text-transform: uppercase; text-wrap: balance; }
+.wsk-poster .wsk-box { display: inline-block; background: var(--ws-lime); color: var(--ws-ink); padding: 0 .12em; transform: rotate(-1.5deg); }
+.wsk-dot { color: var(--ws-lime); }
+
+/* ---------- przyciski: pigułki, jeden główny na widok ---------- */
+.wsk-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 44px;
+  padding: 10px 22px; border-radius: var(--ws-radius-pill); border: 1px solid transparent; cursor: pointer; text-decoration: none;
+  font-family: var(--ws-font-sans); font-size: 15px; font-weight: 500; line-height: 1.2;
+  transition: background-color var(--ws-dur-fast), color var(--ws-dur-fast), border-color var(--ws-dur-fast);
+}
+.wsk-btn:focus-visible { outline: 3px solid rgba(156,224,105,.6); outline-offset: 2px; }
+/* główne CTA strony: czarna pigułka z lime kółkiem i strzałką */
+.wsk-btn--primary { background: var(--ws-ink); color: var(--ws-white); padding: 6px 6px 6px 22px; }
+.wsk-btn--primary .wsk-btn__dot { width: 32px; height: 32px; border-radius: 50%; background: var(--ws-lime); color: var(--ws-ink); display: inline-flex; align-items: center; justify-content: center; font-size: 15px; transition: transform var(--ws-dur-fast); }
+.wsk-btn--primary:hover .wsk-btn__dot { transform: translateX(2px); }
+.wsk-btn--accent { background: var(--ws-lime); color: var(--ws-ink); }
+.wsk-btn--accent:hover { background: var(--ws-ink); color: var(--ws-lime); }
+.wsk-btn--outline { border-color: var(--ws-line-strong); color: var(--ws-ink); background: transparent; }
+.wsk-btn--outline:hover { border-color: var(--ws-ink); }
+.wsk-dark .wsk-btn--primary { background: var(--ws-white); color: var(--ws-ink); }
+.wsk-dark .wsk-btn--outline { border-color: rgba(255,255,255,.35); color: var(--ws-white); }
+.wsk-btn[disabled], .wsk-btn[aria-disabled="true"] { opacity: .5; pointer-events: none; }
+.wsk-cta-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+
+/* ---------- tag / znacznik ---------- */
+.wsk-tag { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; border-radius: var(--ws-radius-pill); font-family: var(--ws-font-mono); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; background: var(--ws-lime); color: var(--ws-ink); }
+.wsk-tag--quiet { background: rgba(0,0,0,.05); color: var(--ws-muted-dark); }
+.wsk-dark .wsk-tag--quiet { background: rgba(255,255,255,.08); color: var(--ws-on-ink-label); }
+
+/* ---------- karty ---------- */
+.wsk-card { background: var(--ws-white); border-radius: var(--ws-radius-card); padding: 32px; border: 1px solid var(--ws-line); }
+.wsk-card--dark { background: var(--ws-ink); color: var(--ws-white); border-radius: var(--ws-radius-panel); padding: clamp(32px, 5vw, 56px); border: 0; position: relative; overflow: hidden; }
+.wsk-card--dark .wsk-body, .wsk-card--dark .wsk-lead { color: var(--ws-on-ink-body); }
+
+/* ---------- kafle liczb: siatka z 1 px przerwy ---------- */
+.wsk-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1px; background: var(--ws-line-strong); border: 1px solid var(--ws-line-strong); }
+.wsk-stat { background: var(--ws-sage); padding: 28px; display: flex; flex-direction: column; gap: 12px; }
+.wsk-stat--accent { background: var(--ws-lime); }
+.wsk-stat--dark { background: var(--ws-ink); color: var(--ws-white); }
+.wsk-stat--dark .wsk-kicker { color: var(--ws-on-ink-label); }
+.wsk-stat__source { font-size: 12px; color: var(--ws-muted-dark); }
+
+/* ---------- lista kroków (proces) ---------- */
+.wsk-steps { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ws-line-strong); }
+.wsk-steps li { display: grid; grid-template-columns: 64px 1fr; gap: 16px; padding: 22px 0; border-bottom: 1px solid var(--ws-line); }
+.wsk-steps .wsk-step-n { font-family: var(--ws-font-mono); font-size: 12px; letter-spacing: .12em; color: var(--ws-muted-dark); padding-top: 4px; }
+.wsk-steps li.is-active .wsk-step-n { color: var(--ws-ink); }
+.wsk-steps li.is-active .wsk-step-n::before { content: ""; display: inline-block; width: 18px; height: 6px; margin-right: 8px; vertical-align: middle; background: var(--ws-lime); transform: skewX(-30deg); }
+
+/* ---------- tabela ---------- */
+.wsk-table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.wsk-table th { text-align: left; font-family: var(--ws-font-mono); font-weight: 400; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--ws-muted-dark); padding: 12px 16px; border-bottom: 1px solid var(--ws-ink); }
+.wsk-table td { padding: 16px; border-bottom: 1px solid var(--ws-line); vertical-align: top; }
+.wsk-table .is-hl { background: rgba(156,224,105,.18); }
+
+/* ---------- komunikat ---------- */
+.wsk-callout { border-left: 3px solid var(--ws-lime); padding: 4px 0 4px 20px; }
+.wsk-callout .wsk-kicker { margin-bottom: 6px; }
+
+/* ---------- cytat ---------- */
+.wsk-quote { margin: 0; font-size: clamp(22px, 2.6vw, 30px); line-height: 1.35; letter-spacing: -0.02em; text-wrap: pretty; }
+.wsk-quote figcaption { margin-top: 16px; font-family: var(--ws-font-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--ws-muted-dark); }
+
+/* ---------- linia sekcji ---------- */
+.wsk-rule { height: 1px; border: 0; background: var(--ws-line-strong); margin: 0; }
+.wsk-dark .wsk-rule { background: var(--ws-line-on-ink); }
+
+/* ---------- motyw warstw jako dekoracja ---------- */
+.wsk-motif { position: absolute; pointer-events: none; user-select: none; }
+
+@media (prefers-reduced-motion: reduce) { .wsk *, .wsk *::before { transition: none !important; } }

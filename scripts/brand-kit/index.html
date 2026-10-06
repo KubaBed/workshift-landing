@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<base href="/brand/">
+<title>Workshift - paczka marki</title>
+<meta name="description" content="System wizualny Workshift: logo, kolory, typografia, motyw warstw, komponenty i szablony do pobrania.">
+<link rel="icon" href="logo/ws-avatar-light.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="ws.css">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; }
+  .g-wrap { max-width: var(--ws-space-container); margin: 0 auto; padding: 0 var(--ws-space-gutter); }
+  .g-head { position: sticky; top: 12px; z-index: 10; margin: 12px auto 0; max-width: calc(var(--ws-space-container) + 2 * var(--ws-space-gutter)); padding: 0 var(--ws-space-gutter); }
+  .g-head nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; background: rgba(230,232,221,.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--ws-line); border-radius: 999px; padding: 10px 10px 10px 22px; }
+  .g-head img { height: 26px; display: block; }
+  .g-head .wsk-btn { white-space: nowrap; padding: 10px 18px; }
+  .g-links { display: flex; gap: 22px; font-size: 14px; font-weight: 500; }
+  .g-links a { color: var(--ws-muted-dark); text-decoration: none; }
+  .g-links a:hover { color: var(--ws-ink); }
+  @media (max-width: 900px) { .g-links { display: none; } }
+  .g-hero { padding: 96px 0 72px; position: relative; overflow: hidden; }
+  .g-hero .wsk-display { max-width: 13ch; margin: 20px 0 28px; }
+  .g-hero .g-motif { position: absolute; right: -120px; top: 64px; width: min(640px, 60vw); opacity: 1; }
+  @media (max-width: 767px) { .g-hero .g-motif { right: -40%; top: auto; bottom: 8px; width: 90vw; opacity: .5; } }
+  .g-meta { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: 40px; }
+  section.g-sec { scroll-margin-top: 72px; padding: 96px 0; border-top: 1px solid var(--ws-line-strong); }
+  section.g-sec.wsk-white { border-top: 0; }
+  section.g-sec.wsk-dark { border-top: 0; }
+  .g-sec-head { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 48px; margin-bottom: 48px; align-items: end; }
+  .g-sec-head .wsk-h2 { margin-top: 16px; max-width: 16ch; }
+  @media (max-width: 900px) { .g-sec-head { grid-template-columns: 1fr; gap: 20px; } }
+  .g-grid { display: grid; gap: 1px; background: var(--ws-line-strong); border: 1px solid var(--ws-line-strong); }
+  .g-grid > * { background: var(--ws-sage); }
+  .wsk-white .g-grid > * { background: var(--ws-white); }
+  .g-cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .g-cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .g-cols-2 { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 1024px) { .g-cols-4 { grid-template-columns: repeat(2, 1fr); } .g-cols-3 { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .g-cols-4, .g-cols-3, .g-cols-2 { grid-template-columns: 1fr; } }
+  .g-swatch { padding: 0; display: flex; flex-direction: column; cursor: copy; border: 0; text-align: left; font: inherit; color: inherit; }
+  .g-swatch .chip { height: 128px; border-bottom: 1px solid var(--ws-line); }
+  .g-swatch .info { padding: 18px 20px 22px; display: grid; gap: 6px; }
+  .g-swatch .hex { font-family: var(--ws-font-mono); font-size: 13px; }
+  .g-swatch:focus-visible { outline: 3px solid rgba(156,224,105,.7); outline-offset: -3px; }
+  .g-ratio { display: flex; height: 18px; margin-top: 20px; border: 1px solid var(--ws-line-strong); }
+  .g-spec { padding: 28px; display: grid; grid-template-columns: 180px 1fr; gap: 24px; align-items: baseline; }
+  @media (max-width: 767px) { .g-spec { grid-template-columns: 1fr; gap: 10px; } }
+  .g-tile { padding: 28px; display: flex; flex-direction: column; gap: 14px; }
+  .g-tile .stage { display: flex; align-items: center; justify-content: center; min-height: 180px; border-radius: 12px; padding: 28px; }
+  .g-tile .stage img { max-width: 100%; max-height: 120px; }
+  .g-tile .dl { display: flex; flex-wrap: wrap; gap: 8px; }
+  .g-dl { font-family: var(--ws-font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ws-ink); text-decoration: none; border: 1px solid var(--ws-line-strong); border-radius: 999px; padding: 5px 12px; }
+  .g-dl:hover { border-color: var(--ws-ink); }
+  .g-dont { padding: 24px; display: flex; flex-direction: column; gap: 12px; }
+  .g-dont .stage { height: 120px; display: flex; align-items: center; justify-content: center; background: var(--ws-white); border-radius: 12px; position: relative; overflow: hidden; }
+  .g-dont .stage img { height: 40px; }
+  .g-dont .x { position: absolute; top: 10px; right: 12px; font-family: var(--ws-font-mono); font-size: 11px; color: var(--ws-destructive); letter-spacing: .12em; }
+  .g-tpl { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+  .g-tpl img { width: 100%; height: 200px; object-fit: contain; background: rgba(0,0,0,.04); border-radius: 8px; }
+  .g-demo { padding: 36px; display: flex; flex-direction: column; gap: 18px; align-items: flex-start; position: relative; overflow: hidden; }
+  .g-poster { aspect-ratio: 1; background: var(--ws-ink); color: #fff; padding: 9%; display: flex; flex-direction: column; justify-content: center; gap: 4%; position: relative; border-radius: 0; }
+  .g-poster .wsk-poster { font-size: clamp(30px, 4.4vw, 58px); }
+  .g-poster .logo { position: absolute; left: 9%; bottom: 7%; height: 6%; }
+  .g-code { font-family: var(--ws-font-mono); font-size: 13px; background: var(--ws-ink); color: #e6e8dd; padding: 20px 22px; border-radius: 12px; overflow-x: auto; white-space: pre; line-height: 1.6; margin: 0; }
+  .g-toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(80px); background: var(--ws-ink); color: #fff; padding: 10px 18px; border-radius: 999px; font-family: var(--ws-font-mono); font-size: 12px; letter-spacing: .1em; transition: transform .3s var(--ws-ease); z-index: 20; }
+  .g-toast.on { transform: translateX(-50%) translateY(0); }
+  .g-foot { padding: 96px 0 48px; position: relative; overflow: hidden; }
+  .g-foot .wsk-h1 { max-width: 14ch; margin: 18px 0 32px; }
+  .g-foot .row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--ws-line-on-ink); }
+  .g-foot .g-motif { position: absolute; right: -80px; top: 40px; width: min(520px, 55vw); }
+  .g-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--ws-line-strong); }
+  .g-list li { display: grid; grid-template-columns: 220px 1fr auto; gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--ws-line); align-items: baseline; }
+  @media (max-width: 767px) { .g-list li { grid-template-columns: 1fr; gap: 6px; } }
+  .g-list .g-dl { justify-self: start; }
+  .g-list code { font-family: var(--ws-font-mono); font-size: 13px; }
+</style>
+</head>
+<body class="wsk">
+
+<header class="g-head">
+  <nav aria-label="Przewodnik">
+    <a href="#start"><img src="logo/ws-logo-light.svg" alt="Workshift"></a>
+    <div class="g-links">
+      <a href="#kolory">Kolory</a><a href="#typografia">Typografia</a><a href="#logo">Logo</a><a href="#warstwy">Warstwy</a><a href="#komponenty">Komponenty</a><a href="#szablony">Szablony</a><a href="#glos">Głos</a><a href="#pliki">Pliki</a>
+    </div>
+    <a class="wsk-btn wsk-btn--accent" href="workshift-brand-kit.zip" download>Pobierz paczkę</a>
+  </nav>
+</header>
+
+<main id="start">
+  <section class="g-hero">
+    <img class="g-motif wsk-motif" src="motifs/ws-motif-02-warstwy-5-light.svg" alt="" aria-hidden="true">
+    <div class="g-wrap" style="position:relative">
+      <p class="wsk-kicker">Paczka marki · wersja @@VERSION@@ · @@DATE@@</p>
+      <h1 class="wsk-display">Workshift dla partnerów</h1>
+      <p class="wsk-lead">Logo, kolory, pisma, motyw warstw, komponenty i szablony do materiałów, które przygotowujesz razem z Workshift. Plik DESIGN.md opisuje ten system w formacie, który czyta też agent AI.</p>
+      <div class="wsk-cta-row" style="margin-top:32px">
+        <a class="wsk-btn wsk-btn--primary" href="workshift-brand-kit.zip" download>Pobierz paczkę ZIP <span class="wsk-btn__dot" aria-hidden="true">→</span></a>
+        <a class="wsk-btn wsk-btn--outline" href="DESIGN.md">Otwórz DESIGN.md</a>
+      </div>
+      <div class="g-meta">
+        <span class="wsk-meta">Inter + IBM Plex Mono</span>
+        <span class="wsk-meta">Sage · Lime · Czerń</span>
+        <span class="wsk-meta" id="count">Pliki: …</span>
+        <span class="wsk-meta">Pytania: kontakt@workshift.pl</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- KOLORY -->
+  <section class="g-sec" id="kolory">
+    <div class="g-wrap">
+      <div class="g-sec-head">
+        <div><p class="wsk-kicker">01 · Kolory</p><h2 class="wsk-h2">Trzy tła i jeden akcent</h2></div>
+        <p class="wsk-body">Sage to domyślne tło. Czerń służy do sekcji kontrastowych, biel do kart i dokumentów. Lime występuje na widoku raz, na przycisku, wyróżnionym słowie albo przesuniętej warstwie. Kliknij próbkę, żeby skopiować hex.</p>
+      </div>
+      <div class="g-grid g-cols-4" id="swatches"></div>
+      <div class="g-ratio" aria-label="Proporcje kolorów">
+        <span style="flex:62;background:var(--ws-sage)"></span><span style="flex:8;background:#fff"></span><span style="flex:25;background:var(--ws-ink)"></span><span style="flex:5;background:var(--ws-lime)"></span>
+      </div>
+      <p class="wsk-meta" style="margin-top:10px">Proporcje: ~70% sage i biel · 25% czerń · 5% lime. Lime na sage ma kontrast 1,3:1, więc na jasnym tle służy tylko jako wypełnienie.</p>
+    </div>
+  </section>
+
+  <!-- TYPOGRAFIA -->
+  <section class="g-sec wsk-white" id="typografia">
+    <div class="g-wrap">
+      <div class="g-sec-head">
+        <div><p class="wsk-kicker">02 · Typografia</p><h2 class="wsk-h2">Inter do tekstu, Plex Mono do etykiet</h2></div>
+        <p class="wsk-body">Na stronie i w dokumentach nagłówki mają wagę 400, a hierarchię buduje rozmiar i ciasny tracking. W grafikach social nagłówki składamy Inter 800 wersalikami, z jednym słowem na podkładzie lime.</p>
+      </div>
+      <div class="g-grid">
+        <div class="g-spec"><span class="wsk-meta">Display · 96 / 400</span><p class="wsk-display" style="font-size:clamp(40px,6vw,88px)">Wdrażamy AI, które po prostu działa</p></div>
+        <div class="g-spec"><span class="wsk-meta">H2 · 48 / 400</span><p class="wsk-h2">Przebudowa bez burzenia. Nasz proces.</p></div>
+        <div class="g-spec"><span class="wsk-meta">Tytuł · 20 / 500</span><p class="wsk-title">Automatyczna kategoryzacja dokumentów w biurze rachunkowym</p></div>
+        <div class="g-spec"><span class="wsk-meta">Treść · 16 / 400</span><p class="wsk-body">Zaczynamy od jednego procesu, który zabiera zespołowi najwięcej czasu. Mierzymy go przed wdrożeniem i po nim.</p></div>
+        <div class="g-spec"><span class="wsk-meta">Kicker · Mono 11</span><p class="wsk-kicker" style="color:var(--ws-ink)">Nasz proces · krok 02</p></div>
+        <div class="g-spec"><span class="wsk-meta">Liczba · Mono 56</span><p class="wsk-numeral">02 / 05</p></div>
+      </div>
+      <div class="g-grid g-cols-2" style="margin-top:48px">
+        <div class="g-demo">
+          <p class="wsk-kicker">Grafiki social</p>
+          <div class="g-poster" style="width:100%">
+            <p class="wsk-kicker" style="color:var(--ws-on-ink-label)">Czego AI nie zrobi · <span style="color:var(--ws-lime)">cz. 1</span></p>
+            <p class="wsk-poster">AI <span class="wsk-box">nie</span> zwolni Twojej księgowej<span class="wsk-dot">.</span></p>
+            <p style="margin:0;font-weight:500;font-size:clamp(14px,1.6vw,22px);color:rgba(255,255,255,.72)">I bardzo dobrze.</p>
+            <img class="logo" src="logo/ws-logo-dark.svg" alt="">
+          </div>
+        </div>
+        <div class="g-demo">
+          <p class="wsk-kicker">Zasady</p>
+          <ol class="wsk-steps" style="width:100%">
+            <li><span class="wsk-step-n">01</span><span class="wsk-body">Nagłówki na stronie i w dokumentach: Inter 400. Pogrubienie w treści to 500 i czerń.</span></li>
+            <li><span class="wsk-step-n">02</span><span class="wsk-body">Etykiety, daty, numery i źródła: IBM Plex Mono wersalikami, tracking 0,1-0,2 em.</span></li>
+            <li><span class="wsk-step-n">03</span><span class="wsk-body">Grafiki: Inter 800 wersalikami, jedno słowo na podkładzie lime, kropka lime na końcu.</span></li>
+            <li><span class="wsk-step-n">04</span><span class="wsk-body">Zwykły dywiz "-" w każdym miejscu. Polskie cudzysłowy „…".</span></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGO -->
+  <section class="g-sec" id="logo">
+    <div class="g-wrap">
+      <div class="g-sec-head">
+        <div><p class="wsk-kicker">03 · Logo</p><h2 class="wsk-h2">Sygnet to trzy warstwy procesu</h2></div>
+        <p class="wsk-body">Warstwy to procesy firmy. Środkowa jest przesunięta, bo to ten proces zmieniamy. Górna i dolna zostają na miejscu, bo reszta firmy pracuje w tym czasie normalnie. Napis w plikach logo jest zamieniony na krzywe, więc wygląda tak samo w każdym programie.</p>
+      </div>
+      <div class="g-grid g-cols-2" id="logos"></div>
+      <h3 class="wsk-h3" style="margin:64px 0 24px">Pole ochronne i wielkość</h3>
+      <div class="g-grid g-cols-3">
+        <div class="g-tile"><p class="wsk-title">Pole ochronne</p><p class="wsk-small">Wysokość jednej warstwy sygnetu z każdej strony, czyli około połowy litery W.</p></div>
+        <div class="g-tile"><p class="wsk-title">Minimum</p><p class="wsk-small">Sygnet 24 px. Logo poziome 32 px wysokości na ekranie, 10 mm szerokości w druku (120 px).</p></div>
+        <div class="g-tile"><p class="wsk-title">Pozycja</p><p class="wsk-small">Lewy górny albo lewy dolny róg, z marginesem co najmniej 20 px (7% krótszego boku w grafikach).</p></div>
+      </div>
+      <h3 class="wsk-h3" style="margin:64px 0 24px">Czego nie robimy z logo</h3>
+      <div class="g-grid g-cols-4">
+        <div class="g-dont"><div class="stage"><span class="x">✕</span><img src="logo/ws-logo-light.svg" alt="" style="transform:rotate(-12deg)"></div><p class="wsk-small">Nie obracaj i nie zmieniaj kąta pochylenia.</p></div>
+        <div class="g-dont"><div class="stage"><span class="x">✕</span><img src="logo/ws-logo-light.svg" alt="" style="transform:scaleX(1.5)"></div><p class="wsk-small">Nie rozciągaj proporcji.</p></div>
+        <div class="g-dont"><div class="stage" style="background:linear-gradient(135deg,#2F63F5,#8530D1)"><span class="x" style="color:#fff">✕</span><img src="logo/ws-logo-dark.svg" alt=""></div><p class="wsk-small">Nie stawiaj na gradiencie ani zajętym zdjęciu bez podkładki.</p></div>
+        <div class="g-dont"><div class="stage"><span class="x">✕</span><img src="logo/ws-logo-light.svg" alt="" style="filter:drop-shadow(0 6px 10px rgba(0,0,0,.45)) hue-rotate(180deg)"></div><p class="wsk-small">Bez cieni, poświat i zmiany kolorów warstw.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WARSTWY -->
+  <section class="g-sec wsk-dark" id="warstwy" style="position:relative;overflow:hidden">
+    <div class="g-wrap">
+      <div class="g-sec-head">
+        <div><p class="wsk-kicker">04 · Motyw warstw</p><h2 class="wsk-h2">Warstwy z sygnetu jako dekoracja</h2></div>
+        <p class="wsk-body">Motyw warstw to jedyna dekoracja w systemie. Jedna warstwa jest przesunięta i tylko ona jest lime, tak jak w logo. Motyw dotyka krawędzi, czyli jest przycięty bokiem formatu albo stoi na granicy sekcji. Na jednym widoku używaj jednego motywu i nie obracaj go.</p>
+      </div>
+      <div class="g-grid g-cols-3" id="motifs" style="background:var(--ws-line-on-ink);border-color:var(--ws-line-on-ink)"></div>
+    </div>
+  </section>
+
+  <!-- KOMPONENTY -->
+  <section class="g-sec" id="komponenty">
+    <div class="g-wrap">
+      <div class="g-sec-head">
+        <div><p class="wsk-kicker">05 · Komponenty</p><h2 class="wsk-h2">Gotowe klasy w ws.css</h2></div>
+        <p class="wsk-body">Podepnij <code>ws.css</code> (z katalogiem <code>fonts/</code> obok), dodaj klasę <code>.wsk</code> na kontener i używaj klas z prefiksem <code>wsk-</code>. Poniżej działające przykłady.</p>
+      </div>
+      <div class="g-grid g-cols-2">
+        <div class="g-demo">
+          <p class="wsk-kicker">Przyciski</p>
+          <div class="wsk-cta-row">
+            <a class="wsk-btn wsk-btn--primary" href="#komponenty">Umów rozmowę <span class="wsk-btn__dot" aria-hidden="true">→</span></a>
+            <a class="wsk-btn wsk-btn--outline" href="#komponenty">Zobacz usługi</a>
+          </div>
+          <a class="wsk-btn wsk-btn--accent" href="#komponenty">Kontakt</a>
+          <p class="wsk-small">Jeden przycisk główny na widok. Akcentowy lime tylko w nagłówku i formularzach.</p>
+        </div>
+        <div class="g-demo">
+          <p class="wsk-kicker">Tagi i wyróżnienie</p>
+          <div class="wsk-cta-row"><span class="wsk-tag">Nowość</span><span class="wsk-tag wsk-tag--quiet">Biuro rachunkowe</span><span class="wsk-tag wsk-tag--quiet">Pilotaż</span></div>
+          <p class="wsk-h3">Jeden proces, <span class="wsk-hl">zmierzony</span> przed i po wdrożeniu</p>
+        </div>
+        <div class="g-demo" style="background:var(--ws-sage)">
+          <p class="wsk-kicker">Karta</p>
+          <div class="wsk-card" style="width:100%">
+            <p class="wsk-kicker" style="margin-bottom:12px">Usługa · 01</p>
+            <p class="wsk-title" style="margin-bottom:8px">Automatyzacja procesów</p>
+            <p class="wsk-small">Łączymy narzędzia, które firma już ma, w jeden przepływ. Zespół pracuje w tych samych programach co wcześniej.</p>
+          </div>
+        </div>
+        <div class="g-demo">
+          <p class="wsk-kicker">Komunikat i cytat</p>
+          <div class="wsk-callout"><p class="wsk-kicker">Ważne</p><p class="wsk-body">Umowę powierzenia danych podpisujemy przed startem wdrożenia.</p></div>
+          <figure class="wsk-quote" style="margin:0">„[Cytat klienta, za jego zgodą]"<figcaption>[Imię Nazwisko · rola · firma]</figcaption></figure>
+        </div>
+      </div>
+      <div style="margin-top:48px">
+        <p class="wsk-kicker" style="margin-bottom:16px">Kafle liczb · każda liczba ze źródłem</p>
+        <div class="wsk-stats">
+          <div class="wsk-stat"><span class="wsk-numeral">[00]</span><span class="wsk-kicker">[Etykieta]</span><span class="wsk-stat__source">Źródło: [pomiar u klienta, data]</span></div>
+          <div class="wsk-stat wsk-stat--accent"><span class="wsk-numeral">[00]</span><span class="wsk-kicker" style="color:var(--ws-ink)">[Etykieta]</span><span class="wsk-stat__source" style="color:var(--ws-ink)">Jeden kafel lime na siatkę</span></div>
+          <div class="wsk-stat wsk-stat--dark"><span class="wsk-numeral">[00]</span><span class="wsk-kicker">[Etykieta]</span></div>
+          <div class="wsk-stat"><span class="wsk-numeral">[00]</span><span class="wsk-kicker">[Etykieta]</span></div>
+        </div>
+      </div>
+      <div style="margin-top:48px">
+        <p class="wsk-kicker" style="margin-bottom:16px">Tabela</p>
+        <table class="wsk-table">
+          <thead><tr><th>Etap</th><th>Co robimy</th><th class="is-hl">Co dostajesz</th></tr></thead>
+          <tbody>
+            <tr><td>01 · Diagnoza</td><td>Rozmowa i przegląd jednego procesu</td><td class="is-hl">Mapa procesu i wycena</td></tr>
+            <tr><td>02 · Pilotaż</td><td>Wdrożenie na realnych danych</td><td class="is-hl">Działający przepływ i pomiar przed/po</td></tr>
+            <tr><td>03 · Przekazanie</td><td>Szkolenie zespołu</td><td class="is-hl">Instrukcja i dostępy do kont</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- SZABLONY -->
+  <section class="g-sec wsk-white" id="szablony">
+    <div class="g-wrap">
+      <div class="g-sec-head">
+        <div><p class="wsk-kicker">06 · Szablony</p><h2 class="wsk-h2">Tła do grafik i szablon maila</h2></div>
+        <p class="wsk-body">Tła mają motyw przy prawej krawędzi i logo w lewym dolnym rogu. Tekst stawiasz w lewych dwóch trzecich. SVG do edycji w Figmie lub Illustratorze, PNG do Canvy i Google Slides.</p>
+      </div>
+      <div class="g-grid g-cols-3" id="templates"></div>
+      <div class="g-grid g-cols-2" style="margin-top:24px">
+        <div class="g-tile"><p class="wsk-title">Szablon maila</p><p class="wsk-small">Tabele i style inline, 600 px, logo w PNG. Działa w Gmailu, Outlooku i Apple Mail.</p><div class="dl"><a class="g-dl" href="templates/ws-email.html" target="_blank">Podgląd</a><a class="g-dl" href="templates/ws-email.html" download>HTML</a></div></div>
+        <div class="g-tile"><p class="wsk-title">Prompt dla agenta AI</p><p class="g-code" style="white-space:pre-wrap">Zbuduj [stronę / grafikę / slajd] dla Workshift. Trzymaj się DESIGN.md z załącznika: tokeny z nagłówka YAML są wiążące, a zasad z sekcji Do's and Don'ts nie łam. Teksty pisz według VOICE.md.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GŁOS -->
+  <section class="g-sec" id="glos">
+    <div class="g-wrap">
+      <div class="g-sec-head">
+        <div><p class="wsk-kicker">07 · Głos</p><h2 class="wsk-h2">Jak piszemy w imieniu Workshift</h2></div>
+        <p class="wsk-body">Pełne wytyczne są w <a href="VOICE.md">VOICE.md</a>. Poniżej sześć zasad, które sprawdzamy w każdym tekście przed publikacją.</p>
+      </div>
+      <div class="g-grid g-cols-3">
+        <div class="g-tile"><p class="wsk-kicker">01</p><p class="wsk-title">Wynik przed technologią</p><p class="wsk-small">Klient kupuje odpowiedź na zapytanie wysłaną w nocy. Nazwa modelu czy narzędzia schodzi na drugi plan.</p></div>
+        <div class="g-tile"><p class="wsk-kicker">02</p><p class="wsk-title">Liczba ze źródłem</p><p class="wsk-small">Każdy procent i każda liczba godzin ma pomiar, klienta albo badanie za sobą. Gdy źródła brakuje, opisujemy proces i pomijamy wynik liczbowy.</p></div>
+        <div class="g-tile"><p class="wsk-kicker">03</p><p class="wsk-title">Spokojny ton</p><p class="wsk-small">Nie piszemy o rewolucji AI i nie straszymy, że ktoś zostanie w tyle.</p></div>
+        <div class="g-tile"><p class="wsk-kicker">04</p><p class="wsk-title">Per Ty, krótko</p><p class="wsk-small">Zwracamy się per Ty, jak do partnera w biznesie. Piszemy krótkimi zdaniami w stronie czynnej.</p></div>
+        <div class="g-tile"><p class="wsk-kicker">05</p><p class="wsk-title">Bez szablonów AI</p><p class="wsk-small">Unikamy wyliczanek z trzech przeczeń, zwrotów typu „to nie X, to Y" i puent na końcu akapitu.</p></div>
+        <div class="g-tile"><p class="wsk-kicker">06</p><p class="wsk-title">Dywiz zamiast pauzy</p><p class="wsk-small">Zwykły "-" w zdaniach i zakresach: 2-8 tygodni.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLIKI -->
+  <section class="g-sec wsk-white" id="pliki">
+    <div class="g-wrap">
+      <div class="g-sec-head">
+        <div><p class="wsk-kicker">08 · Pliki</p><h2 class="wsk-h2">Kod i dokumenty</h2></div>
+        <p class="wsk-body">Wszystkie pliki są też w paczce ZIP. Skrypt generuje tokeny z kodu strony workshift.pl, więc kolory i pisma zgadzają się ze stroną.</p>
+      </div>
+      <ul class="g-list" id="files"></ul>
+      <pre class="g-code" style="margin-top:32px">&lt;link rel="stylesheet" href="https://workshift.pl/brand/ws.css"&gt;
+&lt;body class="wsk"&gt;
+  &lt;p class="wsk-kicker"&gt;Nasz proces&lt;/p&gt;
+  &lt;h2 class="wsk-h2"&gt;Przebudowa bez burzenia&lt;/h2&gt;
+  &lt;a class="wsk-btn wsk-btn--primary" href="#"&gt;Umów rozmowę &lt;span class="wsk-btn__dot"&gt;→&lt;/span&gt;&lt;/a&gt;
+&lt;/body&gt;</pre>
+    </div>
+  </section>
+</main>
+
+<footer class="g-foot wsk-dark">
+  <img class="g-motif wsk-motif" src="motifs/ws-motif-01-warstwy-dark.svg" alt="" aria-hidden="true">
+  <div class="g-wrap" style="position:relative">
+    <p class="wsk-kicker">Materiał z logo Workshift</p>
+    <p class="wsk-h1">Przed publikacją wyślij go nam do akceptacji</p>
+    <a class="wsk-btn wsk-btn--primary" href="mailto:kontakt@workshift.pl?subject=Materia%C5%82%20z%20logo%20Workshift">kontakt@workshift.pl <span class="wsk-btn__dot" aria-hidden="true">→</span></a>
+    <div class="row">
+      <img src="logo/ws-logo-dark.svg" alt="Workshift" style="height:26px">
+      <span class="wsk-meta">Paczka marki @@VERSION@@ · @@DATE@@ · Inter i IBM Plex Mono na licencji SIL OFL</span>
+    </div>
+  </div>
+</footer>
+
+<div class="g-toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(async () => {
+  const COLORS = [
+    ['sage', '#E6E8DD', 'Tło strony i grafik', '#000'],
+    ['lime', '#9CE069', 'Jedyny akcent', '#000'],
+    ['ink', '#000000', 'Tekst, tło ciemne', '#fff'],
+    ['white', '#FFFFFF', 'Karty, dokumenty', '#000'],
+    ['muted-dark', '#595959', 'Tekst drugorzędny', '#fff'],
+    ['muted-light', '#AAAAAA', 'Podpisy na czarnym', '#000'],
+    ['lime-deep', '#81C44E', 'Tylko gradient sygnetu', '#000'],
+    ['destructive', '#DD453D', 'Tylko błędy', '#fff'],
+  ];
+  const toast = (t) => { const el = document.getElementById('toast'); el.textContent = t; el.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('on'), 1600); };
+  const sw = document.getElementById('swatches');
+  for (const [name, hex, role] of COLORS) {
+    const b = document.createElement('button');
+    b.className = 'g-swatch'; b.type = 'button';
+    b.innerHTML = `<span class="chip" style="background:${hex}"></span><span class="info"><span class="wsk-title">${name}</span><span class="hex">${hex} · --ws-${name}</span><span class="wsk-small">${role}</span></span>`;
+    b.addEventListener('click', async () => { try { await navigator.clipboard.writeText(hex); toast('SKOPIOWANO ' + hex); } catch { toast(hex); } });
+    sw.append(b);
+  }
+
+  let files = [];
+  try { files = await (await fetch('manifest.json')).json(); } catch {}
+  document.getElementById('count').textContent = `Pliki: ${files.length}`;
+  const byFile = Object.fromEntries(files.map((f) => [f.file, f]));
+  const kb = (n) => (n / 1024).toFixed(n < 10240 ? 1 : 0) + ' KB';
+
+  const logos = document.getElementById('logos');
+  for (const [base, title, png] of [['ws-logo', 'Logo poziome', '1600'], ['ws-logo-stacked', 'Logo pionowe', '1200'], ['ws-sygnet', 'Sygnet', '1024'], ['ws-avatar', 'Awatar', '1024']]) {
+    for (const theme of ['light', 'dark']) {
+      const f = byFile[`logo/${base}-${theme}.svg`]; if (!f) continue;
+      const d = document.createElement('div'); d.className = 'g-tile';
+      d.innerHTML = `<div class="stage" style="background:${theme === 'dark' ? '#000' : 'var(--ws-white)'}"><img src="${f.file}" alt="${title} ${theme}"></div><p class="wsk-title">${title} · ${theme === 'dark' ? 'na ciemne' : 'na jasne'}</p><p class="wsk-small">${f.desc}</p><div class="dl"><a class="g-dl" href="${f.file}" download>SVG</a><a class="g-dl" href="logo/png/${base}-${theme}-${png}.png" download>PNG ${png}</a></div>`;
+      logos.append(d);
+    }
+  }
+
+  const motifs = document.getElementById('motifs');
+  for (const f of files.filter((x) => x.cat === 'motif')) {
+    const dark = f.file.includes('-dark');
+    const d = document.createElement('div'); d.className = 'g-tile'; d.style.background = dark ? '#000' : 'var(--ws-sage)'; d.style.color = dark ? '#fff' : '#000';
+    d.innerHTML = `<div class="stage"><img src="${f.file}" alt=""></div><p class="wsk-title">${f.title}</p><p class="wsk-small" style="color:${dark ? 'var(--ws-on-ink-body)' : 'var(--ws-muted-dark)'}">${f.desc}</p><div class="dl"><a class="g-dl" href="${f.file}" download style="${dark ? 'color:#fff;border-color:rgba(255,255,255,.3)' : ''}">SVG</a></div>`;
+    motifs.append(d);
+  }
+
+  const tpls = document.getElementById('templates');
+  for (const f of files.filter((x) => x.cat === 'template' && x.file.endsWith('.svg'))) {
+    const pngf = f.file.replace('templates/', 'templates/png/').replace('.svg', '.png');
+    const d = document.createElement('div'); d.className = 'g-tpl';
+    d.innerHTML = `<img src="${pngf}" alt="${f.title}" loading="lazy"><p class="wsk-title">${f.title}</p><p class="wsk-meta">${f.w} × ${f.h} px</p><div class="dl"><a class="g-dl" href="${f.file}" download>SVG</a><a class="g-dl" href="${pngf}" download>PNG</a></div>`;
+    tpls.append(d);
+  }
+
+  const list = document.getElementById('files');
+  for (const f of files.filter((x) => x.cat === 'code' || x.cat === 'doc')) {
+    const li = document.createElement('li');
+    li.innerHTML = `<code>${f.file}</code><span class="wsk-small">${f.desc}</span><a class="g-dl" href="${f.file}" download>${kb(f.size)}</a>`;
+    list.append(li);
+  }
+})();
+</script>
+</body>
+</html>

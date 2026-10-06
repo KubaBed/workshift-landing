@@ -718,7 +718,7 @@ const _SERVICES_LEGACY = [
 
         categoryTag: 'Nasza flagowa usługa',
         expandedTitle: 'Od diagnozy procesu - do działającego workflow.',
-        expandedDescription: 'Zaczynamy od 30-minutowej darmowej diagnozy i mapy Twoich procesów. Wskazujemy 2-3 miejsca, gdzie automatyzacja da najszybszy, policzalny zwrot. Potem budujemy pipeline: n8n, Make i dedykowane skrypty, które wpinają się w to, jak już pracujesz. Bez zmiany przyzwyczajeń, bez wdrażania nowego "systemu" - dane płyną same.',
+        expandedDescription: 'Zaczynamy od bezpłatnej 30-minutowej rozmowy diagnostycznej i mapy Twoich procesów. Wskazujemy 2-3 miejsca, gdzie automatyzacja da najszybszy, policzalny zwrot. Potem budujemy pipeline: n8n, Make i dedykowane skrypty, które wpinają się w to, jak już pracujesz. Bez zmiany przyzwyczajeń, bez wdrażania nowego "systemu" - dane płyną same.',
         heroMetric: { value: '10h+', label: 'oszczędności na pracowniku tygodniowo - średnia z naszych wdrożeń', subtext: 'Przy zespole 5-osobowym to 200h+ miesięcznie.' },
 
         innerCards: [
@@ -738,7 +738,7 @@ const _SERVICES_LEGACY = [
                 colSpan: 'lg:col-span-4',
                 label: '3 kroki do pierwszego workflow',
                 steps: [
-                    { num: '01', title: 'Diagnoza', desc: 'Darmowa rozmowa + audyt procesów (30 min online).' },
+                    { num: '01', title: 'Diagnoza', desc: 'Bezpłatna 30-minutowa rozmowa diagnostyczna online i przegląd procesów.' },
                     { num: '02', title: 'Mapujemy i budujemy', desc: 'Workflow + testy na Twoich danych (1-2 tygodnie).' },
                     { num: '03', title: 'Odpalamy', desc: 'Workflow działa, dostajesz dashboard z wynikami.' },
                 ]
@@ -771,7 +771,7 @@ const _SERVICES_LEGACY = [
             {
                 type: 'cta',
                 colSpan: 'lg:col-span-4',
-                headline: 'Zacznij od darmowej diagnozy',
+                headline: 'Zacznij od bezpłatnej rozmowy diagnostycznej',
                 subline: '30 minut Twojego czasu. Zero zobowiązań. Konkretne rekomendacje od razu.',
                 ctaLabel: 'Umów diagnozę',
             },

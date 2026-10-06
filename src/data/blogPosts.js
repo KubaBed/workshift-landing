@@ -121,7 +121,7 @@ export const blogPosts = [
 
   Cały webinar, razem z demo na żywo, obejrzysz [na YouTube](https://youtu.be/i1sN9PiTeBk). Dzięki ekipie AI Now Polska za zaproszenie.
 
-  Drugi mózg to nie tylko temat dla programistów. O tym, jak baza wiedzy sprawdza się w zespole obsługi klienta, pisałem w tekście o tym, [co przekonało sceptyków w moim zespole](/blog/baza-wiedzy-ktora-przekonala-sceptykow). A jeśli chcesz pogadać, jak taka baza mogłaby wyglądać u Ciebie, [odezwij się](/#kontakt). 15 minut wystarczy, żeby ocenić, czy jest o czym rozmawiać.
+  Drugi mózg to nie tylko temat dla programistów. O tym, jak baza wiedzy sprawdza się w zespole obsługi klienta, pisałem w tekście o tym, [co przekonało sceptyków w moim zespole](/blog/baza-wiedzy-ktora-przekonala-sceptykow). A jeśli chcesz pogadać, jak taka baza mogłaby wyglądać u Ciebie, [odezwij się](/#kontakt). W bezpłatnej 30-minutowej rozmowie diagnostycznej ocenimy, czy jest sens iść dalej.
   `,
   },
   {
@@ -314,7 +314,7 @@ Nie potrzebujesz bazy wektorowej, zespołu ML ani budżetu Cerebras. Kolejność
 
 Policz, ile razy w tym tygodniu ktoś w firmie zadał pytanie, na które odpowiedź już gdzieś była - w mailu, na dysku, w czyjejś głowie. U Cerebras skala tego problemu uzasadniła budowę całego systemu. U Ciebie na start może wystarczyć katalog z 20 plikami i agent, który umie go czytać.
 
-A jeśli wolisz to policzyć i zaplanować na spokojnie - [zacznij od bezpłatnego audytu](/#kontakt). 15 minut, zero zobowiązań, wychodzisz z mapą wiedzy w swojej firmie i konkretnym pierwszym krokiem.
+A jeśli wolisz to policzyć i zaplanować na spokojnie - [zacznij od bezpłatnej rozmowy diagnostycznej](/#kontakt). 30 minut, zero zobowiązań, wychodzisz z mapą wiedzy w swojej firmie i konkretnym pierwszym krokiem.
     `,
   },
   {
@@ -370,7 +370,7 @@ To temat na osobny, dłuższy wpis - sam koncept zasługuje na więcej niż akap
 
 Nie musisz wdrażać wszystkiego naraz. Jeśli piszesz kod z agentem - zacznij od Ponytail, to jedna komenda instalacji i natychmiastowy efekt na rachunku. Jeśli Twój agent dużo czyta (logi, RAG, wyniki narzędzi) - Headroom da największy zwrot. Jeśli po prostu rozmawiasz z agentem cały dzień i płacisz za każde jego "chętnie wyjaśnię" - Caveman jest najszybszy do wdrożenia (30 sekund, jedna komenda w terminalu).
 
-A jeśli robisz to wszystko na raz - prawdopodobnie czas pomyśleć o second brain. Chętnie pogadam, jak by to wyglądało u Ciebie - [napisz do mnie](/#kontakt). 15 minut, zero zobowiązań.
+A jeśli robisz to wszystko na raz - prawdopodobnie czas pomyśleć o second brain. Chętnie pogadam, jak by to wyglądało u Ciebie - [napisz do mnie](/#kontakt). Bezpłatna rozmowa diagnostyczna, 30 minut, zero zobowiązań.
     `,
   },
   {
@@ -454,7 +454,7 @@ A jeśli robisz to wszystko na raz - prawdopodobnie czas pomyśleć o second bra
 
   Dla mnie to jest najciekawsza infrastrukturalna publikacja tego kwartału. Nie dlatego, że rewolucjonizuje AI. Dlatego, że **wreszcie ujednolica warstwę pod spodem** - tę, o której nikt nie mówi, bo nie jest sexy. A bez niej każdy agent w każdej firmie buduje od zera to samo koło.
 
-  Jak chcesz pogadać, jak Twoja obecna wiedza firmowa wyglądałaby po przełożeniu na OKF - [napisz do mnie](/#kontakt). 15 minut, zero zobowiązań. Powiem Ci, czy jest w ogóle o czym rozmawiać, czy lepiej najpierw posprzątać wiki.
+  Jak chcesz pogadać, jak Twoja obecna wiedza firmowa wyglądałaby po przełożeniu na OKF - [napisz do mnie](/#kontakt). Bezpłatna rozmowa diagnostyczna, 30 minut, zero zobowiązań. Powiem Ci, czy jest w ogóle o czym rozmawiać, czy lepiej najpierw posprzątać wiki.
     `,
   },
   {

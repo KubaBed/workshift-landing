@@ -349,7 +349,7 @@ export default function AudytAiPage() {
                         Albo pomiń quiz i porozmawiajmy.
                     </h2>
                     <p className="text-lg text-muted-dark mb-8 max-w-xl mx-auto">
-                        15-minutowa rozmowa pokaże więcej niż każdy formularz. Bez prezentacji
+                        Bezpłatna 30-minutowa rozmowa diagnostyczna pokaże więcej niż każdy formularz. Bez prezentacji
                         PowerPointa.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-3 items-center justify-center">

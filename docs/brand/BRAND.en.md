@@ -90,7 +90,7 @@ This sentence is the positioning test: if a piece of marketing could be signed w
 | # | Value | What it means in practice |
 |---|-------|---------------------------|
 | 1 | **Pragmatism** | No buzzwords. Only solutions that work on Monday morning |
-| 2 | **Measurable results** | Always concrete numbers (+32% of time, 45+ hours per month) |
+| 2 | **Measurable results** | Numbers with a stated source: what was measured, where, when |
 | 3 | **Simple deployment** | No chaos, no downtime, no year-long projects |
 | 4 | **Knowledge transfer** | We leave knowledge behind, not dependency. The client can run it alone |
 | 5 | **A human approach** | We understand the business first; technology is the instrument |
@@ -114,7 +114,7 @@ Priority sectors:
 ### Services
 
 1. **Process automation** - integrating the tools the company already owns into a single workflow
-2. **AI audit and strategy** - identifying lost time, typically ~32% recoverable
+2. **AI audit and strategy** - pointing out the processes that take the team the most time
 3. **AI training** - prompt engineering, AI safety, GenAI tooling
 4. **AI agents** - an automated 24/7 first line of support
 5. **AI ad creative** - hundreds of creatives in days instead of months
@@ -426,13 +426,13 @@ Component: `src/components/ui/Button.jsx` - CVA variants on a BaseUI primitive.
 ### Five writing rules
 
 **1. Concrete over abstract**
-Always a number, a duration, a result. Not „usprawniamy procesy" *(we improve processes)* but „odzyskujesz 32% czasu tygodniowo" *(you get 32% of your week back)*.
+Always a concrete process, duration or result. Instead of „usprawniamy procesy" *(we improve processes)* say what changes: „faktury trafiają do systemu księgowego bez przepisywania" *(invoices reach the accounting system without re-typing)*. A number only with its source.
 
 **2. Direct without aggression**
 Short sentences. No corporate euphemisms. We speak the way you speak to a business partner, not to a lead in a CRM.
 
 **3. We are in this game too**
-First person plural („wdrażamy", „wiemy" - *we deploy, we know*). Empathy through shared experience: „Wiemy, o co toczy się gra, bo sami w nią gramy" *(We know what is at stake, because we are playing too)*. We do not lecture - we understand.
+First person plural („wdrażamy", „wiemy" - *we deploy, we know*) in company materials: website, offers, ads. In authored texts signed by Jakub (blog, LinkedIn, newsletter, talks) first person singular. Decided 06.10.2026. Empathy through shared experience: „Wiemy, o co toczy się gra, bo sami w nią gramy" *(We know what is at stake, because we are playing too)*. We do not lecture - we understand.
 
 **4. Outcome, not technology**
 The client does not buy „an AI agent" - they buy „a first line of support that works at 3am". In consumer-facing copy, **never name the stack**.
@@ -452,7 +452,7 @@ Left column: never write this. Right column: write this instead.
 | „State-of-the-art modele" | „GPT-4 + Twoje dane" *(GPT-4 + your data)* |
 | „Transformacja cyfrowa" *(Digital transformation)* | „Jeden workflow zamiast pięciu narzędzi" *(One workflow instead of five tools)* |
 | „Skalowalna platforma" *(A scalable platform)* | *(what exactly scales? say that)* |
-| „Skontaktuj się z nami" *(Contact us)* | „Zacznij od bezpłatnego audytu" *(Start with a free audit)* |
+| „Skontaktuj się z nami" *(Contact us)* | „Zacznij od bezpłatnej rozmowy diagnostycznej" *(Start with a free diagnostic call)* |
 | Passive voice („czas jest oszczędzany") | Active („Ty oszczędzasz czas" - *you save time*) |
 
 ### Examples - headlines
@@ -461,16 +461,17 @@ Left column: never write this. Right column: write this instead.
 |-------|----------|
 | „Innowacyjne AI dla Twojej firmy" | „Wdrażamy AI, które po prostu działa" |
 | „Kompleksowe rozwiązania automatyzacji" | „Koniec ręcznego przepisywania danych" |
-| „Transformujemy Twój biznes z AI" | „32% czasu tygodniowo z powrotem w Twoje ręce" |
+| „Transformujemy Twój biznes z AI" | „Biuro rachunkowe: faktury kategoryzują się same, księgowa sprawdza wynik" |
 | „Zaawansowane narzędzia dla profesjonalistów" | „Kancelaria prawna: automatyczne notatki, mniej papierkologii" |
-| „Skontaktuj się z nami" | „Zacznij od bezpłatnego audytu" |
+| „Skontaktuj się z nami" | „Zacznij od bezpłatnej rozmowy diagnostycznej" |
 
-*Glosses for the strong column, in order: We deploy AI that simply works · No more re-typing data by hand · 32% of your week back in your hands · Law firm: automatic notes, less paperwork · Start with a free audit.*
+*Glosses for the strong column, in order: We deploy AI that simply works · No more re-typing data by hand · Accounting office: invoices categorise themselves, the accountant checks the result · Law firm: automatic notes, less paperwork · Start with a free diagnostic call.*
 
 ### Metrics - how to use them
 
-- Always a concrete number: `+32%`, `45+ hours`, `4 weeks`, `24/7`
-- Give the context: „+32% odzyskanego czasu *przy typowym wdrożeniu automatyzacji*" (*+32% of time recovered on a typical automation deployment*)
+- A number always comes with its source: measurement at a client (with consent), date, method. Good examples: `24/7` agent availability, pilot duration from the offer schedule
+- A number without a source is dropped; the process description stays. Percentages like „~32% of time recoverable" (old copy) have no data behind them and are withdrawn (decided 06.10.2026)
+- The entry offer has one name: **bezpłatna 30-minutowa rozmowa diagnostyczna** *(free 30-minute diagnostic call)*, never „audit" or „15 minutes"
 - Avoid marketing rounding: `18.7%` reads as more credible than "almost 20%"
 - If the number came from a client, cite the source (case study, company)
 

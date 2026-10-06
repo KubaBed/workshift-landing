@@ -1,0 +1,51 @@
+/* Workshift - tokeny. Generowane przez scripts/brand-kit/build.mjs; nie edytuj ręcznie. */
+:root {
+  --ws-sage: #E6E8DD;
+  --ws-lime: #9CE069;
+  --ws-lime-deep: #81C44E;
+  --ws-ink: #000000;
+  --ws-white: #FFFFFF;
+  --ws-muted-dark: #595959;
+  --ws-muted-light: #AAAAAA;
+  --ws-destructive: #DD453D;
+
+  /* linie i tekst na czarnym */
+  --ws-line: rgba(0,0,0,0.12);
+  --ws-line-strong: rgba(0,0,0,0.2);
+  --ws-line-on-ink: rgba(255,255,255,0.16);
+  --ws-on-ink-body: rgba(255,255,255,0.72);
+  --ws-on-ink-label: rgba(255,255,255,0.55);
+
+  /* gradient - wyłącznie w sygnecie i przesuniętej warstwie motywu */
+  --ws-gradient-lime: linear-gradient(90deg, #9CE069, #81C44E);
+
+  /* pisma */
+  --ws-font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ws-font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* promienie */
+  --ws-radius-none: 0px;
+  --ws-radius-sm: 4px;
+  --ws-radius-md: 8px;
+  --ws-radius-default: 10px;
+  --ws-radius-card: 20px;
+  --ws-radius-panel: 24px;
+  --ws-radius-pill: 999px;
+
+  /* układ */
+  --ws-space-xs: 8px;
+  --ws-space-sm: 12px;
+  --ws-space-md: 24px;
+  --ws-space-lg: 48px;
+  --ws-space-xl: 96px;
+  --ws-space-section: 112px;
+  --ws-space-container: 1320px;
+  --ws-space-gutter: 24px;
+  --ws-space-gutter-mobile: 16px;
+
+  /* ruch */
+  --ws-ease: cubic-bezier(0.21, 0.47, 0.32, 0.98);
+  --ws-dur-fast: 0.2s;
+  --ws-dur-enter: 0.8s;
+}
+@media (max-width: 767px) { :root { --ws-space-gutter: 16px; --ws-space-section: 80px; } }

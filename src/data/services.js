@@ -12,10 +12,10 @@ export const SERVICES = [
 
         categoryTag: 'Nasza flagowa usługa',
         expandedTitle: 'Od diagnozy procesu - do działającego workflow.',
-        expandedDescription: 'Zaczynamy od 30-minutowej darmowej diagnozy i mapy Twoich procesów. Wskazujemy 2-3 miejsca, gdzie automatyzacja AI da najszybszy, policzalny zwrot. Potem budujemy workflow, który wpina się w to, jak już pracujesz: dane z maili, faktur i formularzy same trafiają tam, gdzie mają być. Bez zmiany przyzwyczajeń, bez wdrażania nowego "systemu" - dane płyną same.',
+        expandedDescription: 'Zaczynamy od bezpłatnej 30-minutowej rozmowy diagnostycznej i mapy Twoich procesów. Wskazujemy 2-3 miejsca, gdzie automatyzacja AI da najszybszy, policzalny zwrot. Potem budujemy workflow, który wpina się w to, jak już pracujesz: dane z maili, faktur i formularzy same trafiają tam, gdzie mają być. Bez zmiany przyzwyczajeń, bez wdrażania nowego "systemu" - dane płyną same.',
         heroMetric: { value: '10h+', label: 'oszczędności na pracowniku tygodniowo - średnia z naszych wdrożeń', subtext: 'Przy zespole 5-osobowym to 200h+ miesięcznie.' },
         metaTitle: 'Automatyzacja AI dla firm - audyt i wdrożenie | Workshift',
-        metaDescription: 'Automatyzacja AI w praktyce: darmowy audyt procesów, wdrożenie w 1-2 tygodnie i 10h+ oszczędności tygodniowo na pracownika. Zobacz, od czego zacząć.',
+        metaDescription: 'Automatyzacja AI w praktyce: bezpłatna rozmowa diagnostyczna, wdrożenie w 1-2 tygodnie i 10h+ oszczędności tygodniowo na pracownika. Zobacz, od czego zacząć.',
 
         innerCards: [
             {
@@ -34,7 +34,7 @@ export const SERVICES = [
                 colSpan: 'lg:col-span-6',
                 label: '3 kroki do pierwszego workflow',
                 steps: [
-                    { num: '01', title: 'Diagnoza', desc: 'Darmowa rozmowa + audyt procesów (30 min online).' },
+                    { num: '01', title: 'Diagnoza', desc: 'Bezpłatna 30-minutowa rozmowa diagnostyczna online i przegląd procesów.' },
                     { num: '02', title: 'Mapujemy i budujemy', desc: 'Workflow + testy na Twoich danych (1-2 tygodnie).' },
                     { num: '03', title: 'Odpalamy', desc: 'Workflow działa, dostajesz dashboard z wynikami.' },
                 ]
@@ -103,7 +103,7 @@ export const SERVICES = [
             {
                 type: 'cta',
                 colSpan: 'lg:col-span-4',
-                headline: 'Zacznij od darmowej diagnozy',
+                headline: 'Zacznij od bezpłatnej rozmowy diagnostycznej',
                 subline: '30 minut Twojego czasu. Zero zobowiązań. Konkretne rekomendacje od razu.',
                 ctaLabel: 'Umów diagnozę',
             },
@@ -156,7 +156,7 @@ export const SERVICES = [
                 heading: 'Sztuczna inteligencja w firmie - od czego zaczynamy',
                 eyebrow: 'Jak pracujemy',
                 paragraphs: [
-                    'Nie zaczynamy od technologii, tylko od mapy procesów. W 30-minutowej darmowej diagnozie wskazujemy 2-3 miejsca, w których sztuczna inteligencja w firmie zwróci się najszybciej - policzalnie, w godzinach i złotówkach. Potem budujemy pierwszy workflow i testujemy go na Twoich danych przez 1-2 tygodnie. Dopiero gdy widzisz wynik na własnym procesie, decydujesz o kolejnych krokach.',
+                    'Nie zaczynamy od technologii, tylko od mapy procesów. W bezpłatnej 30-minutowej rozmowie diagnostycznej wskazujemy 2-3 miejsca, w których sztuczna inteligencja w firmie zwróci się najszybciej - policzalnie, w godzinach i złotówkach. Potem budujemy pierwszy workflow i testujemy go na Twoich danych przez 1-2 tygodnie. Dopiero gdy widzisz wynik na własnym procesie, decydujesz o kolejnych krokach.',
                     'Jeśli chcesz sprawdzić potencjał przed rozmową, zrób bezpłatny mikro-audyt AI (12 pytań, 4 minuty) albo policz koszt powtarzalnych zadań w kalkulatorze strat czasowych.',
                 ],
             },
@@ -196,11 +196,11 @@ export const SERVICES = [
             },
             {
                 q: 'Ile kosztuje automatyzacja procesów AI?',
-                a: 'Koszt zależy od liczby i złożoności procesów, dlatego zaczynamy od darmowej diagnozy, po której dostajesz konkretną wycenę. Samo utrzymanie działających automatyzacji to najczęściej 200-600 PLN miesięcznie za subskrypcje narzędzi - przy kilku procesach w firmie 20-osobowej.',
+                a: 'Koszt zależy od liczby i złożoności procesów, dlatego zaczynamy od bezpłatnej rozmowy diagnostycznej, po której dostajesz konkretną wycenę. Samo utrzymanie działających automatyzacji to najczęściej 200-600 PLN miesięcznie za subskrypcje narzędzi - przy kilku procesach w firmie 20-osobowej.',
             },
             {
                 q: 'Od czego zacząć automatyzację w swojej firmie?',
-                a: 'Od zmierzenia, gdzie uciekają godziny. Zrób bezpłatny mikro-audyt AI (4 minuty) albo policz koszt powtarzalnych zadań w kalkulatorze strat czasowych. Potem umów 30-minutową darmową diagnozę - dostaniesz mapę 2-3 procesów, od których warto zacząć.',
+                a: 'Od zmierzenia, gdzie uciekają godziny. Zrób bezpłatny mikro-audyt AI (4 minuty) albo policz koszt powtarzalnych zadań w kalkulatorze strat czasowych. Potem umów bezpłatną 30-minutową rozmowę diagnostyczną, po której dostaniesz mapę 2-3 procesów, od których warto zacząć.',
             },
         ],
     },

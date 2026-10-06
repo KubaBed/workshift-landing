@@ -419,7 +419,7 @@ function ResultCard({
             <div className="bg-black rounded-2xl p-6 md:p-10 text-white text-center">
                 <h2 className="text-2xl md:text-3xl font-display mb-3">Pokażemy jak odzyskać te {formatPLN(odzyskKwoteRok)}</h2>
                 <p className="text-base md:text-lg text-white/70 mb-6 max-w-xl mx-auto">
-                    30-minutowa diagnoza online. Mapa Twoich procesów + 2-3 konkretne rekomendacje. Zero zobowiązań.
+                    Bezpłatna 30-minutowa rozmowa diagnostyczna online. Mapa Twoich procesów + 2-3 konkretne rekomendacje. Zero zobowiązań.
                 </p>
                 <a
                     href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3OTv0k-j2FsAJLC5Db_lhbNVoz1GK8Qk5Z62f3rI8SkRJ7DpdUBgyiIeKtmVIMVgDfI9cbQFkj"
