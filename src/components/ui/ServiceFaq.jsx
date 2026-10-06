@@ -10,6 +10,9 @@ import { FadeUp } from '../animations/FadeUp';
  *
  * `keepMounted` jest celowe: Base UI domyślnie odmontowuje zamknięte panele,
  * a odpowiedzi muszą siedzieć w DOM, żeby renderer Google i LLM-y je widziały.
+ *
+ * `heading` przychodzi z `service.faqHeading` (ServicePage). Domyślna wartość
+ * to historyczny nagłówek automatyzacji - nowa usługa z FAQ powinna podać własny.
  */
 export function ServiceFaq({ faq, heading = 'Pytania o automatyzację AI', eyebrow = 'FAQ' }) {
     if (!faq?.length) return null;

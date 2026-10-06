@@ -490,21 +490,21 @@
  },
  {
   "file": "DESIGN.md",
-  "size": 16705,
+  "size": 16713,
   "cat": "doc",
   "title": "DESIGN.md",
   "desc": "Zasady i tokeny dla ludzi i agentów AI"
  },
  {
   "file": "templates/ws-email.html",
-  "size": 5183,
+  "size": 5191,
   "cat": "template",
   "title": "Szablon maila",
   "desc": "Tabele + style inline, 600 px, logo w PNG."
  },
  {
   "file": "VOICE.md",
-  "size": 21179,
+  "size": 20469,
   "cat": "doc",
   "title": "VOICE.md",
   "desc": "Głos marki: jak piszemy"

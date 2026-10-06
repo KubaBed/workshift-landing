@@ -26,7 +26,7 @@ const PHONE_TEL = 'tel:+48796186067';
 // tekstowi labelki poniżej.
 const CONSENT_POLICY_URL = '/polityka-prywatnosci';
 const CONSENT_TEXT =
-    'Zgadzam się na przetwarzanie moich danych osobowych zgodnie z Polityką Prywatności.';
+    'Zgadzam się na przetwarzanie moich danych osobowych zgodnie z polityką prywatności.';
 
 // Prefill WhatsApp z wynikiem - tel:/WhatsApp nie niesie fbclid/UTM, więc
 // wynik + branża w treści wiadomości to jedyna atrybucja dla "hot" leadów.
@@ -34,8 +34,8 @@ function buildWhatsAppUrl(score, branzaId) {
     const branzaLabel = BRANZE.find((b) => b.id === branzaId)?.label;
     const msg =
         score != null
-            ? `Cześć Kuba, zrobiłem mikro-audyt AI - wynik ${score}/${MAX_SCORE}${branzaLabel ? ` (${branzaLabel})` : ''}. Chcę porozmawiać o wyniku.`
-            : 'Cześć Kuba, zrobiłem mikro-audyt AI i chcę porozmawiać o wyniku.';
+            ? `Cześć Kuba, mam wynik mikro-audytu AI: ${score}/${MAX_SCORE}${branzaLabel ? ` (${branzaLabel})` : ''}. Chcę o nim porozmawiać.`
+            : 'Cześć Kuba, mam wynik mikro-audytu AI i chcę o nim porozmawiać.';
     return 'https://wa.me/48796186067?text=' + encodeURIComponent(msg);
 }
 
@@ -142,7 +142,7 @@ export function AudytQuiz() {
             track(EVENTS.AUDIT_START, { source: 'quiz' });
         }
         // InitiateCheckout (pixel + CAPI, dedup) - idempotentne per załadowanie
-        // strony. Jeśli user kliknął wcześniej „Rozpocznij audyt", policzyło się tam;
+        // strony. Jeśli user kliknął wcześniej „Zacznij mikro-audyt", policzyło się tam;
         // tu łapiemy tych, co przewinęli do quizu i wybrali branżę bez klikania CTA.
         // Meta optymalizuje pod ten event + audience „zaczął, nie skończył".
         fireInitiateCheckout({ source: 'branza' });
@@ -393,7 +393,7 @@ function ResultScreen({ score, tier, branza, wielkosc, answers, onRestart }) {
             {state === 'done' ? (
                 <div className="flex items-center gap-2 text-black bg-lime/20 border border-lime rounded-xl px-4 py-3">
                     <CheckCircle size={18} />
-                    <span className="text-sm font-medium">Wysłane! Sprawdź skrzynkę (i folder spam, gdyby co).</span>
+                    <span className="text-sm font-medium">Wysłane. Sprawdź skrzynkę, a jeśli wiadomości nie ma, także folder spam.</span>
                 </div>
             ) : (
                 <form
@@ -437,7 +437,7 @@ function ResultScreen({ score, tier, branza, wielkosc, answers, onRestart }) {
                             />
                         </div>
                         <label htmlFor={`privacy-${mode}`} className="text-xs text-muted-dark leading-tight">
-                            Zgadzam się na przetwarzanie moich danych osobowych zgodnie z <Link to={CONSENT_POLICY_URL} className="text-black hover:text-lime underline transition-colors">Polityką Prywatności</Link>. <span className="text-lime">*</span>
+                            Zgadzam się na przetwarzanie moich danych osobowych zgodnie z <Link to={CONSENT_POLICY_URL} className="text-black hover:text-lime underline transition-colors">polityką prywatności</Link>. <span className="text-lime">*</span>
                         </label>
                     </div>
                 </form>
@@ -522,7 +522,7 @@ function ResultScreen({ score, tier, branza, wielkosc, answers, onRestart }) {
                     <div>
                         <h4 className="text-lg font-display text-black mb-1">Pogadajmy konkretnie.</h4>
                         <p className="text-sm text-muted-dark mb-4">
-                            Przy tym wyniku audyt zwraca się zwykle w pierwszym wdrożeniu. Oddzwonię w ciągu 2 godzin (w dni robocze 9-17).
+                            Przy takim wyniku warto porozmawiać o tym, od którego procesu zacząć. Oddzwonię w ciągu 2 godzin (w dni robocze 9-17).
                         </p>
                         <p className="text-sm text-black bg-sage/60 border border-black/5 rounded-xl px-4 py-3 mb-4">
                             Biuro rachunkowe, z którym pracuję, odzyskało <strong>20 godzin tygodniowo</strong> -
@@ -536,12 +536,14 @@ function ResultScreen({ score, tier, branza, wielkosc, answers, onRestart }) {
 
                 {tier === 'yellow' && (
                     <div>
-                        <h4 className="text-lg font-display text-black mb-1">Chcesz to rozpisane?</h4>
+                        <h4 className="text-lg font-display text-black mb-1">Chcesz wynik na e-mail?</h4>
+                        {/* Copy = dokładnie to, co wysyła api/audyt-submit.js: wynik x/36 z etykietą
+                            progu, te same 3 rekomendacje i zaproszenie do odpowiedzi na maila. */}
                         <p className="text-sm text-muted-dark mb-4">
-                            Wyślę Ci imienny raport: te 3 rekomendacje rozpisane na konkretny plan dla branży{' '}
-                            <strong>{BRANZE.find((b) => b.id === branza)?.label || 'Twojej firmy'}</strong> - kolejność, narzędzia, ROI.
+                            Wyślę Ci wynik ({score}/{MAX_SCORE}) z oceną progu i te 3 rekomendacje. Jeśli zechcesz
+                            rozpisać je na plan wdrożenia, odpisz na tę wiadomość.
                         </p>
-                        {emailForm('Wyślij raport', 'report-yellow')}
+                        {emailForm('Wyślij wynik', 'report-yellow')}
                         <p className="text-xs text-muted-dark mt-5 mb-2">Wolisz od razu porozmawiać?</p>
                         {callButtons('sm')}
                     </div>
@@ -549,9 +551,9 @@ function ResultScreen({ score, tier, branza, wielkosc, answers, onRestart }) {
 
                 {tier === 'green' && (
                     <div>
-                        <h4 className="text-lg font-display text-black mb-1">Trzymaj rękę na pulsie.</h4>
+                        <h4 className="text-lg font-display text-black mb-1">Wynik na e-mail</h4>
                         <p className="text-sm text-muted-dark mb-4">
-                            Masz to nieźle poukładane. Wyślę Ci wynik na mail - a jeśli chcesz, raz w tygodniu 1 praktyczny use-case AI z newslettera „AI Praktycznie".
+                            Wyślę Ci wynik i 3 rekomendacje na e-mail.
                         </p>
                         {emailForm('Wyślij wynik', 'result-green')}
                     </div>
@@ -565,7 +567,7 @@ function ResultScreen({ score, tier, branza, wielkosc, answers, onRestart }) {
                     className="inline-flex items-center gap-1.5 text-xs text-muted-dark hover:text-black transition-colors"
                 >
                     <RotateCcw size={12} />
-                    Zrób audyt jeszcze raz
+                    Zrób mikro-audyt jeszcze raz
                 </button>
             </div>
         </div>

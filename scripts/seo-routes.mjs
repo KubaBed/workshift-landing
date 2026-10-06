@@ -267,11 +267,11 @@ const STATIC_FALLBACK = {
     heading: 'Workshift',
     lead: 'Wdrażamy AI, które po prostu działa',
     body:
-      'Workshift wdraża agentów i automatyzacje AI dla firm w Poznaniu i całej Polsce. Pracujemy w czterech ' +
-      'obszarach: audyt i automatyzacja procesów, dedykowane aplikacje, agenci AI oraz szkolenia dla zespołów. ' +
-      'Każde wdrożenie zaczyna się od bezpłatnej rozmowy diagnostycznej, a kończy narzędziem, z którego Twój zespół ' +
-      'korzysta na co dzień. Rozmowa trwa 30 minut online i daje mapę miejsc, w których automatyzacja ' +
-      'zwróci się najszybciej.',
+      'Workshift wdraża agentów i automatyzacje AI dla firm w Poznaniu i całej Polsce. Pracujemy w pięciu ' +
+      'obszarach: automatyzacja AI i audyt procesów, dedykowane aplikacje, agenci AI, szkolenia dla zespołów ' +
+      'oraz kreacje reklamowe AI. Każde wdrożenie zaczyna się od bezpłatnej 30-minutowej rozmowy diagnostycznej ' +
+      'online, a kończy narzędziem, z którego Twój zespół korzysta na co dzień. Po rozmowie masz mapę miejsc, ' +
+      'w których automatyzacja zwróci się najszybciej.',
     sections: [
       {
         heading: 'Co robimy',
@@ -305,7 +305,7 @@ const STATIC_FALLBACK = {
     lead: 'AI w praktyce dla polskich firm',
     body:
       'Wnioski z realnych wdrożeń, testy narzędzi i rozbiór tego, co w AI faktycznie zmienia pracę małych ' +
-      'i średnich firm. Piszemy o tym, co sprawdziliśmy u siebie albo u klientów - nie o zapowiedziach. ' +
+      'i średnich firm. Piszemy o tym, co sprawdziliśmy u siebie albo u klientów. ' +
       'Tematy wracające najczęściej: automatyzacja powtarzalnych procesów, agenci AI w obsłudze klienta ' +
       'i dokumentów, polskie modele językowe, narzędzia do pracy z wiedzą firmową oraz to, co zmiany ' +
       'w AI oznaczają dla ludzi w zespole.',
@@ -320,13 +320,13 @@ const STATIC_FALLBACK = {
     body:
       `${TOTAL_QUESTIONS} pytań o to, jak dziś wygląda praca w Twojej firmie: obsługa dokumentów, raportowanie, ` +
       'komunikacja z klientem, powtarzalne zadania zespołu. Na końcu dostajesz wynik i trzy rekomendacje ' +
-      'dopasowane do branży - konkretne procesy, od których warto zacząć, a nie ogólną listę narzędzi. ' +
-      'Audyt jest bezpłatny i nie wymaga przygotowania danych ani rozmowy handlowej.',
+      'dopasowane do branży: konkretne procesy, od których warto zacząć. ' +
+      'Mikro-audyt jest bezpłatny i nie wymaga przygotowania danych ani rozmowy handlowej.',
     sections: [
       {
         heading: 'Dla kogo',
         text:
-          'Audyt jest dopasowany do branży i wielkości firmy. Obsługiwane branże: ' +
+          'Mikro-audyt jest dopasowany do branży i wielkości firmy. Obsługiwane branże: ' +
           `${BRANZE.map((b) => stripEmoji(b.label)).join(', ')}. Wielkości zespołu: ` +
           `${ZESPOLY.map((z) => z.label).join(', ')}.`,
       },
@@ -334,8 +334,8 @@ const STATIC_FALLBACK = {
       {
         heading: 'Co dostajesz na końcu',
         items: [
-          'Wynik punktowy z podziałem na cztery obszary: operacje, sprzedaż, obsługa klienta i praca z wiedzą.',
-          'Trzy rekomendacje wybrane pod najwyżej punktowane odpowiedzi, a nie pod ogólny profil firmy.',
+          'Wynik punktowy z podziałem na cztery obszary: operacje, sprzedaż, obsługa klienta i raportowanie.',
+          'Trzy rekomendacje wybrane na podstawie najwyżej punktowanych odpowiedzi.',
           'Wskazanie procesów, od których zaczynamy wdrożenie, gdybyśmy mieli je robić razem.',
         ],
       },
@@ -365,7 +365,7 @@ const STATIC_FALLBACK = {
       {
         heading: 'Jak liczymy',
         items: [
-          'Godziny tracone miesięcznie = (godziny tygodniowo x 4,33 + dni raportowania x 8h) x liczba osób w zespole.',
+          'Godziny tracone miesięcznie = godziny tygodniowo na osobę x 4,33 x liczba osób w zespole + dni raportowania całego zespołu x 8h.',
           'Koszt = godziny tracone x stawka godzinowa. Rocznie: koszt miesięczny x 12.',
           `Odzysk liczymy konserwatywnie: ${Math.round(RECOVERY_RATE * 100)} procent straconych godzin, ` +
             'choć automatyzacja zwykle zwraca 40-60 procent.',
@@ -404,8 +404,8 @@ const STATIC_FALLBACK = {
     heading: 'Baza promptów i person AI',
     lead: '200 polskich promptów i 12 gotowych person do ChatGPT, Claude i Gemini',
     body:
-      'Przeszukiwalna baza promptów po polsku, podzielona na kategorie branżowe i funkcyjne: sprzedaż, ' +
-      'marketing, obsługa klienta, finanse, HR, praca z dokumentami. Persony to gotowe system prompty, ' +
+      'Przeszukiwalna baza promptów po polsku, podzielona na kategorie branżowe i funkcyjne, m.in. prawo ' +
+      'i kancelarie, e-commerce, marketing, HR, dane i analiza, pisanie i treści. Persony to gotowe system prompty, ' +
       'które wklejasz raz do gema Gemini albo Custom GPT i masz wyspecjalizowanego asystenta zamiast ' +
       'ogólnego czatu. Korzystanie jest bezpłatne, prompty źródłowe są na licencji CC0.',
     sections: [

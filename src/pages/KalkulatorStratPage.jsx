@@ -3,19 +3,39 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { Logo } from '../components/ui/Logo';
-import { ArrowLeft, ArrowRight, Calculator, CheckCircle, Calendar, Mail, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Calculator, CheckCircle, Loader2, Mail, Sparkles } from 'lucide-react';
 import { track, EVENTS } from '../lib/analytics';
+import { trackPixel, hasConsent } from '../lib/consent';
 import {
     BRANZE,
     ZESPOLY,
     KOSZTY,
     REKOMENDACJE,
     RECOVERY_RATE,
-    WEEKS_PER_MONTH,
-    HOURS_PER_REPORT_DAY,
+    computeKalkulator,
+    kalkulatorAssumptions,
 } from '../data/kalkulator';
 
 const STEPS = ['branza', 'zespol', 'godziny', 'raporty', 'koszt', 'wynik'];
+
+// Zgoda RODO na wysyłkę wyniku - ten sam wzorzec co w AudytQuiz.jsx: treść
+// zgody idzie też w payloadzie do /api/kalkulator-submit (ślad audytowy).
+// CONSENT_TEXT musi odpowiadać tekstowi labelki w formularzu.
+const CONSENT_POLICY_URL = '/polityka-prywatnosci';
+const CONSENT_TEXT =
+    'Zgadzam się na przetwarzanie moich danych osobowych w celu wysłania wyniku na e-mail, zgodnie z polityką prywatności.';
+
+// Atrybucja (fbclid + utm_*) do maila notyfikacji - jak w AudytQuiz.jsx.
+function getTrackingParams() {
+    if (typeof window === 'undefined') return {};
+    const p = new URLSearchParams(window.location.search);
+    const out = {};
+    for (const k of ['fbclid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']) {
+        const v = p.get(k);
+        if (v) out[k] = v.slice(0, 200);
+    }
+    return out;
+}
 
 export default function KalkulatorStratPage() {
     const [step, setStep] = useState(0);
@@ -26,7 +46,6 @@ export default function KalkulatorStratPage() {
         dniRaportow: 4,
         kosztH: 100,
     });
-    const [emailSubmitted, setEmailSubmitted] = useState(false);
     const [email, setEmail] = useState('');
 
     // Meta tej trasy ustawia <RouteMeta /> w App.jsx (źródło: STATIC_ROUTE_META).
@@ -34,15 +53,17 @@ export default function KalkulatorStratPage() {
         window.scrollTo(0, 0);
     }, []);
 
-    // Obliczenia
-    const wielkoscZespolu = ZESPOLY.find(z => z.id === data.zespol)?.value || 0;
-    const godzinyMies =
-        (data.godzinyTyg * WEEKS_PER_MONTH + data.dniRaportow * HOURS_PER_REPORT_DAY) * wielkoscZespolu;
-    const kosztMies = Math.round(godzinyMies * data.kosztH);
-    const kosztRok = kosztMies * 12;
-    const odzyskMies = Math.round(godzinyMies * RECOVERY_RATE);
-    const odzyskKwoteMies = Math.round(odzyskMies * data.kosztH);
-    const odzyskKwoteRok = odzyskKwoteMies * 12;
+    // Obliczenia - wzór w src/data/kalkulator.js (ten sam liczy mail z wynikiem).
+    // Dni raportów dotyczą całego zespołu, więc nie są mnożone przez liczbę osób.
+    const {
+        osoby: wielkoscZespolu,
+        godzinyMies,
+        kosztMies,
+        kosztRok,
+        odzyskMies,
+        odzyskKwoteMies,
+        odzyskKwoteRok,
+    } = computeKalkulator(data);
 
     const goNext = () => {
         track(EVENTS.CALCULATOR_STEP, { step: STEPS[step], next: STEPS[step + 1] });
@@ -130,7 +151,7 @@ export default function KalkulatorStratPage() {
                             <span className="text-muted-dark">na powtarzalnych zadaniach?</span>
                         </h1>
                         <p className="mt-4 text-base md:text-lg text-muted-dark max-w-xl mx-auto">
-                            Odpowiedz na 5 prostych pytań. W 60 sekund zobaczysz konkretne liczby i 3 rekomendacje dla Twojej branży.
+                            Odpowiedz na 5 pytań. W 60 sekund zobaczysz szacunek kosztu powtarzalnej pracy i 3 procesy, od których warto zacząć.
                         </p>
                     </motion.div>
                 )}
@@ -218,7 +239,7 @@ export default function KalkulatorStratPage() {
                         <StepCard
                             key="koszt"
                             title="Jaki jest średni koszt godziny pracy w Twojej firmie?"
-                            subtitle="Brutto, łącznie z narzutami. Przybliżona średnia."
+                            subtitle="Pełny koszt pracodawcy za godzinę: wynagrodzenie brutto i składki. Wystarczy przybliżenie."
                         >
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 {KOSZTY.map(k => (
@@ -252,8 +273,6 @@ export default function KalkulatorStratPage() {
                             formatPLN={formatPLN}
                             email={email}
                             setEmail={setEmail}
-                            emailSubmitted={emailSubmitted}
-                            setEmailSubmitted={setEmailSubmitted}
                         />
                     )}
                 </div>
@@ -340,20 +359,65 @@ function SliderInput({ value, onChange, min, max, step, unit, hint }) {
 function ResultCard({
     data, godzinyMies, kosztMies, kosztRok,
     odzyskMies, odzyskKwoteMies, odzyskKwoteRok,
-    formatPLN, email, setEmail, emailSubmitted, setEmailSubmitted,
+    formatPLN, email, setEmail,
 }) {
     const rekomendacje = REKOMENDACJE[data.branza] || REKOMENDACJE.inne;
+    const assumptions = kalkulatorAssumptions(data.zespol);
+    const recoveryPct = Math.round(RECOVERY_RATE * 100);
+    const [sendState, setSendState] = useState('idle'); // idle | loading | done | error
+    const [errorMsg, setErrorMsg] = useState('');
+    const [privacyAccepted, setPrivacyAccepted] = useState(false);
 
-    const handleCalendarClick = () => {
-        track(EVENTS.CALCULATOR_CTA_CLICK, { cta: 'calendar', branza: data.branza, kosztRok });
+    const handleContactClick = () => {
+        track(EVENTS.CALCULATOR_CTA_CLICK, { cta: 'contact_form', branza: data.branza, kosztRok });
     };
 
-    const handleEmailSubmit = (e) => {
+    const handleEmailSubmit = async (e) => {
         e.preventDefault();
-        if (!email || !email.includes('@')) return;
-        // Tymczasowo: tylko track event. Po podpięciu Resend → POST do /api/subscribe-newsletter z tagiem 'calculator'.
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+            setSendState('error');
+            setErrorMsg('Podaj poprawny adres e-mail.');
+            return;
+        }
+        if (!privacyAccepted) {
+            setSendState('error');
+            setErrorMsg('Zaznacz zgodę na przetwarzanie danych osobowych, aby wysłać wynik.');
+            return;
+        }
+        setSendState('loading');
+        setErrorMsg('');
         track(EVENTS.CALCULATOR_CTA_CLICK, { cta: 'email_submit', branza: data.branza, kosztRok });
-        setEmailSubmitted(true);
+        // Wspólny event_id dla pixela (klient) i CAPI (serwer) → Meta deduplikuje Lead.
+        const leadEventId =
+            typeof crypto !== 'undefined' && crypto.randomUUID
+                ? crypto.randomUUID()
+                : 'lead-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+        try {
+            const r = await fetch('/api/kalkulator-submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: email.trim(),
+                    branza: data.branza,
+                    zespol: data.zespol,
+                    godzinyTyg: data.godzinyTyg,
+                    dniRaportow: data.dniRaportow,
+                    kosztH: data.kosztH,
+                    // Wynik policzony na froncie - serwer liczy go ponownie tym samym wzorem.
+                    wynik: { godzinyMies: Math.round(godzinyMies), kosztMies, kosztRok, odzyskMies, odzyskKwoteMies, odzyskKwoteRok },
+                    tracking: getTrackingParams(),
+                    consent: true, consentText: CONSENT_TEXT, consentPolicyUrl: CONSENT_POLICY_URL,
+                    // CAPI: serwer odpali Lead server-side TYLKO gdy jest zgoda marketingowa.
+                    leadEventId, marketingConsent: hasConsent('marketing'),
+                }),
+            });
+            if (!r.ok) throw new Error('send failed');
+            setSendState('done');
+            trackPixel('Lead', { content_name: 'kalkulator' }, { eventId: leadEventId });
+        } catch {
+            setSendState('error');
+            setErrorMsg('Nie udało się wysłać wyniku. Spróbuj ponownie albo napisz na kontakt@workshift.pl.');
+        }
     };
 
     return (
@@ -370,11 +434,11 @@ function ResultCard({
                     Twój wynik
                 </span>
                 <h1 className="text-3xl md:text-5xl font-display text-black leading-tight">
-                    Twoja firma traci <br />
+                    Szacunek: ok. <br />
                     <span className="text-lime-dark" style={{ color: '#7a9900' }}>{Math.round(godzinyMies)}h miesięcznie</span>
                 </h1>
                 <p className="mt-3 text-base md:text-lg text-muted-dark">
-                    To <strong className="text-black">{formatPLN(kosztMies)}/mies</strong> = <strong className="text-black">{formatPLN(kosztRok)}/rok</strong> pracy ludzi na zadaniach, które AI mogłoby wykonać.
+                    na powtarzalnych zadaniach. To ok. <strong className="text-black">{formatPLN(kosztMies)}</strong> miesięcznie (<strong className="text-black">{formatPLN(kosztRok)}</strong> rocznie) kosztu pracy przy podanej stawce.
                 </p>
             </div>
 
@@ -391,7 +455,7 @@ function ResultCard({
                 </div>
 
                 <div className="bg-lime/10 backdrop-blur rounded-2xl p-6 border border-lime/30">
-                    <div className="text-xs font-mono uppercase tracking-wider text-black/70 mb-2">Możesz odzyskać (~40%)</div>
+                    <div className="text-xs font-mono uppercase tracking-wider text-black/70 mb-2">Do odzyskania przy założeniu {recoveryPct}%</div>
                     <div className="text-2xl md:text-3xl font-display text-black mb-1">{formatPLN(odzyskKwoteMies)}</div>
                     <div className="text-sm text-black/70">miesięcznie ({odzyskMies}h)</div>
                     <div className="mt-3 pt-3 border-t border-lime/30">
@@ -401,9 +465,20 @@ function ResultCard({
                 </div>
             </div>
 
+            {/* Założenia wyliczenia - nazwane wprost (te same idą w mailu z wynikiem) */}
+            <div className="text-sm text-muted-dark">
+                <p className="font-mono text-xs uppercase tracking-wider text-black/70 mb-2">Jak liczymy</p>
+                <ul className="space-y-1 list-disc pl-5">
+                    {assumptions.map((a, i) => (
+                        <li key={i}>{a}</li>
+                    ))}
+                </ul>
+                <p className="mt-2">{recoveryPct}% to założenie kalkulatora. Realny wynik policzymy na Twoich procesach.</p>
+            </div>
+
             {/* Rekomendacje */}
             <div className="bg-white/60 backdrop-blur rounded-2xl p-6 md:p-8 border border-black/5">
-                <h2 className="text-xl md:text-2xl font-display text-black mb-1">3 procesy, od których zaczęlibyśmy w Twojej firmie</h2>
+                <h2 className="text-xl md:text-2xl font-display text-black mb-1">3 procesy do sprawdzenia w Twojej branży</h2>
                 <p className="text-sm text-muted-dark mb-6">Dobrane na podstawie branży i typowych wzorców.</p>
                 <ul className="space-y-3">
                     {rekomendacje.map((rec, i) => (
@@ -417,59 +492,82 @@ function ResultCard({
 
             {/* CTA primary */}
             <div className="bg-black rounded-2xl p-6 md:p-10 text-white text-center">
-                <h2 className="text-2xl md:text-3xl font-display mb-3">Pokażemy jak odzyskać te {formatPLN(odzyskKwoteRok)}</h2>
+                <h2 className="text-2xl md:text-3xl font-display mb-3">Sprawdźmy, które z tych godzin da się odzyskać w Twojej firmie</h2>
                 <p className="text-base md:text-lg text-white/70 mb-6 max-w-xl mx-auto">
-                    Bezpłatna 30-minutowa rozmowa diagnostyczna online. Mapa Twoich procesów + 2-3 konkretne rekomendacje. Zero zobowiązań.
+                    Napisz kilka zdań o swoich procesach, a zaproponujemy termin bezpłatnej 30-minutowej rozmowy diagnostycznej online. Przechodzimy w niej przez Twoje procesy i wskazujemy 2-3 miejsca, od których warto zacząć.
                 </p>
                 <a
-                    href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3OTv0k-j2FsAJLC5Db_lhbNVoz1GK8Qk5Z62f3rI8SkRJ7DpdUBgyiIeKtmVIMVgDfI9cbQFkj"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={handleCalendarClick}
+                    href="/#kontakt"
+                    onClick={handleContactClick}
                 >
                     <Button
                         variant="accent"
                         size="lg"
                         className="h-14 px-8 text-base flex items-center gap-2 mx-auto shadow-lg shadow-lime/20"
                     >
-                        <Calendar size={18} />
-                        Umów bezpłatną diagnozę
+                        Napisz do nas
+                        <ArrowRight size={18} />
                     </Button>
                 </a>
                 <p className="text-xs text-white/40 mt-4 font-mono uppercase tracking-wider">
-                    Pierwsza dostępna: zwykle w 3-5 dni
+                    Odpowiadamy w ciągu 24 godzin
                 </p>
             </div>
 
-            {/* Email gate (opcjonalny) */}
+            {/* Wynik na e-mail (opcjonalny) - wysyłka przez /api/kalkulator-submit */}
             <div className="bg-white/40 backdrop-blur rounded-2xl p-6 border border-black/5">
-                {!emailSubmitted ? (
+                {sendState !== 'done' ? (
                     <>
                         <div className="flex items-start gap-3 mb-4">
                             <Mail size={20} className="text-lime mt-1 shrink-0" />
                             <div>
-                                <h3 className="font-display text-lg text-black">Chcesz wynik na maila?</h3>
-                                <p className="text-sm text-muted-dark">Wyślemy podsumowanie + case study firmy z Twojej branży, która już to wdrożyła. Zero spamu.</p>
+                                <h3 className="font-display text-lg text-black">Chcesz wynik na e-mail?</h3>
+                                <p className="text-sm text-muted-dark">Wyślemy Ci wynik z założeniami wyliczenia i 3 procesy do sprawdzenia w Twojej branży.</p>
                             </div>
                         </div>
-                        <form onSubmit={handleEmailSubmit} className="flex flex-col sm:flex-row gap-2">
-                            <input
-                                type="email"
-                                placeholder="twoj@email.pl"
-                                value={email}
-                                onChange={e => setEmail(e.target.value)}
-                                required
-                                className="flex-1 h-11 px-4 rounded-lg bg-white border border-black/10 text-black placeholder:text-black/30 focus-visible:outline-none focus-visible:border-lime focus-visible:ring-2 focus-visible:ring-lime/30 text-sm"
-                            />
-                            <Button type="submit" variant="default" size="lg" className="h-11 px-5">
-                                Wyślij
-                            </Button>
+                        <form onSubmit={handleEmailSubmit} className="flex flex-col gap-3">
+                            <div className="flex flex-col sm:flex-row gap-2">
+                                <input
+                                    type="email"
+                                    placeholder="twoj@email.pl"
+                                    value={email}
+                                    onChange={e => setEmail(e.target.value)}
+                                    required
+                                    className="flex-1 h-11 px-4 rounded-lg bg-white border border-black/10 text-black placeholder:text-black/30 focus-visible:outline-none focus-visible:border-lime focus-visible:ring-2 focus-visible:ring-lime/30 text-sm"
+                                />
+                                <Button
+                                    type="submit"
+                                    variant="default"
+                                    size="lg"
+                                    className="h-11 px-5"
+                                    disabled={sendState === 'loading' || !privacyAccepted}
+                                >
+                                    {sendState === 'loading' ? <Loader2 size={16} className="animate-spin" /> : 'Wyślij'}
+                                </Button>
+                            </div>
+                            <div className="flex items-start gap-2.5">
+                                <div className="flex items-center h-5">
+                                    <input
+                                        id="privacy-kalkulator"
+                                        name="privacy-kalkulator"
+                                        type="checkbox"
+                                        required
+                                        checked={privacyAccepted}
+                                        onChange={(e) => setPrivacyAccepted(e.target.checked)}
+                                        className="h-4 w-4 rounded border-black/20 accent-lime focus:ring-lime/40"
+                                    />
+                                </div>
+                                <label htmlFor="privacy-kalkulator" className="text-xs text-muted-dark leading-tight">
+                                    Zgadzam się na przetwarzanie moich danych osobowych w celu wysłania wyniku na e-mail, zgodnie z <Link to={CONSENT_POLICY_URL} className="text-black hover:text-lime underline transition-colors">polityką prywatności</Link>. <span className="text-lime">*</span>
+                                </label>
+                            </div>
                         </form>
+                        {sendState === 'error' && <p className="mt-2 text-sm text-red-600">{errorMsg}</p>}
                     </>
                 ) : (
                     <div className="flex items-center gap-3">
                         <CheckCircle size={20} className="text-lime" />
-                        <span className="text-sm text-black">Dzięki - wynik i case study dotrą w ciągu 5 minut.</span>
+                        <span className="text-sm text-black">Wysłane. Wynik i rekomendacje dotrą za chwilę. Jeśli wiadomości nie ma, sprawdź folder spam.</span>
                     </div>
                 )}
             </div>
@@ -480,7 +578,7 @@ function ResultCard({
                 <Link to="/uslugi/automatyzacja" className="text-black underline underline-offset-4 hover:text-lime transition-colors">
                     Zobacz, jak działa automatyzacja AI
                 </Link>
-                {' '}- procesy, wdrożenie i przykład z liczbami.
+                .
             </p>
 
             {/* Reset */}

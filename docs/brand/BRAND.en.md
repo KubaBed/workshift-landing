@@ -432,7 +432,7 @@ Always a concrete process, duration or result. Instead of „usprawniamy procesy
 Short sentences. No corporate euphemisms. We speak the way you speak to a business partner, not to a lead in a CRM.
 
 **3. We are in this game too**
-First person plural („wdrażamy", „wiemy" - *we deploy, we know*) in company materials: website, offers, ads. In authored texts signed by Jakub (blog, LinkedIn, newsletter, talks) first person singular. Decided 06.10.2026. Empathy through shared experience: „Wiemy, o co toczy się gra, bo sami w nią gramy" *(We know what is at stake, because we are playing too)*. We do not lecture - we understand.
+First person plural („wdrażamy", „wiemy" - *we deploy, we know*) in company materials: website, offers, ads. In authored texts signed by Jakub (blog, LinkedIn, talks) first person singular. Decided 06.10.2026. Empathy through shared experience: „Wiemy, o co toczy się gra, bo sami w nią gramy" *(We know what is at stake, because we are playing too)*. We do not lecture - we understand.
 
 **4. Outcome, not technology**
 The client does not buy „an AI agent" - they buy „a first line of support that works at 3am". In consumer-facing copy, **never name the stack**.
@@ -477,9 +477,9 @@ Left column: never write this. Right column: write this instead.
 
 ### Language
 
-- **Client-facing material:** Polish (website, proposals, newsletter, social media)
+- **Client-facing material:** Polish (website, proposals, social media)
 - **Code and technical documentation:** English
-- **"AI Praktycznie" newsletter:** Polish, fortnightly, one practical process per issue
+- **"AI Praktycznie" newsletter:** paused (decided 06.10.2026). Not mentioned on the website or in materials until it is sent regularly
 - **Context:** Polish SME reality, GDPR/RODO, Polish institution names
 - **Register:** professional but human - Jakub speaks in his own voice, not through a corporate mask
 

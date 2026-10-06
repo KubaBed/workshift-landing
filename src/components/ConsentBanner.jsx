@@ -103,14 +103,14 @@ export function ConsentBanner() {
                             </h2>
                             {/* Mobile: jedna linia */}
                             <p className="md:hidden text-[12px] text-muted-dark leading-snug">
-                                Anonimowe statystyki. Reklamy i remarketing <span className="text-black">tylko za Twoją zgodą</span>.{' '}
+                                Statystyki, nagrania sesji i reklamy włączamy <span className="text-black">tylko za Twoją zgodą</span>.{' '}
                                 <Link to="/polityka-prywatnosci" className="text-black underline underline-offset-2 decoration-lime">
                                     Polityka
                                 </Link>.
                             </p>
                             {/* Desktop: pełna treść */}
                             <p className="hidden md:block text-[13px] text-muted-dark leading-snug mb-2">
-                                Zliczamy anonimowe statystyki, żeby wiedzieć co na stronie działa. <span className="text-black">Nie sprzedajemy</span> Twoich danych - reklamy i remarketing tylko <span className="text-black">za Twoją zgodą</span>.
+                                Statystyki odwiedzin pokazują nam, co na stronie działa. <span className="text-black">Nie sprzedajemy</span> Twoich danych, a statystyki, nagrania sesji i reklamy włączamy tylko <span className="text-black">za Twoją zgodą</span>.
                             </p>
                             <p className="hidden md:block text-[12px] text-muted-dark/80 leading-snug">
                                 Więcej w{' '}
@@ -138,19 +138,19 @@ export function ConsentBanner() {
                                             />
                                             <ConsentToggle
                                                 label="Statystyki"
-                                                desc="Vercel + Google Analytics + PostHog - anonimowe wizyty, lejki konwersji i testy A/B."
+                                                desc="Google Analytics + PostHog: statystyki odwiedzin, lejki konwersji i testy A/B."
                                                 checked={analytics}
                                                 onChange={setAnalytics}
                                             />
                                             <ConsentToggle
                                                 label="Nagrania sesji"
-                                                desc="Clarity + PostHog - heatmapy, nagrania i debug UX."
+                                                desc="Clarity + PostHog: heatmapy, nagrania sesji i diagnozowanie błędów na stronie."
                                                 checked={recordings}
                                                 onChange={setRecordings}
                                             />
                                             <ConsentToggle
                                                 label="Marketing"
-                                                desc="Meta Pixel - pomiar skuteczności reklam i remarketing (tylko za Twoją zgodą)."
+                                                desc="Meta Pixel: pomiar skuteczności reklam i remarketing."
                                                 checked={marketing}
                                                 onChange={setMarketing}
                                             />

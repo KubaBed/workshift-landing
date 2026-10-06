@@ -115,14 +115,14 @@ export function Header() {
                                 {/* Full CTA on sm+ */}
                                 <Link to={isHome ? '#kontakt' : '/#kontakt'}>
                                     <Button variant="accent" size="sm" className="hidden sm:flex z-50 relative">
-                                        Kontakt
+                                        Umów rozmowę
                                     </Button>
                                 </Link>
                                 {/* Compact icon CTA on mobile */}
                                 <Link
                                     to={isHome ? '#kontakt' : '/#kontakt'}
                                     className="sm:hidden z-50 relative w-9 h-9 rounded-full bg-lime text-black flex items-center justify-center shadow-sm transition-transform active:scale-95"
-                                    aria-label="Kontakt"
+                                    aria-label="Umów rozmowę"
                                 >
                                     <Phone size={16} />
                                 </Link>
@@ -182,7 +182,7 @@ export function Header() {
                         >
                             <Link to={isHome ? '#kontakt' : '/#kontakt'} onClick={() => setIsMenuOpen(false)}>
                                 <Button variant="accent" size="lg" className="w-full text-lg">
-                                    Kontakt
+                                    Umów rozmowę
                                 </Button>
                             </Link>
                         </motion.div>

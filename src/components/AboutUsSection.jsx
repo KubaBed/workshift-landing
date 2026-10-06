@@ -35,7 +35,7 @@ export function AboutUsSection() {
                             {/* Founder Image Placeholder */}
                                 <img
                                         src={jakubPhoto}
-                                        alt="Workshift Founder"
+                                        alt="Jakub Bednarz, założyciel Workshift"
                                         loading="lazy"
                                         className="w-full h-full object-cover relative z-10 grayscale hover:grayscale-0 transition-all duration-500 scale-110"
                                 />
@@ -44,7 +44,7 @@ export function AboutUsSection() {
                                 <div className="absolute bottom-6 left-6 right-6 p-4 rounded-[10px] bg-white flex items-center justify-between border border-black/10 shadow-xl z-20">
                                     <div className="flex items-center gap-3">
                                         <div className="w-10 h-10 rounded-full overflow-hidden border border-black/10">
-                                           <img src={jakubPhoto} alt="Avatar" className="w-full h-full object-cover" loading="lazy" />
+                                           <img src={jakubPhoto} alt="Jakub Bednarz" className="w-full h-full object-cover" loading="lazy" />
                                         </div>
                                         <div className="flex flex-col">
                                             <p className="font-semibold text-black text-sm">@jakubbednarz</p>
@@ -73,13 +73,13 @@ export function AboutUsSection() {
 
                             <div className="space-y-6 text-lg md:text-xl text-muted-dark leading-relaxed">
                                 <p>
-                                    Cześć, tu Jakub. Sam od kilku lat prowadzę firmę z sektora MŚP, więc dobrze znam codzienność właścicieli - ograniczony czas, rosnące koszty i zespół, który nie nadąża za wszystkim, co trzeba zrobić. Wiem, jak to jest ważyć każdą decyzję o wydatku i zastanawiać się, czy faktycznie przełoży się na realny wynik.
+                                    Cześć, tu Jakub. Sam od kilku lat prowadzę firmę z sektora MŚP, więc dobrze znam codzienność właścicieli - ograniczony czas, rosnące koszty i zespół, który nie nadąża za wszystkim, co trzeba zrobić. Wiem, jak to jest ważyć każdą decyzję o wydatku i zastanawiać się, czy przełoży się na wynik.
                                 </p>
                                 <p>
                                     Widziałem zbyt wiele firm przepalających budżety na drogie narzędzia, których nikt nie potrafi obsłużyć. Wiem też, jak frustrujące jest tracenie utalentowanych ludzi, gdy ich potencjał marnuje się na mechaniczne, powtarzalne kopiowanie danych.
                                 </p>
                                 <p className="text-black font-medium">
-                                    Dlatego stworzyłem Workshift. Nie wdrażamy technologii "na pokaz". Projektujemy rozwiązania, które odciążają Twój zespół od zaraz, dając Wam przestrzeń na to, co faktycznie buduje przewagę rynkową. Żadnych kompromisów. Tylko mierzalne ROI.
+                                    Dlatego stworzyłem Workshift. Projektujemy rozwiązania, które odciążają Twój zespół od razu po wdrożeniu i dają mu czas na pracę, która buduje przewagę firmy. Wynik każdego wdrożenia mierzymy w godzinach pracy i złotówkach.
                                 </p>
                             </div>
 

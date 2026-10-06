@@ -13,43 +13,43 @@ import { openConsentBanner } from '../lib/consent';
 const faqs = [
     {
         q: "Czy moja firma nie jest na to za mała?",
-        a: "Nie. AI dla korporacji to miliony. AI dla MŚP to po prostu spięcie skrzynki mailowej z systemem faktur czy CRM-em by odzyskać 10 godzin pracy w tygodniu. Każda skala zasługuje na optymalizację. Naszym \"sweet spotem\" są firmy 10-200 osób."
+        a: "Nie. W MŚP automatyzacja to często po prostu spięcie skrzynki mailowej z systemem faktur czy CRM-em, żeby odzyskać 10 godzin pracy w tygodniu. Najczęściej pracujemy z firmami, które zatrudniają 10-200 osób."
     },
     {
-        q: "Czy to znaczy, że będę musiał zwalniać ludzi?",
+        q: "Czy to znaczy, że trzeba będzie zwalniać ludzi?",
         a: "Nie. Celem jest \"uwolnienie\" Twoich sprawdzonych ekspertów od klikania w arkusze, po to by zajęli się tym, co faktycznie powiększa zyski biznesu, bez konieczności zatrudniania kolejnych osób."
     },
     {
         q: "Od czego zacząć współpracę?",
-        a: "Od bezpłatnej 30-minutowej rozmowy diagnostycznej online. Wymieniamy się informacjami, a my projektujemy co najmniej jeden pomysł (Quick Win) do wdrożenia od razu. Rozmowa nie zobowiązuje Cię do niczego."
+        a: "Od bezpłatnej 30-minutowej rozmowy diagnostycznej online. Opowiadasz nam o firmie, a my wskazujemy co najmniej jeden pomysł, który można wdrożyć od razu."
     },
     {
         q: "Ile czasu trwa przeciętne wdrożenie?",
-        a: "Większość procesów, takich jak automatyzacja obsługi zapytań czy kategoryzacja dokumentów finansowych, wdrażamy i testujemy w ciągu 2 do 4 tygodni. Pierwsze efekty (Quick Wins) widzisz od razu."
+        a: "Większość procesów, takich jak automatyzacja obsługi zapytań czy kategoryzacja dokumentów finansowych, wdrażamy i testujemy w ciągu 2 do 4 tygodni. Pierwsze efekty widzisz po uruchomieniu pierwszego workflow."
     },
     {
         q: "Czy automatyzacje integrują się z naszym obecnym CRM-em lub ERP?",
-        a: "Tak. Budujemy rozwiązania w oparciu o API, co pozwala spiąć ze sobą niemal każde popularne oprogramowanie (np. HubSpot, Salesforce, fakturownia, Slack, Gmail) beziinwazyjnie dla obecnej infrastruktury."
+        a: "Tak. Budujemy rozwiązania w oparciu o API, co pozwala spiąć ze sobą niemal każde popularne oprogramowanie (np. HubSpot, Salesforce, Fakturownia, Slack, Gmail) bez ingerencji w obecną infrastrukturę."
     },
     {
         q: "Jak dbacie o bezpieczeństwo danych firmowych?",
-        a: "Każde rozwiązanie projektujemy w oparciu o zamknięte instancje i rygorystyczne polityki dostępu. Twoje dane dokumentowe i finansowe nigdy nie służą globalnym modelom do celów trenowania."
+        a: "Korzystamy z kont i API, w których dostawca modelu nie używa danych klienta do trenowania, a dostęp do danych mają tylko osoby, które go potrzebują."
     },
     {
         q: "Czy potrzebuję dedykowanego programisty do utrzymania systemu?",
-        a: "Nie. Konfigurujemy platformy tak, by działały autonomicznie na narzędziach no-code/low-code. Oddajemy w Twoje ręce gotowy system i zapewniamy pełne wsparcie techniczne po wdrożeniu."
+        a: "Nie. Konfigurujemy platformy tak, by działały autonomicznie na narzędziach no-code/low-code. Oddajemy Ci gotowy system, a po wdrożeniu pomagamy, gdy coś przestaje działać."
     },
     {
         q: "W jaki sposób mierzycie zwrot z inwestycji (ROI)?",
-        a: "Wspólnie ustalamy metryki przed startem projektu. Najczęściej mierzymy ROI poprzez ilość zaoszczędzonych roboczogodzin w miesiącu, spadek liczby błędów operacyjnych i skrócenie czasu obsługi klienta."
+        a: "Wspólnie ustalamy metryki przed startem projektu. Najczęściej mierzymy ROI poprzez liczbę zaoszczędzonych roboczogodzin w miesiącu, spadek liczby błędów operacyjnych i skrócenie czasu obsługi klienta."
     },
     {
         q: "Ile kosztuje utrzymanie automatyzacji po wdrożeniu?",
-        a: "Stawiamy na transparentność. Główne koszty utrzymania to podstawowe subskrypcje narzędzi (np. Make, OpenAI API), co dla kilku procesów w firmie zatrudniającej 20 osób wynosi najczęściej od 200 do 600 PLN miesięcznie zależnie od wolumenu ruchu."
+        a: "Główne koszty utrzymania to podstawowe subskrypcje narzędzi (np. Make, OpenAI API), co dla kilku procesów w firmie zatrudniającej 20 osób wynosi najczęściej od 200 do 600 PLN miesięcznie zależnie od wolumenu ruchu."
     },
     {
-        q: "Czy mogę zobaczyć demo zanim się zdecyduję?",
-        a: "Tak - każda konsultacja zawiera prezentację procesu na żywo. Pokazujemy realne workflow, nie slajdy."
+        q: "Czy mogę zobaczyć demo, zanim się zdecyduję?",
+        a: "Tak. W trakcie bezpłatnej rozmowy diagnostycznej pokazujemy na żywo działający workflow."
     }
 ];
 
@@ -104,14 +104,14 @@ export function CTASection() {
                     Ile godzin tygodniowo Twój zespół traci na rzeczy, które maszyna zrobiłaby lepiej?
                 </h2>
                 <p className="text-xl text-white/50 mb-12 max-w-2xl mx-auto leading-relaxed">
-                    30 minut. Zero kosztów. Znajdziemy jedno "wąskie gardło" w Twoich procesach i pokażemy, jak je usunąć.
+                    W trakcie bezpłatnej 30-minutowej rozmowy znajdziemy w Twoich procesach jedno miejsce, które najbardziej spowalnia pracę, i pokażemy, jak je usunąć.
                 </p>
                 <div className="flex flex-col items-center">
                     <Button onClick={() => { track(EVENTS.CALENDAR_OPEN, { source: 'cta_section' }); setIsModalOpen(true); }} variant="accent" size="lg" className="w-full sm:w-auto text-lg px-10 h-16 shadow-2xl shadow-lime/20 transition-transform active:scale-95">
                         Wybierz termin bezpłatnej rozmowy diagnostycznej
                     </Button>
                     <p className="mt-6 text-sm text-white/40 font-mono tracking-wide text-center">
-                        Wybierasz termin sam(a) - bez presji i bez telefonów.
+                        Termin wybierasz sam(a) w kalendarzu.
                     </p>
                 </div>
             </div>
@@ -157,7 +157,7 @@ export function CTASection() {
                             <iframe
                                 src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3OTv0k-j2FsAJLC5Db_lhbNVoz1GK8Qk5Z62f3rI8SkRJ7DpdUBgyiIeKtmVIMVgDfI9cbQFkj?gv=true"
                                 className="relative z-10 w-full h-full border-0 bg-transparent"
-                                title="Kuba Bednarczyk - Kalendarz Spotkań"
+                                title="Kalendarz rozmowy diagnostycznej z Jakubem Bednarzem"
                             />
                         </div>
                         <div className="px-5 py-3 border-t border-black/5 bg-sage flex items-center justify-between gap-3 text-xs text-muted-dark">
@@ -195,17 +195,16 @@ export function Footer() {
                             </Floating>
                         </div>
                         <p className="text-white/50 max-w-sm leading-relaxed">
-                            AI consulting dla polskich firm. Mniej rutyny, więcej wyników.
+                            Wdrażamy automatyzacje i agentów AI w polskich MŚP.
                         </p>
                     </div>
 
                     <div>
                         <h4 className="text-white font-display mb-6">Sekcje</h4>
                         <ul className="space-y-4">
-                            <li><Link to="/#uslugi" className="text-white/50 hover:text-lime transition-colors">Usługi i Automatyzacje</Link></li>
+                            <li><Link to="/#uslugi" className="text-white/50 hover:text-lime transition-colors">Usługi i automatyzacje</Link></li>
                             <li><Link to="/#proces" className="text-white/50 hover:text-lime transition-colors">Nasz proces wdrożenia</Link></li>
-                            <li><Link to="/blog" className="text-white/50 hover:text-lime transition-colors">Baza wiedzy (Blog)</Link></li>
-                            <li><Link to="/#newsletter" className="text-white/50 hover:text-lime transition-colors">Newsletter AI Praktycznie</Link></li>
+                            <li><Link to="/blog" className="text-white/50 hover:text-lime transition-colors">Blog</Link></li>
                         </ul>
                     </div>
 
@@ -222,14 +221,13 @@ export function Footer() {
                 <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
                     <p className="text-white/30 text-sm">© {new Date().getFullYear()} Workshift. Wszelkie prawa zastrzeżone.</p>
                     <div className="flex flex-wrap gap-6 justify-center sm:justify-end">
-                        <Link to="/polityka-prywatnosci" className="text-sm font-mono text-white/30 hover:text-white transition-colors">Polityka Prywatności</Link>
+                        <Link to="/polityka-prywatnosci" className="text-sm font-mono text-white/30 hover:text-white transition-colors">Polityka prywatności</Link>
                         <button
                             onClick={openConsentBanner}
                             className="text-sm font-mono text-white/30 hover:text-white transition-colors cursor-pointer"
                         >
                             Ustawienia cookies
                         </button>
-                        <a href="#!" className="text-sm font-mono text-white/30 hover:text-white transition-colors">Regulamin</a>
                     </div>
                 </div>
             </div>

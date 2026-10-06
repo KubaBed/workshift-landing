@@ -1,5 +1,5 @@
 Workshift - paczka marki 1.0 · 2026-10-06
-Przewodnik online: https://workshift.pl/brand/
+Przewodnik online: https://www.workshift.pl/brand/
 
 DESIGN.md     zasady i tokeny (dla ludzi i agentów AI; wklej do repo projektu albo do promptu)
 VOICE.md      głos marki: jak piszemy o Workshift i w imieniu Workshift

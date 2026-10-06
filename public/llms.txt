@@ -1,0 +1,25 @@
+# Workshift
+
+> Workshift wdraża automatyzacje i agentów AI dla małych i średnich firm w Polsce. Budujemy też dedykowane aplikacje, prowadzimy szkolenia AI dla zespołów i produkujemy kreacje reklamowe AI. Współpraca zaczyna się od bezpłatnej 30-minutowej rozmowy diagnostycznej online, po której firma wie, od których procesów zacząć.
+
+Workshift prowadzi Jakub Bednarz. Siedziba: Poznań, pracujemy z firmami z całej Polski. Kontakt: kontakt@workshift.pl. Strona jest po polsku.
+
+## Usługi
+
+- [Automatyzacja AI i audyt procesów](https://www.workshift.pl/uslugi/automatyzacja): mapa procesów firmy, wskazanie 2-3 miejsc do automatyzacji i workflow podpięty pod narzędzia, z których zespół już korzysta (poczta, arkusze, CRM, program do faktur).
+- [Agenci AI](https://www.workshift.pl/uslugi/agenty): chatboty na stronę i komunikatory, voiceboty i boty mailowe, które odpowiadają na podstawie bazy wiedzy i procedur firmy, a trudniejsze sprawy przekazują ludziom.
+- [Dedykowana aplikacja](https://www.workshift.pl/uslugi/aplikacja): aplikacje webowe pod proces firmy, np. panel dla zespołu, portal dla klientów albo moduły AI wpięte w istniejące systemy.
+- [Szkolenia AI](https://www.workshift.pl/uslugi/szkolenia): warsztaty stacjonarne i online, na których zespół pracuje na własnych danych i narzędziach, z 30 dniami wsparcia po szkoleniu.
+- [Kreacje reklamowe AI](https://www.workshift.pl/uslugi/kreacje): packshoty, reklamy do social mediów i wideo generowane zgodnie z brandbookiem klienta.
+
+## Bezpłatne narzędzia
+
+- [Mikro-audyt AI](https://www.workshift.pl/audyt-ai): 12 pytań o operacje, sprzedaż, obsługę klienta i raportowanie, wynik punktowy i trzy rekomendacje dopasowane do branży.
+- [Kalkulator strat czasowych](https://www.workshift.pl/kalkulator): przelicza godziny tracone na powtarzalne zadania na koszt miesięczny i roczny; wzór liczenia jest opisany na stronie.
+- [Baza promptów i person AI](https://www.workshift.pl/prompty): przeszukiwalna baza promptów po polsku i gotowe persony (system prompty) do ChatGPT, Claude i Gemini.
+
+## Więcej
+
+- [Strona główna](https://www.workshift.pl/): przegląd usług i sposobu współpracy.
+- [Blog](https://www.workshift.pl/blog): wpisy o wdrożeniach AI, narzędziach i automatyzacji w polskich firmach.
+- [Paczka marki](https://www.workshift.pl/brand/): logo, kolory, pisma i zasady głosu marki Workshift dla partnerów.

@@ -1139,7 +1139,7 @@ def section_tov():
     items.append(Paragraph(
         'Workshift mówi do <b>właścicieli firm i managerów</b>, nie do deweloperów. '
         'Krótkie zdania. Konkretne liczby. Żadnych korporacyjnych eufemizmów. '
-        '„My" w materiałach firmowych, „ja" w tekstach autorskich Jakuba (blog, LinkedIn, newsletter).',
+        '„My" w materiałach firmowych, „ja" w tekstach autorskich Jakuba (blog, LinkedIn, wystąpienia).',
         S['body']))
 
     items.append(Paragraph('5 zasad pisania', S['h2']))

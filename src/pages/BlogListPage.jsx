@@ -29,11 +29,11 @@ export default function BlogListPage() {
             <div className="flex items-center gap-2 mb-6">
               <span className="w-2 h-2 rounded-full bg-lime" />
               <span className="font-mono text-sm text-muted-dark uppercase tracking-widest">
-                Nasz Blog
+                Blog
               </span>
             </div>
             <h1 className="text-4xl md:text-6xl lg:text-[72px] font-display tracking-tight text-black leading-[1.05]">
-              Wiedza, która napędza pragmatyczne innowacje
+              Piszemy o tym, co sprawdziliśmy u siebie i u klientów
             </h1>
           </div>
         </FadeUp>

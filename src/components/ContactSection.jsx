@@ -56,7 +56,7 @@ export function ContactSection() {
                 setSubmitted(true);
                 track(EVENTS.CONTACT_FORM_SUBMIT, { hasCompany: false, mock: true });
             } else {
-                setError("Problem techniczny podczas łączenia z serwerem poczty.");
+                setError("Nie udało się wysłać wiadomości. Spróbuj ponownie albo napisz na kontakt@workshift.pl.");
             }
         } finally {
             setIsSubmitting(false);
@@ -105,7 +105,6 @@ export function ContactSection() {
     const trustSignals = [
         { icon: Clock, text: 'Odpowiadamy w ciągu 24h' },
         { icon: Shield, text: 'Dane przetwarzane zgodnie z RODO' },
-        { icon: CheckCircle, text: 'Bez zobowiązań' },
     ];
 
     return (
@@ -125,7 +124,7 @@ export function ContactSection() {
                         </h2>
 
                         <p className="contact-animate-left opacity-0 text-lg text-white/50 leading-relaxed mb-10 max-w-md">
-                            Opisz krótko swój problem. W ciągu 24h odzywamy się ze wstępnym planem automatyzacji - za darmo, bez zobowiązań.
+                            Opisz krótko swój problem. W ciągu 24 godzin odpowiemy bezpłatnie ze wstępnym planem automatyzacji i propozycją terminu rozmowy.
                         </p>
 
                         <div className="contact-animate-left opacity-0 flex flex-col gap-4">
@@ -168,7 +167,7 @@ export function ContactSection() {
                                     </div>
                                     <div>
                                         <label htmlFor="contact-email" className="block text-sm font-medium text-slate-300 mb-2">
-                                            Email <span className="text-lime">*</span>
+                                            E-mail <span className="text-lime">*</span>
                                         </label>
                                         <Input
                                             id="contact-email"
@@ -200,7 +199,7 @@ export function ContactSection() {
                                         id="contact-message"
                                         required
                                         rows={4}
-                                        placeholder="Opisz krótko, jakie procesy chciałbyś zautomatyzować..."
+                                        placeholder="Opisz krótko, które procesy chcesz zautomatyzować..."
                                         className="w-full px-4 py-3 rounded-[10px] bg-white/10 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-lime/40 focus-visible:border-lime/40 text-sm resize-none"
                                     />
                                 </div>
@@ -218,7 +217,7 @@ export function ContactSection() {
                                             />
                                         </div>
                                         <label htmlFor="privacy-checkbox" className="text-xs text-white/50 leading-tight">
-                                            Zgadzam się na przetwarzanie moich danych osobowych zgodnie z <Link to="/polityka-prywatnosci" className="text-white hover:text-lime underline transition-colors">Polityką Prywatności</Link>. <span className="text-lime">*</span>
+                                            Zgadzam się na przetwarzanie moich danych osobowych zgodnie z <Link to="/polityka-prywatnosci" className="text-white hover:text-lime underline transition-colors">Polityką prywatności</Link>. <span className="text-lime">*</span>
                                         </label>
                                     </div>
 
@@ -230,7 +229,7 @@ export function ContactSection() {
                                         className="w-full text-base gap-2"
                                     >
                                         <Send size={16} />
-                                        {isSubmitting ? "Wysyłanie..." : "Wyślij - odpowiemy w 24h"}
+                                        {isSubmitting ? "Wysyłanie..." : "Wyślij wiadomość"}
                                     </Button>
 
                                     {error && (

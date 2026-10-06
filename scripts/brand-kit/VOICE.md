@@ -114,7 +114,7 @@ Warianty obecne w materiałach:
 
 4. **Praktyka z własnych wdrożeń**
    - Core idea: to, co polecamy, najpierw sprawdzamy u siebie i mierzymy.
-   - When to use: blog, newsletter, wystąpienia, post o przypadku.
+   - When to use: blog, wystąpienia, post o przypadku.
    - Example phrasing: "Piszemy o tym, co sprawdziliśmy u siebie albo u klientów."
 
 ## Tone-by-Context Matrix
@@ -126,7 +126,6 @@ Warianty obecne w materiałach:
 | Strona usługi | Średnia | Średnia | Średnia | Rezultat i proces, nazwy narzędzi w osobnym bloku |
 | Oferta PDF | Wysoka | Niska-średnia | Średnia-wysoka | Zakres, kryterium sukcesu i termin w jednym miejscu |
 | Mail do klienta / follow-up | Średnia | Średnia | Niska-średnia | Każdy kontakt dodaje nową wartość |
-| Newsletter "AI Praktycznie" | Niska-średnia | Średnia | Średnia | Jeden proces, użyte narzędzia, zmierzony efekt |
 | Prezentacja / wystąpienie | Średnia | Wysoka | Średnia-wysoka | Jedno wdrożenie, liczby, to, co się nie udało |
 | Materiał współtworzony z partnerem | Średnia | Średnia | Zależnie od materiału | Jeden głos w całym dokumencie, liczby z podanym źródłem |
 
@@ -166,13 +165,6 @@ Warianty obecne w materiałach:
 - **Do's**: konkretna propozycja terminu, załącznik z mapą lub wyliczeniem, jedna prośba na mail. CTA w stylu "Zacznij od bezpłatnego audytu".
 - **Don'ts**: "Skontaktuj się z nami", ponaglenia bez nowej treści.
 - **Example** (ilustracyjny): "Dzień dobry, wracam do naszej rozmowy z wtorku. Dołączam mapę trzech procesów, od których proponuję zacząć, razem z założeniem, jak zmierzymy wynik po dwóch tygodniach. Czy czwartek rano pasuje na 20 minut?"
-
-#### Newsletter "AI Praktycznie"
-- **Overall tone**: swobodny, konkretny, jak notatka od kolegi z branży.
-- **Opening approach**: nazwa procesu i wynik w pierwszym zdaniu.
-- **Do's**: jeden proces na wydanie, lista użytych narzędzi, zmierzone oszczędności. Opis formatu: "Co dwa tygodnie dzielimy się jednym procesem, który zautomatyzowaliśmy, podając użyte narzędzia i wygenerowane oszczędności".
-- **Don'ts**: zbiorcze przeglądy newsów AI.
-- **Example**: opis formatu wyżej. Żadne wydanie newslettera nie było dostępne w przeczytanych źródłach.
 
 #### Prezentacja / wystąpienie
 - **Overall tone**: energiczny, osobisty, z liczbami i wpadkami.
@@ -294,7 +286,7 @@ Adnotacja: konkretny zakres, czas i miara efektu. Zdanie nadaje się na stronę 
 **4. Wpadka opisana konkretem**
 > "W bazie siedział stary wpis z bloga ze stawką 100 złotych. Aktualna była dwieście."
 
-Adnotacja: dwie liczby i jedno zdanie opisują błąd. Nadaje się do wystąpienia i newslettera.
+Adnotacja: dwie liczby i jedno zdanie opisują błąd. Nadaje się do wystąpienia i posta.
 
 ### Examples to Avoid
 

@@ -20,9 +20,9 @@
 export const SITE_ORIGIN = 'https://www.workshift.pl';
 
 export const DEFAULT_META = {
-  title: 'Workshift | Automatyzacja Procesów Biznesowych AI',
+  title: 'Workshift | Automatyzacja procesów biznesowych AI',
   description:
-    'Wdrażamy agentów i automatyzacje AI dla firm w Poznaniu i całej Polsce. Od audytu procesu po działające wdrożenie.',
+    'Wdrażamy agentów i automatyzacje AI dla firm w Poznaniu i całej Polsce. Zaczynamy od bezpłatnej 30-minutowej rozmowy diagnostycznej.',
   image: '/brand-assets/logo-light.png',
   type: 'website',
 };
@@ -56,28 +56,28 @@ export const STATIC_ROUTE_META = {
   '/blog': {
     title: 'Blog | Workshift',
     description:
-      'AI w praktyce dla polskich firm: wdrożenia, narzędzia i wnioski z realnych projektów. Bez hype, z konkretami.',
+      'AI w praktyce dla polskich firm: wdrożenia, testy narzędzi i wnioski z realnych projektów. Piszemy o tym, co sprawdziliśmy u siebie i u klientów.',
     image: DEFAULT_META.image,
     type: 'website',
   },
   '/audyt-ai': {
-    title: 'Mikro-audyt AI - sprawdź ile traci Twoja firma | Workshift',
+    title: 'Mikro-audyt AI: ile czasu traci Twoja firma? | Workshift',
     description:
-      '12 pytań, 4 minuty. Konkretny wynik i 3 rekomendacje dopasowane do Twojej branży. Bezpłatny mikro-audyt AI dla MŚP.',
+      '12 pytań, 4 minuty i 3 rekomendacje dopasowane do Twojej branży. Bezpłatny mikro-audyt AI dla MŚP pokazuje, od których procesów zacząć automatyzację.',
     image: DEFAULT_META.image,
     type: 'website',
   },
   '/kalkulator': {
     title: 'Kalkulator strat czasowych w firmie | Workshift',
     description:
-      'Bezpłatny kalkulator: zobacz w 60 sekund ile czasu i pieniędzy traci Twoja firma na powtarzalnych zadaniach.',
+      'Bezpłatny kalkulator strat czasowych: w 60 sekund policzysz, ile czasu i pieniędzy Twoja firma traci miesięcznie na powtarzalnych zadaniach.',
     image: DEFAULT_META.image,
     type: 'website',
   },
   '/prompty': {
     title: 'Baza promptów i person AI po polsku | Workshift',
     description:
-      '200 polskich promptów AI i 12 gotowych person do ChatGPT, Claude i Gemini. Przeszukuj, kopiuj, wdrażaj. Za darmo.',
+      '200 polskich promptów AI i 12 gotowych person do ChatGPT, Claude i Gemini. Bezpłatna baza z wyszukiwarką, każdy prompt skopiujesz jednym kliknięciem.',
     image: DEFAULT_META.image,
     type: 'website',
   },

@@ -72,7 +72,7 @@ export function OfferGate({ slug, clientName, onUnlock }) {
                     </div>
 
                     <p className="text-sm text-muted-dark mb-6 leading-relaxed">
-                        Ta oferta została przygotowana indywidualnie. Wprowadź hasło dostępu otrzymane w mailu, aby zobaczyć szczegóły.
+                        Przygotowaliśmy tę ofertę indywidualnie. Wpisz hasło z maila, żeby zobaczyć szczegóły.
                     </p>
 
                     <form onSubmit={handleSubmit} className="flex flex-col gap-4" autoComplete="off">
