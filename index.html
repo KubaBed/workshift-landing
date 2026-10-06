@@ -28,42 +28,60 @@
     <meta property="twitter:description" content="Profesjonalna automatyzacja procesów biznesowych AI. Zwiększ efektywność swojego zespołu z Workshift." />
     <meta property="twitter:image" content="https://www.workshift.pl/brand-assets/logo-light.png" />
 
-    <!-- Schema.org for Local Business -->
+    <!-- Schema.org: encja firmy i założyciela (GEO: modele kotwiczą markę "Workshift") -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": "Workshift",
-      "image": "https://www.workshift.pl/brand-assets/logo-light.png",
-      "@id": "https://www.workshift.pl",
-      "url": "https://www.workshift.pl",
-      "telephone": "+48512224536",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Stawna 10/5",
-        "addressLocality": "Poznań",
-        "postalCode": "61-759",
-        "addressCountry": "PL"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 52.4116,
-        "longitude": 16.9366
-      },
-      "openingHoursSpecification": {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday"
-        ],
-        "opens": "09:00",
-        "closes": "17:00"
-      },
-      "sameAs": [
-        "https://linkedin.com/company/workshift-ai"
+      "@graph": [
+        {
+          "@type": "ProfessionalService",
+          "@id": "https://www.workshift.pl/#organization",
+          "name": "Workshift",
+          "url": "https://www.workshift.pl/",
+          "logo": "https://www.workshift.pl/brand/logo/png/ws-logo-light-1600.png",
+          "image": "https://www.workshift.pl/brand/logo/png/ws-avatar-light-1024.png",
+          "description": "Workshift wdraża automatyzacje i agentów AI w małych i średnich firmach w Polsce. Prowadzi też szkolenia AI dla zespołów, buduje dedykowane aplikacje i kreacje reklamowe AI.",
+          "email": "kontakt@workshift.pl",
+          "telephone": "+48796186067",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Stawna 10/5",
+            "addressLocality": "Poznań",
+            "postalCode": "61-759",
+            "addressCountry": "PL"
+          },
+          "areaServed": { "@type": "Country", "name": "Polska" },
+          "founder": { "@id": "https://www.workshift.pl/#jakub-bednarz" },
+          "knowsAbout": [
+            "automatyzacja procesów biznesowych",
+            "automatyzacja AI",
+            "agenci AI",
+            "szkolenia AI dla firm",
+            "wdrożenia AI w MŚP"
+          ],
+          "sameAs": [
+            "https://www.linkedin.com/company/workshift-ai"
+          ]
+        },
+        {
+          "@type": "Person",
+          "@id": "https://www.workshift.pl/#jakub-bednarz",
+          "name": "Jakub Bednarz",
+          "jobTitle": "Założyciel Workshift",
+          "image": "https://www.workshift.pl/Jakub-Bednarz.webp",
+          "worksFor": { "@id": "https://www.workshift.pl/#organization" },
+          "sameAs": [
+            "https://www.linkedin.com/in/jakubbednarz/"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.workshift.pl/#website",
+          "url": "https://www.workshift.pl/",
+          "name": "Workshift",
+          "inLanguage": "pl-PL",
+          "publisher": { "@id": "https://www.workshift.pl/#organization" }
+        }
       ]
     }
     </script>
@@ -88,14 +106,14 @@
           <h1 style="font-size: 3rem; font-weight: 800; margin: 0 0 1rem 0; letter-spacing: -0.04em; line-height: 1.1;">Workshift</h1>
           <h2 style="font-size: 1.5rem; font-weight: 400; color: #595959; margin: 0 0 2rem 0; letter-spacing: -0.02em;">Wdrażamy AI, które po prostu działa</h2>
           <p style="font-size: 1.125rem; line-height: 1.6; color: #000000; margin: 0 0 2.5rem 0;">
-            Workshift wdraża agentów i automatyzacje AI dla firm w Poznaniu i całej Polsce. Pracujemy w czterech obszarach: audyt i automatyzacja procesów, dedykowane aplikacje, agenci AI oraz szkolenia dla zespołów. Każde wdrożenie zaczyna się od bezpłatnej diagnozy procesu, a kończy narzędziem, z którego Twój zespół korzysta na co dzień.
+            Workshift wdraża agentów i automatyzacje AI dla firm w Poznaniu i całej Polsce. Pracujemy w pięciu obszarach: automatyzacja procesów, agenci AI, dedykowane aplikacje, szkolenia dla zespołów i kreacje reklamowe AI. Każde wdrożenie zaczyna się od bezpłatnej 30-minutowej rozmowy diagnostycznej, a kończy narzędziem, z którego Twój zespół korzysta na co dzień.
           </p>
           <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
             <a href="/audyt-ai" style="background-color: #9CE069; color: #000000; padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 600; font-size: 1rem; border: 1px solid #9CE069; text-decoration: none;">
-              Bezpłatny audyt AI
+              Mikro-audyt AI
             </a>
             <a href="/uslugi/automatyzacja" style="background-color: #FFFFFF; color: #000000; padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 600; font-size: 1rem; border: 1px solid rgba(0, 0, 0, 0.1); text-decoration: none;">
-              Nasze Usługi
+              Nasze usługi
             </a>
           </div>
         </main>
