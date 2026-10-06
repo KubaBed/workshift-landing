@@ -281,6 +281,85 @@ export const SERVICES = [
         metaTitle: 'Szkolenia AI dla firm - praktyczne warsztaty | Workshift',
         metaDescription: 'Warsztaty AI na Twoich danych i narzędziach. ChatGPT, Claude, automatyzacje. 2-3x wzrost produktywności zespołu.',
 
+        // Treść artykułowa (etap 4 SEO, fraza: szkolenia ai dla firm). Kąt: warsztat
+        // pod procesy firmy, nie katalog kursów - SERP zajmują instytucje (PARP, EY).
+        // Bez liczb-wyników i bez cen (decyzje z 06.10.2026).
+        seoSections: [
+            {
+                heading: 'Szkolenia AI dla firm prowadzone na Twoich procesach',
+                eyebrow: 'Szkolenia AI',
+                paragraphs: [
+                    'Szkolenie AI dla firmy ma sens wtedy, gdy zespół wychodzi z niego z narzędziem do własnej pracy. Dlatego program układamy pod konkretny dział i jego zadania: księgowość ćwiczy na fakturach i zestawieniach, sprzedaż na mailach do klientów, zarząd na raportach i notatkach ze spotkań.',
+                    'Przed szkoleniem rozmawiamy z osobą, która je zamawia, i zbieramy zadania, które zespół wykonuje co tydzień. Na warsztacie pracujemy właśnie na nich, w narzędziach, z których firma już korzysta.',
+                ],
+            },
+            {
+                heading: 'Czego uczy warsztat',
+                eyebrow: 'Program',
+                items: [
+                    {
+                        icon: 'inbox',
+                        title: 'Prompty do własnych zadań',
+                        desc: 'Każdy uczestnik pisze prompty do zadań ze swojej listy i zapisuje je, żeby korzystać z nich następnego dnia.',
+                    },
+                    {
+                        icon: 'invoice',
+                        title: 'Praca z dokumentami i danymi',
+                        desc: 'Streszczanie dokumentów, porównywanie wersji umów, wyciąganie danych z załączników i analiza arkuszy w ChatGPT, Claude lub Copilocie.',
+                    },
+                    {
+                        icon: 'sync',
+                        title: 'Proste automatyzacje bez kodu',
+                        desc: 'Jak połączyć AI z mailem, arkuszem i kalendarzem, żeby powtarzalne zadanie wykonywało się samo.',
+                    },
+                    {
+                        icon: 'alert',
+                        title: 'Bezpieczne korzystanie z AI',
+                        desc: 'Jakich danych nie wklejać do narzędzi AI, jak ustawić konta firmowe i jak sprawdzić odpowiedź modelu, zanim trafi do klienta.',
+                    },
+                ],
+            },
+            {
+                heading: 'Formaty szkolenia',
+                eyebrow: 'Jak pracujemy',
+                paragraphs: [
+                    'Warsztat stacjonarny trwa jeden dzień i odbywa się w Twoim biurze. Wersja online to dwa trzygodzinne spotkania w ciągu tygodnia, z czasem na przećwiczenie materiału między nimi. Dla kadry zarządzającej prowadzimy konsultacje 1:1, na których omawiamy, gdzie AI może zmienić pracę firmy.',
+                    'Po szkoleniu uczestnicy dostają materiały, a przez 30 dni odpowiadamy na pytania zespołu i pomagamy poprawiać prompty.',
+                ],
+            },
+            {
+                heading: 'Szkolenie jako część wdrożenia',
+                eyebrow: 'Po szkoleniu',
+                paragraphs: [
+                    'Warsztat często pokazuje, które zadania warto zautomatyzować na stałe. Wtedy szkolenie może być częścią wdrożenia: najpierw budujemy automatyzację jednego procesu, a na koniec uczymy zespół z niej korzystać i ją utrzymywać.',
+                ],
+            },
+        ],
+
+        faqHeading: 'Pytania o szkolenia AI',
+        faq: [
+            {
+                q: 'Dla kogo jest szkolenie AI?',
+                a: 'Dla zespołów, które pracują na dokumentach, mailach i arkuszach: księgowości, administracji, sprzedaży, obsługi klienta i kadry zarządzającej. Uczestnicy nie muszą znać AI ani programować.',
+            },
+            {
+                q: 'Ile osób może wziąć udział w szkoleniu?',
+                a: 'Warsztat prowadzimy w małych grupach, zwykle do 12 osób, żeby każdy przećwiczył własne zadania. Większy zespół dzielimy na kilka grup.',
+            },
+            {
+                q: 'Na jakich narzędziach AI pracujemy?',
+                a: 'Na tych, które firma już ma albo planuje wdrożyć: ChatGPT, Claude, Microsoft Copilot lub Gemini. Jeśli firma nie ma jeszcze kont firmowych, ustalamy to przed szkoleniem.',
+            },
+            {
+                q: 'Czy dane firmy są bezpieczne podczas szkolenia?',
+                a: 'Ćwiczymy na materiałach, które wskaże firma. Jeśli zawierają dane osobowe, przed szkoleniem podpisujemy umowę powierzenia. Na warsztacie pokazujemy też, jakich informacji nie wklejać do narzędzi AI.',
+            },
+            {
+                q: 'Ile kosztuje szkolenie AI dla firmy?',
+                a: 'Cena zależy od formatu, liczby grup i przygotowania programu pod zadania zespołu. Napisz do nas przez formularz, a wrócimy z propozycją programu i wyceną.',
+            },
+        ],
+
         innerCards: [
             {
                 type: 'features',
