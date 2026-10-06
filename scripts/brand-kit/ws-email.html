@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<title>Workshift - szablon maila</title>
+<!--
+  Szablon maila Workshift. Układ na tabelach i stylach inline, szerokość 600 px.
+  - Inter wczyta się w Apple Mail i iOS; reszta klientów pokaże Arial. Rozmiary mieszczą oba warianty.
+  - Logo w PNG z workshift.pl/brand/logo/png/ (większość klientów poczty nie wyświetla SVG).
+  - Tekst w [nawiasach] podmień. Bloki między komentarzami BLOK można usuwać i powielać.
+  - Jeden przycisk lime na mail.
+-->
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400&display=swap');
+  body { margin: 0; padding: 0; background: #E6E8DD; }
+  a { color: #000000; }
+  @media (max-width: 620px) {
+    .wrap { width: 100% !important; }
+    .pad { padding-left: 24px !important; padding-right: 24px !important; }
+    .h1 { font-size: 30px !important; }
+    .col { display: block !important; width: 100% !important; padding: 0 0 16px 0 !important; }
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background:#E6E8DD;">
+<div style="display:none;max-height:0;overflow:hidden;">[Zajawka widoczna w skrzynce: jedno zdanie z konkretem]</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#E6E8DD;">
+<tr><td align="center" style="padding:32px 12px;">
+<table role="presentation" class="wrap" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:600px;">
+
+  <!-- BLOK: nagłówek -->
+  <tr><td class="pad" style="padding:0 40px 28px 40px;">
+    <img src="https://workshift.pl/brand/logo/png/ws-logo-light-1600.png" width="150" alt="Workshift" style="display:block;width:150px;height:auto;border:0;">
+  </td></tr>
+
+  <!-- BLOK: treść główna -->
+  <tr><td class="pad" style="background:#FFFFFF;border-radius:20px;padding:44px 40px;">
+    <p style="margin:0 0 16px 0;font-family:'IBM Plex Mono',Courier New,monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#595959;">[KICKER · DATA]</p>
+    <h1 class="h1" style="margin:0 0 20px 0;font-family:Inter,Arial,sans-serif;font-size:36px;line-height:1.1;font-weight:400;letter-spacing:-1px;color:#000000;">[Nagłówek z jednym konkretem]</h1>
+    <p style="margin:0 0 16px 0;font-family:Inter,Arial,sans-serif;font-size:16px;line-height:1.6;color:#595959;">[Akapit. Dwa-trzy zdania. Pierwsze mówi, co się zmienia u odbiorcy.]</p>
+    <p style="margin:0 0 28px 0;font-family:Inter,Arial,sans-serif;font-size:16px;line-height:1.6;color:#595959;">[Drugi akapit, opcjonalny. <strong style="font-weight:500;color:#000000;">Wyróżnienie</strong> to waga 500 i czerń.]</p>
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+      <td style="background:#9CE069;border-radius:999px;">
+        <a href="[https://workshift.pl/...]" style="display:inline-block;padding:13px 26px;font-family:Inter,Arial,sans-serif;font-size:15px;font-weight:500;color:#000000;text-decoration:none;">[Akcja w 2-4 słowach] &rarr;</a>
+      </td>
+    </tr></table>
+  </td></tr>
+
+  <!-- BLOK: trzy fakty (opcjonalny) -->
+  <tr><td style="height:12px;line-height:12px;font-size:0;">&nbsp;</td></tr>
+  <tr><td class="pad" style="background:#FFFFFF;border-radius:20px;padding:28px 40px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+      <td class="col" width="33%" valign="top" style="padding-right:12px;">
+        <p style="margin:0 0 6px 0;font-family:'IBM Plex Mono',Courier New,monospace;font-size:26px;color:#000000;">[01]</p>
+        <p style="margin:0;font-family:Inter,Arial,sans-serif;font-size:13px;line-height:1.5;color:#595959;">[Fakt albo krok]</p>
+      </td>
+      <td class="col" width="33%" valign="top" style="padding-right:12px;">
+        <p style="margin:0 0 6px 0;font-family:'IBM Plex Mono',Courier New,monospace;font-size:26px;color:#000000;">[02]</p>
+        <p style="margin:0;font-family:Inter,Arial,sans-serif;font-size:13px;line-height:1.5;color:#595959;">[Fakt albo krok]</p>
+      </td>
+      <td class="col" width="33%" valign="top">
+        <p style="margin:0 0 6px 0;font-family:'IBM Plex Mono',Courier New,monospace;font-size:26px;color:#000000;">[03]</p>
+        <p style="margin:0;font-family:Inter,Arial,sans-serif;font-size:13px;line-height:1.5;color:#595959;">[Fakt albo krok]</p>
+      </td>
+    </tr></table>
+  </td></tr>
+
+  <!-- BLOK: stopka -->
+  <tr><td class="pad" style="padding:28px 40px 0 40px;">
+    <p style="margin:0 0 6px 0;font-family:Inter,Arial,sans-serif;font-size:13px;line-height:1.6;color:#595959;">Workshift · Jakub Bednarz · Poznań · <a href="mailto:kontakt@workshift.pl" style="color:#000000;">kontakt@workshift.pl</a></p>
+    <p style="margin:0;font-family:'IBM Plex Mono',Courier New,monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#595959;">[Dlaczego dostajesz tę wiadomość] · <a href="[link]" style="color:#595959;">Wypisz się</a></p>
+  </td></tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>

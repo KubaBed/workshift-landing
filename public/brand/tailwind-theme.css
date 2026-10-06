@@ -1,0 +1,16 @@
+/* Workshift - Tailwind v4. Wklej po @import "tailwindcss"; */
+@theme {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --color-sage: #E6E8DD;
+  --color-lime: #9CE069;
+  --color-lime-deep: #81C44E;
+  --color-ink: #000000;
+  --color-white: #FFFFFF;
+  --color-muted-dark: #595959;
+  --color-muted-light: #AAAAAA;
+  --color-destructive: #DD453D;
+  --radius-card: 20px;
+  --radius-panel: 24px;
+  --container-site: 1320px;
+}

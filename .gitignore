@@ -86,3 +86,6 @@ scripts/fonts/
 *.mov
 *.avi
 *.mkv
+
+# Wewnętrzne wytyczne głosu (krytyka własnego copy, rejestr liczb) - nie do publicznego repo
+.claude/brand-voice-guidelines*.md

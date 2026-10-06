@@ -81,7 +81,7 @@ To zdanie jest testem pozycjonowania: jeśli materiał marketingowy dałoby się
 | # | Wartość | Co to znaczy |
 |---|---------|--------------|
 | 1 | **Pragmatyzm** | Żadnych buzzwordów. Tylko rozwiązania, które działają w poniedziałek rano |
-| 2 | **Mierzalne rezultaty** | Zawsze konkretne liczby (+32% czasu, 45+ godzin miesięcznie) |
+| 2 | **Mierzalne rezultaty** | Liczby z podanym źródłem: co zmierzono, u kogo, kiedy |
 | 3 | **Prostota wdrożenia** | Bez chaosu, bez przestojów, bez rocznych projektów |
 | 4 | **Transfer wiedzy** | Zostawiamy wiedzę, nie zależność. Klient umie obsługiwać sam |
 | 5 | **Ludzkie podejście** | Rozumiemy biznes najpierw, technologia jest narzędziem |
@@ -105,7 +105,7 @@ Branże priorytetowe:
 ### Usługi
 
 1. **Automatyzacja procesów** - integracja narzędzi, które firma już ma, w jeden workflow
-2. **Audyt i Strategia AI** - identyfikacja strat czasu, typowo ~32% do odzyskania
+2. **Audyt i Strategia AI** - wskazanie procesów, które zabierają zespołowi najwięcej czasu
 3. **Szkolenia AI** - prompt engineering, bezpieczeństwo AI, narzędzia GenAI
 4. **Agenci AI** - automatyczna pierwsza linia obsługi 24/7
 5. **Kreacje reklamowe AI** - setki kreacji w dni zamiast miesięcy
@@ -415,13 +415,13 @@ Komponent: `src/components/ui/Button.jsx` - warianty CVA na prymitywie BaseUI.
 ### Pięć zasad pisania
 
 **1. Konkret zamiast abstrakcji**
-Zawsze konkretna liczba, czas, wynik. Nie „usprawniamy procesy" - „odzyskujesz 32% czasu tygodniowo".
+Zawsze konkretny proces, czas albo wynik. Zamiast „usprawniamy procesy" piszemy, co się zmienia: „faktury trafiają do systemu księgowego bez przepisywania". Liczba tylko ze źródłem.
 
 **2. Bezpośredniość bez agresji**
 Krótkie zdania. Żadnych korporacyjnych eufemizmów. Mówimy jak do partnera w biznesie, nie jak do leada w CRM.
 
 **3. My też jesteśmy w tej grze**
-Pierwsza osoba liczby mnogiej („wdrażamy", „wiemy"). Empatia przez wspólne doświadczenie: „Wiemy, o co toczy się gra, bo sami w nią gramy". Nie pouczamy - rozumiemy.
+Pierwsza osoba liczby mnogiej („wdrażamy", „wiemy") w materiałach firmowych: strona, oferta, reklama. W tekstach autorskich podpisanych przez Jakuba (blog, LinkedIn, newsletter, wystąpienia) pierwsza osoba liczby pojedynczej. Decyzja z 06.10.2026. Empatia przez wspólne doświadczenie: „Wiemy, o co toczy się gra, bo sami w nią gramy". Nie pouczamy - rozumiemy.
 
 **4. Rezultat, nie technologia**
 Klient nie kupuje „agenta AI" - kupuje „pierwszą linię obsługi, która działa o 3 w nocy". W copy konsumenckim **zero nazw stacku**.
@@ -439,7 +439,7 @@ Nie obiecujemy cudów. Obiecujemy konkretne rezultaty, transferowaną wiedzę, b
 | „State-of-the-art modele" | „GPT-4 + Twoje dane" |
 | „Transformacja cyfrowa" | „Jeden workflow zamiast pięciu narzędzi" |
 | „Skalowalna platforma" | *(co konkretnie skaluje? powiedz to)* |
-| „Skontaktuj się z nami" | „Zacznij od bezpłatnego audytu" |
+| „Skontaktuj się z nami" | „Zacznij od bezpłatnej rozmowy diagnostycznej" |
 | Strona bierna („czas jest oszczędzany") | Aktywna („Ty oszczędzasz czas") |
 
 ### Przykłady - nagłówki
@@ -448,14 +448,15 @@ Nie obiecujemy cudów. Obiecujemy konkretne rezultaty, transferowaną wiedzę, b
 |-------|---------|
 | „Innowacyjne AI dla Twojej firmy" | „Wdrażamy AI, które po prostu działa" |
 | „Kompleksowe rozwiązania automatyzacji" | „Koniec ręcznego przepisywania danych" |
-| „Transformujemy Twój biznes z AI" | „32% czasu tygodniowo z powrotem w Twoje ręce" |
+| „Transformujemy Twój biznes z AI" | „Biuro rachunkowe: faktury kategoryzują się same, księgowa sprawdza wynik" |
 | „Zaawansowane narzędzia dla profesjonalistów" | „Kancelaria prawna: automatyczne notatki, mniej papierkologii" |
-| „Skontaktuj się z nami" | „Zacznij od bezpłatnego audytu" |
+| „Skontaktuj się z nami" | „Zacznij od bezpłatnej rozmowy diagnostycznej" |
 
 ### Metryki - jak ich używać
 
-- Zawsze konkretna liczba: `+32%`, `45+ godzin`, `4 tygodnie`, `24/7`
-- Podaj kontekst: „+32% odzyskanego czasu *przy typowym wdrożeniu automatyzacji*"
+- Liczba zawsze ze źródłem: pomiar u klienta (za jego zgodą), data, metoda. Dobre przykłady: `24/7` dostępności agenta, czas pilotażu z harmonogramu oferty
+- Liczba bez źródła wypada z tekstu; zostaje opis procesu. Procenty typu „~32% czasu do odzyskania" (stare copy) nie mają pokrycia w danych i są wycofane (decyzja 06.10.2026)
+- Oferta wejściowa ma jedną nazwę: **bezpłatna 30-minutowa rozmowa diagnostyczna** (nie „audyt", nie „15 minut")
 - Unikaj zaokrągleń marketingowych: `18,7%` brzmi wiarygodniej niż „prawie 20%"
 - Jeśli liczba pochodzi od klienta - podaj źródło (case study, firma)
 
@@ -545,7 +546,8 @@ Sekcja istnieje po to, żeby nigdy więcej nie było wątpliwości, który plik 
 | `public/brand-assets/logo-{light,dark,icon}.{svg,png}` | **Source of truth dla logo** |
 | `public/favicon.svg` + warianty PNG/ICO | Favicony (sygnet, paleta lime) |
 | `public/fonts/*.woff2` | Self-hostowane Inter + IBM Plex Mono |
-| `public/Workshift_Brand_Assets.zip` | Paczka do wysyłki na zewnątrz |
+| `public/brand/` → **workshift.pl/brand/** | **Paczka marki dla partnerów** (od 06.10.2026): przewodnik online, `DESIGN.md` (standard google-labs-code), `VOICE.md`, tokeny CSS/JSON/Tailwind, `ws.css`, logo z wordmarkiem na krzywych, motyw warstw, szablony social i maila, ZIP. **Generowane** przez `npm run brand:build` ze `scripts/brand-kit/` - nie edytuj `public/brand/` ręcznie |
+| `public/Workshift_Brand_Assets.zip` | Stara paczka (kwiecień 2026, tylko 3 logo). Zastąpiona przez `public/brand/workshift-brand-kit.zip` |
 | `docs/brand/design-system.css` | Dokumentacja CSS aktualnego systemu (referencja, nie build) |
 | `scripts/fetch-fonts.sh` | Pobiera TTF-y Inter + IBM Plex Mono do `scripts/fonts/` (gitignored) - potrzebne tylko do generowania PDF-a |
 | `src/components/ui/` | Komponenty CVA + BaseUI + shadcn |

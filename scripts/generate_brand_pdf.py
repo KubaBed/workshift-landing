@@ -591,7 +591,7 @@ def section_marka():
     values = [
         ['#', 'Wartość', 'Co to znaczy w praktyce'],
         ['01', 'Pragmatyzm', 'Żadnych buzzwordów. Rozwiązania działające w poniedziałek rano.'],
-        ['02', 'Mierzalne rezultaty', 'Zawsze konkretne liczby: +32% czasu, 45+ godzin/miesiąc.'],
+        ['02', 'Mierzalne rezultaty', 'Liczby z podanym źródłem: co zmierzono, u kogo, kiedy.'],
         ['03', 'Prostota wdrożenia', 'Bez chaosu, bez przestojów, bez rocznych projektów.'],
         ['04', 'Transfer wiedzy', 'Zostawiamy wiedzę, nie zależność. Klient umie obsługiwać sam.'],
         ['05', 'Ludzkie podejście', 'Rozumiemy biznes najpierw - technologia jest narzędziem.'],
@@ -635,7 +635,7 @@ def section_marka():
     items.append(Paragraph('Usługi  ·  model à la carte', S['h2']))
     services = [
         ('Automatyzacja procesów',  'Integracja narzędzi w jeden workflow - koniec ręcznego przepisywania danych'),
-        ('Audyt i Strategia AI',    'Identyfikacja strat czasu - typowo ~32% do odzyskania'),
+        ('Audyt i Strategia AI',    'Wskazanie procesów, które zabierają zespołowi najwięcej czasu'),
         ('Szkolenia AI',            'Prompt engineering, bezpieczeństwo AI, GenAI tools'),
         ('Agenci AI',               'Automatyczna pierwsza linia obsługi 24/7'),
         ('Kreacje reklamowe AI',    'Setki kreacji w dni zamiast miesięcy'),
@@ -877,13 +877,13 @@ def section_typography():
     sample_rows = [
         ('Hero H1', 'Inter Bold', 30, 'AI, które działa.'),
         ('Section H2', 'Inter Bold', 22, 'Pragmatyczna automatyzacja.'),
-        ('Subsection H3', 'Inter Bold', 16, 'Zacznij od bezpłatnego audytu'),
+        ('Subsection H3', 'Inter Bold', 16, 'Zacznij od bezpłatnej rozmowy diagnostycznej'),
         ('Body large', 'Inter Regular', 13,
          'Konkretne rezultaty bez rocznych transformacji.'),
         ('Body default', 'Inter Regular', 11,
          'Workshift wdraża AI dla polskich MŚP - mierzalnie, bez chaosu.'),
         ('Caption / Label', 'Inter Medium', 9, 'Etykieta nawigacji'),
-        ('Mono accent', 'IBM Plex Mono', 9, '+32% ODZYSKANEGO CZASU'),
+        ('Mono accent', 'IBM Plex Mono', 9, 'NASZ PROCES / KROK 02'),
     ]
 
     class TypeSample(Flowable):
@@ -1098,7 +1098,7 @@ def section_ui():
                  'Integracja narzędzi w jeden workflow. Koniec ręcznego przepisywania danych.',
                  cta='Zobacz', mono_label='01 / usługa'),
         CardMock(CW / 3 - 8, 130, 'Audyt AI',
-                 'Identyfikacja strat czasu. Typowo ~32% do odzyskania w pierwszym miesiącu.',
+                 'Wskazujemy procesy, które zabierają zespołowi najwięcej czasu.',
                  cta='Umów', mono_label='02 / usługa'),
         CardMock(CW / 3 - 8, 130, 'Szkolenia',
                  'Prompt engineering, bezpieczeństwo AI, narzędzia GenAI dla zespołu.',
@@ -1139,14 +1139,14 @@ def section_tov():
     items.append(Paragraph(
         'Workshift mówi do <b>właścicieli firm i managerów</b>, nie do deweloperów. '
         'Krótkie zdania. Konkretne liczby. Żadnych korporacyjnych eufemizmów. '
-        'Pierwsza osoba liczby mnogiej („wdrażamy", „wiemy") - partnerstwo, nie pouczanie.',
+        '„My" w materiałach firmowych, „ja" w tekstach autorskich Jakuba (blog, LinkedIn, newsletter).',
         S['body']))
 
     items.append(Paragraph('5 zasad pisania', S['h2']))
     rules = [
         ('01', 'Konkret zamiast abstrakcji',
-         'Zawsze konkretna liczba, czas, wynik. Nie „usprawniamy procesy" - '
-         '„odzyskujesz 32% czasu tygodniowo".'),
+         'Zawsze konkretny proces, czas albo wynik. Zamiast „usprawniamy procesy" '
+         'piszemy, co się zmienia. Liczba tylko ze źródłem.'),
         ('02', 'Bezpośredniość bez agresji',
          'Krótkie zdania. Mówimy jak do partnera w biznesie, nie jak do leadu w CRM.'),
         ('03', 'My też jesteśmy w tej grze',
@@ -1206,15 +1206,15 @@ def section_tov():
         ['✗ Źle', '✓ Dobrze'],
         ['„Innowacyjne AI dla Twojej firmy"',          '„Wdrażamy AI, które po prostu działa"'],
         ['„Kompleksowe rozwiązania automatyzacji"',     '„Koniec ręcznego przepisywania danych"'],
-        ['„Transformujemy Twój biznes z AI"',           '„32% czasu tygodniowo z powrotem w Twoich rękach"'],
+        ['„Transformujemy Twój biznes z AI"',           '„Biuro rachunkowe: faktury kategoryzują się same, księgowa sprawdza wynik"'],
         ['„Zaawansowane narzędzia dla profesjonalistów"', '„Kancelaria prawna: automatyczne notatki, mniej papierkologii"'],
-        ['„Skontaktuj się z nami"',                     '„Zacznij od bezpłatnego audytu"'],
+        ['„Skontaktuj się z nami"',                     '„Zacznij od bezpłatnej rozmowy diagnostycznej"'],
     ], [CW / 2, CW / 2]))
 
     items.append(Paragraph('Metryki - jak je używać', S['h2']))
     for r in [
-        'Zawsze konkretna liczba: <b>+32%</b>, <b>45+ godzin</b>, <b>4 tygodnie</b>, <b>24/7</b>.',
-        'Podaj kontekst: <i>„+32% odzyskanego czasu przy typowym wdrożeniu automatyzacji"</i>.',
+        'Liczba zawsze ze źródłem: pomiar u klienta (za zgodą), data, metoda. Na przykład <b>24/7</b> dostępności agenta.',
+        'Liczba bez źródła wypada z tekstu; zostaje opis procesu. Oferta wejściowa: <b>bezpłatna 30-minutowa rozmowa diagnostyczna</b>.',
         'Unikaj zaokrągleń marketingowych: <b>18.7%</b> brzmi wiarygodniej niż „prawie 20%".',
         'Jeśli liczba pochodzi od klienta - podaj źródło (case study, nazwisko, firma).',
     ]:
@@ -1248,8 +1248,8 @@ def section_marketing():
     items.append(Paragraph('Karty na białym tle, sage page, mono kicker, lime CTA.', S['body_muted']))
     services_grid = Table([[
         CardMock(CW / 3 - 6, 140, 'Audyt AI',
-                 '32% czasu do odzyskania w pierwszym miesiącu wdrożenia.',
-                 cta='Umów audyt', mono_label='01 / Usługa'),
+                 'Wskazujemy procesy, które zabierają zespołowi najwięcej czasu.',
+                 cta='Umów rozmowę', mono_label='01 / Usługa'),
         CardMock(CW / 3 - 6, 140, 'Automatyzacja',
                  'Jeden workflow zamiast pięciu narzędzi. Koniec ręcznego przepisywania.',
                  cta='Zobacz case', mono_label='02 / Usługa'),
@@ -1282,9 +1282,9 @@ def section_marketing():
             c.setFillColor(DARK)
             c.setFont(FONT_BOLD, 16)
             c.drawString(20, self.height - 48, 'Mierzalnie, nie obietnicami.')
-            metrics = [('+32%', 'odzyskanego czasu'),
-                       ('45+',  'godzin/miesiąc'),
-                       ('4 tyg.', 'do wdrożenia'),
+            metrics = [('[00]', '[pomiar u klienta]'),
+                       ('[00]',  '[źródło, data]'),
+                       ('30 min', 'rozmowa diagnostyczna'),
                        ('24/7',  'pierwsza linia')]
             col_w = (self.width - 40) / len(metrics)
             for i, (n, lbl) in enumerate(metrics):
@@ -1343,10 +1343,10 @@ def section_marketing():
             c.drawString(22, 17, '#WorkshiftAI')
 
     li_row = Table([[
-        LinkedInPost(CW / 3 - 6, 150, SAGE, DARK, '+32%',
-                     'czasu odzyskane w typowej kancelarii prawnej po 4 tygodniach.'),
-        LinkedInPost(CW / 3 - 6, 150, DARK, WHITE, '45+ godz.',
-                     'oszczędzonych miesięcznie. AI w e-commerce - case Bednarz Group.'),
+        LinkedInPost(CW / 3 - 6, 150, SAGE, DARK, '[00]',
+                     '[Wynik z pomiaru u klienta. Źródło i data w treści posta.]'),
+        LinkedInPost(CW / 3 - 6, 150, DARK, WHITE, '30 min',
+                     'Bezpłatna rozmowa diagnostyczna. Wskazujemy procesy do automatyzacji.'),
         LinkedInPost(CW / 3 - 6, 150, WHITE, DARK, '24/7',
                      'Agent AI obsługuje pierwszą linię. Klient zadaje pytanie o 3 w nocy.'),
     ]], colWidths=[CW / 3, CW / 3, CW / 3])
