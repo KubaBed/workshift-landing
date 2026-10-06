@@ -174,12 +174,12 @@ Ten plik opisuje system wizualny Workshift tak, żeby człowiek albo agent AI zb
 podstawie stronę, grafikę, slajd lub dokument bez zgadywania. Tokeny w nagłówku YAML są
 wartościami normatywnymi (format: google-labs-code/design.md). Tekst poniżej mówi, jak ich używać.
 
-- Przewodnik z podglądem: https://workshift.pl/brand/
+- Przewodnik z podglądem: https://www.workshift.pl/brand/
 - Tokeny: `tokens.css` · `tokens.json` (W3C) · `tailwind-theme.css` (v4) · `tailwind.preset.js` (v3)
 - Klasy komponentów: `ws.css` (prefiks `.wsk-`, pisma w `fonts/`)
 - Assety: `logo/`, `motifs/`, `templates/`, logo w PNG w `logo/png/`
 - Głos marki (jak piszemy): `VOICE.md`
-- Paczka: https://workshift.pl/brand/workshift-brand-kit.zip
+- Paczka: https://www.workshift.pl/brand/workshift-brand-kit.zip
 
 Pytania i akceptacja materiałów z logo Workshift: kontakt@workshift.pl.
 

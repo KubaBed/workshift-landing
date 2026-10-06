@@ -421,7 +421,7 @@ Zawsze konkretny proces, czas albo wynik. Zamiast „usprawniamy procesy" piszem
 Krótkie zdania. Żadnych korporacyjnych eufemizmów. Mówimy jak do partnera w biznesie, nie jak do leada w CRM.
 
 **3. My też jesteśmy w tej grze**
-Pierwsza osoba liczby mnogiej („wdrażamy", „wiemy") w materiałach firmowych: strona, oferta, reklama. W tekstach autorskich podpisanych przez Jakuba (blog, LinkedIn, newsletter, wystąpienia) pierwsza osoba liczby pojedynczej. Decyzja z 06.10.2026. Empatia przez wspólne doświadczenie: „Wiemy, o co toczy się gra, bo sami w nią gramy". Nie pouczamy - rozumiemy.
+Pierwsza osoba liczby mnogiej („wdrażamy", „wiemy") w materiałach firmowych: strona, oferta, reklama. W tekstach autorskich podpisanych przez Jakuba (blog, LinkedIn, wystąpienia) pierwsza osoba liczby pojedynczej. Decyzja z 06.10.2026. Empatia przez wspólne doświadczenie: „Wiemy, o co toczy się gra, bo sami w nią gramy". Nie pouczamy - rozumiemy.
 
 **4. Rezultat, nie technologia**
 Klient nie kupuje „agenta AI" - kupuje „pierwszą linię obsługi, która działa o 3 w nocy". W copy konsumenckim **zero nazw stacku**.
@@ -462,9 +462,9 @@ Nie obiecujemy cudów. Obiecujemy konkretne rezultaty, transferowaną wiedzę, b
 
 ### Język
 
-- **Materiały klienckie:** polski (strona, oferty, newsletter, social media)
+- **Materiały klienckie:** polski (strona, oferty, social media)
 - **Kod i dokumentacja techniczna:** angielski
-- **Newsletter „AI Praktycznie":** polski, co dwa tygodnie, jeden praktyczny proces
+- **Newsletter „AI Praktycznie":** wstrzymany (decyzja 06.10.2026). Nie komunikujemy go na stronie ani w materiałach, dopóki nie wychodzi regularnie
 - **Kontekst:** polskie realia MŚP, RODO, polskie nazwy instytucji
 - **Ton:** profesjonalny ale ludzki - Jakub mówi własnym głosem, nie przez corporate mask
 
