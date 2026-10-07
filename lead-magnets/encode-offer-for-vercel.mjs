@@ -19,6 +19,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import zlib from 'node:zlib';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -48,7 +49,9 @@ if (!offer) {
 }
 
 const json = JSON.stringify(offer);
-const base64 = Buffer.from(json, 'utf-8').toString('base64');
+// Gzip przed base64: Vercel ma limit 64 KB na sumę wszystkich zmiennych projektu.
+// api/_lib/offerAuth.js rozpoznaje gzip po nagłówku i czyta też starsze wpisy bez kompresji.
+const base64 = zlib.gzipSync(Buffer.from(json, 'utf-8'), { level: 9 }).toString('base64');
 
 const envVarName = `OFFER_DATA_${slug.toUpperCase().replace(/[^A-Z0-9_]/g, '_')}`;
 const sizeKB = (base64.length / 1024).toFixed(2);

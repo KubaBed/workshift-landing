@@ -12,6 +12,7 @@
 // nawet ktoś z DevToolsami w produkcji nie zobaczy treści oferty bez hasła.
 
 import crypto from 'node:crypto';
+import zlib from 'node:zlib';
 import { signToken, verifyToken } from './doi.js';
 
 const COOKIE_PREFIX = 'offer_token_';
@@ -33,14 +34,18 @@ export function getOfferPassword(slug) {
     return process.env[envPasswordKey(slug)] || null;
 }
 
-// Decoduje treść oferty z env var (base64-encoded JSON). Używane w produkcji
+// Decoduje treść oferty z env var (base64 JSON, opcjonalnie gzip). Używane w produkcji
 // gdy plik na file system nie jest dostępny (gitignored). Wraca null jeśli env
 // var nie ustawiony albo zawartość nie parsuje się jako JSON.
+// Gzip, bo Vercel liczy limit 64 KB dla sumy wszystkich zmiennych projektu, a kilka
+// ofert w czystym base64 go przekracza. Starsze wpisy bez gzip działają dalej.
 export function getOfferFromEnv(slug) {
     const raw = process.env[envDataKey(slug)];
     if (!raw) return null;
     try {
-        const json = Buffer.from(raw, 'base64').toString('utf-8');
+        const bytes = Buffer.from(raw, 'base64');
+        const isGzip = bytes.length > 2 && bytes[0] === 0x1f && bytes[1] === 0x8b;
+        const json = (isGzip ? zlib.gunzipSync(bytes) : bytes).toString('utf-8');
         const parsed = JSON.parse(json);
         if (!parsed || typeof parsed !== 'object') return null;
         return parsed;
