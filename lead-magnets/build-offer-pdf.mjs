@@ -179,9 +179,25 @@ function renderExtraSection(section) {
             </div>`).join('')}</div>`;
     } else if (section.type === 'list' && Array.isArray(section.items)) {
         body = `<ul class="phase-deliverables">${renderDeliverables(section.items)}</ul>`;
+    } else if (section.type === 'tiles' && Array.isArray(section.groups)) {
+        body = section.groups.map((g) => `
+            <div class="tile-group">
+                <div class="tile-group-head"><h3>${esc(g.title)}</h3>${g.note ? `<span class="label-mono">${esc(g.note)}</span>` : ''}</div>
+                <div class="tiles">${g.tiles.map((t) => `
+                    <div class="tile${t.badge ? ' featured' : ''}">
+                        <div class="tile-top"><span class="phase-badge">${esc(t.code)}</span>${t.badge ? `<span class="tile-badge">${esc(t.badge)}</span>` : ''}</div>
+                        <div class="tile-title">${esc(t.title)}</div>
+                        <div class="tile-desc">${esc(t.desc)}</div>
+                        <div class="tile-foot">
+                            <div class="tile-price">${esc(t.price)}</div>
+                            ${t.duration ? `<div class="tile-duration">${esc(t.duration)}</div>` : ''}
+                            ${t.note ? `<div class="tile-note">${esc(t.note)}</div>` : ''}
+                        </div>
+                    </div>`).join('')}</div>
+            </div>`).join('');
     }
     return `
-        <section class="extra keep">
+        <section class="extra ${section.type === 'tiles' ? 'long' : 'keep'}">
             <div class="section-head">
             ${section.label ? `<span class="label-mono">${esc(section.label)}</span>` : ''}
             ${section.title ? `<h2>${esc(section.title)}</h2>` : ''}
@@ -710,6 +726,28 @@ function renderHTML(offer) {
         gap: 6mm 8mm;
     }
     .group { break-inside: avoid; }
+    .tile-group { margin-bottom: 6mm; break-inside: avoid; }
+    .tile-group-head { display: flex; align-items: baseline; gap: 4mm; margin-bottom: 3mm; }
+    .tile-group-head h3 { font-size: 14pt; margin: 0; }
+    .tiles { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3mm; }
+    .tile {
+        border: 1px solid rgba(0,0,0,0.1);
+        background: rgba(255,255,255,0.5);
+        border-radius: 3mm;
+        padding: 4mm;
+        display: flex;
+        flex-direction: column;
+        break-inside: avoid;
+    }
+    .tile.featured { border-color: var(--color-lime); background: rgba(255,255,255,0.75); }
+    .tile-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3mm; }
+    .tile-badge { font-family: var(--font-mono); font-size: 6.5pt; text-transform: uppercase; letter-spacing: 0.16em; color: var(--color-muted); }
+    .tile-title { font-size: 10.5pt; font-weight: 500; line-height: 1.25; margin-bottom: 2mm; }
+    .tile-desc { font-size: 8.5pt; color: var(--color-muted); line-height: 1.4; flex: 1; margin-bottom: 3mm; }
+    .tile-foot { border-top: 1px solid rgba(0,0,0,0.1); padding-top: 2.5mm; }
+    .tile-price { font-size: 13pt; line-height: 1.1; margin-bottom: 1mm; }
+    .tile-duration { font-family: var(--font-mono); font-size: 7pt; text-transform: uppercase; letter-spacing: 0.14em; color: var(--color-muted); }
+    .tile-note { font-size: 7.5pt; color: var(--color-muted); line-height: 1.35; margin-top: 1mm; }
     section.phases, section.extra.long { break-inside: auto; }
     .terms {
         list-style: none;
@@ -823,6 +861,8 @@ function renderHTML(offer) {
             <div class="callout">${esc(offer.approach.callout)}</div>
         </section>
 
+        ${Array.isArray(offer.sections) ? offer.sections.filter((x) => x.position === 'beforePhases').map(renderExtraSection).join('') : ''}
+
         <!-- FAZY (phases[] albo pilot + asysta) -->
         ${(Array.isArray(offer.phases) && offer.phases.length ? offer.phases : [offer.pilot, offer.asysta]).filter(Boolean).map((phase, i) => `
         <section class="phase-sec ${(Array.isArray(phase.deliverables) && phase.deliverables.length > 10) || (Array.isArray(phase.blocks) && phase.blocks.length > 1) ? 'long' : 'keep'}">
@@ -839,7 +879,7 @@ function renderHTML(offer) {
         </section>
         ` : ''}
 
-        ${Array.isArray(offer.sections) ? offer.sections.map(renderExtraSection).join('') : ''}
+        ${Array.isArray(offer.sections) ? offer.sections.filter((x) => x.position !== 'beforePhases').map(renderExtraSection).join('') : ''}
 
         ${Array.isArray(offer.timeline) && offer.timeline.length ? `
         <!-- TIMELINE -->

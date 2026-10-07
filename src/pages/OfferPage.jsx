@@ -166,6 +166,7 @@ export default function OfferPage() {
                 />
             )}
             <ApproachSection approach={offer.approach} />
+            <ExtraSections sections={offer.sections?.filter((s) => s.position === 'beforePhases')} />
             <PilotSection
                 pilot={offer.pilot}
                 asysta={offer.asysta}
@@ -174,7 +175,7 @@ export default function OfferPage() {
                 title={offer.labels?.scopeTitle}
             />
             {offer.needs && <NeedsSection needs={offer.needs} />}
-            <ExtraSections sections={offer.sections} />
+            <ExtraSections sections={offer.sections?.filter((s) => s.position !== 'beforePhases')} />
             <TimelineSection
                 timeline={offer.timeline}
                 title={offer.labels?.timelineTitle}
