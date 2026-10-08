@@ -22,6 +22,24 @@ export default {
         dateSent: '2026-MM-DD',
         validUntil: '2026-MM-DD',
         author: 'Jakub Bednarz · Workshift',
+        // PDF: wersja na okładce, w stopce i w nazwie kopii do wysyłki
+        // (offers/out/Workshift-oferta-<Klient>-v<wersja>.pdf).
+        version: '1.0',
+        // PDF: motyw okładki z public/brand/motifs (domyślnie '01-warstwy').
+        coverMotif: '01-warstwy',
+        // PDF: false ukrywa „Poufne" na okładce.
+        confidential: true,
+    },
+
+    // PDF, strona „W skrócie": pierwsza decyzja obok rekomendowanego startu (pricing.total).
+    summary: {
+        decision: 'Etap 0: ... 3 tygodnie, X XXX PLN netto.',
+        totalNote: 'co obejmuje kwota startu',
+    },
+
+    // PDF, tylna okładka. Telefon tylko w pliku klienta (gitignored), nigdy w kodzie.
+    contact: {
+        phone: '',
     },
 
     // Opcjonalne: video embed w hero (Loom, YouTube). Jeśli null → ukryte.
@@ -58,11 +76,11 @@ export default {
     },
 
     pilot: {
-        label: 'Pilotaż · 3–4 tygodnie',
+        label: 'Pilotaż · 3-4 tygodnie',
         title: 'Co budujemy',
         price: 'X XXX PLN',
         priceNote: 'netto, warunki fakturowania',
-        duration: '3–4 tygodnie',
+        duration: '3-4 tygodnie',
         deliverables: ['Element 1', 'Element 2'],
     },
 
@@ -99,6 +117,16 @@ export default {
         note: 'Zastrzeżenie / kontekst wyceny',
     },
 
+    // Sekcje dodatkowe: type 'table' | 'groups' | 'list' | 'tiles'. Miejsce w dokumencie:
+    //   position: 'beforePhases' - rozdział z podejściem i mapą modułów (przed fazami)
+    //   position: 'afterPhases'  - rozdział z fazami, po „Po Państwa stronie" (np. „Poza zakresem")
+    //   (brak position)          - rozdział „Jak pracujemy"
+    //   position: 'afterPricing' - zaraz po cenach (np. koszty stałe po stronie klienta)
+    //   position: 'appendix'     - załącznik na końcu PDF (np. odpowiedzi na punkty RFP)
+    // Strona www renderuje 'beforePhases' przed fazami, resztę po nich, w kolejności z danych.
+    sections: [],
+
+    // W PDF lądują na tylnej okładce, obok kontaktu.
     nextSteps: [
         'Krok 1',
         'Krok 2',

@@ -363,8 +363,9 @@ export function PilotSection({ pilot, asysta, phases, label, title }) {
   );
 }
 
-// Sekcje dodatkowe sterowane danymi: `sections: [{ type: 'table' | 'groups' | 'list', ... }]`.
+// Sekcje dodatkowe sterowane danymi: `sections: [{ type: 'table' | 'groups' | 'list' | 'tiles', ... }]`.
 // Renderowane po fazach (i sekcji "Po Państwa stronie"), przed przebiegiem prac.
+// Sekcja z `position: 'beforePhases'` renderuje się przed fazami (np. mapa modułów).
 function TableBlock({ section }) {
   return (
     <div className="overflow-x-auto rounded-2xl border border-black/10 bg-white/60">
@@ -425,6 +426,42 @@ function ListBlock({ section }) {
   );
 }
 
+// Mapa modułów: grupy kafelków, każdy z kodem, opisem, ceną i czasem trwania.
+function TilesBlock({ section }) {
+  return (
+    <div className="flex flex-col gap-12">
+      {section.groups.map((g, gi) => (
+        <div key={gi}>
+          <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 mb-5">
+            <h3 className="text-2xl md:text-3xl font-display tracking-tight text-black leading-tight">{g.title}</h3>
+            {g.note && <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-dark">{g.note}</span>}
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {g.tiles.map((t, ti) => (
+              <div
+                key={ti}
+                className={`rounded-2xl p-6 border flex flex-col ${t.badge ? 'border-lime bg-white/70' : 'border-black/10 bg-white/50'}`}
+              >
+                <div className="flex items-center justify-between gap-3 mb-4">
+                  <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-black bg-lime px-2.5 py-0.5 rounded-full">{t.code}</span>
+                  {t.badge && <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-dark">{t.badge}</span>}
+                </div>
+                <h4 className="text-lg md:text-xl font-display tracking-tight text-black leading-snug mb-3">{t.title}</h4>
+                <p className="text-sm text-muted-dark leading-relaxed mb-6 flex-1">{t.desc}</p>
+                <div className="border-t border-black/10 pt-4">
+                  <p className="text-2xl font-display tracking-tight text-black leading-none mb-2">{t.price}</p>
+                  {t.duration && <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-dark">{t.duration}</p>}
+                  {t.note && <p className="text-xs text-muted-dark leading-snug mt-2">{t.note}</p>}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function ExtraSections({ sections }) {
   if (!Array.isArray(sections) || sections.length === 0) return null;
   return (
@@ -444,6 +481,7 @@ export function ExtraSections({ sections }) {
             {section.type === 'table' && Array.isArray(section.rows) && <TableBlock section={section} />}
             {section.type === 'groups' && Array.isArray(section.groups) && <GroupsBlock section={section} />}
             {section.type === 'list' && Array.isArray(section.items) && <ListBlock section={section} />}
+            {section.type === 'tiles' && Array.isArray(section.groups) && <TilesBlock section={section} />}
             {section.footnote && (
               <p className="mt-6 text-sm text-muted-dark md:text-justify hyphens-auto max-w-3xl">{section.footnote}</p>
             )}
@@ -603,8 +641,10 @@ export function SaldeoSection({ saldeo }) {
   );
 }
 
-export function NextStepsSection({ steps, validUntil, contact, client, title, ctaSubject }) {
-  const subject = encodeURIComponent(ctaSubject || `Akceptacja oferty - ${client?.name?.replace(' Sp. z o.o.', '') || ''}`);
+// Oferta to prezentacja, podpisuje się umowę na jej podstawie, więc CTA prowadzi do rozmowy.
+// Temat maila stały: starsze oferty mają w env `labels.ctaSubject` „Akceptacja oferty...", ignorowane.
+export function NextStepsSection({ steps, validUntil, contact, client, title }) {
+  const subject = encodeURIComponent(`Rozmowa o ofercie: ${client?.name?.replace(' Sp. z o.o.', '') || ''}`);
   return (
     <SectionWrap className="pb-32">
       <motion.div {...fadeUp}>
@@ -642,7 +682,7 @@ export function NextStepsSection({ steps, validUntil, contact, client, title, ct
             href={`mailto:${contact.email}?subject=${subject}`}
             className="inline-flex items-center justify-center gap-2 h-14 px-6 bg-black text-sage rounded-md font-medium hover:bg-lime hover:text-black transition group"
           >
-            Akceptuję ofertę
+            Umówmy rozmowę o ofercie
             <ArrowRight size={18} className="group-hover:translate-x-1 transition" />
           </a>
         </div>
