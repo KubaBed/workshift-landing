@@ -128,8 +128,10 @@ pod nim jedno krótkie zdanie w Inter 500. Logo w lewym dolnym rogu.
   po prawej mały przycisk lime.
 - **Formaty grafik:** margines 7% krótszego boku, logo w lewym dolnym rogu, tekst w lewych
   dwóch trzecich, motyw przy prawej krawędzi.
-- **Dokumenty (oferty, raporty):** tło białe, A4, marginesy 20 mm, nagłówki 400, kicker mono
-  nad każdą sekcją, numeracja sekcji w mono (`01`, `02`).
+- **Dokumenty (oferty, raporty):** A4, marginesy 20 mm, nagłówki 400, kicker mono nad każdą
+  sekcją, numeracja rozdziałów w mono (`01`, `02`). Oferty mają tło sage na wszystkich stronach,
+  karty i tabele jako białe panele, okładkę z motywem warstw i tylną okładkę z kontaktem
+  (decyzja z 08.10.2026, generator `lead-magnets/build-offer-pdf.mjs`). Raporty: tło białe.
 
 ## Elevation & Depth
 

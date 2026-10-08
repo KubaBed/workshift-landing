@@ -641,8 +641,10 @@ export function SaldeoSection({ saldeo }) {
   );
 }
 
-export function NextStepsSection({ steps, validUntil, contact, client, title, ctaSubject }) {
-  const subject = encodeURIComponent(ctaSubject || `Akceptacja oferty - ${client?.name?.replace(' Sp. z o.o.', '') || ''}`);
+// Oferta to prezentacja, podpisuje się umowę na jej podstawie, więc CTA prowadzi do rozmowy.
+// Temat maila stały: starsze oferty mają w env `labels.ctaSubject` „Akceptacja oferty...", ignorowane.
+export function NextStepsSection({ steps, validUntil, contact, client, title }) {
+  const subject = encodeURIComponent(`Rozmowa o ofercie: ${client?.name?.replace(' Sp. z o.o.', '') || ''}`);
   return (
     <SectionWrap className="pb-32">
       <motion.div {...fadeUp}>
@@ -680,7 +682,7 @@ export function NextStepsSection({ steps, validUntil, contact, client, title, ct
             href={`mailto:${contact.email}?subject=${subject}`}
             className="inline-flex items-center justify-center gap-2 h-14 px-6 bg-black text-sage rounded-md font-medium hover:bg-lime hover:text-black transition group"
           >
-            Akceptuję ofertę
+            Umówmy rozmowę o ofercie
             <ArrowRight size={18} className="group-hover:translate-x-1 transition" />
           </a>
         </div>

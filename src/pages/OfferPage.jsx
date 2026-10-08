@@ -189,7 +189,6 @@ export default function OfferPage() {
                 validUntil={offer.meta.validUntil}
                 contact={CONTACT}
                 client={offer.client}
-                ctaSubject={offer.labels?.ctaSubject}
             />
         </main>
     );

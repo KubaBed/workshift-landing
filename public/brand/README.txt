@@ -1,4 +1,4 @@
-Workshift - paczka marki 1.0 · 2026-10-06
+Workshift - paczka marki 1.0 · 2026-10-08
 Przewodnik online: https://www.workshift.pl/brand/
 
 DESIGN.md     zasady i tokeny (dla ludzi i agentów AI; wklej do repo projektu albo do promptu)
