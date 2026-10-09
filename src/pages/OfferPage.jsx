@@ -155,7 +155,7 @@ export default function OfferPage() {
         <main className="bg-sage min-h-screen relative">
             <StatusBanner views={views} validUntil={offer.meta.validUntil} />
             <HeroSection meta={offer.meta} client={offer.client} video={offer.video} />
-            <TldrSection tldr={offer.tldr} />
+            <TldrSection tldr={offer.tldr} lead={offer.summary?.lead} />
             <ContextSection context={offer.context} />
             {offer.problems?.length > 0 && (
                 <ProblemsSection

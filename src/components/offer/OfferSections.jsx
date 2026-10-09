@@ -121,7 +121,7 @@ export function HeroSection({ meta, client, video }) {
         <VideoEmbed video={video} />
         <LimeDivider />
         <p className="font-mono text-xs uppercase tracking-[0.18em] text-muted-dark">
-          {meta.dateSent} · {meta.author}
+          {fmtDatePL(meta.dateSent)} · {meta.author}
         </p>
       </motion.div>
     </SectionWrap>
@@ -131,14 +131,17 @@ export function HeroSection({ meta, client, video }) {
 // TL;DR - "above-the-fold" przegląd dla decydenta-skanera. 3-4 punkty,
 // renderowane jako pierwsza sekcja po Hero. Każdy z hyphen prefix
 // (zgodnie z Workshift typography rule: hyphen, nie em-dash).
-export function TldrSection({ tldr }) {
-  if (!Array.isArray(tldr) || tldr.length === 0) return null;
+export function TldrSection({ tldr, lead }) {
+  if ((!Array.isArray(tldr) || tldr.length === 0) && !lead) return null;
   return (
     <SectionWrap className="pt-4 md:pt-6">
       <motion.div {...fadeUp}>
         <SectionLabel>W skrócie</SectionLabel>
+        {lead && (
+          <p className="text-xl md:text-2xl text-black leading-relaxed tracking-tight max-w-3xl mb-8">{lead}</p>
+        )}
         <ul className="flex flex-col gap-4 max-w-3xl">
-          {tldr.map((item, i) => (
+          {(tldr || []).map((item, i) => (
             <li key={i} className="flex gap-4 items-start">
               <span className="font-display text-2xl text-lime leading-none mt-1 shrink-0 select-none" aria-hidden="true">-</span>
               <span className="text-lg md:text-xl text-black leading-relaxed">{item}</span>
@@ -189,30 +192,35 @@ export function ProblemsSection({ problems, label, subtitle, badge }) {
         <h2 className="text-3xl md:text-5xl font-display tracking-tight text-black mb-12 leading-tight">
           {subtitle || 'Co rozwiązujemy'}
         </h2>
-        <div className={`grid gap-6 ${problems.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
+        {/* Jedna karta = jeden pełny wiersz: etykieta, tytuł i liczba po lewej, opis po prawej. */}
+        <div className="grid gap-4">
           {problems.map((p) => (
             <div
               key={p.id}
-              className={`rounded-2xl p-8 border ${p.selected ? 'border-lime bg-white/60' : 'border-black/10 bg-white/30'}`}
+              className={`rounded-2xl p-6 md:p-8 border md:grid md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] md:gap-10 ${p.selected ? 'border-lime bg-white/60' : 'border-black/10 bg-white/30'}`}
             >
-              <div className="flex items-center justify-between mb-4">
-                <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-dark">{p.label}</p>
-                {p.selected && (
-                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] bg-lime text-black px-2 py-1 rounded-full">
-                    {badge || 'Pilotaż'}
-                  </span>
+              <div>
+                <div className="flex flex-wrap items-center gap-3 mb-3">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-dark">{p.label}</p>
+                  {p.selected && (
+                    <span className="font-mono text-[10px] uppercase tracking-[0.18em] bg-lime text-black px-2 py-1 rounded-full">
+                      {badge || 'Pilotaż'}
+                    </span>
+                  )}
+                </div>
+                <h3 className="text-xl md:text-2xl font-display tracking-tight text-black mb-3 leading-tight">
+                  {p.title}
+                </h3>
+                <p className="text-sm font-mono text-black mb-4 md:mb-0">{p.metric}</p>
+              </div>
+              <div>
+                <p className={`text-base text-muted-dark leading-relaxed ${p.quote ? 'mb-5' : ''}`}>{p.body}</p>
+                {p.quote && (
+                  <blockquote className="border-l-2 border-lime pl-4 text-sm italic text-muted-dark">
+                    {p.quote}
+                  </blockquote>
                 )}
               </div>
-              <h3 className="text-xl md:text-2xl font-display tracking-tight text-black mb-4 leading-tight">
-                {p.title}
-              </h3>
-              <p className="text-sm font-mono text-black mb-4">{p.metric}</p>
-              <p className={`text-base text-muted-dark leading-relaxed ${p.quote ? 'mb-5' : ''}`}>{p.body}</p>
-              {p.quote && (
-                <blockquote className="border-l-2 border-lime pl-4 text-sm italic text-muted-dark">
-                  {p.quote}
-                </blockquote>
-              )}
             </div>
           ))}
         </div>
@@ -260,9 +268,9 @@ function PhaseBlock({ block }) {
         <h4 className="text-xl md:text-2xl font-display tracking-tight text-black mb-4 leading-tight">{block.title}</h4>
       )}
       {block.type === 'features' && Array.isArray(block.items) && (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 border-t border-l border-black/10">
+        <div className="grid sm:grid-cols-2 border-t border-l border-black/10">
           {block.items.map((f, i) => (
-            <div key={i} className="border-b border-r border-black/10 p-5 md:p-6">
+            <div key={i} className="grid grid-rows-subgrid row-span-3 content-start border-b border-r border-black/10 p-5 md:p-6">
               <p className="font-mono text-[11px] tracking-[0.2em] text-muted-dark mb-3">{String(i + 1).padStart(2, '0')}</p>
               <p className="text-base md:text-lg text-black font-medium leading-snug mb-2">{f.title}</p>
               <p className="text-sm text-muted-dark leading-relaxed">{f.desc}</p>
@@ -436,22 +444,25 @@ function TilesBlock({ section }) {
             <h3 className="text-2xl md:text-3xl font-display tracking-tight text-black leading-tight">{g.title}</h3>
             {g.note && <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-dark">{g.note}</span>}
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* Jeden moduł = jeden pełny wiersz: kod | tytuł, opis i uwaga | cena i czas. */}
+          <div className="rounded-2xl border border-black/10 bg-white/60 overflow-hidden">
             {g.tiles.map((t, ti) => (
               <div
                 key={ti}
-                className={`rounded-2xl p-6 border flex flex-col ${t.badge ? 'border-lime bg-white/70' : 'border-black/10 bg-white/50'}`}
+                className={`grid grid-cols-[auto_1fr] md:grid-cols-[auto_1fr_200px] gap-x-5 gap-y-3 p-5 md:p-6 ${ti > 0 ? 'border-t border-black/10' : ''} ${t.badge ? 'bg-lime/15' : ''}`}
               >
-                <div className="flex items-center justify-between gap-3 mb-4">
-                  <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-black bg-lime px-2.5 py-0.5 rounded-full">{t.code}</span>
-                  {t.badge && <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-dark">{t.badge}</span>}
+                <span className="self-start font-mono text-[11px] uppercase tracking-[0.2em] text-black bg-lime px-2.5 py-0.5 rounded-full">{t.code}</span>
+                <div>
+                  <h4 className="text-lg md:text-xl font-display tracking-tight text-black leading-snug mb-2">
+                    {t.title}
+                    {t.badge && <span className="ml-3 align-middle font-mono text-[10px] uppercase tracking-[0.18em] text-muted-dark">{t.badge}</span>}
+                  </h4>
+                  <p className="text-sm text-muted-dark leading-relaxed">{t.desc}</p>
+                  {t.note && <p className="text-xs text-black leading-snug mt-2">{t.note}</p>}
                 </div>
-                <h4 className="text-lg md:text-xl font-display tracking-tight text-black leading-snug mb-3">{t.title}</h4>
-                <p className="text-sm text-muted-dark leading-relaxed mb-6 flex-1">{t.desc}</p>
-                <div className="border-t border-black/10 pt-4">
-                  <p className="text-2xl font-display tracking-tight text-black leading-none mb-2">{t.price}</p>
+                <div className="col-start-2 md:col-start-auto md:border-l md:border-black/10 md:pl-5">
+                  <p className="text-2xl font-display tracking-tight text-black leading-none mb-2 whitespace-nowrap">{t.price}</p>
                   {t.duration && <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-dark">{t.duration}</p>}
-                  {t.note && <p className="text-xs text-muted-dark leading-snug mt-2">{t.note}</p>}
                 </div>
               </div>
             ))}

@@ -95,14 +95,18 @@ function renderStats(stats) {
 function renderProblems(problems, badge = 'PILOTAŻ') {
     return problems.map((p) => `
         <div class="problem ${p.selected ? 'is-selected' : ''}">
-            <div class="problem-header">
-                <span class="problem-label">${esc(p.label)}</span>
-                ${p.selected ? `<span class="badge">${esc(badge)}</span>` : ''}
+            <div class="problem-side">
+                <div class="problem-header">
+                    <span class="problem-label">${esc(p.label)}</span>
+                    ${p.selected ? `<span class="badge">${esc(badge)}</span>` : ''}
+                </div>
+                <h3>${esc(p.title)}</h3>
+                <p class="problem-metric">${esc(p.metric)}</p>
             </div>
-            <h3>${esc(p.title)}</h3>
-            <p class="problem-metric">${esc(p.metric)}</p>
-            <p class="problem-body">${esc(p.body)}</p>
-            ${p.quote ? `<blockquote>${esc(p.quote)}</blockquote>` : ''}
+            <div class="problem-main">
+                <p class="problem-body">${esc(p.body)}</p>
+                ${p.quote ? `<blockquote>${esc(p.quote)}</blockquote>` : ''}
+            </div>
         </div>
     `).join('');
 }
@@ -163,12 +167,12 @@ function renderPhase(phase) {
                             ${phase.priceNote ? `<div class="phase-price-note">${esc(phase.priceNote)}</div>` : ''}
                         </div>` : ''}
                     </div>
+                    ${phase.callout ? `<div class="callout phase-lead">${esc(phase.callout)}</div>` : ''}
                     ${hasBlocks ? '' : `<div class="mono-label">${esc(phase.deliverablesLabel || 'Co dostajesz')}</div>`}
                 </div>
                 ${hasBlocks
                     ? phase.blocks.map(renderPhaseBlock).join('')
                     : `<ul class="list">${renderDeliverables(phase.deliverables || [])}</ul>`}
-                ${phase.callout ? `<div class="callout">${esc(phase.callout)}</div>` : ''}
             </div>`;
 }
 
@@ -226,15 +230,17 @@ function renderExtraSection(section, chapterName) {
         body = section.groups.map((g) => `
             <div class="tile-group">
                 <div class="tile-group-head"><h3>${esc(g.title)}</h3>${g.note ? `<span class="mono-label">${esc(g.note)}</span>` : ''}</div>
-                <div class="tiles">${g.tiles.map((t) => `
-                    <div class="tile${t.badge ? ' featured' : ''}">
-                        <div class="tile-top"><span class="badge">${esc(t.code)}</span>${t.badge ? `<span class="tile-badge">${esc(t.badge)}</span>` : ''}</div>
-                        <div class="tile-title">${esc(t.title)}</div>
-                        <div class="tile-desc">${esc(t.desc)}</div>
-                        <div class="tile-foot">
+                <div class="tile-rows">${g.tiles.map((t) => `
+                    <div class="tile-row${t.badge ? ' featured' : ''}">
+                        <div class="tile-code"><span class="badge">${esc(t.code)}</span></div>
+                        <div class="tile-main">
+                            <div class="tile-title">${esc(t.title)}${t.badge ? ` <span class="tile-badge">${esc(t.badge)}</span>` : ''}</div>
+                            <div class="tile-desc">${esc(t.desc)}</div>
+                            ${t.note ? `<div class="tile-note">${esc(t.note)}</div>` : ''}
+                        </div>
+                        <div class="tile-meta">
                             <div class="tile-price">${esc(t.price)}</div>
                             ${t.duration ? `<div class="tile-duration">${esc(t.duration)}</div>` : ''}
-                            ${t.note ? `<div class="tile-note">${esc(t.note)}</div>` : ''}
                         </div>
                     </div>`).join('')}</div>
             </div>`).join('');
@@ -317,7 +323,7 @@ function renderHTML(offer, assets) {
             html += `
         <section class="block">
             ${sectionHead({ label: L.problems, title: L.problemsSubtitle }, name)}
-            <div class="problems${offer.problems.length === 3 ? ' cols-3' : ''}">${renderProblems(offer.problems, L.problemsBadge)}</div>
+            <div class="problems">${renderProblems(offer.problems, L.problemsBadge)}</div>
         </section>`;
         }
         if (withApproach) html += approachHtml(name);
@@ -433,7 +439,6 @@ function renderHTML(offer, assets) {
     const tocItems = [
         ...chapters.map((c, i) => ({ num: String(i + 1).padStart(2, '0'), name: c.name, sub: c.toc })),
         ...(appendixHtml.trim() ? [{ num: 'A', name: appendixName, sub: appendixList.map((s) => s.label || s.title) }] : []),
-        ...(hasNextSteps ? [{ num: ICON_ARROW, raw: true, name: L.nextStepsTitle, sub: ['Kontakt'] }] : []),
     ];
 
     const summary = offer.summary || {};
@@ -578,6 +583,7 @@ ${assets.fontFaces}
     .footnote { font-size: 8.5pt; color: var(--muted); margin-top: 4mm; max-width: 160mm; break-inside: avoid; }
 
     /* ─── W skrócie ─── */
+    .summary-lead { font-size: 13pt; line-height: 1.45; letter-spacing: -0.01em; margin: 0 0 6mm; max-width: 160mm; }
     .tldr { list-style: none; padding: 0; margin: 0 0 7mm; }
     .tldr li { display: flex; gap: 4mm; font-size: 10.5pt; line-height: 1.5; padding: 1.2mm 0; max-width: 160mm; }
     .tldr .bullet { margin-top: 2mm; }
@@ -591,6 +597,7 @@ ${assets.fontFaces}
     .decision > div + div { border-left: 1px solid var(--hairline-soft); }
     .decision.single { grid-template-columns: 1fr; }
     .decision-text { font-size: 12pt; line-height: 1.35; }
+    .decision.info .decision-text { font-size: 10.5pt; line-height: 1.5; }
     .decision-price { font-size: 22pt; letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 1.5mm; }
     .decision-note { font-size: 8.5pt; color: var(--muted); }
     .decision-foot { grid-column: 1 / -1; border-top: 1px solid var(--hairline-soft); padding: 3.5mm 6mm !important; border-left: 0 !important; font-size: 8.5pt; color: var(--muted); }
@@ -602,6 +609,8 @@ ${assets.fontFaces}
     /* Gdy "W skrócie" nie mieści się na stronie, build dokłada .tight (patrz fitSummary). */
     .summary.tight .toc-sub { display: none; }
     .summary.tight .tldr li { font-size: 9.5pt; padding: 0.8mm 0; }
+    .summary.tight .summary-lead { font-size: 12pt; margin-bottom: 5mm; }
+    .summary.tight .toc li { padding: 1.8mm 0; }
     .summary.tight .decision > div { padding: 4mm 5mm; }
 
     /* ─── Statystyki ─── */
@@ -611,15 +620,19 @@ ${assets.fontFaces}
     .stat-label { font-size: 8.5pt; color: var(--muted); line-height: 1.4; }
 
     /* ─── Problemy ─── */
-    .problems { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
-    .problems.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
-    .problem { background: var(--white); border-radius: 3mm; padding: 5mm; border: 1.5px solid transparent; break-inside: avoid; }
+    /* Problemy jako pełnej szerokości wiersze: każda karta ma ten sam układ, więc nic nie "pływa". */
+    .problems { display: grid; grid-template-columns: 1fr; gap: 3mm; }
+    .problem {
+        background: var(--white); border-radius: 3mm; padding: 5mm 6mm;
+        border: 1.5px solid transparent; break-inside: avoid;
+        display: grid; grid-template-columns: 60mm 1fr; gap: 8mm;
+    }
     .problem.is-selected { border-color: var(--lime); }
-    .problem-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 2mm; margin-bottom: 3mm; }
+    .problem-header { display: flex; align-items: center; gap: 3mm; margin-bottom: 2.5mm; }
     .problem-label { font-size: 7pt; color: var(--muted); }
-    .problem h3 { font-size: 11.5pt; }
-    .problem-metric { font-family: var(--font-mono); font-size: 7.5pt; line-height: 1.45; margin: 0 0 3mm; }
-    .problem-body { font-size: 8.8pt; color: var(--muted); line-height: 1.5; }
+    .problem h3 { font-size: 12.5pt; margin-bottom: 2mm; }
+    .problem-metric { font-family: var(--font-mono); font-size: 7.3pt; line-height: 1.45; margin: 0; }
+    .problem-body { font-size: 9.3pt; color: var(--muted); line-height: 1.55; }
     blockquote { border-left: 2px solid var(--lime); padding-left: 4mm; font-style: italic; color: var(--muted); font-size: 9pt; margin: 3mm 0 0; }
 
     /* ─── Podejście ─── */
@@ -641,6 +654,7 @@ ${assets.fontFaces}
     .list li { display: flex; gap: 3mm; padding: 1mm 0; font-size: 9.5pt; line-height: 1.5; break-inside: avoid; }
     .bullet { width: 1.6mm; height: 1.6mm; background: var(--lime); flex-shrink: 0; margin-top: 1.9mm; }
     .list.cols-2 { display: grid; grid-template-columns: 1fr 1fr; column-gap: 7mm; }
+    .phase .list li { font-size: 9pt; line-height: 1.45; padding: 0.8mm 0; }
     .terms { margin-top: 5mm; }
     .terms li { font-size: 9pt; }
 
@@ -659,39 +673,44 @@ ${assets.fontFaces}
     .phase-price-block { text-align: right; flex-shrink: 0; max-width: 72mm; }
     .phase-price { font-size: 19pt; letter-spacing: -0.02em; line-height: 1; margin-bottom: 1.5mm; white-space: nowrap; }
     .phase-price-note { font-size: 8pt; color: var(--muted); line-height: 1.35; }
+    .phase-lead { margin: -1mm 0 6mm; }
     .phase-block { margin-top: 5mm; }
     .phase-top + .phase-block { margin-top: 0; }
     .phase-block:has(.list) { break-inside: avoid; }
     .block-title { font-size: 12pt; margin-bottom: 3mm; }
-    .features { display: grid; grid-template-columns: 1fr 1fr 1fr; border-top: 1px solid var(--hairline); }
-    .feature { padding: 3.5mm 4mm 4mm 0; border-bottom: 1px solid var(--hairline); break-inside: avoid; }
-    .feature + .feature { }
-    .feature:not(:nth-child(3n+1)) { padding-left: 4mm; border-left: 1px solid var(--hairline); }
-    .feature-num { font-size: 7pt; color: var(--muted); margin-bottom: 2mm; }
-    .feature-title { font-size: 10pt; font-weight: 500; line-height: 1.25; margin-bottom: 1.5mm; }
-    .feature-desc { font-size: 8.5pt; color: var(--muted); line-height: 1.45; }
+    /* Dwie kolumny; subgrid wyrównuje numer, tytuł i opis w każdym wierszu. */
+    .features { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--hairline); }
+    .feature {
+        display: grid; grid-template-rows: subgrid; grid-row: span 3;
+        padding: 3mm 5mm 3.2mm 0; border-bottom: 1px solid var(--hairline); break-inside: avoid;
+    }
+    .feature:nth-child(2n) { padding: 3mm 0 3.2mm 5mm; border-left: 1px solid var(--hairline); }
+    .feature-num { font-size: 7pt; color: var(--muted); margin-bottom: 1.5mm; }
+    .feature-title { font-size: 9.8pt; font-weight: 500; line-height: 1.25; margin-bottom: 1.2mm; }
+    .feature-desc { font-size: 8.3pt; color: var(--muted); line-height: 1.4; }
 
     /* ─── Kafelki modułów ─── */
-    .tile-group { margin-bottom: 6mm; break-inside: avoid; }
+    .tile-group { margin-bottom: 6mm; }
     .tile-group:last-of-type { margin-bottom: 0; }
-    .tile-group-head { display: flex; align-items: baseline; gap: 4mm; margin-bottom: 3mm; }
+    .tile-group-head { display: flex; align-items: baseline; gap: 4mm; margin-bottom: 3mm; break-after: avoid; }
     .tile-group-head h3 { font-size: 13pt; margin: 0; }
     .tile-group-head .mono-label { margin: 0; }
-    .tiles { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3mm; }
-    .tile {
-        background: var(--white); border-radius: 3mm; padding: 4mm;
-        border: 1.5px solid transparent;
-        display: flex; flex-direction: column; min-width: 0; break-inside: avoid;
+    /* Moduły jak cennik: jeden moduł = jeden pełny wiersz, kolumny wyrównane w całej mapie. */
+    .tile-rows { background: var(--white); border-radius: 3mm; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+    .tile-row {
+        display: grid; grid-template-columns: 11mm 1fr 40mm; gap: 5mm;
+        padding: 4mm 5mm; border-top: 1px solid var(--hairline-soft); break-inside: avoid;
     }
-    .tile.featured { border-color: var(--lime); }
-    .tile-top { display: flex; justify-content: space-between; align-items: center; gap: 2mm; margin-bottom: 3mm; }
-    .tile-badge { font-size: 6pt; color: var(--muted); text-align: right; }
-    .tile-title { font-size: 10.5pt; font-weight: 500; line-height: 1.25; margin-bottom: 2mm; }
-    .tile-desc { font-size: 8.3pt; color: var(--muted); line-height: 1.4; flex: 1; margin-bottom: 3mm; }
-    .tile-foot { border-top: 1px solid var(--hairline); padding-top: 2.8mm; }
-    .tile-price { font-size: 13pt; line-height: 1.1; margin-bottom: 1.2mm; letter-spacing: -0.01em; }
+    .tile-row:first-child { border-top: 0; }
+    .tile-row.featured { background: rgba(156, 224, 105, 0.16); }
+    .tile-code { padding-top: 0.3mm; }
+    .tile-title { font-size: 10.5pt; font-weight: 500; line-height: 1.3; margin-bottom: 1.2mm; }
+    .tile-badge { font-family: var(--font-mono); font-weight: 400; font-size: 6.3pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-left: 2mm; white-space: nowrap; }
+    .tile-desc { font-size: 8.8pt; color: var(--muted); line-height: 1.45; }
+    .tile-meta { border-left: 1px solid var(--hairline-soft); padding-left: 5mm; }
+    .tile-price { font-size: 12.5pt; line-height: 1.1; margin-bottom: 1.2mm; letter-spacing: -0.01em; white-space: nowrap; }
     .tile-duration { font-size: 6.5pt; color: var(--muted); }
-    .tile-note { font-size: 7.5pt; color: var(--muted); line-height: 1.4; margin-top: 1.5mm; }
+    .tile-note { font-size: 7.8pt; color: var(--black); line-height: 1.4; margin-top: 1.4mm; }
 
     /* ─── Grupy, tabele ─── */
     .groups { display: grid; grid-template-columns: 1fr 1fr; gap: 7mm 9mm; }
@@ -768,8 +787,17 @@ ${assets.fontFaces}
     <!-- W SKRÓCIE -->
     <section class="summary">
         <div class="chapter-kicker"><span>W skrócie</span></div>
+        ${summary.lead ? `<p class="summary-lead">${esc(summary.lead)}</p>` : ''}
         ${Array.isArray(offer.tldr) && offer.tldr.length ? `<ul class="tldr">${renderDeliverables(offer.tldr)}</ul>` : ''}
-        ${offer.pricing ? `
+        ${summary.start || summary.pricing ? `
+        <div class="decision info${summary.start && summary.pricing ? '' : ' single'}">
+            ${[summary.start, summary.pricing].filter(Boolean).map((b) => `
+            <div>
+                <span class="mono-label">${esc(b.label)}</span>
+                <div class="decision-text">${esc(b.text)}</div>
+            </div>`).join('')}
+            ${meta.validUntil ? `<div class="decision-foot">Oferta ważna do ${esc(fmtDatePL(meta.validUntil))}.</div>` : ''}
+        </div>` : offer.pricing ? `
         <div class="decision${summary.decision ? '' : ' single'}">
             ${summary.decision ? `
             <div>
