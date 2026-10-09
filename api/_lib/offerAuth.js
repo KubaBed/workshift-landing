@@ -150,6 +150,8 @@ export function sanitizeOfferForClient(offer) {
         labels: offer.labels || null,
         context: offer.context || null,
         tldr: offer.tldr || [],
+        // Tylko wstęp "W skrócie"; reszta `summary` i `contact` (telefon) zostaje w PDF.
+        summary: offer.summary?.lead ? { lead: offer.summary.lead } : null,
         problems: offer.problems || [],
         approach: offer.approach || null,
         pilot: offer.pilot || null,

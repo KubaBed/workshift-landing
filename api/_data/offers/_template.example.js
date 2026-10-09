@@ -31,10 +31,13 @@ export default {
         confidential: true,
     },
 
-    // PDF, strona „W skrócie": pierwsza decyzja obok rekomendowanego startu (pricing.total).
+    // Strona „W skrócie". `lead`: wstęp, co budujemy (PDF i www). `start` i `pricing`: panel
+    // bez kwoty w PDF (zalecane: cena dopiero w rozdziale z cenami, z kontekstem).
+    // Starszy wariant: `decision` + `totalNote` pokazuje w panelu pricing.total.
     summary: {
-        decision: 'Etap 0: ... 3 tygodnie, X XXX PLN netto.',
-        totalNote: 'co obejmuje kwota startu',
+        lead: 'Proponuję zbudować ... Jest zbudowany z modułów ...',
+        start: { label: 'Jak zaczynamy', text: 'Od warsztatu w firmie ... Potem moduły wybrane w umowie.' },
+        pricing: { label: 'Ceny', text: 'Każdy moduł ma stałą cenę ... Szczegóły w rozdziale z cenami.' },
     },
 
     // PDF, tylna okładka. Telefon tylko w pliku klienta (gitignored), nigdy w kodzie.
