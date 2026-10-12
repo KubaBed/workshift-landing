@@ -735,7 +735,9 @@ function BarsBlock({ section }) {
           </div>
         ))}
       </div>
-      <table className="sr-only">
+      {/* sr-only na otaczającym divie: tabela ignoruje width 1px i na telefonie rozpychała stronę w poziomie. */}
+      <div className="sr-only">
+      <table>
         <caption>{section.title}</caption>
         <thead>
           <tr><th scope="col">Pozycja</th>{series.map((s, si) => <th key={si} scope="col">{s.name || 'Wartość'}</th>)}</tr>
@@ -749,6 +751,7 @@ function BarsBlock({ section }) {
           ))}
         </tbody>
       </table>
+      </div>
       {section.source && (
         <p className="mt-6 pt-4 border-t border-black/10 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-dark leading-relaxed">
           Źródło: {section.source}
