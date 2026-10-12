@@ -215,7 +215,36 @@ function sectionHead({ label, title, intro }, chapterName) {
             </div>`;
 }
 
-// Sekcje dodatkowe sterowane danymi: `sections: [{ type: 'table' | 'groups' | 'list' | 'tiles', ... }]`.
+// Wykres słupkowy poziomy (`type: 'bars'`), ten sam układ co BarsBlock na stronie: seria główna
+// w zieleni, porównanie w niebieskim (paleta sprawdzona walidatorem dataviz), wartość przy końcu
+// słupka, tekst czarny, źródło pod wykresem. Obiekt `embed` (iframe z demem) w PDF jest pomijany.
+const BAR_TONES = { main: '#4E8F2A', compare: '#2A78D6' };
+function fmtBarValue(v, unit = '', decimals) {
+    const n = Number(v);
+    const s = decimals == null ? String(n) : n.toFixed(decimals);
+    return `${s.replace('.', ',')}${unit}`;
+}
+function renderBars(section) {
+    const series = Array.isArray(section.series) && section.series.length ? section.series : [{ name: '', tone: 'main' }];
+    const all = section.rows.flatMap((r) => r.values || []);
+    const max = Number(section.max) || Math.max(...all, 1);
+    const legend = series.length > 1
+        ? `<div class="bars-legend">${series.map((s) => `<span><i style="background:${BAR_TONES[s.tone] || BAR_TONES.main}"></i>${esc(s.name)}</span>`).join('')}</div>`
+        : '';
+    const rows = section.rows.map((row) => `
+        <div class="bars-row">
+            <div class="bars-label">${esc(row.label)}${row.note ? `<span>${esc(row.note)}</span>` : ''}</div>
+            <div class="bars-vals">${(row.values || []).map((v, vi) => {
+                const s = series[vi] || series[0];
+                const pct = Math.max(0, Math.min(100, (Number(v) / max) * 100));
+                const label = (row.display && row.display[vi]) || fmtBarValue(v, section.unit || '', section.decimals);
+                return `<div class="bars-line"><div class="bars-fill" style="width:${(pct * 0.82).toFixed(2)}%;background:${BAR_TONES[s.tone] || BAR_TONES.main}"></div><span class="bars-value">${esc(label)}</span></div>`;
+            }).join('')}</div>
+        </div>`).join('');
+    return `<div class="bars">${legend}${rows}${section.source ? `<div class="bars-source">Źródło: ${esc(section.source)}</div>` : ''}</div>`;
+}
+
+// Sekcje dodatkowe sterowane danymi: `sections: [{ type: 'table' | 'groups' | 'list' | 'tiles' | 'bars', ... }]`.
 function renderExtraSection(section, chapterName) {
     let body = '';
     if (section.type === 'table' && Array.isArray(section.rows)) {
@@ -249,6 +278,8 @@ function renderExtraSection(section, chapterName) {
                         </div>
                     </div>`).join('')}</div>
             </div>`).join('');
+    } else if (section.type === 'bars' && Array.isArray(section.rows)) {
+        body = renderBars(section);
     }
     // Krótka lista trzyma się jednej strony, żeby nagłówek nie został sam na dole.
     const keep = (section.type === 'list' && (section.items || []).length <= 8 && !section.image)
@@ -731,6 +762,18 @@ ${assets.fontFaces}
     .section-head { break-inside: avoid; break-after: avoid; }
     .intro { font-size: 10.5pt; line-height: 1.45; color: var(--muted); margin: 0 0 5mm; max-width: 150mm; }
     .footnote { font-size: 8.5pt; color: var(--muted); margin-top: 4mm; max-width: 160mm; break-inside: avoid; }
+    .bars { background: var(--white); border: 1px solid var(--hairline-soft); border-radius: 3mm; padding: 5mm 6mm; break-inside: avoid; }
+    .bars-legend { display: flex; gap: 6mm; margin-bottom: 4mm; font-size: 8.5pt; }
+    .bars-legend span { display: inline-flex; align-items: center; gap: 2mm; }
+    .bars-legend i { display: inline-block; width: 3mm; height: 3mm; border-radius: 0.6mm; }
+    .bars-row { display: grid; grid-template-columns: 52mm 1fr; gap: 5mm; align-items: center; padding: 2.4mm 0; break-inside: avoid; }
+    .bars-label { font-size: 9pt; line-height: 1.3; }
+    .bars-label span { display: block; font-size: 7pt; color: var(--muted); margin-top: 0.6mm; }
+    .bars-vals { display: flex; flex-direction: column; gap: 0.6mm; }
+    .bars-line { display: flex; align-items: center; gap: 2mm; height: 4mm; }
+    .bars-fill { height: 100%; min-width: 0.5mm; border-radius: 0 1mm 1mm 0; }
+    .bars-value { white-space: nowrap; font-family: var(--font-mono); font-size: 8pt; font-variant-numeric: tabular-nums; }
+    .bars-source { margin-top: 3mm; padding-top: 2.5mm; border-top: 1px solid var(--hairline-soft); font-family: var(--font-mono); font-size: 6.6pt; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); line-height: 1.5; }
     .section-figure { margin: 6mm 0 0; break-inside: avoid; }
     .section-figure img { display: block; width: 100%; max-width: 150mm; border-radius: 3mm; border: 1px solid var(--hairline-soft); background: var(--white); }
     .section-figure figcaption { font-family: var(--font-mono); font-size: 6.8pt; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 2mm; }
@@ -1161,7 +1204,7 @@ async function build() {
     for (const section of offer.sections || []) {
         if (!section.image?.path) continue;
         const ext = path.extname(section.image.path).slice(1).toLowerCase();
-        const mime = { png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp' }[ext] || 'application/octet-stream';
+        const mime = { png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp', svg: 'image/svg+xml' }[ext] || 'application/octet-stream';
         section.image.dataUri = await dataUri(section.image.path, mime);
     }
 

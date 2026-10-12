@@ -11,9 +11,44 @@ import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { IntegrationsMarquee } from '@/components/ui/IntegrationsMarquee';
 import { AnimatedProcessIcon } from '@/components/ui/AnimatedProcessIcon';
 import { getServiceById } from '@/data/services';
-import { BoardSection, PartDivider } from '@/components/offer/OfferSections';
+import { BoardSection, PartDivider, ExtraSections } from '@/components/offer/OfferSections';
 
 // Przykładowa "Część 1 dla zarządu" (dane neutralne, wymyślone). Schemat: pole `board` oferty.
+const SAMPLE_OFFER_SECTIONS = [
+  {
+    type: 'bars',
+    label: 'Przykład',
+    title: 'Dwie serie: grupa A i grupa B',
+    unit: '%',
+    decimals: 1,
+    max: 60,
+    series: [{ name: 'Grupa A', tone: 'main' }, { name: 'Grupa B', tone: 'compare' }],
+    rows: [
+      { label: 'Kategoria pierwsza', note: 'opis próby', values: [5.8, 17] },
+      { label: 'Kategoria druga', values: [14.8, 30.4] },
+      { label: 'Kategoria trzecia', values: [45.8, 55] },
+    ],
+    source: 'dane przykładowe',
+  },
+  {
+    type: 'bars',
+    title: 'Jedna seria bez legendy',
+    unit: '%',
+    max: 45,
+    rows: [
+      { label: 'Zadanie A', note: 'badanie 1, 450 osób', values: [40] },
+      { label: 'Zadanie B', note: 'badanie 2, 760 osób', values: [25] },
+      { label: 'Zadanie C', values: [5.4], display: ['ok. 5%'] },
+    ],
+    source: 'dane przykładowe',
+  },
+  {
+    label: 'Demo',
+    title: 'Osadzone demo',
+    embed: { src: '/brand/', title: 'Przykładowa strona w ramce', height: 360, note: 'Hasło takie samo jak do oferty.' },
+  },
+];
+
 const SAMPLE_BOARD = {
   label: 'Część 1 · Dla zarządu',
   title: 'Asystent, który zna Państwa zamówienia, magazyn i faktury',
@@ -332,6 +367,16 @@ export default function ShowcasePage() {
             <BoardSection board={SAMPLE_BOARD} validUntil="2026-11-30" />
             <PartDivider part={{ label: 'Część 2', title: 'Szczegóły', text: 'Dla osoby, która przygotowuje decyzję: moduły z cenami, sposób pracy, bezpieczeństwo, ceny i warunki.' }} />
             <div className="h-12" />
+          </div>
+        </Section>
+
+        <Section
+          id="oferta-wykres-demo"
+          title="Sekcje oferty: wykres (bars) i demo (embed)"
+          note="src/components/offer/OfferSections.jsx - `type: 'bars'` (serie: main zieleń, compare niebieski; paleta sprawdzona walidatorem dataviz) i pole `embed` (leniwy iframe + link do nowego okna). W PDF wykres ma ten sam układ, a zamiast iframe jest `image`. Dane przykładowe."
+        >
+          <div className="-mx-5 rounded-lg border border-black/10 bg-sage">
+            <ExtraSections sections={SAMPLE_OFFER_SECTIONS} />
           </div>
         </Section>
 
