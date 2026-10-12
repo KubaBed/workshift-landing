@@ -11,6 +11,51 @@ import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { IntegrationsMarquee } from '@/components/ui/IntegrationsMarquee';
 import { AnimatedProcessIcon } from '@/components/ui/AnimatedProcessIcon';
 import { getServiceById } from '@/data/services';
+import { BoardSection, PartDivider } from '@/components/offer/OfferSections';
+
+// Przykładowa "Część 1 dla zarządu" (dane neutralne, wymyślone). Schemat: pole `board` oferty.
+const SAMPLE_BOARD = {
+  label: 'Część 1 · Dla zarządu',
+  title: 'Asystent, który zna Państwa zamówienia, magazyn i faktury',
+  lead: 'Proponuję zbudować asystenta: jedną aplikację na komputer i telefon. Asystent zna Państwa umowy z dostawcami, stany magazynowe i faktury. Odpowiada na pytania, pilnuje terminów i przygotowuje zestawienia, które dziś ktoś składa ręcznie.',
+  scenesLabel: 'Trzy sytuacje z naszej rozmowy',
+  scenes: [
+    {
+      tag: 'Pierwszy moduł',
+      featured: true,
+      title: 'Przed rozmową z dostawcą',
+      today: 'Przed negocjacjami ktoś ręcznie zbiera ceny, rabaty i reklamacje dostawcy z kilku arkuszy. Każdy sam pilnuje końca umów.',
+      assistant: 'Pan otwiera na telefonie kartę dostawcy i widzi jego umowy, obroty i otwarte reklamacje. O końcu umowy asystent przypomina sam, mailem albo w Teams.',
+      gain: 'Zespół przestaje składać tabelki przed rozmowami. Koniec każdej umowy widać z wyprzedzeniem.',
+    },
+    {
+      tag: 'Moduł do wyboru',
+      title: 'Gdy kończy się towar',
+      today: 'Brak towaru widać dopiero wtedy, gdy klient dzwoni z pytaniem o dostawę.',
+      assistant: 'Asystent porównuje stany z zamówieniami klientów i podpowiada, co zamówić u którego dostawcy. Zamówienie zatwierdza człowiek.',
+      gain: 'Mają Państwo czas, żeby zamówić towar, zanim klient zapyta.',
+    },
+    {
+      tag: 'Moduł do wyboru',
+      title: 'Co miesiąc przy fakturach',
+      today: 'Faktury kosztowe ktoś porównuje z zamówieniami ręcznie, pozycja po pozycji.',
+      assistant: 'Na początku miesiąca lista rozbieżności czeka gotowa. Księgowa ją sprawdza i zatwierdza.',
+      gain: 'Księgowa sprawdza tylko rozbieżności zamiast całych faktur.',
+    },
+  ],
+  note: 'W każdej z tych sytuacji decyzję podejmuje człowiek. Przy każdej informacji asystent pokazuje, z którego dokumentu ją wziął.',
+  start: {
+    title: 'Jak zaczynamy',
+    steps: [
+      { label: 'Krok 1', title: 'Warsztat w Państwa firmie', meta: '2 tygodnie', price: '4 900 PLN netto', text: 'Przez dzień na miejscu i kilka rozmów przez Teams poznaję, kto czym się zajmuje i gdzie ucieka najwięcej czasu. Na koniec dostają Państwo plan modułów.', note: 'Jeśli umowa obejmie co najmniej dwa moduły, cenę warsztatu odejmujemy od ich ceny.' },
+      { label: 'Krok 2', title: 'Pierwszy moduł: karta dostawcy', meta: '4-6 tygodni po warsztacie', price: '19 900 PLN netto', text: 'Asystent wczytuje umowy z dostawcami, prowadzi ich karty i przypomina o terminach. Działa na telefonie i w przeglądarce.' },
+      { label: 'Krok 3', title: 'Kolejne moduły, gdy będą potrzebne', meta: 'stała cena za moduł', price: 'od 6 900 PLN netto', text: 'Kolejne moduły wybierają Państwo z listy w części 2.' },
+    ],
+    example: { label: 'Przykład startu', text: 'Warsztat i pierwszy moduł kosztują razem 24 800 PLN netto.' },
+  },
+  demo: { label: 'Zobacz, jak to działa', url: 'https://workshift.pl/', text: 'Demo pokazuje te trzy sytuacje na przykładowych danych. Działa na telefonie i na komputerze.', cta: 'Otwórz demo' },
+  closing: 'Chętnie przejdę przez demo z Państwem na 30-minutowym spotkaniu na Teams.',
+};
 
 /**
  * /showcase - katalog komponentów Workshift.
@@ -129,7 +174,7 @@ export default function ShowcasePage() {
         </header>
 
         <nav className="flex flex-wrap gap-x-4 gap-y-1 border-y border-black/10 py-3 font-mono text-xs uppercase tracking-wider">
-          {['tokens', 'typografia', 'buttons', 'forms', 'brand', 'sekcje'].map((id) => (
+          {['tokens', 'typografia', 'buttons', 'forms', 'brand', 'oferta-zarzad', 'sekcje'].map((id) => (
             <a key={id} href={`#${id}`} className="hover:underline">{id}</a>
           ))}
         </nav>
@@ -275,6 +320,18 @@ export default function ShowcasePage() {
             />
             <ServiceFaq faq={getServiceById('automatyzacja')?.faq?.slice(0, 2)} />
             <div className="h-8" />
+          </div>
+        </Section>
+
+        <Section
+          id="oferta-zarzad"
+          title="BoardSection + PartDivider (oferta)"
+          note="src/components/offer/OfferSections.jsx - Część 1 oferty dla zarządu: sceny Dziś / Z asystentem / Zysk, kroki startu z ceną, demo. Renderuje się tylko, gdy oferta ma pole `board` (wtedy zastępuje W skrócie); PDF ma ten sam układ na dwóch stronach A4. Dane przykładowe."
+        >
+          <div className="-mx-5 rounded-lg border border-black/10 bg-sage">
+            <BoardSection board={SAMPLE_BOARD} validUntil="2026-11-30" />
+            <PartDivider part={{ label: 'Część 2', title: 'Szczegóły', text: 'Dla osoby, która przygotowuje decyzję: moduły z cenami, sposób pracy, bezpieczeństwo, ceny i warunki.' }} />
+            <div className="h-12" />
           </div>
         </Section>
 

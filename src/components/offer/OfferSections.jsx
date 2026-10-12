@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check, ArrowRight, Eye, Calendar } from 'lucide-react';
+import { Check, ArrowRight, ArrowUpRight, Eye, Calendar } from 'lucide-react';
 
 const fadeUp = {
   initial: { opacity: 0, y: 16 },
@@ -153,6 +153,193 @@ export function TldrSection({ tldr, lead }) {
   );
 }
 
+// ─── Część 1 "Dla zarządu" (tylko gdy oferta ma `board`, zastępuje wtedy "W skrócie") ───
+
+const SCENE_LABELS = { today: 'Dziś', assistant: 'Z asystentem', gain: 'Co Państwo zyskują' };
+const SCENE_KEYS = ['today', 'assistant', 'gain'];
+
+// Scena: chip i tytuł, pod nimi trzy bloki Dziś / Z asystentem / Zysk. Na desktopie trzy
+// kolumny, na telefonie bloki jeden pod drugim (każdy z linią u góry, jak statystyki w Kontekście).
+function SceneCard({ scene, labels }) {
+  return (
+    <motion.div
+      {...fadeUp}
+      className={`rounded-2xl border p-6 md:p-8 ${scene.featured ? 'border-lime bg-white/60' : 'border-black/10 bg-white/30'}`}
+    >
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-3 mb-6">
+        {scene.tag && (
+          <span
+            className={`font-mono text-[10px] uppercase tracking-[0.18em] px-2.5 py-1 rounded-full whitespace-nowrap ${scene.featured ? 'bg-lime text-black' : 'border border-black/15 text-muted-dark'}`}
+          >
+            {scene.tag}
+          </span>
+        )}
+        <h3 className="text-xl md:text-2xl font-display tracking-tight text-black leading-tight">{scene.title}</h3>
+      </div>
+      <div className="grid md:grid-cols-3 gap-5 md:gap-8">
+        {SCENE_KEYS.filter((k) => scene[k]).map((k) => (
+          <div key={k} className={`pt-4 ${k === 'gain' ? 'border-t-2 border-lime' : 'border-t border-black/15'}`}>
+            <p className={`font-mono text-[11px] uppercase tracking-[0.2em] mb-2 ${k === 'gain' ? 'text-black' : 'text-muted-dark'}`}>
+              {labels[k]}
+            </p>
+            <p
+              className={`text-base leading-relaxed ${k === 'today' ? 'text-muted-dark' : 'text-black'} ${k === 'gain' ? 'font-medium' : ''}`}
+            >
+              {scene[k]}
+            </p>
+          </div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+// Krok startu jak lekki kafelek modułu: etykieta i tytuł, tekst, notka; cena i czas po prawej.
+function StartStep({ step, index }) {
+  return (
+    <div className={`grid md:grid-cols-[1fr_250px] gap-x-8 gap-y-4 p-6 md:p-8 ${index > 0 ? 'border-t border-black/10' : ''}`}>
+      <div>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-3">
+          <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-black bg-lime px-2.5 py-0.5 rounded-full whitespace-nowrap">
+            {step.label || `Krok ${index + 1}`}
+          </span>
+          <h4 className="text-lg md:text-xl font-display tracking-tight text-black leading-snug">{step.title}</h4>
+        </div>
+        {step.text && <p className="text-base text-black leading-relaxed">{step.text}</p>}
+        {step.note && <p className="text-sm text-muted-dark leading-relaxed mt-3">{step.note}</p>}
+      </div>
+      {(step.price || step.meta) && (
+        <div className="md:border-l md:border-black/10 md:pl-8">
+          {step.price && (
+            <p className="text-xl md:text-2xl font-display tracking-tight text-black leading-tight mb-2">{step.price}</p>
+          )}
+          {step.meta && <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-dark">{step.meta}</p>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function BoardSection({ board, validUntil }) {
+  if (!board) return null;
+  const labels = { ...SCENE_LABELS, ...(board.sceneLabels || {}) };
+  const scenes = Array.isArray(board.scenes) ? board.scenes : [];
+  const start = board.start || null;
+  const steps = Array.isArray(start?.steps) ? start.steps : [];
+  const demo = board.demo?.url ? board.demo : null;
+  const demoHost = demo ? demo.url.replace(/^https?:\/\//, '').replace(/\/$/, '') : '';
+
+  return (
+    <SectionWrap className="pt-4 md:pt-6">
+      <motion.div {...fadeUp}>
+        {board.label && <SectionLabel>{board.label}</SectionLabel>}
+        {board.title && (
+          <h2 className="text-3xl md:text-5xl font-display tracking-tight text-black mb-6 leading-tight max-w-4xl">
+            {board.title}
+          </h2>
+        )}
+        {board.lead && (
+          <p className="text-lg md:text-xl text-muted-dark leading-relaxed max-w-3xl mb-12">{board.lead}</p>
+        )}
+      </motion.div>
+
+      {scenes.length > 0 && (
+        <div className="mb-8">
+          {board.scenesLabel && (
+            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-dark mb-4">{board.scenesLabel}</p>
+          )}
+          <div className="grid gap-4">
+            {scenes.map((scene, i) => <SceneCard key={i} scene={scene} labels={labels} />)}
+          </div>
+        </div>
+      )}
+
+      {board.note && (
+        <div className="border-l-3 border-lime pl-6 py-3 max-w-3xl">
+          <p className="text-base text-muted-dark leading-relaxed">{board.note}</p>
+        </div>
+      )}
+
+      {start && (
+        <motion.div {...fadeUp} className="mt-16 md:mt-24">
+          <h3 className="text-2xl md:text-4xl font-display tracking-tight text-black mb-8 leading-tight">
+            {start.title || 'Jak zaczynamy'}
+          </h3>
+          {steps.length > 0 && (
+            <div className="rounded-2xl border border-black/10 bg-white/60 overflow-hidden">
+              {steps.map((step, i) => <StartStep key={i} step={step} index={i} />)}
+            </div>
+          )}
+          {start.example?.text && (
+            <div className="mt-4 rounded-2xl border border-lime/50 bg-lime/15 p-6 md:p-8">
+              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-dark mb-2">
+                {start.example.label || 'Przykład startu'}
+              </p>
+              <p className="text-base md:text-lg text-black leading-relaxed max-w-3xl">{start.example.text}</p>
+            </div>
+          )}
+        </motion.div>
+      )}
+
+      {demo && (
+        <motion.div
+          {...fadeUp}
+          className="mt-4 rounded-2xl border border-black/10 bg-white/60 p-6 md:p-10 grid md:grid-cols-[1fr_auto] gap-6 md:gap-10 md:items-end"
+        >
+          <div>
+            <h3 className="text-2xl md:text-3xl font-display tracking-tight text-black leading-tight mb-3">
+              {demo.label || 'Zobacz, jak to działa'}
+            </h3>
+            {demo.text && <p className="text-base text-muted-dark leading-relaxed max-w-2xl mb-3">{demo.text}</p>}
+            <p className="font-mono text-xs tracking-[0.06em] text-black break-all">{demoHost}</p>
+          </div>
+          <a
+            href={demo.url}
+            target="_blank"
+            rel="noopener"
+            className="inline-flex w-full md:w-auto items-center justify-center gap-2 h-14 px-8 bg-lime text-black rounded-md text-base md:text-lg font-medium hover:bg-black hover:text-lime transition group"
+          >
+            {demo.cta || 'Otwórz demo'}
+            <ArrowUpRight size={20} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" />
+          </a>
+        </motion.div>
+      )}
+
+      {board.closing && (
+        <p className="mt-10 text-lg md:text-xl text-black leading-relaxed max-w-3xl">{board.closing}</p>
+      )}
+      {validUntil && (
+        <p className="mt-4 font-mono text-xs uppercase tracking-[0.18em] text-muted-dark">
+          Oferta ważna do {fmtDatePL(validUntil)}.{board.validNote ? ` ${board.validNote}` : ''}
+        </p>
+      )}
+    </SectionWrap>
+  );
+}
+
+// Przekładka części oferty (Część 2 "Szczegóły", Część 3 "Załącznik techniczny"). Tylko z `board`.
+export function PartDivider({ part }) {
+  if (!part || (!part.label && !part.title)) return null;
+  return (
+    <SectionWrap className="pt-20 md:pt-28 pb-0 md:pb-2">
+      <motion.div {...fadeUp} className="border-t border-black/15 pt-10 md:pt-14">
+        {part.label && (
+          <span className="inline-block font-mono text-[11px] uppercase tracking-[0.22em] text-black bg-lime px-3 py-1 rounded-full mb-6">
+            {part.label}
+          </span>
+        )}
+        {part.title && (
+          <h2 className="text-4xl sm:text-5xl md:text-7xl font-display tracking-tight text-black leading-[1.05] mb-6">
+            {part.title}
+          </h2>
+        )}
+        <LimeDivider />
+        {part.text && <p className="text-lg md:text-xl text-muted-dark leading-relaxed max-w-2xl">{part.text}</p>}
+      </motion.div>
+    </SectionWrap>
+  );
+}
+
 export function ContextSection({ context }) {
   return (
     <SectionWrap>
@@ -247,9 +434,11 @@ export function ApproachSection({ approach }) {
             </li>
           ))}
         </ul>
-        <div className="border-l-3 border-lime pl-6 py-3 max-w-3xl">
-          <p className="text-base italic text-muted-dark leading-relaxed md:text-justify hyphens-auto">{approach.callout}</p>
-        </div>
+        {approach.callout && (
+          <div className="border-l-3 border-lime pl-6 py-3 max-w-3xl">
+            <p className="text-base italic text-muted-dark leading-relaxed md:text-justify hyphens-auto">{approach.callout}</p>
+          </div>
+        )}
       </motion.div>
     </SectionWrap>
   );
