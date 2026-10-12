@@ -2,11 +2,17 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Check, ArrowRight, ArrowUpRight, Eye, Calendar } from 'lucide-react';
 
+// Mocne ease-out zamiast domyślnego: element szybko dojeżdża i łagodnie siada.
+const EASE_OUT = [0.23, 1, 0.32, 1];
+
+// `data-reveal` łapie reguła @media print w index.css: sekcje, które nie weszły jeszcze
+// w widok, mają inline opacity 0 i bez niej drukowałyby się puste.
 const fadeUp = {
   initial: { opacity: 0, y: 16 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: '-80px' },
-  transition: { duration: 0.5 },
+  transition: { duration: 0.5, ease: EASE_OUT },
+  'data-reveal': '',
 };
 
 function SectionWrap({ children, className = '' }) {
@@ -73,7 +79,7 @@ export function StatusBanner({ views, validUntil }) {
             <span className="flex items-center gap-1.5">
               <Eye size={12} className="text-lime" />
               {count} {pluralOtwarcie(count)}
-              {lastLabel && <span className="text-muted-light normal-case tracking-normal ml-1">· ostatnio {lastLabel}</span>}
+              {lastLabel && <span className="text-muted-dark normal-case tracking-normal ml-1">· ostatnio {lastLabel}</span>}
             </span>
           )}
         </div>
@@ -302,11 +308,12 @@ export function BoardSection({ board, validUntil }) {
             {demo.text && <p className="text-base text-muted-dark leading-relaxed max-w-2xl mb-3">{demo.text}</p>}
             <p className="font-mono text-xs tracking-[0.06em] text-black break-all">{demoHost}</p>
           </div>
+          {/* Tailwind 4: scale-* ustawia właściwość CSS `scale`, nie `transform`, stąd transition-[scale,...]. */}
           <a
             href={demo.url}
             target="_blank"
             rel="noopener"
-            className="inline-flex w-full md:w-auto items-center justify-center gap-2 h-14 px-8 bg-lime text-black rounded-md text-base md:text-lg font-medium hover:bg-black hover:text-lime transition group"
+            className="inline-flex w-full md:w-auto items-center justify-center gap-2 h-14 px-8 bg-lime text-black rounded-md text-base md:text-lg font-medium hover:bg-black hover:text-lime active:scale-[0.97] motion-reduce:active:scale-100 transition-[scale,background-color,color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] focus-visible:outline-2 focus-visible:outline-black focus-visible:outline-offset-2 group"
           >
             {demo.cta || 'Otwórz demo'}
             <ArrowUpRight size={20} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" />
@@ -364,7 +371,8 @@ export function ContextSection({ context }) {
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.08 }}
+              transition={{ duration: 0.4, delay: i * 0.08, ease: EASE_OUT }}
+              data-reveal=""
               className="border-t border-black/15 pt-4"
             >
               <div className="w-8 h-px bg-lime mb-3" />
@@ -744,7 +752,8 @@ export function TimelineSection({ timeline, title, label }) {
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.06 }}
+                transition={{ duration: 0.4, delay: i * 0.06, ease: EASE_OUT }}
+                data-reveal=""
                 className={`relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-12 ${i % 2 === 0 ? 'md:text-right' : ''}`}
               >
                 <div className={`md:contents`}>
@@ -868,7 +877,8 @@ export function NextStepsSection({ steps, validUntil, contact, client, title }) 
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.06 }}
+              transition={{ duration: 0.4, delay: i * 0.06, ease: EASE_OUT }}
+              data-reveal=""
               className="flex gap-6 items-start"
             >
               <span className="font-display text-3xl md:text-4xl text-lime tracking-tight leading-none shrink-0 w-14">
@@ -896,7 +906,7 @@ export function NextStepsSection({ steps, validUntil, contact, client, title }) 
           </a>
         </div>
 
-        <p className="mt-10 text-sm text-muted-light">
+        <p className="mt-10 text-sm text-muted-dark">
           Oferta ważna do {fmtDatePL(validUntil)}. Strona prywatna, nieindeksowana.
         </p>
       </motion.div>

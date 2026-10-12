@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
+import { MotionConfig } from 'framer-motion';
 import { OfferGate } from '../components/offer/OfferGate';
 import {
     HeroSection,
@@ -209,60 +210,66 @@ export default function OfferPage() {
 
     if (state.status === 'locked') {
         return (
-            <OfferGate
-                slug={slug}
-                clientName="Oferta indywidualna"
-                onUnlock={loadOffer}
-            />
+            <MotionConfig reducedMotion="user">
+                <OfferGate
+                    slug={slug}
+                    clientName="Oferta indywidualna"
+                    onUnlock={loadOffer}
+                />
+            </MotionConfig>
         );
     }
 
+    // reducedMotion="user": przy "ogranicz ruch" w systemie framer-motion pomija przesunięcia
+    // (fadeUp robi wtedy samo wygaszenie). Reguła w index.css działa tylko na CSS, nie na JS.
     const offer = state.offer;
     return (
-        <main className="bg-sage min-h-screen relative">
-            <StatusBanner views={views} validUntil={offer.meta.validUntil} />
-            <HeroSection meta={offer.meta} client={offer.client} video={offer.video} />
-            {offer.board ? (
-                <BoardOfferBody offer={offer} />
-            ) : (
-                <>
-                    <TldrSection tldr={offer.tldr} lead={offer.summary?.lead} />
-                    <ContextSection context={offer.context} />
-                    {offer.problems?.length > 0 && (
-                        <ProblemsSection
-                            problems={offer.problems}
-                            label={offer.labels?.problems}
-                            subtitle={offer.labels?.problemsSubtitle}
-                            badge={offer.labels?.problemsBadge}
+        <MotionConfig reducedMotion="user">
+            <main className="bg-sage min-h-screen relative">
+                <StatusBanner views={views} validUntil={offer.meta.validUntil} />
+                <HeroSection meta={offer.meta} client={offer.client} video={offer.video} />
+                {offer.board ? (
+                    <BoardOfferBody offer={offer} />
+                ) : (
+                    <>
+                        <TldrSection tldr={offer.tldr} lead={offer.summary?.lead} />
+                        <ContextSection context={offer.context} />
+                        {offer.problems?.length > 0 && (
+                            <ProblemsSection
+                                problems={offer.problems}
+                                label={offer.labels?.problems}
+                                subtitle={offer.labels?.problemsSubtitle}
+                                badge={offer.labels?.problemsBadge}
+                            />
+                        )}
+                        <ApproachSection approach={offer.approach} />
+                        <ExtraSections sections={offer.sections?.filter((s) => s.position === 'beforePhases')} />
+                        <PilotSection
+                            pilot={offer.pilot}
+                            asysta={offer.asysta}
+                            phases={offer.phases}
+                            label={offer.labels?.scopeLabel}
+                            title={offer.labels?.scopeTitle}
                         />
-                    )}
-                    <ApproachSection approach={offer.approach} />
-                    <ExtraSections sections={offer.sections?.filter((s) => s.position === 'beforePhases')} />
-                    <PilotSection
-                        pilot={offer.pilot}
-                        asysta={offer.asysta}
-                        phases={offer.phases}
-                        label={offer.labels?.scopeLabel}
-                        title={offer.labels?.scopeTitle}
-                    />
-                    {offer.needs && <NeedsSection needs={offer.needs} />}
-                    <ExtraSections sections={offer.sections?.filter((s) => s.position !== 'beforePhases')} />
-                    <TimelineSection
-                        timeline={offer.timeline}
-                        title={offer.labels?.timelineTitle}
-                        label={offer.labels?.timelineLabel}
-                    />
-                    <PricingSection pricing={offer.pricing} title={offer.labels?.pricingTitle} />
-                    {offer.saldeo && <SaldeoSection saldeo={offer.saldeo} />}
-                </>
-            )}
-            <NextStepsSection
-                steps={offer.nextSteps}
-                title={offer.labels?.nextStepsTitle}
-                validUntil={offer.meta.validUntil}
-                contact={CONTACT}
-                client={offer.client}
-            />
-        </main>
+                        {offer.needs && <NeedsSection needs={offer.needs} />}
+                        <ExtraSections sections={offer.sections?.filter((s) => s.position !== 'beforePhases')} />
+                        <TimelineSection
+                            timeline={offer.timeline}
+                            title={offer.labels?.timelineTitle}
+                            label={offer.labels?.timelineLabel}
+                        />
+                        <PricingSection pricing={offer.pricing} title={offer.labels?.pricingTitle} />
+                        {offer.saldeo && <SaldeoSection saldeo={offer.saldeo} />}
+                    </>
+                )}
+                <NextStepsSection
+                    steps={offer.nextSteps}
+                    title={offer.labels?.nextStepsTitle}
+                    validUntil={offer.meta.validUntil}
+                    contact={CONTACT}
+                    client={offer.client}
+                />
+            </main>
+        </MotionConfig>
     );
 }
