@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react';
-import { Routes, Route, useSearchParams, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, useSearchParams, useNavigate, useLocation, matchPath } from 'react-router-dom';
 // Vercel Analytics + Speed Insights are loaded dynamically (see VercelTelemetry below).
 // Top-level import zostałby zablokowany przez ad blockery w stylu uBlock Origin/Brave Shields,
 // co przy module-level fetch-fail wywala cały graf modułu Apps i blokuje React render.
@@ -206,6 +206,25 @@ function App() {
     );
   }
 
+  // Prywatna oferta (/oferta/:slug) też poza layoutem marketingowym: bez menu, WhatsAppa,
+  // stopki i banera zgód. Pasek "Ważna do" nie chowa się pod menu, a pierwszy widok klienta
+  // to sama oferta. Bez banera nie ma jak wyrazić zgody, więc GA4, Clarity, PostHog i Pixel
+  // ładują się tu tylko u kogoś, kto zgodził się wcześniej (bootstrapConsent wyżej).
+  // Vercel Analytics jest bezciasteczkowe i zostaje, jak na reszcie strony.
+  if (matchPath('/oferta/:slug', pathname)) {
+    return (
+      <div className="min-h-screen bg-sage font-sans text-black antialiased selection:bg-lime selection:text-black">
+        <RouteMeta />
+        <Suspense fallback={null}>
+          <Routes>
+            <Route path="/oferta/:slug" element={<OfferPage />} />
+          </Routes>
+        </Suspense>
+        <VercelTelemetry />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-sage font-sans text-black antialiased selection:bg-lime selection:text-black relative">
       {/* Global Margin Lines (Workshift Editorial Grid) */}
@@ -234,7 +253,6 @@ function App() {
             <Route path="/blog/:slug" element={<BlogPostPage />} />
             <Route path="/thank-you" element={<ThankYouPage />} />
             <Route path="/polityka-prywatnosci" element={<PrivacyPolicyPage />} />
-            <Route path="/oferta/:slug" element={<OfferPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>
