@@ -679,11 +679,155 @@ function TilesBlock({ section }) {
   );
 }
 
+// Wykres słupkowy poziomy z danych: `series` [{ name, tone }] i `rows` [{ label, note, values }].
+// Kolory sprawdzone walidatorem palety (skill dataviz): zieleń dla serii głównej, niebieski dla
+// porównania. Tekst zawsze czarny lub szary, nigdy w kolorze serii. Słupek maks. 18 px,
+// zaokrąglony tylko na końcu, wartość przy końcu słupka, tabela z danymi dla czytników ekranu.
+const BAR_TONES = { main: '#4E8F2A', compare: '#2A78D6' };
+
+function fmtBarValue(v, unit = '', decimals) {
+  const n = Number(v);
+  const s = decimals == null ? String(n) : n.toFixed(decimals);
+  return `${s.replace('.', ',')}${unit}`;
+}
+
+function BarsBlock({ section }) {
+  const series = Array.isArray(section.series) && section.series.length ? section.series : [{ name: '', tone: 'main' }];
+  const all = section.rows.flatMap((r) => r.values || []);
+  const max = Number(section.max) || Math.max(...all, 1);
+  const unit = section.unit || '';
+  return (
+    <div className="rounded-2xl border border-black/10 bg-white/70 p-5 md:p-8 max-w-4xl">
+      {series.length > 1 && (
+        <ul className="flex flex-wrap gap-x-6 gap-y-2 mb-6" aria-label="Legenda">
+          {series.map((s, si) => (
+            <li key={si} className="flex items-center gap-2 text-sm text-black">
+              <span className="w-3 h-3 rounded-sm" style={{ background: BAR_TONES[s.tone] || BAR_TONES.main }} />
+              {s.name}
+            </li>
+          ))}
+        </ul>
+      )}
+      <div className="flex flex-col gap-6" aria-hidden="true">
+        {section.rows.map((row, ri) => (
+          <div key={ri} className="grid md:grid-cols-[240px_1fr] gap-x-6 gap-y-2 items-center">
+            <div>
+              <p className="text-base text-black leading-snug">{row.label}</p>
+              {row.note && <p className="text-xs text-muted-dark leading-snug mt-1">{row.note}</p>}
+            </div>
+            <div className="flex flex-col gap-[2px]">
+              {(row.values || []).map((v, vi) => {
+                const s = series[vi] || series[0];
+                const pct = Math.max(0, Math.min(100, (Number(v) / max) * 100));
+                const label = (row.display && row.display[vi]) || fmtBarValue(v, unit, section.decimals);
+                return (
+                  // Słupek zajmuje maks. 82% szerokości, żeby wartość zawsze mieściła się przy jego końcu.
+                  <div key={vi} className="group flex items-center gap-2 h-[18px]" title={`${s.name ? `${s.name}: ` : ''}${label}`}>
+                    <div
+                      className="h-full rounded-r-[4px] transition-opacity group-hover:opacity-80"
+                      style={{ width: `${pct * 0.82}%`, minWidth: 2, background: BAR_TONES[s.tone] || BAR_TONES.main }}
+                    />
+                    <span className="shrink-0 font-mono text-sm text-black tabular-nums">{label}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+      {/* sr-only na otaczającym divie: tabela ignoruje width 1px i na telefonie rozpychała stronę w poziomie. */}
+      <div className="sr-only">
+      <table>
+        <caption>{section.title}</caption>
+        <thead>
+          <tr><th scope="col">Pozycja</th>{series.map((s, si) => <th key={si} scope="col">{s.name || 'Wartość'}</th>)}</tr>
+        </thead>
+        <tbody>
+          {section.rows.map((row, ri) => (
+            <tr key={ri}>
+              <th scope="row">{row.label}</th>
+              {(row.values || []).map((v, vi) => <td key={vi}>{(row.display && row.display[vi]) || fmtBarValue(v, unit, section.decimals)}</td>)}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      </div>
+      {section.source && (
+        <p className="mt-6 pt-4 border-t border-black/10 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-dark leading-relaxed">
+          Źródło: {section.source}
+        </p>
+      )}
+    </div>
+  );
+}
+
+// Demo osadzone w ofercie: leniwy iframe (np. demo.workshift.pl/<slug>/) i link do nowego okna
+// (`href`, domyślnie ten sam adres co ramka).
+// W PDF w tym miejscu ląduje `image` (statyczny obraz), a QR do dema jest w części 1.
+function EmbedBlock({ embed }) {
+  if (!embed?.src) return null;
+  return (
+    <div className="max-w-5xl">
+      {/* `mobileHeight`: niższa ramka na telefonie, gdy treść demo skaluje się do szerokości ekranu. */}
+      <div
+        className="relative w-full rounded-2xl overflow-hidden border border-black/10 h-[var(--embed-hm)] md:h-[var(--embed-h)]"
+        style={{ '--embed-h': `${embed.height || 680}px`, '--embed-hm': `${embed.mobileHeight || embed.height || 680}px` }}
+      >
+        <iframe
+          src={embed.src}
+          title={embed.title || 'Demo'}
+          loading="lazy"
+          referrerPolicy="strict-origin-when-cross-origin"
+          className="absolute inset-0 w-full h-full"
+        />
+      </div>
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-4">
+        <a
+          href={embed.href || embed.src}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-black border-b border-black/30 hover:border-black pb-0.5"
+        >
+          {embed.cta || 'Otwórz demo w nowym oknie'} <ArrowUpRight className="w-3.5 h-3.5" />
+        </a>
+        {embed.note && <p className="text-sm text-muted-dark">{embed.note}</p>}
+      </div>
+    </div>
+  );
+}
+
+// Diagram wstawiony wprost w ofertę (`figure.svg`, gotowy znacznik <svg> z danych oferty, np. swimlane
+// z offers/source/<klient>/). Dane oferty pochodzą z prywatnego env za hasłem, nie od użytkownika.
+// Na telefonie SVG ma minimalną szerokość (`minWidth`, domyślnie 560 px) i przewija się w poziomie,
+// żeby tekst w kafelkach nie zmalał poniżej czytelności. W PDF ten sam SVG jako wektor.
+function FigureBlock({ figure }) {
+  if (!figure?.svg) return null;
+  return (
+    <figure className="max-w-4xl">
+      <div className="overflow-x-auto rounded-2xl border border-black/10">
+        <div
+          className="[&>svg]:block [&>svg]:w-full [&>svg]:h-auto"
+          style={{ minWidth: `${figure.minWidth || 560}px` }}
+          dangerouslySetInnerHTML={{ __html: figure.svg }}
+        />
+      </div>
+      <figcaption className="mt-3 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-dark">
+        {figure.caption}
+        {/* Na wąskim ekranie część schematu jest poza kadrem, a pasek przewijania bywa ukryty. */}
+        <span className="md:hidden">{figure.caption ? ' · ' : ''}przesuń schemat w bok</span>
+      </figcaption>
+    </figure>
+  );
+}
+
 export function ExtraSections({ sections }) {
   if (!Array.isArray(sections) || sections.length === 0) return null;
+  // `pdfOnly`: sekcja tylko w PDF (np. statyczny rysunek, który na stronie żyje w osadzonym demo).
+  const shown = sections.filter((s) => !s.pdfOnly);
+  if (shown.length === 0) return null;
   return (
     <>
-      {sections.map((section, i) => (
+      {shown.map((section, i) => (
         <SectionWrap key={i}>
           <motion.div {...fadeUp}>
             {section.label && <SectionLabel>{section.label}</SectionLabel>}
@@ -699,6 +843,9 @@ export function ExtraSections({ sections }) {
             {section.type === 'groups' && Array.isArray(section.groups) && <GroupsBlock section={section} />}
             {section.type === 'list' && Array.isArray(section.items) && <ListBlock section={section} />}
             {section.type === 'tiles' && Array.isArray(section.groups) && <TilesBlock section={section} />}
+            {section.type === 'bars' && Array.isArray(section.rows) && <BarsBlock section={section} />}
+            {section.embed && <div className={section.type ? 'mt-10' : ''}><EmbedBlock embed={section.embed} /></div>}
+            {section.figure && <div className={section.type ? 'mt-10' : ''}><FigureBlock figure={section.figure} /></div>}
             {section.footnote && (
               <p className="mt-6 text-sm text-muted-dark md:text-justify hyphens-auto max-w-3xl">{section.footnote}</p>
             )}

@@ -47,8 +47,9 @@ function nbspDeep(v) {
     if (typeof v === 'string') return nbspText(v);
     if (Array.isArray(v)) return v.map(nbspDeep);
     if (v && typeof v === 'object') {
-        // Adresy (`board.demo.url`) zostają nietknięte.
-        return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, k === 'url' ? x : nbspDeep(x)]));
+        // Adresy (`board.demo.url`, `embed.src`, `embed.href`) i znacznik `figure.svg` zostają nietknięte.
+        const raw = (k) => k === 'url' || k === 'src' || k === 'href' || k === 'svg';
+        return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, raw(k) ? x : nbspDeep(x)]));
     }
     return v;
 }
