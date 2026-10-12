@@ -59,6 +59,8 @@ function nbsp(s) {
         .replace(/(\d) (PLN|zł|dni|tyg\.?|godz\w*|lekcj\w*|film\w*|osób|parków|faktur)/g, '$1 $2')
         .replace(/\b(moduł\w*|Moduł) (\d)\b/g, '$1 $2')
         .replace(/\b(ok\.|np\.|do|od) (\d)/g, '$1 $2')
+        // Liczba + miesiąc w dopełniaczu („9 października"), jak MONTH_RE w OfferPage.jsx.
+        .replace(/(\d) (stycznia|lutego|marca|kwietnia|maja|czerwca|lipca|sierpnia|września|października|listopada|grudnia)/g, '$1\u00a0$2')
         .replace(orphan, '$1$2 ')
         .replace(orphan, '$1$2 ')
         .replace(/\be-(commerce|mail|book|learning)\b/g, 'e‑$1');
