@@ -47,6 +47,21 @@ const SAMPLE_OFFER_SECTIONS = [
     title: 'Osadzone demo',
     embed: { src: '/brand/', title: 'Przykładowa strona w ramce', height: 360, note: 'Hasło takie samo jak do oferty.' },
   },
+  {
+    label: 'Diagram',
+    title: 'Diagram wstawiony w ofertę',
+    figure: {
+      caption: 'Dane przykładowe',
+      minWidth: 420,
+      svg: `<svg viewBox="0 0 420 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Przykładowy przebieg w trzech krokach">
+<rect width="420" height="120" fill="#E6E8DD"/>
+<rect x="16" y="36" width="112" height="48" rx="6" fill="#F7F8F3" stroke="#000"/><text x="72" y="65" text-anchor="middle" font-family="Inter, sans-serif" font-size="13">Zgłoszenie</text>
+<rect x="154" y="36" width="112" height="48" rx="6" fill="#9CE069" stroke="#000" stroke-width="1.4"/><text x="210" y="65" text-anchor="middle" font-family="Inter, sans-serif" font-size="13">Decyzja</text>
+<rect x="292" y="36" width="112" height="48" rx="6" fill="#F7F8F3" stroke="#000"/><text x="348" y="65" text-anchor="middle" font-family="Inter, sans-serif" font-size="13">Wynik</text>
+<path d="M128 60 H150 M266 60 H288" stroke="#595959" stroke-width="1.4"/>
+</svg>`,
+    },
+  },
 ];
 
 const SAMPLE_BOARD = {
@@ -372,8 +387,8 @@ export default function ShowcasePage() {
 
         <Section
           id="oferta-wykres-demo"
-          title="Sekcje oferty: wykres (bars) i demo (embed)"
-          note="src/components/offer/OfferSections.jsx - `type: 'bars'` (serie: main zieleń, compare niebieski; paleta sprawdzona walidatorem dataviz) i pole `embed` (leniwy iframe + link do nowego okna). W PDF wykres ma ten sam układ, a zamiast iframe jest `image`. Dane przykładowe."
+          title="Sekcje oferty: wykres (bars), demo (embed) i diagram (figure)"
+          note="src/components/offer/OfferSections.jsx - `type: 'bars'` (serie: main zieleń, compare niebieski; paleta sprawdzona walidatorem dataviz) i pole `embed` (leniwy iframe + link do nowego okna). W PDF wykres ma ten sam układ, a zamiast iframe jest `image`. Pole `figure.svg`: diagram wstawiony wprost w stronę (na telefonie przewijany w poziomie) i jako wektor w PDF. Dane przykładowe."
         >
           <div className="-mx-5 rounded-lg border border-black/10 bg-sage">
             <ExtraSections sections={SAMPLE_OFFER_SECTIONS} />

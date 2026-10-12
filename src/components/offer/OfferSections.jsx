@@ -796,6 +796,30 @@ function EmbedBlock({ embed }) {
   );
 }
 
+// Diagram wstawiony wprost w ofertę (`figure.svg`, gotowy znacznik <svg> z danych oferty, np. swimlane
+// z offers/source/<klient>/). Dane oferty pochodzą z prywatnego env za hasłem, nie od użytkownika.
+// Na telefonie SVG ma minimalną szerokość (`minWidth`, domyślnie 560 px) i przewija się w poziomie,
+// żeby tekst w kafelkach nie zmalał poniżej czytelności. W PDF ten sam SVG jako wektor.
+function FigureBlock({ figure }) {
+  if (!figure?.svg) return null;
+  return (
+    <figure className="max-w-4xl">
+      <div className="overflow-x-auto rounded-2xl border border-black/10">
+        <div
+          className="[&>svg]:block [&>svg]:w-full [&>svg]:h-auto"
+          style={{ minWidth: `${figure.minWidth || 560}px` }}
+          dangerouslySetInnerHTML={{ __html: figure.svg }}
+        />
+      </div>
+      <figcaption className="mt-3 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-dark">
+        {figure.caption}
+        {/* Na wąskim ekranie część schematu jest poza kadrem, a pasek przewijania bywa ukryty. */}
+        <span className="md:hidden">{figure.caption ? ' · ' : ''}przesuń schemat w bok</span>
+      </figcaption>
+    </figure>
+  );
+}
+
 export function ExtraSections({ sections }) {
   if (!Array.isArray(sections) || sections.length === 0) return null;
   // `pdfOnly`: sekcja tylko w PDF (np. statyczny rysunek, który na stronie żyje w osadzonym demo).
@@ -821,6 +845,7 @@ export function ExtraSections({ sections }) {
             {section.type === 'tiles' && Array.isArray(section.groups) && <TilesBlock section={section} />}
             {section.type === 'bars' && Array.isArray(section.rows) && <BarsBlock section={section} />}
             {section.embed && <div className={section.type ? 'mt-10' : ''}><EmbedBlock embed={section.embed} /></div>}
+            {section.figure && <div className={section.type ? 'mt-10' : ''}><FigureBlock figure={section.figure} /></div>}
             {section.footnote && (
               <p className="mt-6 text-sm text-muted-dark md:text-justify hyphens-auto max-w-3xl">{section.footnote}</p>
             )}

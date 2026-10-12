@@ -219,7 +219,8 @@ function sectionHead({ label, title, intro }, chapterName) {
 
 // Wykres słupkowy poziomy (`type: 'bars'`), ten sam układ co BarsBlock na stronie: seria główna
 // w zieleni, porównanie w niebieskim (paleta sprawdzona walidatorem dataviz), wartość przy końcu
-// słupka, tekst czarny, źródło pod wykresem. Obiekt `embed` (iframe z demem) w PDF jest pomijany.
+// słupka, tekst czarny, źródło pod wykresem. Obiekt `embed` (iframe z demem) w PDF jest pomijany,
+// a `figure.svg` (diagram) wchodzi jako wektor.
 const BAR_TONES = { main: '#4E8F2A', compare: '#2A78D6' };
 function fmtBarValue(v, unit = '', decimals) {
     const n = Number(v);
@@ -290,6 +291,11 @@ function renderExtraSection(section, chapterName) {
         <section class="block${keep ? ' keep' : ''}">
             ${sectionHead(section, chapterName)}
             ${body}
+            ${section.figure?.svg ? `
+            <figure class="section-figure svg-figure">
+                ${section.figure.svg}
+                ${section.figure.caption ? `<figcaption>${esc(section.figure.caption)}</figcaption>` : ''}
+            </figure>` : ''}
             ${section.image?.dataUri ? `
             <figure class="section-figure">
                 <img src="${section.image.dataUri}" alt="${esc(section.image.alt || '')}">
@@ -777,6 +783,7 @@ ${assets.fontFaces}
     .bars-value { white-space: nowrap; font-family: var(--font-mono); font-size: 8pt; font-variant-numeric: tabular-nums; }
     .bars-source { margin-top: 3mm; padding-top: 2.5mm; border-top: 1px solid var(--hairline-soft); font-family: var(--font-mono); font-size: 6.6pt; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); line-height: 1.5; }
     .section-figure { margin: 6mm 0 0; break-inside: avoid; }
+    .svg-figure svg { display: block; width: 100%; max-width: 150mm; height: auto; border-radius: 2mm; }
     .section-figure img { display: block; width: 100%; max-width: 150mm; border-radius: 3mm; border: 1px solid var(--hairline-soft); background: var(--white); }
     .section-figure figcaption { font-family: var(--font-mono); font-size: 6.8pt; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 2mm; }
 
