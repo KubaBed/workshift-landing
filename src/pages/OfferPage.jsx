@@ -15,6 +15,8 @@ import {
     StatusBanner,
     NeedsSection,
     ExtraSections,
+    BoardSection,
+    PartDivider,
 } from '../components/offer/OfferSections';
 import NotFoundPage from './NotFoundPage';
 
@@ -32,9 +34,62 @@ function nbspDeep(v) {
     if (typeof v === 'string') return nbspText(v);
     if (Array.isArray(v)) return v.map(nbspDeep);
     if (v && typeof v === 'object') {
-        return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, nbspDeep(x)]));
+        // Adresy (`board.demo.url`) zostają nietknięte.
+        return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, k === 'url' ? x : nbspDeep(x)]));
     }
     return v;
+}
+
+// Domyślne przekładki części 2 i 3, gdy oferta ma `board`, a nie ma `parts`.
+const PART_DEFAULTS = {
+    details: { label: 'Część 2', title: 'Szczegóły' },
+    technical: { label: 'Część 3', title: 'Załącznik techniczny' },
+};
+
+// Oferta z częścią dla zarządu: Część 1 (BoardSection) zamiast "W skrócie", potem przekładka
+// części 2 i rozdziały w kolejności z PDF, na końcu przekładka części 3 i załącznik.
+function BoardOfferBody({ offer }) {
+    const sections = Array.isArray(offer.sections) ? offer.sections : [];
+    const byPos = (pos) => sections.filter((s) => (s.position || 'main') === pos);
+    const appendix = byPos('appendix');
+    const details = { ...PART_DEFAULTS.details, ...(offer.parts?.details || {}) };
+    const technical = { ...PART_DEFAULTS.technical, ...(offer.parts?.technical || {}) };
+    return (
+        <>
+            <BoardSection board={offer.board} validUntil={offer.meta.validUntil} />
+            <PartDivider part={details} />
+            {offer.context && <ContextSection context={offer.context} />}
+            {offer.problems?.length > 0 && (
+                <ProblemsSection
+                    problems={offer.problems}
+                    label={offer.labels?.problems}
+                    subtitle={offer.labels?.problemsSubtitle}
+                    badge={offer.labels?.problemsBadge}
+                />
+            )}
+            {offer.approach && <ApproachSection approach={offer.approach} />}
+            <ExtraSections sections={byPos('beforePhases')} />
+            <PilotSection
+                pilot={offer.pilot}
+                asysta={offer.asysta}
+                phases={offer.phases}
+                label={offer.labels?.scopeLabel}
+                title={offer.labels?.scopeTitle}
+            />
+            {offer.needs && <NeedsSection needs={offer.needs} />}
+            <ExtraSections sections={[...byPos('afterPhases'), ...byPos('main')]} />
+            <TimelineSection
+                timeline={offer.timeline}
+                title={offer.labels?.timelineTitle}
+                label={offer.labels?.timelineLabel}
+            />
+            {offer.pricing && <PricingSection pricing={offer.pricing} title={offer.labels?.pricingTitle} />}
+            <ExtraSections sections={byPos('afterPricing')} />
+            {offer.saldeo && <SaldeoSection saldeo={offer.saldeo} />}
+            {appendix.length > 0 && <PartDivider part={technical} />}
+            <ExtraSections sections={appendix} />
+        </>
+    );
 }
 
 // Kontakt w stopce - używamy bezpośredniego maila Jakuba zamiast kontakt@.
@@ -155,34 +210,40 @@ export default function OfferPage() {
         <main className="bg-sage min-h-screen relative">
             <StatusBanner views={views} validUntil={offer.meta.validUntil} />
             <HeroSection meta={offer.meta} client={offer.client} video={offer.video} />
-            <TldrSection tldr={offer.tldr} lead={offer.summary?.lead} />
-            <ContextSection context={offer.context} />
-            {offer.problems?.length > 0 && (
-                <ProblemsSection
-                    problems={offer.problems}
-                    label={offer.labels?.problems}
-                    subtitle={offer.labels?.problemsSubtitle}
-                    badge={offer.labels?.problemsBadge}
-                />
+            {offer.board ? (
+                <BoardOfferBody offer={offer} />
+            ) : (
+                <>
+                    <TldrSection tldr={offer.tldr} lead={offer.summary?.lead} />
+                    <ContextSection context={offer.context} />
+                    {offer.problems?.length > 0 && (
+                        <ProblemsSection
+                            problems={offer.problems}
+                            label={offer.labels?.problems}
+                            subtitle={offer.labels?.problemsSubtitle}
+                            badge={offer.labels?.problemsBadge}
+                        />
+                    )}
+                    <ApproachSection approach={offer.approach} />
+                    <ExtraSections sections={offer.sections?.filter((s) => s.position === 'beforePhases')} />
+                    <PilotSection
+                        pilot={offer.pilot}
+                        asysta={offer.asysta}
+                        phases={offer.phases}
+                        label={offer.labels?.scopeLabel}
+                        title={offer.labels?.scopeTitle}
+                    />
+                    {offer.needs && <NeedsSection needs={offer.needs} />}
+                    <ExtraSections sections={offer.sections?.filter((s) => s.position !== 'beforePhases')} />
+                    <TimelineSection
+                        timeline={offer.timeline}
+                        title={offer.labels?.timelineTitle}
+                        label={offer.labels?.timelineLabel}
+                    />
+                    <PricingSection pricing={offer.pricing} title={offer.labels?.pricingTitle} />
+                    {offer.saldeo && <SaldeoSection saldeo={offer.saldeo} />}
+                </>
             )}
-            <ApproachSection approach={offer.approach} />
-            <ExtraSections sections={offer.sections?.filter((s) => s.position === 'beforePhases')} />
-            <PilotSection
-                pilot={offer.pilot}
-                asysta={offer.asysta}
-                phases={offer.phases}
-                label={offer.labels?.scopeLabel}
-                title={offer.labels?.scopeTitle}
-            />
-            {offer.needs && <NeedsSection needs={offer.needs} />}
-            <ExtraSections sections={offer.sections?.filter((s) => s.position !== 'beforePhases')} />
-            <TimelineSection
-                timeline={offer.timeline}
-                title={offer.labels?.timelineTitle}
-                label={offer.labels?.timelineLabel}
-            />
-            <PricingSection pricing={offer.pricing} title={offer.labels?.pricingTitle} />
-            {offer.saldeo && <SaldeoSection saldeo={offer.saldeo} />}
             <NextStepsSection
                 steps={offer.nextSteps}
                 title={offer.labels?.nextStepsTitle}

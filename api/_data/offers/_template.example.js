@@ -40,6 +40,34 @@ export default {
         pricing: { label: 'Ceny', text: 'Każdy moduł ma stałą cenę ... Szczegóły w rozdziale z cenami.' },
     },
 
+    // Opcjonalnie: Część 1 "Dla zarządu". Gdy jest `board`, zastępuje "W skrócie" (PDF: dwie strony A4,
+    // www: pierwsza sekcja po hero), podejście trafia do rozdziału 01, a dokument dostaje przekładki
+    // części 2 (ze spisem treści) i 3 (nad załącznikiem). Bez `board` oferta wygląda jak dotąd.
+    // board: {
+    //     label: 'Część 1 · Dla zarządu',
+    //     title: 'Jedno zdanie: co Państwo dostaną',
+    //     lead: 'Akapit 2-4 zdania.',
+    //     scenesLabel: 'Trzy sytuacje z naszej rozmowy',
+    //     scenes: [
+    //         { tag: 'Pierwszy moduł', featured: true, title: 'Sytuacja', today: '...', assistant: '...', gain: '...' },
+    //     ],
+    //     sceneLabels: { today: 'Dziś', assistant: 'Z asystentem', gain: 'Co Państwo zyskują' },
+    //     note: 'Decyzję podejmuje człowiek ...',
+    //     start: {
+    //         title: 'Jak zaczynamy',
+    //         steps: [{ label: 'Krok 1', title: '...', meta: '3 tygodnie', price: 'X XXX PLN netto', text: '...', note: '...' }],
+    //         example: { label: 'Przykład startu', text: '...' },
+    //     },
+    //     // qrPath tylko PDF (plik w gitignorowanym offers/source/<klient>/); brak pliku = bez QR.
+    //     demo: { label: 'Zobacz, jak to działa', url: 'https://...', text: '...', cta: 'Otwórz demo', qrPath: 'offers/source/<klient>/qr-demo.svg' },
+    //     closing: 'Zaproszenie na rozmowę.',
+    //     validNote: 'Opcjonalne zdanie po "Oferta ważna do ...".',
+    // },
+    // parts: {
+    //     details: { label: 'Część 2', title: 'Szczegóły', text: 'Dla osoby, która przygotowuje decyzję: ...' },
+    //     technical: { label: 'Część 3', title: 'Załącznik techniczny', text: 'Dla doradcy IT: ...' },
+    // },
+
     // PDF, tylna okładka. Telefon tylko w pliku klienta (gitignored), nigdy w kodzie.
     contact: {
         phone: '',
@@ -127,6 +155,8 @@ export default {
     //   position: 'afterPricing' - zaraz po cenach (np. koszty stałe po stronie klienta)
     //   position: 'appendix'     - załącznik na końcu PDF (np. odpowiedzi na punkty RFP)
     // Strona www renderuje 'beforePhases' przed fazami, resztę po nich, w kolejności z danych.
+    // Opcjonalnie `image: { path, caption, alt }` (PDF): ścieżka względem repo, plik trzymaj w
+    // gitignorowanym offers/source/<klient>/, bez danych pozwalających zidentyfikować innego klienta.
     sections: [],
 
     // W PDF lądują na tylnej okładce, obok kontaktu.

@@ -15,6 +15,11 @@
  * strony, załącznik (sekcje z position: 'appendix'), tylna okładka z kontaktem. Tło sage na
  * wszystkich stronach. Bez strony akceptacji: oferta służy do prezentacji, podpisuje się umowę.
  *
+ * Oferta z polem `board` (od 12.10.2026) ma trzy części: Część 1 "Dla zarządu" (dwie strony A4
+ * zamiast "W skrócie": sceny Dziś / Z asystentem / Zysk, potem kroki startu, demo z kodem QR),
+ * przekładkę części 2 ze spisem treści przed rozdziałami 01-05 i nagłówek części 3 nad załącznikiem
+ * (`parts.details`, `parts.technical`). Bez `board` dokument wygląda jak wcześniej.
+ *
  * Plik PDF zostaje LOKALNIE - żaden skrypt nie wysyła go nigdzie automatycznie.
  */
 
@@ -239,21 +244,130 @@ function renderExtraSection(section, chapterName) {
                             ${t.note ? `<div class="tile-note">${esc(t.note)}</div>` : ''}
                         </div>
                         <div class="tile-meta">
-                            <div class="tile-price">${esc(t.price)}</div>
+                            <div class="tile-price${String(t.price).length > 12 ? ' long' : ''}">${esc(t.price)}</div>
                             ${t.duration ? `<div class="tile-duration">${esc(t.duration)}</div>` : ''}
                         </div>
                     </div>`).join('')}</div>
             </div>`).join('');
     }
     // Krótka lista trzyma się jednej strony, żeby nagłówek nie został sam na dole.
-    const keep = (section.type === 'list' && (section.items || []).length <= 8)
+    const keep = (section.type === 'list' && (section.items || []).length <= 8 && !section.image)
         || (section.type === 'table' && (section.rows || []).length <= 6);
     return `
         <section class="block${keep ? ' keep' : ''}">
             ${sectionHead(section, chapterName)}
             ${body}
+            ${section.image?.dataUri ? `
+            <figure class="section-figure">
+                <img src="${section.image.dataUri}" alt="${esc(section.image.alt || '')}">
+                ${section.image.caption ? `<figcaption>${esc(section.image.caption)}</figcaption>` : ''}
+            </figure>` : ''}
             ${section.footnote ? `<p class="footnote">${esc(section.footnote)}</p>` : ''}
         </section>`;
+}
+
+// ─── Część 1 "Dla zarządu" i przekładki części (tylko gdy oferta ma `board`) ───
+
+// Atrybut HTML (href, alt) bez niełamliwych spacji, które `esc` wstawia do tekstu.
+function attr(s) {
+    return String(s ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+const SCENE_LABELS = { today: 'Dziś', assistant: 'Z asystentem', gain: 'Co Państwo zyskują' };
+const PART_DEFAULTS = {
+    details: { label: 'Część 2', title: 'Szczegóły' },
+    technical: { label: 'Część 3', title: 'Załącznik techniczny' },
+};
+
+// Kicker z etykiety typu "Część 1 · Dla zarządu": część przed " · " w limonkowej pigułce.
+function partKicker(label) {
+    const [head, ...rest] = String(label || '').split(' · ');
+    return `<div class="chapter-kicker">${rest.length
+        ? `<span class="chapter-num">${esc(head)}</span><span>${esc(rest.join(' · '))}</span>`
+        : `<span>${esc(head)}</span>`}</div>`;
+}
+
+// Scena: chip (featured = limonkowe tło), tytuł i trzy wiersze Dziś / Z asystentem / Zysk.
+function renderScene(scene, labels) {
+    const rows = ['today', 'assistant', 'gain'].filter((k) => scene[k]).map((k) => `
+                <div class="scene-row scene-${k}">
+                    <div class="scene-key">${esc(labels[k])}</div>
+                    <p class="scene-text">${esc(scene[k])}</p>
+                </div>`).join('');
+    return `
+            <div class="scene${scene.featured ? ' featured' : ''}">
+                <div class="scene-head">
+                    ${scene.tag ? `<span class="scene-tag">${esc(scene.tag)}</span>` : ''}
+                    <h3>${esc(scene.title)}</h3>
+                </div>${rows}
+            </div>`;
+}
+
+// Krok startu: etykieta, tytuł, tekst i notka; cena i czas po prawej jak w kafelkach modułów.
+function renderStartStep(step, i) {
+    const price = step.price ? String(step.price) : '';
+    return `
+            <div class="start-step">
+                <div class="start-step-main">
+                    <div class="start-step-head"><span class="badge">${esc(step.label || `Krok ${i + 1}`)}</span><span class="start-step-title">${esc(step.title)}</span></div>
+                    ${step.text ? `<p class="start-step-text">${esc(step.text)}</p>` : ''}
+                    ${step.note ? `<p class="start-step-note">${esc(step.note)}</p>` : ''}
+                </div>
+                <div class="start-step-meta">
+                    ${price ? `<div class="start-step-price${price.length > 16 ? ' long' : ''}">${esc(price)}</div>` : ''}
+                    ${step.meta ? `<div class="start-step-duration">${esc(step.meta)}</div>` : ''}
+                </div>
+            </div>`;
+}
+
+// Dwie strony A4: (1) tytuł, wstęp i sceny, (2) jak zaczynamy, demo z kodem QR, ważność oferty.
+function renderBoardPages(board, meta) {
+    const labels = { ...SCENE_LABELS, ...(board.sceneLabels || {}) };
+    const scenes = Array.isArray(board.scenes) ? board.scenes : [];
+    const start = board.start || null;
+    const steps = Array.isArray(start?.steps) ? start.steps : [];
+    const demo = board.demo?.url ? board.demo : null;
+    const kicker = partKicker(board.label || 'Dla zarządu');
+
+    const page1 = `
+    <section class="board-page board-scenes">
+        ${kicker}
+        ${board.title ? `<h1 class="board-title">${esc(board.title)}</h1>` : ''}
+        ${board.lead ? `<p class="board-lead">${esc(board.lead)}</p>` : ''}
+        ${scenes.length ? `
+        ${board.scenesLabel ? `<div class="mono-label">${esc(board.scenesLabel)}</div>` : ''}
+        <div class="scenes">${scenes.map((s) => renderScene(s, labels)).join('')}
+        </div>` : ''}
+        ${board.note ? `<p class="board-note">${esc(board.note)}</p>` : ''}
+    </section>`;
+
+    const showUrl = demo ? demo.url.replace(/^https?:\/\//, '').replace(/\/$/, '') : '';
+    const page2 = start || demo || board.closing ? `
+    <section class="board-page board-start">
+        ${kicker}
+        ${start ? `
+        <h2 class="board-h2">${esc(start.title || 'Jak zaczynamy')}</h2>
+        ${steps.length ? `<div class="start-steps">${steps.map(renderStartStep).join('')}
+        </div>` : ''}
+        ${start.example?.text ? `
+        <div class="board-example">
+            <span class="mono-label">${esc(start.example.label || 'Przykład startu')}</span>
+            <p>${esc(start.example.text)}</p>
+        </div>` : ''}` : ''}
+        ${demo ? `
+        <div class="demo${demo.qrDataUri ? '' : ' no-qr'}">
+            <div>
+                <span class="mono-label">${esc(demo.label || 'Zobacz, jak to działa')}</span>
+                <a class="demo-url" href="${attr(demo.url)}">${ICON_ARROW}<span>${esc(showUrl)}</span></a>
+                ${demo.text ? `<p class="demo-text">${esc(demo.text)}</p>` : ''}
+            </div>
+            ${demo.qrDataUri ? `<img class="demo-qr" src="${demo.qrDataUri}" alt="${attr(`Kod QR: ${showUrl}`)}">` : ''}
+        </div>` : ''}
+        ${board.closing ? `<p class="board-closing">${esc(board.closing)}</p>` : ''}
+        ${meta.validUntil ? `<p class="board-valid">Oferta ważna do ${esc(fmtDatePL(meta.validUntil))}.${board.validNote ? ` ${esc(board.validNote)}` : ''}</p>` : ''}
+    </section>` : '';
+
+    return page1 + page2;
 }
 
 function renderNextSteps(steps) {
@@ -290,6 +404,9 @@ function renderHTML(offer, assets) {
     };
     const footerLeft = `${clientShort} · Oferta${meta.version ? ` v${meta.version}` : ' Workshift'}`;
 
+    // Część 1 "Dla zarządu" zamiast "W skrócie" i przekładki części. Bez `board` dokument wygląda jak dotąd.
+    const board = offer.board && typeof offer.board === 'object' ? offer.board : null;
+
     // ─── Rozdziały ───
     const sections = Array.isArray(offer.sections) ? offer.sections : [];
     const byPos = (pos) => sections.filter((s) => (s.position || 'main') === pos);
@@ -299,6 +416,7 @@ function renderHTML(offer, assets) {
     };
 
     // Podejście otwiera rozdział z mapą modułów, jeśli oferta ją ma; inaczej zamyka rozdział 01.
+    // Z częścią dla zarządu podejście zawsze zamyka rozdział 01 (kontekst + podejście).
     const modulesList = byPos('beforePhases');
     const approachHtml = (chapterName) => offer.approach ? `
         <section class="block approach">
@@ -309,7 +427,7 @@ function renderHTML(offer, assets) {
 
     // 01 Sytuacja (i podejście)
     {
-        const withApproach = !modulesList.length;
+        const withApproach = !modulesList.length || !!board;
         const name = L.chapterSituation || (withApproach ? 'Sytuacja i podejście' : 'Sytuacja');
         let html = '';
         if (offer.context) {
@@ -332,9 +450,9 @@ function renderHTML(offer, assets) {
 
     // 02 Podejście i moduły do wyboru (sekcje przed fazami)
     if (modulesList.length) {
-        const name = L.chapterModules || 'Podejście i moduły';
-        addChapter(name, [offer.approach && 'Podejście', ...modulesList.map((s) => s.title || s.label)],
-            approachHtml(name) + modulesList.map((s) => renderExtraSection(s, name)).join(''));
+        const name = L.chapterModules || (board ? 'Moduły' : 'Podejście i moduły');
+        addChapter(name, [!board && offer.approach && 'Podejście', ...modulesList.map((s) => s.title || s.label)],
+            (board ? '' : approachHtml(name)) + modulesList.map((s) => renderExtraSection(s, name)).join(''));
     }
 
     // 03 Zakres / na start: fazy i to, czego potrzebujemy od klienta
@@ -441,8 +559,40 @@ function renderHTML(offer, assets) {
         ...(appendixHtml.trim() ? [{ num: 'A', name: appendixName, sub: appendixList.map((s) => s.label || s.title) }] : []),
     ];
 
+    const tocHtml = `
+        <div class="mono-label">Spis treści</div>
+        <ol class="toc">${tocItems.map((t) => `
+            <li>
+                <span class="toc-num">${t.raw ? t.num : esc(t.num)}</span>
+                <div><div class="toc-name">${esc(t.name)}</div>${t.sub.length ? `<div class="toc-sub">${t.sub.map(esc).join(' · ')}</div>` : ''}</div>
+            </li>`).join('')}
+        </ol>`;
+
     const summary = offer.summary || {};
-    const hasSummaryPage = (Array.isArray(offer.tldr) && offer.tldr.length) || summary.decision || offer.pricing;
+    const hasSummaryPage = !board && ((Array.isArray(offer.tldr) && offer.tldr.length) || summary.decision || offer.pricing);
+
+    // Przekładki części 2 i 3 (tylko z `board`). Spis treści przechodzi z "W skrócie" na przekładkę części 2.
+    const parts = board ? {
+        details: { ...PART_DEFAULTS.details, ...(offer.parts?.details || {}) },
+        technical: { ...PART_DEFAULTS.technical, ...(offer.parts?.technical || {}) },
+    } : null;
+    const detailsDivider = parts ? `
+    <!-- CZĘŚĆ 2: PRZEKŁADKA ZE SPISEM TREŚCI -->
+    <section class="part-divider">
+        <span class="badge part-badge">${esc(parts.details.label)}</span>
+        <h1 class="part-title">${esc(parts.details.title)}</h1>
+        <div class="accent-bar"></div>
+        ${parts.details.text ? `<p class="part-text">${esc(parts.details.text)}</p>` : ''}
+        ${tocHtml}
+    </section>` : '';
+    // Część 3 jako nagłówek strony załącznika: etykieta części w kickerze, tytuł tylko gdy różni się
+    // od nazwy rozdziału załącznika (labels.chapterAppendix), pod nim tekst przekładki.
+    const appendixKicker = parts ? `${parts.technical.label} · ${appendixName}` : appendixName;
+    const technicalHead = parts && (parts.technical.text || !same(parts.technical.title, appendixName)) ? `
+        <div class="part-head">
+            ${same(parts.technical.title, appendixName) ? '' : `<h2 class="part-head-title">${esc(parts.technical.title)}</h2>`}
+            ${parts.technical.text ? `<p class="part-lead">${esc(parts.technical.text)}</p>` : ''}
+        </div>` : '';
 
     return `<!doctype html>
 <html lang="pl">
@@ -581,6 +731,9 @@ ${assets.fontFaces}
     .section-head { break-inside: avoid; break-after: avoid; }
     .intro { font-size: 10.5pt; line-height: 1.45; color: var(--muted); margin: 0 0 5mm; max-width: 150mm; }
     .footnote { font-size: 8.5pt; color: var(--muted); margin-top: 4mm; max-width: 160mm; break-inside: avoid; }
+    .section-figure { margin: 6mm 0 0; break-inside: avoid; }
+    .section-figure img { display: block; width: 100%; max-width: 150mm; border-radius: 3mm; border: 1px solid var(--hairline-soft); background: var(--white); }
+    .section-figure figcaption { font-family: var(--font-mono); font-size: 6.8pt; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 2mm; }
 
     /* ─── W skrócie ─── */
     .summary-lead { font-size: 13pt; line-height: 1.45; letter-spacing: -0.01em; margin: 0 0 6mm; max-width: 160mm; }
@@ -612,6 +765,93 @@ ${assets.fontFaces}
     .summary.tight .summary-lead { font-size: 12pt; margin-bottom: 5mm; }
     .summary.tight .toc li { padding: 1.8mm 0; }
     .summary.tight .decision > div { padding: 4mm 5mm; }
+
+    /* ─── Część 1 "Dla zarządu": dwie strony A4 (tylko z offer.board) ─── */
+    .board-page, .part-divider { break-before: page; display: flow-root; }
+    .board-page .chapter-kicker { margin-bottom: 6mm; }
+    .board-title { font-size: 20.5pt; line-height: 1.1; letter-spacing: -0.025em; margin: 0 0 3.2mm; max-width: 160mm; }
+    .board-lead { font-size: 10.4pt; line-height: 1.46; margin: 0 0 5mm; }
+    .scenes { display: grid; gap: 2.6mm; }
+    .scene {
+        background: var(--white); border-radius: 3mm; padding: 3.3mm 5mm 1mm;
+        border: 1.5px solid transparent; break-inside: avoid;
+    }
+    .scene.featured { border-color: var(--lime); }
+    .scene-head { display: flex; align-items: center; gap: 3mm; margin-bottom: 1.8mm; }
+    .scene-head h3 { font-size: 12pt; margin: 0; }
+    .scene-tag, .scene-key, .start-step-duration, .board-valid {
+        font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.14em;
+    }
+    .scene-tag {
+        font-size: 6.6pt; color: var(--muted); white-space: nowrap;
+        padding: 1.4pt 6pt; border-radius: 99px; border: 1px solid var(--hairline);
+    }
+    .scene.featured .scene-tag { background: var(--lime); border-color: var(--lime); color: var(--black); font-weight: 500; }
+    .scene-row { display: grid; grid-template-columns: 25mm 1fr; gap: 4mm; padding: 1.35mm 0; border-top: 1px solid var(--hairline-soft); }
+    .scene-key { font-size: 6.4pt; line-height: 1.35; color: var(--muted); padding-top: 0.8mm; }
+    .scene-text { font-size: 9.2pt; line-height: 1.42; }
+    .scene-today .scene-text { color: var(--muted); }
+    .scene-gain .scene-key { color: var(--black); }
+    .scene-gain .scene-text { font-weight: 500; }
+    .board-note {
+        font-size: 9pt; line-height: 1.48; color: var(--muted);
+        border-left: 2px solid var(--lime); padding-left: 4.5mm; margin-top: 4mm;
+    }
+    .board-h2 { font-size: 20.5pt; line-height: 1.1; margin: 0 0 4mm; }
+    .start-steps { background: var(--white); border-radius: 3mm; }
+    .start-step {
+        display: grid; grid-template-columns: 1fr 42mm; gap: 6mm;
+        padding: 3.2mm 5mm; border-top: 1px solid var(--hairline-soft); break-inside: avoid;
+    }
+    .start-step:first-child { border-top: 0; }
+    .start-step-head { display: flex; align-items: center; gap: 3mm; margin-bottom: 1.6mm; }
+    .start-step-title { font-size: 11.5pt; font-weight: 500; line-height: 1.3; }
+    .start-step-text { font-size: 9.2pt; line-height: 1.42; }
+    .start-step-note { font-size: 8.2pt; line-height: 1.4; color: var(--muted); margin-top: 1.4mm; }
+    .start-step-meta { border-left: 1px solid var(--hairline-soft); padding-left: 5mm; }
+    .start-step-price { font-size: 12.5pt; line-height: 1.15; letter-spacing: -0.01em; white-space: nowrap; margin-bottom: 1.4mm; }
+    .start-step-price.long { font-size: 10.5pt; white-space: normal; }
+    .start-step-duration { font-size: 6.5pt; line-height: 1.4; color: var(--muted); }
+    .board-example {
+        background: rgba(156, 224, 105, 0.16); border-radius: 3mm;
+        padding: 3.5mm 5mm; margin-top: 3.5mm; break-inside: avoid;
+    }
+    .board-example .mono-label { margin-bottom: 1.4mm; }
+    .board-example p { font-size: 9.4pt; line-height: 1.45; }
+    .demo {
+        display: grid; grid-template-columns: 1fr 26mm; gap: 8mm; align-items: center;
+        background: var(--white); border-radius: 3mm; padding: 4mm 5mm; margin-top: 3.5mm; break-inside: avoid;
+    }
+    .demo.no-qr { grid-template-columns: 1fr; }
+    .demo .mono-label { margin-bottom: 2mm; }
+    .demo-url {
+        display: inline-flex; align-items: center; gap: 2mm; margin-bottom: 2.4mm;
+        font-size: 14pt; letter-spacing: -0.01em; color: var(--black); text-decoration: none;
+        border-bottom: 2px solid var(--lime); padding-bottom: 0.6mm;
+    }
+    .demo-text { font-size: 9.2pt; line-height: 1.45; color: var(--muted); }
+    .demo-qr { width: 26mm; height: 26mm; display: block; }
+    .board-closing { font-size: 10.6pt; line-height: 1.45; margin-top: 5mm; max-width: 165mm; }
+    .board-valid { font-size: 7pt; color: var(--muted); margin-top: 3mm; }
+    /* Gdy strona części 1 nie mieści się na A4, build dokłada .tight, potem .tighter (patrz fitBoard). */
+    .board-page.tight .board-title, .board-page.tight .board-h2 { font-size: 19pt; margin-bottom: 3mm; }
+    .board-page.tight .board-lead { font-size: 10pt; margin-bottom: 5mm; }
+    .board-page.tight .scene-text, .board-page.tight .start-step-text { font-size: 9pt; }
+    .board-page.tight .scene-row { padding: 1.1mm 0; }
+    .board-page.tight .start-step { padding: 2.6mm 5mm; }
+    .board-page.tighter .scene-text, .board-page.tighter .start-step-text, .board-page.tighter .board-note { font-size: 8.6pt; line-height: 1.4; }
+    .board-page.tighter .scene { padding-top: 2.8mm; }
+    .board-page.tighter .scenes { gap: 2.2mm; }
+
+    /* ─── Przekładki części 2 i 3 ─── */
+    .part-divider { padding-top: 16mm; }
+    .part-badge { font-size: 7.5pt; padding: 2pt 8pt; }
+    .part-title { font-size: 40pt; line-height: 1.04; letter-spacing: -0.03em; margin: 7mm 0 7mm; }
+    .part-text { font-size: 12.5pt; line-height: 1.45; color: var(--muted); max-width: 140mm; margin: 0 0 16mm; }
+    .part-divider .accent-bar + .mono-label { margin-top: 16mm; }
+    .part-head { margin: -3mm 0 9mm; break-inside: avoid; break-after: avoid; }
+    .part-head-title { font-size: 22pt; line-height: 1.1; margin-bottom: 3mm; max-width: 150mm; }
+    .part-lead { font-size: 11.5pt; line-height: 1.45; color: var(--muted); max-width: 150mm; }
 
     /* ─── Statystyki ─── */
     .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5mm; }
@@ -698,17 +938,18 @@ ${assets.fontFaces}
     /* Moduły jak cennik: jeden moduł = jeden pełny wiersz, kolumny wyrównane w całej mapie. */
     .tile-rows { background: var(--white); border-radius: 3mm; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
     .tile-row {
-        display: grid; grid-template-columns: 11mm 1fr 40mm; gap: 5mm;
-        padding: 4mm 5mm; border-top: 1px solid var(--hairline-soft); break-inside: avoid;
+        display: grid; grid-template-columns: 11mm 1fr 44mm; gap: 5mm;
+        padding: 3.4mm 5mm; border-top: 1px solid var(--hairline-soft); break-inside: avoid;
     }
     .tile-row:first-child { border-top: 0; }
     .tile-row.featured { background: rgba(156, 224, 105, 0.16); }
     .tile-code { padding-top: 0.3mm; }
     .tile-title { font-size: 10.5pt; font-weight: 500; line-height: 1.3; margin-bottom: 1.2mm; }
     .tile-badge { font-family: var(--font-mono); font-weight: 400; font-size: 6.3pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-left: 2mm; white-space: nowrap; }
-    .tile-desc { font-size: 8.8pt; color: var(--muted); line-height: 1.45; }
+    .tile-desc { font-size: 8.6pt; color: var(--muted); line-height: 1.4; }
     .tile-meta { border-left: 1px solid var(--hairline-soft); padding-left: 5mm; }
     .tile-price { font-size: 12.5pt; line-height: 1.1; margin-bottom: 1.2mm; letter-spacing: -0.01em; white-space: nowrap; }
+    .tile-price.long { font-size: 10.5pt; }
     .tile-duration { font-size: 6.5pt; color: var(--muted); }
     .tile-note { font-size: 7.8pt; color: var(--black); line-height: 1.4; margin-top: 1.4mm; }
 
@@ -810,22 +1051,20 @@ ${assets.fontFaces}
                 ${summary.totalNote ? `<div class="decision-note">${esc(summary.totalNote)}</div>` : ''}
             </div>
             ${meta.validUntil ? `<div class="decision-foot">Oferta ważna do ${esc(fmtDatePL(meta.validUntil))}.${summary.footNote ? ` ${esc(summary.footNote)}` : ''}</div>` : ''}
-        </div>` : ''}
-        <div class="mono-label">Spis treści</div>
-        <ol class="toc">${tocItems.map((t) => `
-            <li>
-                <span class="toc-num">${t.raw ? t.num : esc(t.num)}</span>
-                <div><div class="toc-name">${esc(t.name)}</div>${t.sub.length ? `<div class="toc-sub">${t.sub.map(esc).join(' · ')}</div>` : ''}</div>
-            </li>`).join('')}
-        </ol>
+        </div>` : ''}${tocHtml}
     </section>` : ''}
+
+    ${board ? `
+    <!-- CZĘŚĆ 1: DLA ZARZĄDU -->
+    ${renderBoardPages(board, meta)}
+    ${detailsDivider}` : ''}
 
     ${chapterHtml}
 
     ${appendixHtml.trim() ? `
     <!-- ZAŁĄCZNIK -->
     <section class="chapter appendix">
-        <div class="chapter-kicker"><span class="chapter-num">A</span><span>${esc(appendixName)}</span></div>
+        <div class="chapter-kicker"><span class="chapter-num">A</span><span>${esc(appendixKicker)}</span></div>${technicalHead}
         ${appendixHtml}
     </section>` : ''}
 
@@ -918,6 +1157,25 @@ async function build() {
         process.exit(1);
     }
 
+    // Obrazy sekcji (`sections[].image.path`, ścieżka względem repo, np. offers/source/...) jako data URI.
+    for (const section of offer.sections || []) {
+        if (!section.image?.path) continue;
+        const ext = path.extname(section.image.path).slice(1).toLowerCase();
+        const mime = { png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp' }[ext] || 'application/octet-stream';
+        section.image.dataUri = await dataUri(section.image.path, mime);
+    }
+
+    // Kod QR do demo w części 1 (`board.demo.qrPath`, SVG lub PNG względem repo). Brak pliku = bez QR.
+    const demo = offer.board?.demo;
+    if (demo?.qrPath) {
+        const ext = path.extname(demo.qrPath).slice(1).toLowerCase();
+        try {
+            demo.qrDataUri = await dataUri(demo.qrPath, ext === 'svg' ? 'image/svg+xml' : 'image/png');
+        } catch {
+            console.warn(`⚠ Brak pliku z kodem QR: ${demo.qrPath} (PDF bez QR)`);
+        }
+    }
+
     const html = renderHTML(offer, await loadAssets(offer));
 
     const today = new Date().toISOString().slice(0, 10);
@@ -941,9 +1199,11 @@ async function build() {
         const page = await browser.newPage();
         // Szerokość pola treści strony (210 - 2 x 20 mm), żeby kontrola przepełnienia liczyła jak w druku.
         await page.setViewport({ width: Math.round((170 / 25.4) * 96), height: 1200 });
-        await page.setContent(html, { waitUntil: 'networkidle0' });
+        // Wszystkie zasoby są osadzone (data URI), więc wystarcza `load` + dekodowanie obrazów i fontów.
+        // `networkidle0` potrafi nie nadejść przy dużym obrazie PNG w data URI (timeout 30 s).
+        await page.setContent(html, { waitUntil: 'load' });
         await page.emulateMediaType('print');
-        await page.evaluate(() => document.fonts.ready);
+        await page.evaluate(() => Promise.all([document.fonts.ready, ...[...document.images].map((i) => i.decode().catch(() => {}))]));
         await page.evaluate(async () => {
             const img = document.querySelector('.back-photo');
             if (!img) return;
@@ -965,9 +1225,26 @@ async function build() {
         });
         if (tightened) console.log(`▶ Strona "W skrócie" zagęszczona${tightened === true ? '' : ` (${tightened})`}`);
 
+        // Część 1 "Dla zarządu" to dokładnie dwie strony: każda .board-page musi zmieścić się na A4.
+        // Mały zapas względem 255 mm na różnice łamania między ekranem a drukiem.
+        const fitBoard = await page.evaluate(() => {
+            const max = (252 / 25.4) * 96;
+            const mm = (px) => Math.round((px * 25.4) / 96);
+            return [...document.querySelectorAll('.board-page')].map((el, i) => {
+                if (el.scrollHeight <= max) return `strona ${i + 1}: ${mm(el.scrollHeight)} mm z 252`;
+                el.classList.add('tight');
+                if (el.scrollHeight <= max) return `strona ${i + 1}: zagęszczona`;
+                el.classList.add('tighter');
+                return el.scrollHeight <= max
+                    ? `strona ${i + 1}: mocno zagęszczona`
+                    : `strona ${i + 1}: NADAL ZA DŁUGA (${Math.round(el.scrollHeight)} > ${Math.round(max)} px), skróć treść`;
+            }).filter(Boolean);
+        });
+        if (fitBoard.length) console.log(`▶ Część 1 dla zarządu: ${fitBoard.join('; ')}`);
+
         const overflow = await page.evaluate(() => {
             const limit = document.documentElement.clientWidth + 1;
-            return [...document.querySelectorAll('.summary *, .chapter *')]
+            return [...document.querySelectorAll('.summary *, .chapter *, .board-page *, .part-divider *')]
                 .filter((el) => el.getBoundingClientRect().right > limit)
                 .map((el) => `${el.tagName.toLowerCase()}.${[...el.classList].join('.')}`)
                 .slice(0, 10);

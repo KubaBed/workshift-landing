@@ -138,6 +138,16 @@ export function parseCookies(cookieHeader) {
 // Strip sensitive metadata przed wysłaniem do frontendu.
 // Frontend nie potrzebuje slug routing przeszłej oferty, ani client.role wewnętrznego.
 // Dane podstawowe + sekcje treściowe — tak. RODO-safe.
+// Część 1 "Dla zarządu" bez ścieżki do pliku z kodem QR (QR jest tylko w PDF).
+function sanitizeBoard(board) {
+    if (!board || typeof board !== 'object') return null;
+    if (!board.demo) return board;
+    const demo = { ...board.demo };
+    delete demo.qrPath;
+    delete demo.qrDataUri;
+    return { ...board, demo };
+}
+
 export function sanitizeOfferForClient(offer) {
     if (!offer) return null;
     return {
@@ -152,6 +162,9 @@ export function sanitizeOfferForClient(offer) {
         tldr: offer.tldr || [],
         // Tylko wstęp "W skrócie"; reszta `summary` i `contact` (telefon) zostaje w PDF.
         summary: offer.summary?.lead ? { lead: offer.summary.lead } : null,
+        // Część 1 "Dla zarządu" i przekładki części; bez `board` strona renderuje się jak dotąd.
+        board: sanitizeBoard(offer.board),
+        parts: offer.parts || null,
         problems: offer.problems || [],
         approach: offer.approach || null,
         pilot: offer.pilot || null,
