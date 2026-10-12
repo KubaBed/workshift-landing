@@ -300,3 +300,13 @@ html.lenis body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Druk: elementy z wejściem przy przewijaniu (framer-motion whileInView, oznaczone
+   data-reveal), które nie weszły jeszcze w widok, mają inline opacity 0 i przesunięcie.
+   Bez tego strona oferty drukuje się z pustymi sekcjami. */
+@media print {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
