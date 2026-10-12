@@ -26,10 +26,19 @@ function SectionLabel({ children }) {
 }
 
 // „2026-09-14" -> „14 września 2026". Gdy nie da się sparsować, zwraca oryginał.
+// Twarda spacja po dniu, jak w nbspText() w OfferPage (liczba + miesiąc w jednym wierszu).
 function fmtDatePL(iso) {
   const d = new Date(String(iso) + 'T00:00:00');
   if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
+  return d
+    .toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' })
+    .replace(/^(\d+) /, '$1\u00a0');
+}
+
+// „Zakład Łódź Sp. z o.o." -> „Zakład Łódź".
+// \s zamiast spacji, bo nbspText() w OfferPage wstawia twardą spację po „z".
+function shortClientName(name) {
+  return String(name || '').replace(/\sSp\.\sz\so\.o\./, '');
 }
 
 function LimeDivider() {
@@ -110,7 +119,7 @@ export function HeroSection({ meta, client, video }) {
     <SectionWrap className="pt-24 md:pt-32 pb-12">
       <motion.div {...fadeUp}>
         <p className="font-mono text-xs uppercase tracking-[0.22em] text-muted-dark mb-6">
-          Workshift → {client.name.replace(' Sp. z o.o.', '')}
+          Workshift → {shortClientName(client.name)}
         </p>
         <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-display tracking-tight text-black leading-[1.05] mb-6">
           {meta.title}
@@ -844,7 +853,7 @@ export function SaldeoSection({ saldeo }) {
 // Oferta to prezentacja, podpisuje się umowę na jej podstawie, więc CTA prowadzi do rozmowy.
 // Temat maila stały: starsze oferty mają w env `labels.ctaSubject` „Akceptacja oferty...", ignorowane.
 export function NextStepsSection({ steps, validUntil, contact, client, title }) {
-  const subject = encodeURIComponent(`Rozmowa o ofercie: ${client?.name?.replace(' Sp. z o.o.', '') || ''}`);
+  const subject = encodeURIComponent(`Rozmowa o ofercie: ${shortClientName(client?.name)}`);
   return (
     <SectionWrap className="pb-32">
       <motion.div {...fadeUp}>

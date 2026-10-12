@@ -20,14 +20,26 @@ import {
 } from '../components/offer/OfferSections';
 import NotFoundPage from './NotFoundPage';
 
-// Niełamliwe spacje w kwotach i jednostkach („14 400 PLN", „7 dni", „modułu 1")
-// oraz niełamliwy dywiz w „e-commerce" - żeby wąska kolumna nie rozbijała ich na
-// dwa wiersze. Ten sam zestaw reguł co w lead-magnets/build-offer-pdf.mjs.
+// Niełamliwe spacje tam, gdzie złamanie wiersza rozbija sens: tysiące w kwotach
+// („14 400"), liczba + jednostka („500 PLN", „7 dni", „2 420 m²"), numer modułu
+// („modułu 1"), skróty przed liczbą („ok. 50", „do 31"), jednoliterowe spójniki na
+// końcu wiersza („i", „w", „z"), liczba + miesiąc („7 października") oraz niełamliwy
+// dywiz w złożeniach typu „e-commerce". Reguły jak w nbsp() z
+// lead-magnets/build-offer-pdf.mjs, a do tego dwie, których PDF jeszcze nie ma:
+// „m²" i liczba + nazwa miesiąca w dopełniaczu.
+const MONTHS_GEN = 'stycznia|lutego|marca|kwietnia|maja|czerwca|lipca|sierpnia|września|października|listopada|grudnia';
+const MONTH_RE = new RegExp(`(\\d) (${MONTHS_GEN})`, 'g');
 function nbspText(s) {
+    const orphan = /(^|[\s(„])([aiouwzAIOUWZ]) /g;
     return s
         .replace(/(\d) (\d{3})\b/g, '$1\u00a0$2')
-        .replace(/(\d) (PLN|zł|dni|tyg\.?|lekcj\w*|film\w*)/g, '$1\u00a0$2')
-        .replace(/\b(modu\u0142\w*|Modu\u0142) (\d)\b/g, '$1\u00a0$2')
+        .replace(/(\d) (PLN|zł|dni|tyg\.?|godz\w*|lekcj\w*|film\w*|osób|parków|faktur|m²)/g, '$1\u00a0$2')
+        .replace(/\b(moduł\w*|Moduł) (\d)\b/g, '$1\u00a0$2')
+        .replace(/\b(ok\.|np\.|do|od) (\d)/g, '$1\u00a0$2')
+        // Dwa przebiegi, bo w „i w domu" pierwszy zjada spację przed „w".
+        .replace(orphan, '$1$2\u00a0')
+        .replace(orphan, '$1$2\u00a0')
+        .replace(MONTH_RE, '$1\u00a0$2')
         .replace(/\be-(commerce|mail|book|learning)\b/g, 'e\u2011$1');
 }
 function nbspDeep(v) {
