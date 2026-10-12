@@ -449,7 +449,7 @@ function TilesBlock({ section }) {
             {g.tiles.map((t, ti) => (
               <div
                 key={ti}
-                className={`grid grid-cols-[auto_1fr] md:grid-cols-[auto_1fr_200px] gap-x-5 gap-y-3 p-5 md:p-6 ${ti > 0 ? 'border-t border-black/10' : ''} ${t.badge ? 'bg-lime/15' : ''}`}
+                className={`grid grid-cols-[auto_1fr] md:grid-cols-[auto_1fr_250px] gap-x-5 gap-y-3 p-5 md:p-6 ${ti > 0 ? 'border-t border-black/10' : ''} ${t.badge ? 'bg-lime/15' : ''}`}
               >
                 <span className="self-start font-mono text-[11px] uppercase tracking-[0.2em] text-black bg-lime px-2.5 py-0.5 rounded-full">{t.code}</span>
                 <div>
@@ -461,7 +461,7 @@ function TilesBlock({ section }) {
                   {t.note && <p className="text-xs text-black leading-snug mt-2">{t.note}</p>}
                 </div>
                 <div className="col-start-2 md:col-start-auto md:border-l md:border-black/10 md:pl-5">
-                  <p className="text-2xl font-display tracking-tight text-black leading-none mb-2 whitespace-nowrap">{t.price}</p>
+                  <p className="text-xl md:text-2xl font-display tracking-tight text-black leading-none mb-2 whitespace-nowrap">{t.price}</p>
                   {t.duration && <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-dark">{t.duration}</p>}
                 </div>
               </div>

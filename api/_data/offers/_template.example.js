@@ -127,6 +127,8 @@ export default {
     //   position: 'afterPricing' - zaraz po cenach (np. koszty stałe po stronie klienta)
     //   position: 'appendix'     - załącznik na końcu PDF (np. odpowiedzi na punkty RFP)
     // Strona www renderuje 'beforePhases' przed fazami, resztę po nich, w kolejności z danych.
+    // Opcjonalnie `image: { path, caption, alt }` (PDF): ścieżka względem repo, plik trzymaj w
+    // gitignorowanym offers/source/<klient>/, bez danych pozwalających zidentyfikować innego klienta.
     sections: [],
 
     // W PDF lądują na tylnej okładce, obok kontaktu.

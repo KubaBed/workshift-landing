@@ -239,19 +239,24 @@ function renderExtraSection(section, chapterName) {
                             ${t.note ? `<div class="tile-note">${esc(t.note)}</div>` : ''}
                         </div>
                         <div class="tile-meta">
-                            <div class="tile-price">${esc(t.price)}</div>
+                            <div class="tile-price${String(t.price).length > 12 ? ' long' : ''}">${esc(t.price)}</div>
                             ${t.duration ? `<div class="tile-duration">${esc(t.duration)}</div>` : ''}
                         </div>
                     </div>`).join('')}</div>
             </div>`).join('');
     }
     // Krótka lista trzyma się jednej strony, żeby nagłówek nie został sam na dole.
-    const keep = (section.type === 'list' && (section.items || []).length <= 8)
+    const keep = (section.type === 'list' && (section.items || []).length <= 8 && !section.image)
         || (section.type === 'table' && (section.rows || []).length <= 6);
     return `
         <section class="block${keep ? ' keep' : ''}">
             ${sectionHead(section, chapterName)}
             ${body}
+            ${section.image?.dataUri ? `
+            <figure class="section-figure">
+                <img src="${section.image.dataUri}" alt="${esc(section.image.alt || '')}">
+                ${section.image.caption ? `<figcaption>${esc(section.image.caption)}</figcaption>` : ''}
+            </figure>` : ''}
             ${section.footnote ? `<p class="footnote">${esc(section.footnote)}</p>` : ''}
         </section>`;
 }
@@ -581,6 +586,9 @@ ${assets.fontFaces}
     .section-head { break-inside: avoid; break-after: avoid; }
     .intro { font-size: 10.5pt; line-height: 1.45; color: var(--muted); margin: 0 0 5mm; max-width: 150mm; }
     .footnote { font-size: 8.5pt; color: var(--muted); margin-top: 4mm; max-width: 160mm; break-inside: avoid; }
+    .section-figure { margin: 6mm 0 0; break-inside: avoid; }
+    .section-figure img { display: block; width: 100%; max-width: 150mm; border-radius: 3mm; border: 1px solid var(--hairline-soft); background: var(--white); }
+    .section-figure figcaption { font-family: var(--font-mono); font-size: 6.8pt; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 2mm; }
 
     /* ─── W skrócie ─── */
     .summary-lead { font-size: 13pt; line-height: 1.45; letter-spacing: -0.01em; margin: 0 0 6mm; max-width: 160mm; }
@@ -698,17 +706,18 @@ ${assets.fontFaces}
     /* Moduły jak cennik: jeden moduł = jeden pełny wiersz, kolumny wyrównane w całej mapie. */
     .tile-rows { background: var(--white); border-radius: 3mm; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
     .tile-row {
-        display: grid; grid-template-columns: 11mm 1fr 40mm; gap: 5mm;
-        padding: 4mm 5mm; border-top: 1px solid var(--hairline-soft); break-inside: avoid;
+        display: grid; grid-template-columns: 11mm 1fr 44mm; gap: 5mm;
+        padding: 3.4mm 5mm; border-top: 1px solid var(--hairline-soft); break-inside: avoid;
     }
     .tile-row:first-child { border-top: 0; }
     .tile-row.featured { background: rgba(156, 224, 105, 0.16); }
     .tile-code { padding-top: 0.3mm; }
     .tile-title { font-size: 10.5pt; font-weight: 500; line-height: 1.3; margin-bottom: 1.2mm; }
     .tile-badge { font-family: var(--font-mono); font-weight: 400; font-size: 6.3pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-left: 2mm; white-space: nowrap; }
-    .tile-desc { font-size: 8.8pt; color: var(--muted); line-height: 1.45; }
+    .tile-desc { font-size: 8.6pt; color: var(--muted); line-height: 1.4; }
     .tile-meta { border-left: 1px solid var(--hairline-soft); padding-left: 5mm; }
     .tile-price { font-size: 12.5pt; line-height: 1.1; margin-bottom: 1.2mm; letter-spacing: -0.01em; white-space: nowrap; }
+    .tile-price.long { font-size: 10.5pt; }
     .tile-duration { font-size: 6.5pt; color: var(--muted); }
     .tile-note { font-size: 7.8pt; color: var(--black); line-height: 1.4; margin-top: 1.4mm; }
 
@@ -918,6 +927,14 @@ async function build() {
         process.exit(1);
     }
 
+    // Obrazy sekcji (`sections[].image.path`, ścieżka względem repo, np. offers/source/...) jako data URI.
+    for (const section of offer.sections || []) {
+        if (!section.image?.path) continue;
+        const ext = path.extname(section.image.path).slice(1).toLowerCase();
+        const mime = { png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp' }[ext] || 'application/octet-stream';
+        section.image.dataUri = await dataUri(section.image.path, mime);
+    }
+
     const html = renderHTML(offer, await loadAssets(offer));
 
     const today = new Date().toISOString().slice(0, 10);
@@ -941,9 +958,11 @@ async function build() {
         const page = await browser.newPage();
         // Szerokość pola treści strony (210 - 2 x 20 mm), żeby kontrola przepełnienia liczyła jak w druku.
         await page.setViewport({ width: Math.round((170 / 25.4) * 96), height: 1200 });
-        await page.setContent(html, { waitUntil: 'networkidle0' });
+        // Wszystkie zasoby są osadzone (data URI), więc wystarcza `load` + dekodowanie obrazów i fontów.
+        // `networkidle0` potrafi nie nadejść przy dużym obrazie PNG w data URI (timeout 30 s).
+        await page.setContent(html, { waitUntil: 'load' });
         await page.emulateMediaType('print');
-        await page.evaluate(() => document.fonts.ready);
+        await page.evaluate(() => Promise.all([document.fonts.ready, ...[...document.images].map((i) => i.decode().catch(() => {}))]));
         await page.evaluate(async () => {
             const img = document.querySelector('.back-photo');
             if (!img) return;
