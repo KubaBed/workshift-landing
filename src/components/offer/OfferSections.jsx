@@ -122,7 +122,7 @@ function VideoEmbed({ video }) {
 
 export function HeroSection({ meta, client, video }) {
   return (
-    <SectionWrap className="pt-24 md:pt-32 pb-12">
+    <SectionWrap className="pt-12 md:pt-16 pb-12">
       <motion.div {...fadeUp}>
         <p className="font-mono text-xs uppercase tracking-[0.22em] text-muted-dark mb-6">
           Workshift → {shortClientName(client.name)}
