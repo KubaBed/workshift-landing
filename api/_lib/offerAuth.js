@@ -1,4 +1,4 @@
-// Offer page authentication — stateless JWT-like cookie based on HMAC.
+// Offer page authentication - stateless JWT-like cookie based on HMAC.
 // Re-use'uje wzorzec z _lib/doi.js (signToken/verifyToken).
 //
 // Flow:
@@ -8,7 +8,7 @@
 //   2. GET /api/offers/[slug]
 //      → verify cookie. If valid → return offer data. If not → 401.
 //
-// Nigdy nie zwracamy danych klienta jeśli cookie niepoprawny — to znaczy że
+// Nigdy nie zwracamy danych klienta jeśli cookie niepoprawny - to znaczy że
 // nawet ktoś z DevToolsami w produkcji nie zobaczy treści oferty bez hasła.
 
 import crypto from 'node:crypto';
@@ -63,7 +63,7 @@ export function getJwtSecret() {
     return secret;
 }
 
-// Stała czasowa porównanie haseł — chroni przed timing attacks.
+// Stała czasowa porównanie haseł - chroni przed timing attacks.
 // Even though passwords are short, this is hygiene.
 export function passwordsMatch(provided, expected) {
     if (typeof provided !== 'string' || typeof expected !== 'string') return false;
@@ -137,7 +137,7 @@ export function parseCookies(cookieHeader) {
 
 // Strip sensitive metadata przed wysłaniem do frontendu.
 // Frontend nie potrzebuje slug routing przeszłej oferty, ani client.role wewnętrznego.
-// Dane podstawowe + sekcje treściowe — tak. RODO-safe.
+// Dane podstawowe + sekcje treściowe - tak. RODO-safe.
 // Część 1 "Dla zarządu" bez ścieżki do pliku z kodem QR (QR jest tylko w PDF).
 function sanitizeBoard(board) {
     if (!board || typeof board !== 'object') return null;
@@ -146,6 +146,17 @@ function sanitizeBoard(board) {
     delete demo.qrPath;
     delete demo.qrDataUri;
     return { ...board, demo };
+}
+
+// Sekcje bez `image`: `image.path` to lokalna ścieżka pliku dla generatora PDF
+// (lead-magnets/build-offer-pdf.mjs), a strona www obrazów sekcji nie renderuje.
+function sanitizeSections(sections) {
+    if (!Array.isArray(sections)) return null;
+    return sections.map((section) => {
+        const copy = { ...section };
+        delete copy.image;
+        return copy;
+    });
 }
 
 export function sanitizeOfferForClient(offer) {
@@ -170,7 +181,7 @@ export function sanitizeOfferForClient(offer) {
         pilot: offer.pilot || null,
         asysta: offer.asysta || null,
         phases: offer.phases || null,
-        sections: offer.sections || null,
+        sections: sanitizeSections(offer.sections),
         needs: offer.needs || null,
         timeline: offer.timeline || [],
         pricing: offer.pricing || null,
