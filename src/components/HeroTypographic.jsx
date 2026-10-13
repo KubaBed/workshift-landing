@@ -1,5 +1,5 @@
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { HeroParticleSphere } from './HeroParticleSphere';
 import { TextReveal } from './animations/TextReveal';
 import { FadeUp } from './animations/FadeUp';
 import { Floating } from './animations/Floating';
@@ -9,8 +9,45 @@ import logo3 from '../assets/partners/logo3.png';
 import logo4 from '../assets/partners/logo4.png';
 import logo5 from '../assets/partners/logo5.png';
 
-export function HeroTypographic() {
+// Sfera ciągnie three.js (ok. 0,5 MB). Osobny chunk: na telefonie nie pobiera się wcale,
+// na desktopie dopiero po zdarzeniu load, żeby nie konkurowała z tekstem hero o łącze i procesor.
+const HeroParticleSphere = lazy(() => import('./HeroParticleSphere').then(m => ({ default: m.HeroParticleSphere })));
 
+const SPHERE_MIN_WIDTH = '(min-width: 1024px)'; // = breakpoint lg, na którym kontener sfery jest widoczny
+
+function useDeferredSphere() {
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia(SPHERE_MIN_WIDTH);
+    let idleId;
+    let timeoutId;
+
+    const schedule = () => {
+      if (!mq.matches) return;
+      const run = () => setShow(true);
+      if ('requestIdleCallback' in window) idleId = window.requestIdleCallback(run, { timeout: 2000 });
+      else timeoutId = window.setTimeout(run, 200);
+    };
+    const onChange = (e) => { if (e.matches && document.readyState === 'complete') schedule(); };
+
+    if (document.readyState === 'complete') schedule();
+    else window.addEventListener('load', schedule, { once: true });
+    mq.addEventListener('change', onChange);
+
+    return () => {
+      window.removeEventListener('load', schedule);
+      mq.removeEventListener('change', onChange);
+      if (idleId) window.cancelIdleCallback(idleId);
+      if (timeoutId) window.clearTimeout(timeoutId);
+    };
+  }, []);
+
+  return show;
+}
+
+export function HeroTypographic() {
+  const showSphere = useDeferredSphere();
 
   return (
     <div
@@ -47,7 +84,18 @@ export function HeroTypographic() {
 
       {/* Background sphere - full bleed (left as-is per decision) */}
       <div className="hidden lg:block" style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-        <HeroParticleSphere />
+        {showSphere && (
+          <Suspense fallback={null}>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
+              style={{ position: 'absolute', inset: 0 }}
+            >
+              <HeroParticleSphere />
+            </motion.div>
+          </Suspense>
+        )}
       </div>
 
       {/* Left panel - text content */}
