@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getServiceById } from '../data/services';
-import { ExpandedServiceView } from '../components/InteractiveServicesBento';
+import { ExpandedServiceView } from '../components/ExpandedServiceView';
 import { ServiceArticle } from '../components/ui/ServiceArticle';
 import { ServiceFaq } from '../components/ui/ServiceFaq';
 import { GradientDivider } from '../components/ui/GradientDivider';
