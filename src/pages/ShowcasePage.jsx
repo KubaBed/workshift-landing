@@ -10,6 +10,7 @@ import { ServiceFaq } from '@/components/ui/ServiceFaq';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { IntegrationsMarquee } from '@/components/ui/IntegrationsMarquee';
 import { AnimatedProcessIcon } from '@/components/ui/AnimatedProcessIcon';
+import { LineFigure, LINE_FIGURES } from '@/components/ui/LineFigure';
 import { getServiceById } from '@/data/services';
 import { BoardSection, PartDivider, ExtraSections } from '@/components/offer/OfferSections';
 
@@ -153,6 +154,46 @@ function ShowcaseIconTile({ name }) {
   );
 }
 
+// Opis figur LineFigure: co pokazuje figura i którą usługę mogłaby ilustrować.
+const FIGURE_NOTES = {
+  relay: {
+    label: 'Dane przechodzą przez kolejne kroki procesu',
+    text: 'Dane przechodzą przez kolejne kroki. Ścieżka do kafelka pod kursorem zapala się krok po kroku.',
+    fit: 'automatyzacja procesów, przepływy danych',
+  },
+  hub: {
+    label: 'Jeden system połączony z ośmioma narzędziami',
+    text: 'Jeden system w środku i osiem narzędzi wokół. Kafelek pod kursorem unosi się, a jego połączenie staje się ciągłe.',
+    fit: 'integracje narzędzi',
+  },
+  settle: {
+    label: 'Rozrzucone elementy układają się w strukturę',
+    text: 'Rozrzucone kafelki układają się w drzewo, gdy kursor podchodzi bliżej.',
+    fit: 'audyt, porządkowanie procesów',
+  },
+  format: {
+    label: 'Krzywe wiersze dokumentu wskakują na miejsce',
+    text: 'Plik z krzywymi wierszami. Kursor przesuwa się w dół, a wiersze nad nim wskakują na miejsce.',
+    fit: 'dokumenty, faktury, OCR',
+  },
+};
+
+function ShowcaseFigureCard({ name, tone, intensity, play }) {
+  const [read, setRead] = useState('rest');
+  const note = FIGURE_NOTES[name];
+  return (
+    <div className={`rounded-lg border p-4 ${tone === 'dark' ? 'border-white/15' : 'border-black/10'}`}>
+      <LineFigure figure={name} tone={tone} intensity={intensity} play={play} label={note.label} onRead={setRead} />
+      <div className="mt-3 flex items-baseline justify-between gap-4 font-mono text-xs">
+        <span>{name}</span>
+        <span className="opacity-50" aria-hidden="true">{read}</span>
+      </div>
+      <p className="mt-2 text-sm opacity-70">{note.text}</p>
+      <p className="mt-1 font-mono text-xs opacity-50">pasuje do: {note.fit}</p>
+    </div>
+  );
+}
+
 function Swatch({ name, value, token }) {
   return (
     <div className="flex flex-col gap-2">
@@ -182,6 +223,8 @@ const BUTTON_SIZES = ['xs', 'sm', 'default', 'lg'];
 
 export default function ShowcasePage() {
   const [dark, setDark] = useState(false);
+  const [figIntensity, setFigIntensity] = useState(0.5);
+  const [figPlay, setFigPlay] = useState(false);
 
   // noindex tylko dla tej trasy. index.html ma już <meta name="robots" content="index, follow">,
   // więc NIE dokładamy drugiego tagu (dwa sprzeczne meta robots to proszenie się o kłopoty) -
@@ -224,7 +267,7 @@ export default function ShowcasePage() {
         </header>
 
         <nav className="flex flex-wrap gap-x-4 gap-y-1 border-y border-black/10 py-3 font-mono text-xs uppercase tracking-wider">
-          {['tokens', 'typografia', 'buttons', 'forms', 'brand', 'oferta-zarzad', 'sekcje'].map((id) => (
+          {['tokens', 'typografia', 'buttons', 'forms', 'brand', 'figury', 'oferta-zarzad', 'sekcje'].map((id) => (
             <a key={id} href={`#${id}`} className="hover:underline">{id}</a>
           ))}
         </nav>
@@ -324,6 +367,42 @@ export default function ShowcasePage() {
           <div className="flex flex-wrap gap-4">
             {['invoice', 'sync', 'report', 'alert'].map((name) => (
               <ShowcaseIconTile key={name} name={name} />
+            ))}
+          </div>
+        </Section>
+
+        <Section
+          id="figury"
+          title="LineFigure"
+          note="src/components/ui/LineFigure.jsx - izometryczne figury z kreski z pakietu @lucasmarkes/hairline (MIT; cztery figury razem ok. 13 KB gzip, jedna ok. 9 KB, bo silnik jest wspólny). Na stronie wpinaj przez LazyLineFigure (ładuje się przy zbliżeniu do ekranu); żywy przykład: /uslugi/automatyzacja, sekcja „od czego zaczynamy”. Reagują na kursor; przełącznik tła zmienia paletę (sage z czarnym akcentem / czarna sekcja z limonkowym). Odczyt w rogu karty to podpis z pakietu, po angielsku."
+        >
+          <div className="mb-6 flex flex-wrap items-center gap-6 font-mono text-xs">
+            <label className="flex items-center gap-3">
+              <span className="uppercase tracking-wider opacity-60">intensity</span>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value={figIntensity}
+                onChange={(e) => setFigIntensity(Number(e.target.value))}
+                className={`w-40 ${dark ? 'accent-lime' : 'accent-black'}`}
+              />
+              <span className="w-8 tabular-nums">{figIntensity.toFixed(2)}</span>
+            </label>
+            <Button variant="accent-outline" size="sm" className={dark ? 'text-white' : ''} onClick={() => setFigPlay((p) => !p)}>
+              Autoodtwarzanie: {figPlay ? 'wł.' : 'wył.'}
+            </Button>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-2">
+            {LINE_FIGURES.map((name) => (
+              <ShowcaseFigureCard
+                key={name}
+                name={name}
+                tone={dark ? 'dark' : 'sage'}
+                intensity={figIntensity}
+                play={figPlay}
+              />
             ))}
           </div>
         </Section>

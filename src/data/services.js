@@ -155,6 +155,7 @@ export const SERVICES = [
             {
                 heading: 'Sztuczna inteligencja w firmie: od czego zaczynamy',
                 eyebrow: 'Jak pracujemy',
+                figure: { name: 'settle', label: 'Rozrzucone elementy procesu układają się w uporządkowaną strukturę' },
                 paragraphs: [
                     'Zaczynamy od mapy procesów. W bezpłatnej 30-minutowej rozmowie diagnostycznej wskazujemy 2-3 miejsca, w których sztuczna inteligencja w firmie zwróci się najszybciej - policzalnie, w godzinach i złotówkach. Potem budujemy pierwszy workflow i testujemy go na Twoich danych przez 1-2 tygodnie. Dopiero gdy widzisz wynik na własnym procesie, decydujesz o kolejnych krokach.',
                     'Jeśli chcesz sprawdzić potencjał przed rozmową, zrób bezpłatny mikro-audyt AI (12 pytań, 4 minuty) albo policz koszt powtarzalnych zadań w kalkulatorze strat czasowych.',
