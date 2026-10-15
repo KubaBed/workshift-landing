@@ -69,6 +69,19 @@ Pomiar: `~/.secrets/workshift/PageSpeed_API.env` (klucz w nagłówku `X-goog-api
 | Usunięta tekstura `grainy-gradients.vercel.app/noise.svg` | `InteractiveServicesBento.jsx` | domena zwraca 402 (wyłączony deploy), tekstura i tak się nie wyświetlała; jedno żądanie do obcej domeny mniej |
 | Tailwind skanuje tylko `src/` i `index.html` | `src/index.css` | CSS 126,8 -> 123,5 KB; usunięte wyłącznie klasy nieużywane w `src` (sprawdzone diffem selektorów) |
 
+**Po wdrożeniu (#26, 15.10), PSI, mediana z 3 przebiegów mobile:**
+
+| Strona | Wynik | LCP | CLS | Waga | Przed (wynik / LCP / waga) |
+|---|---|---|---|---|---|
+| `/` mobile | 76 | 4,2 s | 0 | 579 KB | 74 / 5,2 s / 864 KB |
+| `/uslugi/automatyzacja` mobile | 60 | 3,5 s | **0,92** w 2 z 3 | 481 KB | 76 / 4,3 s / 558 KB |
+| `/` desktop | 58 | 1,05 s | 0 | 706 KB | 58 / 1,1 s / 991 KB (TBT dalej 12 s, sfera) |
+| `/uslugi/automatyzacja` desktop | 98 | 0,8 s | 0 | 484 KB | 98 / 0,9 s / 560 KB |
+
+CLS 0,92 na stronie usługi: stopka miała własną granicę `Suspense` obok tras i przy chunku strony
+dochodzącym później malowała się pod nagłówkiem. Naprawione w #27 (granica stopki w granicy tras).
+Nagłówki na produkcji sprawdzone: `/assets/*` `max-age=31536000, immutable`, `/fonts/*` `max-age=604800`.
+
 Do zweryfikowania po deployu: `curl -sI https://www.workshift.pl/assets/<plik>.js | grep -i cache-control`
 ma zwrócić `max-age=31536000, immutable`; pomiar LCP mobile ponownie (ten sam profil co wyżej).
 
