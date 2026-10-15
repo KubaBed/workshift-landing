@@ -21,6 +21,8 @@ export default defineConfig({
     allowedHosts: true,
   },
   build: {
+    // Manifest czyta scripts/build-seo-html.mjs (modulepreload chunków trasy) i potem go usuwa.
+    manifest: true,
     chunkSizeWarningLimit: 600,
     rollupOptions: {
       output: {

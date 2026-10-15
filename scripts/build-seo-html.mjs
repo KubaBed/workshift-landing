@@ -24,7 +24,7 @@
  * React i tak podmienia #root po starcie, więc dla użytkownika nic się nie zmienia.
  */
 
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { routes } from './seo-routes.mjs';
@@ -115,6 +115,46 @@ function patchHead(shell, route) {
   }
 
   return html.replace(/<\/head>/, `${extras.join('\n')}\n  </head>`);
+}
+
+/* ---------- modulepreload chunków trasy ---------- */
+
+/**
+ * Strony poza główną są leniwe (React.lazy), więc bez podpowiedzi przeglądarka
+ * pobiera chunk strony dopiero po wykonaniu index.js: dwa żądania jedno po drugim.
+ * Na stronie usługi to była większość luki FCP -> LCP (PSI 15.10). Dlatego HTML
+ * każdej podstrony dostaje <link rel="modulepreload"> do chunków jej modułu,
+ * policzonych z manifestu Vite (bez tych, które shell już ładuje).
+ */
+const ROUTE_PAGE_MODULES = [
+  [/^\/uslugi\/[^/]+$/, 'src/pages/ServicePage.jsx'],
+  [/^\/blog$/, 'src/pages/BlogListPage.jsx'],
+  [/^\/blog\/[^/]+$/, 'src/pages/BlogPostPage.jsx'],
+  [/^\/kalkulator$/, 'src/pages/KalkulatorStratPage.jsx'],
+  [/^\/audyt-ai$/, 'src/pages/AudytAiPage.jsx'],
+  [/^\/prompty$/, 'src/pages/PromptyPage.jsx'],
+  [/^\/polityka-prywatnosci$/, 'src/pages/PrivacyPolicyPage.jsx'],
+];
+
+const MANIFEST_PATH = join(DIST, '.vite', 'manifest.json');
+const manifest = JSON.parse(await readFile(MANIFEST_PATH, 'utf8'));
+
+/** Plik chunku modułu i wszystkie jego statyczne importy (bez dynamicznych). */
+function chunkFiles(key, seen = new Set()) {
+  const entry = manifest[key];
+  if (!entry || seen.has(key)) return [];
+  seen.add(key);
+  return [entry.file, ...(entry.imports ?? []).flatMap((dep) => chunkFiles(dep, seen))];
+}
+
+function patchPreloads(html, route) {
+  const match = ROUTE_PAGE_MODULES.find(([pattern]) => pattern.test(route.path));
+  if (!match) return html;
+  if (!manifest[match[1]]) throw new Error(`build-seo-html: brak ${match[1]} w manifeście Vite`);
+  const links = [...new Set(chunkFiles(match[1]))]
+    .filter((file) => !html.includes(`/${file}"`))
+    .map((file) => `    <link rel="modulepreload" crossorigin href="/${file}">`);
+  return links.length ? html.replace(/<\/head>/, `${links.join('\n')}\n  </head>`) : html;
 }
 
 /* ---------- render fallbacku ---------- */
@@ -285,7 +325,7 @@ const inbound = new Map(routes.map((route) => [route.path, 0]));
 for (const route of routes) {
   assertTitleLength(route);
 
-  const html = patchBody(patchHead(shell, route), route);
+  const html = patchPreloads(patchBody(patchHead(shell, route), route), route);
   const target = route.path === '/' ? join(DIST, 'index.html') : join(DIST, route.path, 'index.html');
   await mkdir(dirname(target), { recursive: true });
   await writeFile(target, html, 'utf8');
@@ -298,6 +338,9 @@ for (const route of routes) {
     if (path !== route.path && inbound.has(path)) inbound.set(path, inbound.get(path) + 1);
   }
 }
+
+// Manifest był potrzebny tylko tutaj; nie publikujemy go razem ze stroną.
+await rm(join(DIST, '.vite'), { recursive: true, force: true });
 
 await writeFile(join(DIST, 'sitemap.xml'), buildSitemap(), 'utf8');
 await writeFile(
