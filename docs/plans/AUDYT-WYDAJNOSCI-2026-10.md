@@ -14,7 +14,8 @@ dane od prawdziwych użytkowników są w Vercel Speed Insights.
 Element LCP na `/`: podtytuł hero ("Automatyzujemy żmudną pracę..."). Na mobile 6,06 s z 6,15 s to
 opóźnienie renderu (render delay), nie sieć ani serwer (TTFB 89 ms).
 
-PageSpeed Insights (Lighthouse, z kluczem API), produkcja przed paczką 1, mediana z 3 przebiegów na mobile:
+PageSpeed Insights (Lighthouse, z kluczem API), produkcja przed paczką 1. Uwaga: to pojedyncze przebiegi
+(patrz "Metodologia" na końcu), więc liczby mają rozrzut ok. +/- 0,3 s:
 
 | Strona | Wynik | FCP | LCP | TBT | Speed Index | Waga |
 |---|---|---|---|---|---|---|
@@ -69,7 +70,7 @@ Pomiar: `~/.secrets/workshift/PageSpeed_API.env` (klucz w nagłówku `X-goog-api
 | Usunięta tekstura `grainy-gradients.vercel.app/noise.svg` | `InteractiveServicesBento.jsx` | domena zwraca 402 (wyłączony deploy), tekstura i tak się nie wyświetlała; jedno żądanie do obcej domeny mniej |
 | Tailwind skanuje tylko `src/` i `index.html` | `src/index.css` | CSS 126,8 -> 123,5 KB; usunięte wyłącznie klasy nieużywane w `src` (sprawdzone diffem selektorów) |
 
-**Po wdrożeniu (#26, 15.10), PSI, mediana z 3 przebiegów mobile:**
+**Po wdrożeniu (#26, 15.10), PSI, pojedynczy przebieg na stronę (patrz "Metodologia"):**
 
 | Strona | Wynik | LCP | CLS | Waga | Przed (wynik / LCP / waga) |
 |---|---|---|---|---|---|
@@ -98,7 +99,7 @@ ma zwrócić `max-age=31536000, immutable`; pomiar LCP mobile ponownie (ten sam 
 
 JS + CSS ścieżki krytycznej strony głównej: 274 -> 170 KB gzip.
 
-**PSI po paczce 2 (mediana z 3 przebiegów mobile, desktop `/` z 2):**
+**PSI po paczce 2 (pojedynczy przebieg na stronę, patrz "Metodologia"; rzetelne mediany niżej):**
 
 | Strona | Wynik | FCP | LCP | TBT | Waga | Przed audytem (wynik / LCP) |
 |---|---|---|---|---|---|---|
@@ -107,7 +108,7 @@ JS + CSS ścieżki krytycznej strony głównej: 274 -> 170 KB gzip.
 | `/uslugi/automatyzacja` mobile | 88 | 2,15 s | 3,45 s | 84 ms | 484 KB | 76 / 4,3 s |
 | `/uslugi/automatyzacja` desktop | 99 | 0,6 s | 0,8 s | 4 ms | 486 KB | 98 / 0,85 s |
 
-## Paczka 3: LCP stron usług (PR po #29)
+## Paczka 3: LCP stron usług (#30)
 
 Diagnoza (PSI): element LCP na `/uslugi/*` to opis usługi (`p.text-lg` w `ExpandedServiceView`), opóźnienie
 renderu 1,28 s. Dwie przyczyny:
@@ -129,7 +130,38 @@ Zmiany:
 
 Pomiar lokalny (headless Brave, Slow 4G 150 ms / 1,6 Mb/s, CPU x4, 3 przebiegi, `vite preview` bez CDN
 i brotli przeciw produkcji): LCP `/uslugi/automatyzacja` 2,35 s przeciw 3,19 s na produkcji w tym samym
-przebiegu; luka FCP -> LCP ok. 0,7 s zamiast ok. 1,3 s. PSI po wdrożeniu: do dopisania.
+przebiegu; luka FCP -> LCP ok. 0,7 s zamiast ok. 1,3 s. Wynik PSI po wdrożeniu (#30): tabela niżej.
+
+## Stan po paczkach 1-3 (15.10, PSI, mediana z 3 przebiegów bez pamięci podręcznej PSI)
+
+| Strona | Mobile: wynik | Mobile: FCP | Mobile: LCP | Desktop: wynik | Desktop: LCP | Waga |
+|---|---|---|---|---|---|---|
+| `/` | 88 | 2,73 s | 3,15 s | 97 | 0,69 s (TBT 122 ms) | 569 KB |
+| `/uslugi/automatyzacja` | 90 | 2,70 s | 3,08 s | 99 | 0,70 s | 404 KB |
+| `/uslugi/aplikacja` | 90 | 2,70 s | 3,00 s | 100 | 0,56 s | 402 KB |
+| `/uslugi/szkolenia` | 91 | 2,70 s | 2,88 s | 100 | 0,57 s | 393 KB |
+| `/uslugi/agenty` | 91 | 2,70 s | 2,93 s | 100 | 0,57 s | 393 KB |
+| `/uslugi/kreacje` | 90 | 2,63 s | 2,94 s | 100 | 0,56 s | 392 KB |
+
+Desktop: po jednym przebiegu na usługę, 3 na stronę główną. Przed audytem (pojedyncze przebiegi):
+`/` mobile 74 / LCP 5,2 s, `/` desktop 58 / TBT 11,2 s, usługa mobile 76 / LCP 4,3 s.
+
+Na mobile FCP stoi na ok. 2,7 s na każdej stronie: tyle trwa pobranie i wykonanie wspólnego JS
+(React + framer-motion + index), zanim React pokaże cokolwiek, bo statyczny shell jest ukryty.
+LCP przychodzi 0,2-0,45 s później. Dalszy zysk to skrócenie tej ścieżki albo pokazanie treści przed JS
+(punkty 1 i 3 niżej).
+
+### Metodologia
+
+- Pomiar: PSI API z kluczem (`~/.secrets/workshift/PageSpeed_API.env`, nagłówek `X-goog-api-key`), profil
+  Lighthouse mobile (Slow 4G, CPU x4) i desktop. PSI liczy na serwerach Google, więc obciążenie lokalnego
+  komputera nie ma wpływu.
+- **PSI zwraca wynik z pamięci podręcznej dla tego samego adresu w krótkim odstępie czasu.** Serie
+  "3 przebiegów" z tego samego adresu dawały identyczne liczby, więc w tabelach z paczek 1 i 2 każda
+  wartość to w praktyce jeden przebieg. Od tabeli wyżej każdy przebieg ma unikalny parametr w adresie
+  (`?psi=<tag>-<losowa>`), a URL jest kodowany (`curl -G --data-urlencode`).
+- Rozrzut między przebiegami: LCP ok. +/- 0,15 s, między seriami w różnych porach ok. +/- 0,3 s.
+  Pojedynczy szczęśliwy przebieg dał wcześniej `/` mobile 93 / LCP 2,55 s; mediana to 88 / 3,15 s.
 
 ## Co zostało
 
@@ -138,4 +170,5 @@ przebiegu; luka FCP -> LCP ok. 0,7 s zamiast ok. 1,3 s. PSI po wdrożeniu: do do
 3. **Hero w HTML:** prawdziwy markup hero z `build-seo-html.mjs` zamiast chowania shella (FCP bez czekania na JS).
 4. **Montaż sekcji strony głównej przy zbliżeniu do ekranu** (IntersectionObserver z `rootMargin`).
 
-Cel osiągnięty na `/` (LCP mobile 2,55 s, praktycznie próg 2,5 s); na `/uslugi/*` po paczce 3.
+Cel (LCP mobile < 2,5 s) jeszcze nie osiągnięty: mediany 2,9-3,2 s na `/` i usługach. Największa
+dźwignia to punkt 3 (treść w HTML przed JS) i punkt 1 (mniej JS na wspólnej ścieżce).
