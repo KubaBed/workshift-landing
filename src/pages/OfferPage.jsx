@@ -128,6 +128,7 @@ async function redeemLinkToken(slug) {
             credentials: 'include',
             body: JSON.stringify({ slug, token }),
         });
+        if (res.status === 410) return 'expired';
         return res.ok ? 'ok' : 'failed';
     } catch {
         return 'failed';
@@ -148,7 +149,12 @@ export default function OfferPage() {
         }
         if (!tokenChecked.current) {
             tokenChecked.current = true;
-            if ((await redeemLinkToken(slug)) === 'failed') {
+            const linkResult = await redeemLinkToken(slug);
+            if (linkResult === 'expired') {
+                setState({ status: 'expired', offer: null });
+                return;
+            }
+            if (linkResult === 'failed') {
                 setGateError('Link nie zadziałał. Wpisz hasło z maila albo napisz na jakub@workshift.pl.');
             }
         }
