@@ -255,10 +255,14 @@ function App() {
             <Route path="/polityka-prywatnosci" element={<PrivacyPolicyPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
-        </Suspense>
 
-        <Suspense fallback={null}>
-          <Footer />
+          {/* Stopka w granicy tras: nie pokaże się, zanim strona nie ma treści. Osobna granica
+              obok tras dawała wyścig chunków - gdy stopka doszła przed leniwą stroną, malowała się
+              pod nagłówkiem i zjeżdżała w dół (CLS 0,92 w PSI na /uslugi/automatyzacja, 15.10).
+              Własna wewnętrzna granica: na stronie głównej (eager) nie wstrzymuje hero. */}
+          <Suspense fallback={null}>
+            <Footer />
+          </Suspense>
         </Suspense>
 
         <FloatingWhatsApp />
