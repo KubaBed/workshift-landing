@@ -36,7 +36,7 @@ dist-ssr
 # Nowy plan kampanii, handoff, notatka sprzedazowa -> docs/internal/<podkatalog>/, nie root.
 docs/internal/
 # Oferty klientow: zrodla (analizy, drafty maili, generatory) i wygenerowane PDF-y
-offers/
+/offers/
 # Wizytowki i materialy do druku (binaria + zdjecie prywatne)
 assets/print/
 # Notatki projektowe z nazwami klientow i cenami; kontekst agenta z pipeline'em

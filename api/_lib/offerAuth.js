@@ -17,6 +17,7 @@ import { signToken, verifyToken } from './doi.js';
 
 const COOKIE_PREFIX = 'offer_token_';
 const COOKIE_MAX_AGE_DAYS = 7;
+export const COOKIE_MAX_AGE_SECONDS = COOKIE_MAX_AGE_DAYS * 24 * 60 * 60;
 
 export function cookieName(slug) {
     return `${COOKIE_PREFIX}${slug.toLowerCase().replace(/[^a-z0-9_-]/g, '')}`;
@@ -78,10 +79,11 @@ export function passwordsMatch(provided, expected) {
     return crypto.timingSafeEqual(padA, padB) && a.length === b.length;
 }
 
-export function mintOfferToken(slug) {
+// `extra` dla ofert z Supabase: `ep` (access_epoch) i krótsze `exp`, gdy oferta wygasa wcześniej.
+export function mintOfferToken(slug, extra = {}) {
     const secret = getJwtSecret();
-    const exp = Math.floor(Date.now() / 1000) + COOKIE_MAX_AGE_DAYS * 24 * 60 * 60;
-    return signToken({ slug, exp }, secret);
+    const exp = Math.floor(Date.now() / 1000) + COOKIE_MAX_AGE_SECONDS;
+    return signToken({ slug, exp, ...extra }, secret);
 }
 
 export function verifyOfferToken(token, expectedSlug) {
@@ -96,12 +98,12 @@ export function verifyOfferToken(token, expectedSlug) {
     }
 }
 
-export function buildCookieHeader(slug, token, isProduction) {
+export function buildCookieHeader(slug, token, isProduction, maxAgeSeconds = COOKIE_MAX_AGE_SECONDS) {
     const name = cookieName(slug);
     const parts = [
         `${name}=${token}`,
         'Path=/',
-        `Max-Age=${COOKIE_MAX_AGE_DAYS * 24 * 60 * 60}`,
+        `Max-Age=${maxAgeSeconds}`,
         'HttpOnly',
         'SameSite=Lax',
     ];
