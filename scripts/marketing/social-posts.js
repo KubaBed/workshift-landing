@@ -93,6 +93,14 @@ const POSTS = [
       fb: 'Mój agent AI spalał 28 686 tokenów, zanim padło pierwsze pytanie. W każdej sesji.\n\nNa webinarze AI Now Polska pokazywałem, jak zbudowałem mu „drugi mózg” i zbiłem to do około 400. Nagranie jest już dostępne, a na blogu spisałem najważniejsze tezy:\n\n- kontekst to RAM, baza wiedzy to dysk: agent sięga tylko po to, czego naprawdę potrzebuje\n- zmierzyłem to: 73% mniej tokenów w oknie i 53% niższy rachunek\n- ile naprawdę dają popularne narzędzia do oszczędzania tokenów (dużo mniej, niż obiecują w dokumentacji)\n- gdzie się wyłożyłem, łącznie z pamięcią, która milczała przez 3,5 miesiąca\n\nNagranie i cały wpis 👇',
       ig: '28 686 tokenów, zanim agent AI zrobi cokolwiek. W każdej sesji. 😬\n\nNa webinarze AI Now Polska pokazałem, jak „drugi mózg” zbija to do ~400. Agent sięga do bazy wiedzy tylko po to, czego naprawdę potrzebuje.\n\n📉 Zmierzyłem: 73% mniej tokenów w oknie i 53% niższy rachunek.\n🧪 Ile naprawdę dają narzędzia do oszczędzania tokenów (dużo mniej, niż obiecują).\n🙈 Gdzie się wyłożyłem.\n\nNagranie jest już na YouTube, a najważniejsze tezy spisałem na blogu.\n\n🔗 Nagranie i cały wpis - link w komentarzu 👇\n.\n#AI #agentAI #sztucznainteligencja #automatyzacja #bazawiedzy #ClaudeCode #tokeny #webinar #MŚP' },
 
+    // ── Wpis z 15.10: DigUp, szukanie plików po zawartości ──────────────────────
+    // Link do repo (nie do bloga), zgodnie z zaakceptowanym copy. FB: --fb (link w treści),
+    // IG: --ig --force digup-szukanie-plikow-po-zawartosci (link w pierwszym komentarzu).
+    { slug: 'digup-szukanie-plikow-po-zawartosci', img: 'WS-post-11-digup-1080x1080.png', story: 'WS-story-11-digup-1080x1920.png', publishAt: '2026-10-15T16:00:00+02:00',
+      link: 'https://github.com/ARahim3/DigUp', linkLabel: '🔗',
+      fb: 'Pamiętasz, co było w pliku, ale nie pamiętasz, jak się nazywał? 🕵️‍♂️\n\nDigUp to darmowa apka open source, która szuka po zawartości plików. Wpisujesz, co było na zdjęciu albo o czym mówili w nagraniu, a ona otwiera plik we właściwym miejscu, np. film od 42. sekundy.\n\nDziała lokalnie, więc firmowe pliki nie wychodzą z komputera. Pod spodem pracuje EmbeddingGemma 2.',
+      ig: 'Pamiętasz, co było w pliku, ale nie pamiętasz nazwy? 🕵️‍♂️\n\nDigUp szuka po zawartości: opisujesz zdjęcie albo fragment nagrania, a apka otwiera plik we właściwym miejscu. Działa lokalnie, pliki nie wychodzą z komputera.\n\nDarmowe i open source.\n\n🔗 Link do repo w komentarzu 👇\n.\n#AI #opensource #produktywność #narzędziaAI #MŚP' },
+
 ];
 
 async function graph(pathname, { method = 'GET', params, token = TOKEN } = {}) {
