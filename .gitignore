@@ -51,6 +51,9 @@ src/data/offers/*.js
 !src/data/offers/*.example.js
 api/_data/offers/*.js
 api/_data/offers/_views.json
+# Archiwalne oferty klientów. Do 15.10 łapała je reguła `offers/`; po zmianie na `/offers/` (PR #25)
+# podkatalog przestał być ignorowany, a repo jest publiczne.
+api/_data/offers/_archive/
 !api/_data/offers/*.example.js
 public/offers/
 
