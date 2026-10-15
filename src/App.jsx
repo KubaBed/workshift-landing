@@ -5,14 +5,16 @@ import { Routes, Route, useSearchParams, useNavigate, useLocation, matchPath } f
 // co przy module-level fetch-fail wywala cały graf modułu Apps i blokuje React render.
 import { Header } from './components/Header';
 import { HeroTypographic } from './components/HeroTypographic';
-import { AnimatedQuoteSection } from './components/AnimatedQuoteSection';
-import { InteractiveServicesBento } from './components/InteractiveServicesBento';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { ConsentBanner } from './components/ConsentBanner';
 import { bootstrapConsent } from './lib/consent';
 import { STATIC_ROUTE_META, applyMeta, setCanonical } from './lib/seo';
 
-// Below-the-fold: lazy-loaded for faster initial paint
+// Below-the-fold: lazy-loaded for faster initial paint.
+// Cytat (120vh) i bento usług też: oba są ponad ekran pod hero, a ciągnęły gsap,
+// ScrollTrigger i services.js do JS potrzebnego do pierwszego malowania.
+const AnimatedQuoteSection = lazy(() => import('./components/AnimatedQuoteSection').then(m => ({ default: m.AnimatedQuoteSection })));
+const InteractiveServicesBento = lazy(() => import('./components/InteractiveServicesBento').then(m => ({ default: m.InteractiveServicesBento })));
 const KalkulatorCTASection = lazy(() => import('./components/KalkulatorCTASection').then(m => ({ default: m.KalkulatorCTASection })));
 const ProcessSection = lazy(() => import('./components/ProcessSection').then(m => ({ default: m.ProcessSection })));
 const IndustriesSection = lazy(() => import('./components/IndustriesSection').then(m => ({ default: m.IndustriesSection })));
@@ -42,16 +44,29 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 // + Disallow w robots.txt. Nigdzie nie podlinkowany.
 const ShowcasePage = lazy(() => import('./pages/ShowcasePage'));
 
+// Sekcje strony głównej są leniwe, więc cel kotwicy może pojawić się w DOM później
+// niż po 100 ms. Ponawiamy co 100 ms (do 5 s), aż element istnieje. Zwraca funkcję
+// przerywającą oczekiwanie.
+function scrollToIdWhenReady(id) {
+  let tries = 0;
+  const timer = setInterval(() => {
+    const el = document.getElementById(id);
+    if (el || ++tries > 50) {
+      clearInterval(timer);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, 100);
+  return () => clearInterval(timer);
+}
+
 // Redirect /uslugi (bare) to homepage services section
 function ServicesRedirect() {
   const navigate = useNavigate();
   useEffect(() => {
     navigate('/', { replace: true });
-    // Scroll to #uslugi after navigation completes
-    setTimeout(() => {
-      const el = document.getElementById('uslugi');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
+    // Bez cleanupu: ten komponent odmontowuje się zaraz po nawigacji, a przewijanie ma
+    // zadziałać już na stronie głównej (ponawianie samo kończy się po 5 s).
+    scrollToIdWhenReady('uslugi');
   }, [navigate]);
   return null;
 }
@@ -61,12 +76,7 @@ function ScrollToHash() {
   const location = useLocation();
   useEffect(() => {
     if (location.hash) {
-      // Small delay to let the page render
-      const timer = setTimeout(() => {
-        const el = document.getElementById(location.hash.slice(1));
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-      return () => clearTimeout(timer);
+      return scrollToIdWhenReady(location.hash.slice(1));
     } else if (location.pathname !== '/') {
       // Scroll to top on non-hash navigations to subpages
       window.scrollTo(0, 0);
@@ -123,7 +133,9 @@ function SectionPreview({ sectionKey }) {
   }
   return (
     <div className="bg-sage font-sans text-black antialiased selection:bg-lime selection:text-black">
-      <Component />
+      <Suspense fallback={null}>
+        <Component />
+      </Suspense>
     </div>
   );
 }
@@ -134,11 +146,12 @@ function HomePage() {
       <main>
         {/* Above-fold: eager-loaded */}
         <HeroTypographic />
-        <AnimatedQuoteSection />
-        <InteractiveServicesBento id="uslugi" />
 
-        {/* Below-fold: lazy-loaded for faster initial paint */}
+        {/* Below-fold: lazy-loaded for faster initial paint. Jedna granica, więc sekcje
+            pojawiają się razem i w stałej kolejności (#uslugi ma id w samym komponencie). */}
         <Suspense fallback={null}>
+          <AnimatedQuoteSection />
+          <InteractiveServicesBento />
           <KalkulatorCTASection />
           <ProcessSection />
           <IndustriesSection />

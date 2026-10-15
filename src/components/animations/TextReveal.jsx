@@ -1,29 +1,31 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
+/**
+ * Nagłówek wjeżdżający słowo po słowie.
+ *
+ * Tekst jest widoczny od pierwszego malowania: animujemy tylko przesunięcie słów,
+ * bez opacity 0 i rozmycia. Wcześniej nagłówek hero startował niewidoczny i czekał
+ * na IntersectionObserver, co przesuwało LCP strony głównej o ok. 1,5 s.
+ * Przy prefers-reduced-motion słowa stoją od razu na miejscu.
+ */
 export function TextReveal({ text, className = "", delay = 0, wordMode = false }) {
+  const reduce = useReducedMotion();
   const words = text.split(" ");
 
   const container = {
-    hidden: { opacity: 0 },
-    visible: () => ({
-      opacity: 1,
+    hidden: {},
+    visible: {
       transition: {
         staggerChildren: wordMode ? 0.05 : 0.02,
         delayChildren: delay * 0.1,
       },
-    }),
+    },
   };
 
   const child = {
-    hidden: {
-      opacity: 0,
-      y: 20,
-      filter: "blur(5px)",
-    },
+    hidden: { y: "0.35em" },
     visible: {
-      opacity: 1,
       y: 0,
-      filter: "blur(0px)",
       transition: {
         type: "spring",
         damping: 15,
@@ -33,14 +35,15 @@ export function TextReveal({ text, className = "", delay = 0, wordMode = false }
     },
   };
 
+  const initial = reduce ? false : "hidden";
+
   if (wordMode) {
     return (
       <motion.div
         className={`flex flex-wrap ${className}`}
         variants={container}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-10%" }}
+        initial={initial}
+        animate="visible"
       >
         {words.map((word, index) => (
           <motion.span
@@ -59,9 +62,8 @@ export function TextReveal({ text, className = "", delay = 0, wordMode = false }
   return (
     <motion.div
       variants={container}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-10%" }}
+      initial={initial}
+      animate="visible"
       className={className}
     >
       <motion.span variants={child} className="inline-block relative">
