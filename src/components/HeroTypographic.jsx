@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { TextReveal } from './animations/TextReveal';
 import { FadeUp } from './animations/FadeUp';
 import { Floating } from './animations/Floating';
@@ -8,6 +8,22 @@ import logo2 from '../assets/partners/logo2.webp';
 import logo3 from '../assets/partners/logo3.webp';
 import logo4 from '../assets/partners/logo4.webp';
 import logo5 from '../assets/partners/logo5.webp';
+
+// Wejście tekstu hero bez znikania: od pierwszego malowania tekst jest widoczny i tylko
+// lekko podjeżdża. FadeUp startuje od opacity 0 i czeka na IntersectionObserver, a podtytuł
+// hero to element LCP na telefonie (PSI 15.10: LCP 4,2 s przy FCP 3,4 s).
+function Rise({ delay = 0, children }) {
+  const reduce = useReducedMotion();
+  return (
+    <motion.div
+      initial={reduce ? false : { y: 16 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.8, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 // Sfera ciągnie three.js (ok. 0,5 MB). Osobny chunk: na telefonie nie pobiera się wcale,
 // na desktopie dopiero po zdarzeniu load, żeby nie konkurowała z tekstem hero o łącze i procesor.
@@ -106,11 +122,11 @@ export function HeroTypographic() {
         }}
       >
         {/* Eyebrow - Workshift section label pattern */}
-        <FadeUp delay={0.1}>
+        <Rise delay={0.1}>
           <span className="font-mono text-xs uppercase tracking-wider text-black mb-8 inline-block">
             Wdrożenia AI dla MŚP
           </span>
-        </FadeUp>
+        </Rise>
 
         {/* Headline - Workshift style: normal weight, tight tracking */}
         <div style={{ marginBottom: 20 }}>
@@ -138,7 +154,7 @@ export function HeroTypographic() {
         />
 
         {/* Subheading */}
-        <FadeUp delay={0.6}>
+        <Rise delay={0.2}>
           <p
             className="text-base md:text-lg"
             style={{
@@ -152,10 +168,10 @@ export function HeroTypographic() {
             Automatyzujemy żmudną pracę w polskich firmach, od faktur po
             raporty. Zaczynamy tam, gdzie Twój zespół traci najwięcej godzin.
           </p>
-        </FadeUp>
+        </Rise>
 
         {/* CTA - Workshift pill button pattern */}
-        <FadeUp delay={0.7}>
+        <Rise delay={0.3}>
           <div className="flex flex-col gap-6 mb-10">
             <div className="flex items-center gap-6">
               <a
@@ -185,7 +201,7 @@ export function HeroTypographic() {
               </p>
             </div>
           </div>
-        </FadeUp>
+        </Rise>
 
         {/* Trusted By Marquee */}
         <FadeUp delay={0.7}>
