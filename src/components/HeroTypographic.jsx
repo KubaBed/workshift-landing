@@ -3,11 +3,11 @@ import { motion } from 'framer-motion';
 import { TextReveal } from './animations/TextReveal';
 import { FadeUp } from './animations/FadeUp';
 import { Floating } from './animations/Floating';
-import logo1 from '../assets/partners/logo1.png';
-import logo2 from '../assets/partners/logo2.png';
-import logo3 from '../assets/partners/logo3.png';
-import logo4 from '../assets/partners/logo4.png';
-import logo5 from '../assets/partners/logo5.png';
+import logo1 from '../assets/partners/logo1.webp';
+import logo2 from '../assets/partners/logo2.webp';
+import logo3 from '../assets/partners/logo3.webp';
+import logo4 from '../assets/partners/logo4.webp';
+import logo5 from '../assets/partners/logo5.webp';
 
 // Sfera ciągnie three.js (ok. 0,5 MB). Osobny chunk: na telefonie nie pobiera się wcale,
 // na desktopie dopiero po zdarzeniu load, żeby nie konkurowała z tekstem hero o łącze i procesor.

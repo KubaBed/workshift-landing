@@ -203,8 +203,18 @@ export function trackPixel(event, params = {}, { custom = false, eventId } = {})
 export function bootstrapConsent() {
     const c = getConsent();
     if (!c) return;
-    if (c.analytics) loadGA4();
-    if (c.recordings) loadClarity();
-    if (c.analytics || c.recordings) loadPostHog({ recordings: c.recordings });
-    if (c.marketing) loadMetaPixel();
+    // Skrypty z poprzedniej zgody (PostHog to ok. 64 KB gzip) nie konkurują z pierwszym
+    // malowaniem strony o łącze i procesor: startują po zdarzeniu load, w wolnej chwili.
+    afterLoad(() => {
+        if (c.analytics) loadGA4();
+        if (c.recordings) loadClarity();
+        if (c.analytics || c.recordings) loadPostHog({ recordings: c.recordings });
+        if (c.marketing) loadMetaPixel();
+    });
+}
+
+function afterLoad(fn) {
+    const run = () => (window.requestIdleCallback ? window.requestIdleCallback(fn, { timeout: 1000 }) : setTimeout(fn, 0));
+    if (document.readyState === 'complete') run();
+    else window.addEventListener('load', run, { once: true });
 }

@@ -13,13 +13,13 @@ import {
 import { track, EVENTS } from '../lib/analytics';
 import { fireInitiateCheckout } from '../lib/metaCapi';
 import { AudytQuiz } from '../components/AudytQuiz';
-import logo1 from '../assets/partners/logo1.png';
-import logo2 from '../assets/partners/logo2.png';
-import logo3 from '../assets/partners/logo3.png';
-import logo4 from '../assets/partners/logo4.png';
-import logo5 from '../assets/partners/logo5.png';
+import logo1 from '../assets/partners/logo1.webp';
+import logo2 from '../assets/partners/logo2.webp';
+import logo3 from '../assets/partners/logo3.webp';
+import logo4 from '../assets/partners/logo4.webp';
+import logo5 from '../assets/partners/logo5.webp';
 
-const jakubPhoto = '/Jakub-Bednarz.webp';
+const jakubPhoto = '/Jakub-Bednarz-900.webp';
 const PARTNER_LOGOS = [logo1, logo2, logo3, logo4, logo5];
 const PHONE_HUMAN = '+48 796 186 067';
 const PHONE_TEL = 'tel:+48796186067';
