@@ -96,7 +96,7 @@ const POSTS = [
     // ── Wpis z 15.10: DigUp, szukanie plików po zawartości ──────────────────────
     // Link do repo (nie do bloga), zgodnie z zaakceptowanym copy. FB: --fb (link w treści),
     // IG: --ig --force digup-szukanie-plikow-po-zawartosci (link w pierwszym komentarzu).
-    { slug: 'digup-szukanie-plikow-po-zawartosci', img: 'WS-post-11-digup-1080x1080.png', story: 'WS-story-11-digup-1080x1920.png', publishAt: '2026-10-15T16:00:00+02:00',
+    { slug: 'digup-szukanie-plikow-po-zawartosci', img: 'WS-post-11-digup-1080x1080.png', story: 'WS-story-11-digup-1080x1920.png', publishAt: '2026-10-15T15:35:00+02:00',
       link: 'https://github.com/ARahim3/DigUp', linkLabel: '🔗',
       fb: 'Pamiętasz, co było w pliku, ale nie pamiętasz, jak się nazywał? 🕵️‍♂️\n\nDigUp to darmowa apka open source, która szuka po zawartości plików. Wpisujesz, co było na zdjęciu albo o czym mówili w nagraniu, a ona otwiera plik we właściwym miejscu, np. film od 42. sekundy.\n\nDziała lokalnie, więc firmowe pliki nie wychodzą z komputera. Pod spodem pracuje EmbeddingGemma 2.',
       ig: 'Pamiętasz, co było w pliku, ale nie pamiętasz nazwy? 🕵️‍♂️\n\nDigUp szuka po zawartości: opisujesz zdjęcie albo fragment nagrania, a apka otwiera plik we właściwym miejscu. Działa lokalnie, pliki nie wychodzą z komputera.\n\nDarmowe i open source.\n\n🔗 Link do repo w komentarzu 👇\n.\n#AI #opensource #produktywność #narzędziaAI #MŚP' },
