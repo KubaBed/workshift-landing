@@ -4,7 +4,9 @@ import GradientText from './GradientText';
 // Foto serwowane z public/ jako WebP (1 plik vs poprzednio 2 duplikaty
 // - `src/Jakub-Bednarz.png` 745 KB + `public/Jakub-Bednarz.png` 745 KB
 // zostały skonsolidowane do `/Jakub-Bednarz.webp` 246 KB).
-const jakubPhoto = '/Jakub-Bednarz.webp';
+// Na stronie wersja 900 px (46 KB): zdjęcie ma maks. ok. 420 px szerokości, 900 px wystarcza na ekran 2x.
+// Pełny plik zostaje pod starym adresem, bo wskazuje go JSON-LD w index.html.
+const jakubPhoto = '/Jakub-Bednarz-900.webp';
 
 export function AboutUsSection() {
     return (

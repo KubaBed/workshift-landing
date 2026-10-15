@@ -24,11 +24,16 @@ export default defineConfig({
     chunkSizeWarningLimit: 600,
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-three': ['three'],
-          'vendor-motion': ['framer-motion'],
-          'vendor-gsap': ['gsap'],
-          'vendor-react': ['react', 'react-dom'],
+        // Forma funkcji, nie obiektu: obiekt łapie tylko wejścia paczek, więc rdzeń Reacta lądował
+        // w vendor-motion, react-dom i scheduler w głównym index (nowy hash przy każdym deployu),
+        // a gsap/ScrollTrigger w index zamiast w vendor-gsap.
+        manualChunks(id) {
+          if (!id.includes('/node_modules/')) return undefined;
+          if (/\/node_modules\/three\//.test(id)) return 'vendor-three';
+          if (/\/node_modules\/(framer-motion|motion|motion-dom|motion-utils|tslib)\//.test(id)) return 'vendor-motion';
+          if (/\/node_modules\/gsap\//.test(id)) return 'vendor-gsap';
+          if (/\/node_modules\/(react|react-dom|scheduler)\//.test(id)) return 'vendor-react';
+          return undefined;
         },
       },
     },

@@ -4,6 +4,7 @@ import { motion as Motion, useInView, animate, useReducedMotion } from 'framer-m
 import { ScrollReveal } from './ScrollReveal';
 import { AnimatedProcessIcon } from './AnimatedProcessIcon';
 import { FadeUp } from '../animations/FadeUp';
+import { LazyLineFigure } from './LazyLineFigure';
 
 /**
  * Sekcja artykułowa strony usługi (`service.seoSections`).
@@ -11,7 +12,7 @@ import { FadeUp } from '../animations/FadeUp';
  * Treść siedzi w src/data/services.js, bo to samo źródło konsumuje statyczny
  * fallback w scripts/seo-routes.mjs - crawler bez JS i użytkownik z JS mają
  * widzieć tę samą treść. Tu wyłącznie prezentacja. Pola czysto wizualne
- * (eyebrow, reveal, highlights, icon, stats) flattener ignoruje.
+ * (eyebrow, reveal, highlights, icon, stats, figure) flattener ignoruje.
  *
  * Język wizualny = bento (ExtendedInnerCard): karty bg-sage rounded-[10px]
  * border-black/5, eyebrow mono uppercase z kropką lime, jeden akcent lime
@@ -130,6 +131,23 @@ function StatsPanel({ stats }) {
 }
 
 function SectionBody({ section }) {
+    const body = <SectionText section={section} />;
+    if (!section.figure) return body;
+
+    // Figura hairline obok tekstu (md+) albo pod nim (telefon), w karcie sage jak panel liczb.
+    // `play`: figura sama pokazuje ruch, bo na telefonie nie ma kursora, a w spoczynku
+    // `settle` i `format` pokazują dopiero stan "przed".
+    return (
+        <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_260px] md:items-center">
+            <div>{body}</div>
+            <div className="w-full max-w-[320px] mx-auto md:max-w-none rounded-[10px] border border-black/5 bg-sage p-4">
+                <LazyLineFigure figure={section.figure.name} label={section.figure.label} tone="sage" play />
+            </div>
+        </div>
+    );
+}
+
+function SectionText({ section }) {
     const [lead, ...rest] = section.paragraphs ?? [];
 
     return (

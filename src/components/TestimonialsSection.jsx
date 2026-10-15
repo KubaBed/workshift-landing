@@ -81,6 +81,8 @@ function Panel({ testimonial, isActive, onClick }) {
                             <img
                                 src={testimonial.avatar}
                                 alt={testimonial.name}
+                                loading="lazy"
+                                decoding="async"
                                 className="w-full h-full object-cover object-top"
                                 style={{ filter: 'brightness(0.92)' }}
                             />
@@ -229,6 +231,8 @@ function MobileCard({ testimonial }) {
                         <img
                             src={testimonial.avatar}
                             alt={testimonial.name}
+                            loading="lazy"
+                            decoding="async"
                             className="w-full h-full object-cover object-top"
                             style={{ filter: 'brightness(0.7)' }}
                         />

@@ -835,7 +835,7 @@ function ExtendedInnerCard({ card, index }) {
 
             {card.type === 'cta' && (
                 <div className="p-8 md:p-10 flex flex-col justify-center items-center h-full text-center 
-                          bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-black relative overflow-hidden group">
+                          bg-black relative overflow-hidden group">
                     <div className="absolute inset-0 opacity-80" style={{ background: 'radial-gradient(120% 120% at 50% 100%, rgba(156, 224, 105, 0.3) 0%, transparent 60%)' }} />
                     <div className="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-6 relative z-10 backdrop-blur-sm shadow-xl">
                         <ArrowRight size={24} className="text-lime mix-blend-screen" />
