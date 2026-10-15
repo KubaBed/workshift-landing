@@ -6,11 +6,12 @@ import { Button } from '../ui/Button';
 
 // Auth gate dla strony oferty.
 // POST /api/offers/verify { slug, password } - backend ustawia httpOnly cookie.
+// Wejście z linku ?k=<token> obsługuje OfferPage; tu trafia tylko, gdy token nie zadziałał.
 // Po sukcesie odpalamy onUnlock() - OfferPage przeładuje dane z API.
 
-export function OfferGate({ slug, clientName, onUnlock }) {
+export function OfferGate({ slug, clientName, onUnlock, initialError = '' }) {
     const [value, setValue] = useState('');
-    const [error, setError] = useState('');
+    const [error, setError] = useState(initialError);
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
@@ -31,6 +32,10 @@ export function OfferGate({ slug, clientName, onUnlock }) {
             }
             if (res.status === 401) {
                 setError('Nieprawidłowe hasło. Sprawdź mail lub napisz na jakub@workshift.pl.');
+            } else if (res.status === 429) {
+                setError('Za dużo prób z błędnym hasłem. Odczekaj 15 minut albo napisz na jakub@workshift.pl.');
+            } else if (res.status === 410) {
+                setError('Ta oferta wygasła. Napisz na jakub@workshift.pl, jeśli chcesz do niej wrócić.');
             } else if (res.status === 500) {
                 setError('Coś nie zagrało po naszej stronie. Spróbuj ponownie za chwilę.');
             } else {

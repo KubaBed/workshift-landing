@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { MotionConfig } from 'framer-motion';
 import { OfferGate } from '../components/offer/OfferGate';
@@ -112,15 +112,51 @@ const CONTACT = {
     email: 'jakub@workshift.pl',
 };
 
+// Link /oferta/<slug>?k=<token> wpuszcza bez hasła. Token wymieniamy na cookie i od razu
+// usuwamy z paska adresu, żeby nie został w historii, zakładkach ani nagłówku Referer.
+async function redeemLinkToken(slug) {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('k');
+    if (!token) return 'none';
+    params.delete('k');
+    const rest = params.toString();
+    window.history.replaceState(null, '', `${window.location.pathname}${rest ? `?${rest}` : ''}${window.location.hash}`);
+    try {
+        const res = await fetch('/api/offers/verify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ slug, token }),
+        });
+        if (res.status === 410) return 'expired';
+        return res.ok ? 'ok' : 'failed';
+    } catch {
+        return 'failed';
+    }
+}
+
 export default function OfferPage() {
     const { slug } = useParams();
     const [state, setState] = useState({ status: 'loading', offer: null });
     const [views, setViews] = useState(null);
+    const [gateError, setGateError] = useState('');
+    const tokenChecked = useRef(false);
 
     const loadOffer = useCallback(async () => {
         if (!slug) {
             setState({ status: 'notfound', offer: null });
             return;
+        }
+        if (!tokenChecked.current) {
+            tokenChecked.current = true;
+            const linkResult = await redeemLinkToken(slug);
+            if (linkResult === 'expired') {
+                setState({ status: 'expired', offer: null });
+                return;
+            }
+            if (linkResult === 'failed') {
+                setGateError('Link nie zadziałał. Wpisz hasło z maila albo napisz na jakub@workshift.pl.');
+            }
         }
         try {
             const res = await fetch(`/api/offers/get?slug=${encodeURIComponent(slug)}`, {
@@ -128,6 +164,10 @@ export default function OfferPage() {
             });
             if (res.status === 401) {
                 setState({ status: 'locked', offer: null });
+                return;
+            }
+            if (res.status === 410) {
+                setState({ status: 'expired', offer: null });
                 return;
             }
             if (res.status === 404) {
@@ -147,22 +187,19 @@ export default function OfferPage() {
 
     useEffect(() => { loadOffer(); }, [loadOffer]);
 
-    // Log view + fetch view stats po odblokowaniu.
+    // Log otwarcia po odblokowaniu; odpowiedź niesie licznik do banera.
     useEffect(() => {
         if (state.status !== 'ready') return;
         let mounted = true;
         const track = async () => {
             try {
-                await fetch('/api/offers/track-view', {
+                const r = await fetch('/api/offers/track-view', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
                     body: JSON.stringify({ slug }),
                 });
-                const r = await fetch(`/api/offers/views?slug=${encodeURIComponent(slug)}`, {
-                    credentials: 'include',
-                });
-                if (r.ok && mounted) setViews(await r.json());
+                if (r.status === 200 && mounted) setViews(await r.json());
             } catch { /* ignore - tracking nie blokuje strony */ }
         };
         track();
@@ -209,6 +246,17 @@ export default function OfferPage() {
         );
     }
 
+    if (state.status === 'expired') {
+        return (
+            <main className="min-h-screen bg-sage flex items-center justify-center px-6">
+                <div className="max-w-md text-center">
+                    <p className="font-mono text-xs uppercase tracking-[0.22em] text-muted-dark mb-4">Oferta wygasła</p>
+                    <p className="text-lg text-black">Termin ważności tej oferty minął. Jeśli chcesz do niej wrócić, napisz na <a className="underline" href="mailto:jakub@workshift.pl">jakub@workshift.pl</a>, a przygotuję aktualną wersję.</p>
+                </div>
+            </main>
+        );
+    }
+
     if (state.status === 'locked') {
         return (
             <MotionConfig reducedMotion="user">
@@ -216,6 +264,7 @@ export default function OfferPage() {
                     slug={slug}
                     clientName="Oferta indywidualna"
                     onUnlock={loadOffer}
+                    initialError={gateError}
                 />
             </MotionConfig>
         );
@@ -227,7 +276,11 @@ export default function OfferPage() {
     return (
         <MotionConfig reducedMotion="user">
             <main className="bg-sage min-h-screen relative">
-                <StatusBanner views={views} validUntil={offer.meta.validUntil} />
+                <StatusBanner
+                    views={views}
+                    validUntil={offer.meta.validUntil}
+                    pdfHref={offer.hasPdf ? `/api/offers/pdf?slug=${encodeURIComponent(slug)}` : null}
+                />
                 <HeroSection meta={offer.meta} client={offer.client} video={offer.video} />
                 {offer.board ? (
                     <BoardOfferBody offer={offer} />

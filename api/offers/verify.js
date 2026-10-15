@@ -1,72 +1,54 @@
 // POST /api/offers/verify
-// Body: { slug: string, password: string }
+// Body: { slug, password } albo { slug, token } (token z linku /oferta/<slug>?k=...)
 // Response:
-//   200 + Set-Cookie: offer_token_<slug>=<jwt> — auth OK
-//   401 — bad password / unknown slug
-//   400 — bad request
-//
-// Stała czasowa porównanie haseł + zero leakage info (nie odróżniamy
-// "nieznany slug" od "złe hasło", oba zwracają 401).
+//   200 + Set-Cookie: offer_token_<slug>=<hmac> - dostęp OK
+//   401 - złe hasło/token albo nieznany slug (nie odróżniamy, żeby nie zdradzać istnienia oferty)
+//   410 - oferta wygasła
+//   429 - za dużo błędnych haseł (rate limit w Supabase)
+//   400 - zły request
+// Reguły (źródła, hashe, rate limit, cookie) w api/_lib/offers/access.js.
 
 import {
-    getOfferPassword,
-    passwordsMatch,
-    mintOfferToken,
-    buildCookieHeader,
-} from '../_lib/offerAuth.js';
+    getOfferAccess,
+    isValidSlug,
+    isProduction,
+    parseBody,
+    readSlug,
+    sendError,
+    setPrivateHeaders,
+    visitorFrom,
+} from '../_lib/offers/index.js';
+import { buildCookieHeader } from '../_lib/offerAuth.js';
 
 export default async function handler(req, res) {
-    res.setHeader('X-Content-Type-Options', 'nosniff');
-    res.setHeader('Referrer-Policy', 'no-referrer');
-    res.setHeader('Cache-Control', 'no-store');
+    setPrivateHeaders(res);
 
     if (req.method !== 'POST') {
         res.setHeader('Allow', 'POST');
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    let body = req.body;
-    // Vite middleware sometimes daje raw string — parsujemy
-    if (typeof body === 'string') {
-        try { body = JSON.parse(body); } catch { body = null; }
-    }
-    if (!body || typeof body !== 'object') {
+    const body = parseBody(req);
+    const slug = readSlug(body?.slug);
+    const password = typeof body?.password === 'string' ? body.password : '';
+    const token = typeof body?.token === 'string' ? body.token : '';
+
+    if (!isValidSlug(slug) || (!password && !token) || password.length > 256 || token.length > 128) {
         return res.status(400).json({ error: 'Bad request' });
-    }
-
-    const slug = typeof body.slug === 'string' ? body.slug.toLowerCase() : '';
-    const password = typeof body.password === 'string' ? body.password : '';
-
-    if (!slug || !password || slug.length > 64 || password.length > 256) {
-        return res.status(400).json({ error: 'Bad request' });
-    }
-
-    // Slug whitelist — tylko alfanumeryczne + myślniki.
-    if (!/^[a-z0-9_-]+$/.test(slug)) {
-        return res.status(400).json({ error: 'Bad request' });
-    }
-
-    const expectedPassword = getOfferPassword(slug);
-    // Zawsze wykonaj porównanie żeby timing był stały (zero info leakage
-    // o tym czy slug istnieje).
-    const dummyPassword = '__no_password_set__';
-    const ok = expectedPassword
-        ? passwordsMatch(password, expectedPassword)
-        : (passwordsMatch(password, dummyPassword) && false);
-
-    if (!ok) {
-        // Mała opóźnienie żeby utrudnić brute force (poor man's rate limit).
-        await new Promise((r) => setTimeout(r, 250 + Math.random() * 150));
-        return res.status(401).json({ error: 'Nieprawidłowe hasło' });
     }
 
     try {
-        const token = mintOfferToken(slug);
-        const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1';
-        res.setHeader('Set-Cookie', buildCookieHeader(slug, token, isProduction));
+        const result = await getOfferAccess().unlock({
+            slug,
+            password: password || undefined,
+            token: password ? undefined : token,
+            visitor: visitorFrom(req),
+        });
+        if (result.error) return sendError(res, result.error);
+        res.setHeader('Set-Cookie', buildCookieHeader(slug, result.cookie.value, isProduction(), result.cookie.maxAge));
         return res.status(200).json({ ok: true });
     } catch (err) {
-        console.error('verify-offer: mint failed', err.message);
+        console.error('verify-offer: failed', err.message);
         return res.status(500).json({ error: 'Server misconfiguration' });
     }
 }

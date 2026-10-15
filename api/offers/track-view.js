@@ -1,79 +1,37 @@
 // POST /api/offers/track-view
 // Body: { slug }
 // Cookie required: offer_token_<slug>
+// Response: 200 { count, first, last } - licznik do banera na stronie oferty.
 //
-// Loguje otwarcie oferty do pliku JSON w api/_data/offers/_views.json
-// (gitignored). Status banner używa GET /api/offers/views?slug=... żeby
-// pokazać liczbę otwarć.
-//
-// Uwaga: ten storage to MVP file-based — dla produkcji powinno przejść
-// na Vercel KV lub Postgres. Ale do testu lokalnego wystarczy.
+// Oferty z Supabase: wpis `view` w offers.offer_event (log otwarć, docelowo widoczny w CRM).
+// Oferty z env: licznik w pliku api/_data/offers/_views.json, który działa tylko lokalnie
+// (na Vercelu FS jest read-only, wtedy { count: 0 }).
+// Zastępuje też dawny GET /api/offers/views (limit 12 funkcji na planie Hobby).
 
-import fs from 'node:fs/promises';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import {
-    cookieName,
-    parseCookies,
-    verifyOfferToken,
-} from '../_lib/offerAuth.js';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const VIEWS_FILE = path.join(__dirname, '..', '_data', 'offers', '_views.json');
-
-async function readViews() {
-    try {
-        const raw = await fs.readFile(VIEWS_FILE, 'utf-8');
-        return JSON.parse(raw);
-    } catch {
-        return {};
-    }
-}
-
-async function writeViews(views) {
-    await fs.mkdir(path.dirname(VIEWS_FILE), { recursive: true });
-    await fs.writeFile(VIEWS_FILE, JSON.stringify(views, null, 2), 'utf-8');
-}
+import { getOfferAccess, parseBody, readSlug, sendError, setPrivateHeaders, visitorFrom } from '../_lib/offers/index.js';
 
 export default async function handler(req, res) {
-    res.setHeader('Cache-Control', 'no-store, private');
-    res.setHeader('X-Content-Type-Options', 'nosniff');
+    setPrivateHeaders(res);
 
     if (req.method !== 'POST') {
         res.setHeader('Allow', 'POST');
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    let body = req.body;
-    if (typeof body === 'string') {
-        try { body = JSON.parse(body); } catch { body = null; }
-    }
-    const slug = body?.slug?.toLowerCase?.() || '';
-    if (!slug || !/^[a-z0-9_-]{1,64}$/.test(slug)) {
-        return res.status(400).json({ error: 'Bad request' });
-    }
-
-    const cookies = parseCookies(req.headers?.cookie);
-    const payload = verifyOfferToken(cookies[cookieName(slug)], slug);
-    if (!payload) {
-        return res.status(401).json({ error: 'Unauthorized' });
-    }
+    const slug = readSlug(parseBody(req)?.slug);
+    if (!slug) return res.status(400).json({ error: 'Bad request' });
 
     try {
-        const views = await readViews();
-        const now = new Date().toISOString();
-        if (!views[slug]) {
-            views[slug] = { count: 0, first: now, last: now };
-        }
-        views[slug].count += 1;
-        views[slug].last = now;
-        await writeViews(views);
-        return res.status(200).json({ ok: true, ...views[slug] });
+        const result = await getOfferAccess().recordView({
+            slug,
+            cookieHeader: req.headers?.cookie,
+            visitor: visitorFrom(req),
+        });
+        if (result.error) return sendError(res, result.error);
+        return res.status(200).json(result);
     } catch (err) {
-        // Na Vercel system plików jest read-only, więc licznik nie zapisuje się
-        // do czasu migracji na KV/Postgres. To nie jest błąd po stronie klienta,
-        // więc odpowiadamy 204 zamiast 500 - konsola przeglądarki zostaje czysta.
-        console.warn('track-view: write skipped', err.message);
+        // Licznik nie może psuć strony oferty.
+        console.warn('track-view: failed', err.message);
         return res.status(204).end();
     }
 }

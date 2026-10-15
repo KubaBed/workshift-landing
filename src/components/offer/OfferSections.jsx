@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check, ArrowRight, ArrowUpRight, Eye, Calendar } from 'lucide-react';
+import { Check, ArrowRight, ArrowUpRight, Eye, Calendar, FileDown } from 'lucide-react';
 
 // Mocne ease-out zamiast domyślnego: element szybko dojeżdża i łagodnie siada.
 const EASE_OUT = [0.23, 1, 0.32, 1];
@@ -61,8 +61,9 @@ function pluralOtwarcie(n) {
 
 // Mały status pasek u góry oferty - pokazuje liczbę otwarć i datę ważności.
 // Subtelny, tylko po odblokowaniu. Wykorzystuje dane z /api/offers/views.
-export function StatusBanner({ views, validUntil }) {
-  if (!views && !validUntil) return null;
+// `pdfHref`: link do /api/offers/pdf (tylko oferty z Supabase z wgranym PDF).
+export function StatusBanner({ views, validUntil, pdfHref }) {
+  if (!views && !validUntil && !pdfHref) return null;
   const count = views?.count ?? 0;
   let lastLabel = '';
   if (views?.last) {
@@ -83,12 +84,20 @@ export function StatusBanner({ views, validUntil }) {
             </span>
           )}
         </div>
-        {validUntil && (
-          <span className="flex items-center gap-1.5">
-            <Calendar size={12} />
-            Ważna do {fmtDatePL(validUntil)}
-          </span>
-        )}
+        <div className="flex items-center gap-4">
+          {pdfHref && (
+            <a href={pdfHref} className="flex items-center gap-1.5 text-black hover:underline underline-offset-4">
+              <FileDown size={12} />
+              Pobierz PDF
+            </a>
+          )}
+          {validUntil && (
+            <span className="flex items-center gap-1.5">
+              <Calendar size={12} />
+              Ważna do {fmtDatePL(validUntil)}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );
