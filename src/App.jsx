@@ -44,6 +44,11 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 // + Disallow w robots.txt. Nigdzie nie podlinkowany.
 const ShowcasePage = lazy(() => import('./pages/ShowcasePage'));
 
+// Płótno komponentów (/canvas) tylko w trybie dev. W buildzie import.meta.env.DEV to false,
+// więc Rollup wycina ten import razem z chunkiem, a /canvas na produkcji trafia na 404.
+const CanvasPage = import.meta.env.DEV ? lazy(() => import('./pages/canvas/CanvasPage')) : null;
+const isCanvasPath = (pathname) => import.meta.env.DEV && pathname === '/canvas';
+
 // Sekcje strony głównej są leniwe, więc cel kotwicy może pojawić się w DOM później
 // niż po 100 ms. Ponawiamy co 100 ms (do 5 s), aż element istnieje. Zwraca funkcję
 // przerywającą oczekiwanie.
@@ -201,12 +206,23 @@ function App() {
 
   // Bootstrap analytics: if user previously consented, load GA4 + Clarity
   // od razu (bez wyświetlania bannera). Bez consent - skrypty czekają.
+  // Płótno (dev) nie ładuje analityki: podglądy nie mają wysyłać niczego na zewnątrz.
   useEffect(() => {
+    if (isCanvasPath(window.location.pathname)) return;
     bootstrapConsent();
   }, []);
 
   if (previewSection) {
     return <SectionPreview sectionKey={previewSection} />;
+  }
+
+  // /canvas jak /showcase: poza layoutem, bez Headera, Footera i banera zgód.
+  if (isCanvasPath(pathname)) {
+    return (
+      <Suspense fallback={null}>
+        <CanvasPage />
+      </Suspense>
+    );
   }
 
   // /showcase renderuje się poza layoutem (bez Headera i Footera), żeby komponenty
