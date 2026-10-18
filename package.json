@@ -8,6 +8,7 @@
     "build": "vite build && node scripts/build-seo-html.mjs",
     "lint": "eslint .",
     "test:api": "node --test \"api/_lib/**/*.test.js\"",
+    "test:canvas": "node --test \"src/pages/canvas/*.test.js\"",
     "preview": "vite preview",
     "email:dev": "email dev --dir emails/templates --port 3001",
     "email:build": "email export --dir emails/templates --outDir emails/out",
