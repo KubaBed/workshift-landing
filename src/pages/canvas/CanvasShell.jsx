@@ -6,14 +6,14 @@ import { GROUP_IDS, groupDomId } from './variants';
 import { useCanvasCamera } from './useCanvasCamera';
 
 /**
- * Powłoka płótna: pełny ekran, świat z grupami w dwóch kolumnach i pasek kamery.
+ * Powłoka płótna: pełny ekran, świat z grupami w czterech kolumnach i pasek kamery.
  *
  * Grupy stoją w zwykłym przepływie (flex), więc rozwinięta treść spycha następne grupy
  * w dół zamiast na nie nachodzić. Kamera tylko przesuwa i skaluje cały świat.
  * Pasek jest w DOM przed płótnem, żeby Tab dochodził do niego nawet po zgubieniu widoku.
  */
 
-const COLUMN_COUNT = 2;
+const COLUMN_COUNT = 4;
 
 // Pierścień fokusu przycisków ciemniejszy niż domyślny limonkowy, żeby był widoczny na sage.
 const FOCUS = 'focus-visible:ring-black/40';

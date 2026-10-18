@@ -196,7 +196,7 @@ export const CANVAS_GROUPS = [
     id: 'highlighter',
     title: 'Highlighter',
     files: ['Highlighter.jsx'],
-    column: 0,
+    column: 1,
     comparisons: [
       {
         id: 'action',
@@ -218,7 +218,7 @@ export const CANVAS_GROUPS = [
     id: 'animated-process-icon',
     title: 'AnimatedProcessIcon',
     files: ['AnimatedProcessIcon.jsx'],
-    column: 0,
+    column: 1,
     comparisons: [
       {
         id: 'name',
@@ -239,7 +239,7 @@ export const CANVAS_GROUPS = [
     id: 'glare-card',
     title: 'GlareCard',
     files: ['GlareCard.jsx'],
-    column: 0,
+    column: 1,
     comparisons: [
       {
         id: 'expanded',
@@ -256,7 +256,7 @@ export const CANVAS_GROUPS = [
     id: 'terminal',
     title: 'Terminal, AnimatedSpan, TypingAnimation',
     files: ['Terminal.jsx'],
-    column: 0,
+    column: 1,
     comparisons: [
       {
         id: 'composition',
@@ -277,7 +277,7 @@ export const CANVAS_GROUPS = [
     id: 'circular-gallery',
     title: 'CircularGallery',
     files: ['CircularGallery.jsx'],
-    column: 0,
+    column: 1,
     comparisons: [
       {
         id: 'reversed',
@@ -293,7 +293,7 @@ export const CANVAS_GROUPS = [
     id: 'three-d-marquee',
     title: 'ThreeDMarquee',
     files: ['ThreeDMarquee.jsx'],
-    column: 0,
+    column: 1,
     comparisons: [
       {
         id: 'columns',
@@ -310,7 +310,7 @@ export const CANVAS_GROUPS = [
     id: 'line-figure',
     title: 'LineFigure',
     files: ['LineFigure.jsx'],
-    column: 1,
+    column: 2,
     comparisons: [
       {
         id: 'figure',
@@ -348,7 +348,7 @@ export const CANVAS_GROUPS = [
     id: 'lazy-line-figure',
     title: 'LazyLineFigure',
     files: ['LazyLineFigure.jsx'],
-    column: 1,
+    column: 2,
     comparisons: [
       {
         id: 'default',
@@ -365,7 +365,7 @@ export const CANVAS_GROUPS = [
     id: 'integrations-marquee',
     title: 'IntegrationsMarquee',
     files: ['IntegrationsMarquee.jsx'],
-    column: 1,
+    column: 2,
     comparisons: [
       {
         id: 'badge',
@@ -382,7 +382,7 @@ export const CANVAS_GROUPS = [
     id: 'scroll-reveal',
     title: 'ScrollReveal',
     files: ['ScrollReveal.jsx'],
-    column: 1,
+    column: 2,
     comparisons: [
       {
         id: 'highlights',
@@ -400,7 +400,7 @@ export const CANVAS_GROUPS = [
     id: 'service-article',
     title: 'ServiceArticle',
     files: ['ServiceArticle.jsx'],
-    column: 1,
+    column: 3,
     comparisons: [
       {
         id: 'content',
@@ -426,7 +426,7 @@ export const CANVAS_GROUPS = [
     id: 'service-faq',
     title: 'ServiceFaq',
     files: ['ServiceFaq.jsx'],
-    column: 1,
+    column: 3,
     comparisons: [
       {
         id: 'heading',

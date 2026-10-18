@@ -27,7 +27,7 @@ test('id grup i porównań są unikalne, każde porównanie ma warianty', () => 
       const variants = comparison.variants.map((v) => v.id);
       assert.ok(variants.length > 0, `${group.id}/${comparison.id}: brak wariantów`);
       assert.equal(new Set(variants).size, variants.length, `${group.id}/${comparison.id}: powtórzony wariant`);
-      assert.ok([0, 1].includes(group.column), `${group.id}: kolumna poza zakresem`);
+      assert.ok([0, 1, 2, 3].includes(group.column), `${group.id}: kolumna poza zakresem`);
     }
   }
 });
