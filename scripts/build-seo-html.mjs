@@ -133,6 +133,7 @@ const ROUTE_PAGE_MODULES = [
   [/^\/kalkulator$/, 'src/pages/KalkulatorStratPage.jsx'],
   [/^\/audyt-ai$/, 'src/pages/AudytAiPage.jsx'],
   [/^\/prompty$/, 'src/pages/PromptyPage.jsx'],
+  [/^\/narzedzia\/szkic$/, 'src/pages/SzkicPage.jsx'],
   [/^\/polityka-prywatnosci$/, 'src/pages/PrivacyPolicyPage.jsx'],
 ];
 
@@ -178,6 +179,7 @@ const SITE_NAV = [
   ['/audyt-ai', 'Mikro-audyt AI'],
   ['/kalkulator', 'Kalkulator strat czasowych'],
   ['/prompty', 'Baza promptów i person AI'],
+  ['/narzedzia/szkic', 'Szkic - aplikacja na Maca'],
   ['/polityka-prywatnosci', 'Polityka prywatności'],
 ];
 

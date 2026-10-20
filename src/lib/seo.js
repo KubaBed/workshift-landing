@@ -81,6 +81,13 @@ export const STATIC_ROUTE_META = {
     image: DEFAULT_META.image,
     type: 'website',
   },
+  '/narzedzia/szkic': {
+    title: 'Szkic: pokaż agentowi AI problem na nagraniu | Workshift',
+    description:
+      'Darmowa aplikacja na Maca. Nagrywasz ekran i mówisz, co jest nie tak, a Szkic składa z tego paczkę dla Claude Code albo innego agenta.',
+    image: DEFAULT_META.image,
+    type: 'website',
+  },
   '/polityka-prywatnosci': {
     title: 'Polityka prywatności | Workshift',
     description:
