@@ -120,14 +120,14 @@ function Steps() {
                             <li className={`grid grid-cols-1 md:grid-cols-[minmax(0,15rem)_1fr] gap-5 md:gap-10 py-8 md:py-10 ${i > 0 ? 'border-t border-black/10' : 'pt-0 md:pt-2'}`}>
                                 <div className="flex flex-wrap items-center gap-2">
                                     {step.keys.map((combo, ci) => (
-                                        <React.Fragment key={ci}>
+                                        <span key={ci} className="inline-flex items-center gap-2">
                                             {ci > 0 && <span className="text-muted-dark text-lg px-1" aria-hidden="true">{step.join}</span>}
                                             <span className="inline-flex gap-1.5">
                                                 {combo.map((k) => (
                                                     <Key key={k} size="lg">{k === 'mysz' ? <span className="text-base md:text-lg font-sans">mysz</span> : k}</Key>
                                                 ))}
                                             </span>
-                                        </React.Fragment>
+                                        </span>
                                     ))}
                                 </div>
                                 <div>
@@ -255,6 +255,7 @@ function Final() {
             <FadeUp duration={0.6}>
                 <div className="max-w-3xl mx-auto text-center">
                     <div className="flex justify-center gap-1.5 mb-8" aria-hidden="true">
+                        <Key>⌃</Key>
                         <Key>⌥</Key>
                         <Key>⇧</Key>
                         <Key>S</Key>

@@ -23,21 +23,21 @@ export const SZKIC_HERO = {
 
 export const SZKIC_STEPS = [
     {
-        keys: [['⌥', '⇧', 'S']],
+        keys: [['⌃', '⌥', '⇧', 'S']],
         title: 'Włącz nagrywanie',
-        text: 'Naciśnij ⌥⇧S i mów, co widzisz. Korzystaj z aplikacji jak zwykle, a Szkic zapisze, w co klikasz.',
+        text: 'Naciśnij ⌃⌥⇧S (Control, Option, Shift i S) i mów, co widzisz. Korzystaj z aplikacji jak zwykle, a Szkic zapisze, w co klikasz.',
     },
     {
         keys: [['⇧'], ['mysz']],
         join: '+',
         title: 'Zaznacz, o co chodzi',
-        text: 'Przytrzymaj ⇧ i rysuj myszą po ekranie. Szkic rozpozna kółko, strzałkę, kreskę i punkt. Po naciśnięciu ⌥⇧D zaznaczasz element jednym kliknięciem.',
+        text: 'Przytrzymaj ⇧ i rysuj myszą po ekranie. Szkic rozpozna kółko, strzałkę, kreskę i punkt. Po naciśnięciu ⌃⌥⇧D zaznaczasz element jednym kliknięciem.',
     },
     {
-        keys: [['⌥', '⇧', 'S'], ['⌘', 'V']],
+        keys: [['⌃', '⌥', '⇧', 'S'], ['⌘', 'V']],
         join: 'potem',
         title: 'Wklej agentowi',
-        text: 'Drugie ⌥⇧S kończy nagranie. Po kilku sekundach w schowku czekają klatki z zaznaczeniami i zapis Twoich słów przy każdej z nich.',
+        text: 'Drugie ⌃⌥⇧S kończy nagranie. Po kilku sekundach w schowku czekają klatki z zaznaczeniami i zapis Twoich słów przy każdej z nich.',
     },
 ];
 
@@ -93,7 +93,11 @@ export const SZKIC_FAQ = [
     },
     {
         q: 'Po co Szkicowi trzy uprawnienia?',
-        a: 'Nagrywanie ekranu i mikrofon są potrzebne do nagrania. Dostępność daje cofanie kresek skrótem ⌘Z, nazwy klikniętych elementów i wklejanie paczki skrótem ⌥⇧V. Bez niej nagrywanie działa, tylko bez tych dodatków.',
+        a: 'Nagrywanie ekranu i mikrofon są potrzebne do nagrania. Dostępność daje cofanie kresek skrótem ⌘Z, nazwy klikniętych elementów i wklejanie paczki skrótem ⌃⌥⇧V. Bez niej nagrywanie działa, tylko bez tych dodatków.',
+    },
+    {
+        q: 'Czy mogę zmienić skróty?',
+        a: 'Tak, w Ustawieniach, które otworzysz z menu Szkicu. Skrót musi mieć ⌃ albo ⌘ i jeszcze jeden klawisz z ⌃⌥⇧⌘. Samo ⌥⇧ pisze polskie litery, np. „Ś”.',
     },
     {
         q: 'Gdzie są moje nagrania?',
