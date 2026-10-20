@@ -190,9 +190,7 @@ export function Footer() {
 
                     <div className="md:col-span-2">
                         <div className="mb-6">
-                            <Floating duration={5} amplitude={5} rotation={3}>
-                                <Logo variant="dark" size={48} />
-                            </Floating>
+                            <Logo variant="dark" size={48} />
                         </div>
                         <p className="text-white/50 max-w-sm leading-relaxed">
                             Wdrażamy automatyzacje i agentów AI w polskich MŚP.
