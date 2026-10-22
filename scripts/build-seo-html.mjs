@@ -65,6 +65,7 @@ function patchHead(shell, route) {
     [/(<meta property="twitter:title" content=")[^"]*(")/, `$1${title}$2`],
     [/(<meta property="twitter:description" content=")[^"]*(")/, `$1${description}$2`],
     [/(<meta property="twitter:image" content=")[^"]*(")/, `$1${escapeAttr(image)}$2`],
+    [/(<meta name="robots" content=")[^"]*(")/, `$1${route.noindex ? 'noindex, nofollow' : 'index, follow'}$2`],
   ];
 
   let html = shell;
@@ -302,6 +303,7 @@ function assertTitleLength(route) {
 
 function buildSitemap() {
   const urls = routes
+    .filter((route) => !route.noindex)
     .map((route) => {
       const parts = [
         `    <loc>${absoluteUrl(route.path)}</loc>`,

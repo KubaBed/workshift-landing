@@ -23,45 +23,45 @@ export const SZKIC_HERO = {
 
 export const SZKIC_STEPS = [
     {
-        keys: [['⌃', '⌥', '⇧', 'S']],
+        keys: [['⌃', '⌥', 'S']],
         title: 'Włącz nagrywanie',
-        text: 'Naciśnij ⌃⌥⇧S (Control, Option, Shift i S) i mów, co widzisz. Korzystaj z aplikacji jak zwykle, a Szkic zapisze, w co klikasz.',
+        text: 'Naciśnij ⌃⌥S (Control, Option i S) i mów, co widzisz. Korzystaj z aplikacji jak zwykle, a Szkic zapisze, w co klikasz.',
     },
     {
         keys: [['⇧'], ['mysz']],
         join: '+',
         title: 'Zaznacz, o co chodzi',
-        text: 'Przytrzymaj ⇧ i rysuj myszą po ekranie. Szkic rozpozna kółko, strzałkę, kreskę i punkt. Po naciśnięciu ⌃⌥⇧D zaznaczasz element jednym kliknięciem.',
+        text: 'Przytrzymaj ⇧ i rysuj myszą po ekranie. Szkic rozpozna kółko, strzałkę, kreskę i punkt. Po naciśnięciu ⌃⌥D zaznaczasz element jednym kliknięciem.',
     },
     {
-        keys: [['⌃', '⌥', '⇧', 'S'], ['⌘', 'V']],
+        keys: [['⌃', '⌥', 'S'], ['⌘', 'V']],
         join: 'potem',
         title: 'Wklej agentowi',
-        text: 'Drugie ⌃⌥⇧S kończy nagranie. Po kilku sekundach w schowku czekają klatki z zaznaczeniami i zapis Twoich słów przy każdej z nich.',
+        text: 'Drugie ⌃⌥S kończy nagranie. Po kilku sekundach w schowku czekają klatki z zaznaczeniami i zapis Twoich słów przy każdej z nich.',
     },
 ];
 
 export const SZKIC_PRIVACY = {
     title: 'Nagrania zostają na Twoim Macu',
-    text: 'Szkic działa bez konta i nie wysyła statystyk. Z internetem łączy się tylko wtedy, gdy wybierzesz silnik w chmurze albo pobierasz model lokalny.',
+    text: 'Szkic działa bez konta i nie wysyła statystyk. Z internetem łączy się tylko wtedy, gdy wybierzesz silnik w chmurze albo pobierzesz Parakeet Ultra.',
     enginesTitle: 'Silnik transkrypcji wybierasz w Ustawieniach',
 };
 
 export const SZKIC_ENGINES = [
     {
         name: 'Apple',
-        where: 'Na Macu',
+        where: 'Na Macu, darmowy',
         text: 'Wbudowany w macOS, działa od razu. Polską mowę zapisuje bez interpunkcji.',
     },
     {
-        name: 'Model lokalny',
-        where: 'Na Macu',
-        text: 'NVIDIA Parakeet, ok. 600\u00A0MB, pobierany dopiero na Twoje żądanie. Działa w całości na Macu i zapisuje polski z interpunkcją.',
+        name: 'Parakeet Ultra',
+        where: 'Na Macu, darmowy',
+        text: 'Model lokalny, ok. 630\u00A0MB, pobierany dopiero na Twoje żądanie. Działa w całości na Macu, także bez internetu, i zapisuje polski z interpunkcją.',
     },
     {
-        name: 'Własny klucz API',
+        name: 'Własne API',
         where: 'W chmurze',
-        text: 'Groq, ElevenLabs, OpenAI albo własny serwer. Szkic wysyła tam tylko dźwięk, a klucz trzyma w pęku kluczy macOS.',
+        text: 'Model obsługujący głos podłączasz swoim kluczem API. Polecane: Groq, ElevenLabs i OpenAI; możesz też podać własny serwer. Szkic wysyła tam tylko dźwięk, a klucz trzyma w pęku kluczy macOS.',
     },
 ];
 
@@ -93,7 +93,7 @@ export const SZKIC_FAQ = [
     },
     {
         q: 'Po co Szkicowi trzy uprawnienia?',
-        a: 'Nagrywanie ekranu i mikrofon są potrzebne do nagrania. Dostępność daje cofanie kresek skrótem ⌘Z, nazwy klikniętych elementów i wklejanie paczki skrótem ⌃⌥⇧V. Bez niej nagrywanie działa, tylko bez tych dodatków.',
+        a: 'Nagrywanie ekranu i mikrofon są potrzebne do nagrania. Dostępność daje cofanie kresek skrótem ⌘Z, nazwy klikniętych elementów i wklejanie paczki skrótem ⌃⌥V. Bez niej nagrywanie działa, tylko bez tych dodatków.',
     },
     {
         q: 'Czy mogę zmienić skróty?',
@@ -109,4 +109,63 @@ export const SZKIC_FINAL = {
     title: 'Nagraj pierwszy szkic',
     text: 'Przy pierwszym uruchomieniu samouczek przeprowadzi Cię przez uprawnienia i nagranie próbne.',
     workshift: 'Szkic powstał w Workshift. Na co dzień wdrażamy AI w firmach.',
+};
+
+// Układ „Jak to działa” (kroki z wizualizacją) i kafelki zamiast czarnej sekcji, na /narzedzia/szkic i /showcase.
+// Teksty po audycie (docs/internal/szkic/copy-audyt-kroki-bento.md), zaakceptowane przez Kubę 22.10.
+// Kroki 1 i 2: fragmenty filmu z hero (0-9,8 s i 12-18 s), krok 3: zrzut Panelu nagrań. `duration` = czas kroku w ms.
+export const SZKIC_HOW = [
+    {
+        title: 'Nagraj i pokaż',
+        text: 'Naciśnij ⌃⌥S (Control, Option i S) i powiedz, co widzisz. Z wciśniętym Shiftem zakreśl problem myszą. Po ⌃⌥D zaznaczysz przycisk albo pole jednym kliknięciem.',
+        video: '/szkic/krok-1',
+        poster: '/szkic/krok-1.webp',
+        duration: 9800,
+        alt: 'Nagranie: klik w „Zapisz zmiany”, błąd 500 zakreślony kółkiem i punkt na pustym polu telefonu',
+    },
+    {
+        title: 'Wklej agentowi',
+        text: 'Drugie ⌃⌥S kończy nagranie. Po kilku sekundach w schowku czeka paczka: klatki z zaznaczeniami i zapis Twoich słów. Wklejasz ją do czatu z agentem zwykłym ⌘V.',
+        video: '/szkic/krok-2',
+        poster: '/szkic/krok-2.webp',
+        duration: 6000,
+        alt: 'Nagranie: paczka Szkicu wklejona do czatu, agent czyta klatki i szuka przyczyny',
+    },
+    {
+        title: 'Wróć do nagrań',
+        text: 'W Panelu nagrań przejrzysz klatki, momenty z opisem i pełną transkrypcję każdego nagrania. Przycisk Kopiuj znów kładzie paczkę w schowku, więc do starego błędu wracasz z agentem bez nagrywania od nowa.',
+        image: '/szkic/krok-3.webp',
+        alt: 'Panel nagrań: lista nagrań, podgląd klatek, momenty z opisem, pełna transkrypcja i przycisk Kopiuj',
+    },
+];
+
+export const SZKIC_BENTO = {
+    title: 'Działa na Twoim Macu, bez konta',
+    lead: 'Szkic nie ma własnego serwera i nie wysyła statystyk. Z internetem łączy się tylko wtedy, gdy pobierasz Parakeet Ultra albo korzystasz z własnego API do transkrypcji.',
+    local: {
+        title: 'Nagrania zostają na dysku',
+        text: 'Film i klatki wychodzą poza Maca dopiero wtedy, gdy sam wkleisz paczkę agentowi.',
+        note: 'Wklejoną paczkę przetwarza już dostawca agenta, np. Anthropic przy Claude Code.',
+    },
+    transcription: {
+        title: 'Transkrypcja po polsku',
+        text: 'Silnik wybierasz w Ustawieniach. Przy własnym API do chmury trafia tylko dźwięk.',
+        engines: [
+            { name: 'Apple', tag: 'na Macu, bez interpunkcji' },
+            { name: 'Parakeet Ultra', tag: 'na Macu, bez internetu, z interpunkcją' },
+            { name: 'Własne API', tag: 'Groq, ElevenLabs, OpenAI' },
+        ],
+    },
+    frames: {
+        title: 'Klatki wybiera sam',
+        text: 'Szkic wybiera do 12 klatek z chwil, w których klikasz, rysujesz albo mówisz „tutaj” lub „zobacz”. Agent dostaje te kadry zamiast całego filmu.',
+    },
+    agents: {
+        title: 'Paczka dla każdego agenta',
+        text: 'Paczka to arkusz klatek, opis tego, co mówisz i klikasz, oraz plik JSON z dokładnymi czasami. Odczyta ją każdy agent, który otwiera obrazy i pliki, np. Claude Code, Codex albo Cursor.',
+    },
+    shortcuts: {
+        title: 'Trzy skróty',
+        text: '⌃⌥S zaczyna i kończy nagranie, ⌃⌥D włącza tryb zaznaczania, a ⌃⌥V wkleja ostatnią paczkę do aktywnego okna.',
+    },
 };

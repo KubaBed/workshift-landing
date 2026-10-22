@@ -13,6 +13,8 @@ import { AnimatedProcessIcon } from '@/components/ui/AnimatedProcessIcon';
 import { LineFigure, LINE_FIGURES } from '@/components/ui/LineFigure';
 import { getServiceById } from '@/data/services';
 import { BoardSection, PartDivider, ExtraSections } from '@/components/offer/OfferSections';
+import { SzkicHowItWorks } from '@/components/szkic/SzkicHowItWorks';
+import { SzkicBento } from '@/components/szkic/SzkicBento';
 
 // Przykładowa "Część 1 dla zarządu" (dane neutralne, wymyślone). Schemat: pole `board` oferty.
 const SAMPLE_OFFER_SECTIONS = [
@@ -471,6 +473,26 @@ export default function ShowcasePage() {
         >
           <div className="-mx-5 rounded-lg border border-black/10 bg-sage">
             <ExtraSections sections={SAMPLE_OFFER_SECTIONS} />
+          </div>
+        </Section>
+
+        <Section
+          id="szkic-jak-dziala"
+          title="Szkic: Jak to działa (kroki z wizualizacją)"
+          note="src/components/szkic/SzkicHowItWorks.jsx - lista 3 kroków po lewej, obraz kroku w oknie Maca po prawej. Krok przełącza się sam co 6,5 s, najechanie zatrzymuje, klik wybiera. Na telefonie kroki pod sobą. Teksty robocze (przed akceptacją audytu), obrazy to zaślepki do czasu nagrania promocyjnego."
+        >
+          <div className="-mx-5 rounded-lg border border-black/10 bg-sage">
+            <SzkicHowItWorks />
+          </div>
+        </Section>
+
+        <Section
+          id="szkic-bento"
+          title="Szkic: kafelki zamiast czarnej sekcji prywatności"
+          note="src/components/szkic/SzkicBento.jsx - duży czarny kafelek o nagraniach na Macu, silniki transkrypcji i trzy małe kafelki. Teksty robocze (przed akceptacją audytu)."
+        >
+          <div className="-mx-5 rounded-lg border border-black/10 bg-sage">
+            <SzkicBento />
           </div>
         </Section>
 

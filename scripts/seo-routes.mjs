@@ -36,13 +36,15 @@ import { SECTIONS as AUDYT_SECTIONS, TOTAL_QUESTIONS } from '../src/data/audytQu
 import { DEFAULT_META, STATIC_ROUTE_META, clampDescription, postMeta } from '../src/lib/seo.js';
 import {
   SZKIC_HERO,
-  SZKIC_STEPS,
-  SZKIC_PRIVACY,
-  SZKIC_ENGINES,
+  SZKIC_HOW,
+  SZKIC_BENTO,
   SZKIC_LICENSE,
   SZKIC_FAQ,
   SZKIC_REQUIREMENTS,
 } from '../src/data/szkic.js';
+
+/** Kafelki sekcji o prywatności (wszystkie z tytułem i tekstem), w kolejności ze strony. */
+const SZKIC_BENTO_TILES = Object.values(SZKIC_BENTO).filter((t) => t && typeof t === 'object' && t.title && t.text);
 import { extractPrivacyPolicy } from './privacy-policy-text.mjs';
 
 const require = createRequire(import.meta.url);
@@ -56,7 +58,8 @@ const CRAWL_HINTS = {
   '/audyt-ai': { priority: '0.9', changefreq: 'monthly' },
   '/kalkulator': { priority: '0.9', changefreq: 'monthly' },
   '/prompty': { priority: '0.8', changefreq: 'monthly' },
-  '/narzedzia/szkic': { priority: '0.7', changefreq: 'monthly' },
+  // noindex do odwołania przez Kubę: poza sitemapą, <meta robots> i nagłówek X-Robots-Tag w vercel.json.
+  '/narzedzia/szkic': { priority: '0.7', changefreq: 'monthly', noindex: true },
   '/polityka-prywatnosci': { priority: '0.3', changefreq: 'yearly' },
 };
 
@@ -444,11 +447,11 @@ const STATIC_FALLBACK = {
     lead: SZKIC_HERO.title,
     body: `${SZKIC_HERO.lead} Wymagania: ${SZKIC_REQUIREMENTS}.`,
     sections: [
-      { heading: 'Jak to działa', items: SZKIC_STEPS.map((s) => `${s.title}. ${s.text}`) },
+      { heading: 'Jak to działa', items: SZKIC_HOW.map((s) => `${s.title}. ${s.text}`) },
       {
-        heading: SZKIC_PRIVACY.title,
-        text: SZKIC_PRIVACY.text,
-        items: SZKIC_ENGINES.map((e) => `${e.name} (${e.where.toLowerCase()}): ${e.text}`),
+        heading: SZKIC_BENTO.title,
+        text: SZKIC_BENTO.lead,
+        items: SZKIC_BENTO_TILES.map((t) => `${t.title}. ${t.text}`),
       },
       { heading: 'Licencja', text: SZKIC_LICENSE.lead },
       { heading: 'Pytania o Szkic', items: SZKIC_FAQ.map((f) => `${f.q} ${f.a}`) },

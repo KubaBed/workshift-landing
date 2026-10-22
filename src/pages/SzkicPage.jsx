@@ -3,15 +3,14 @@ import { Link } from 'react-router-dom';
 import { Download, Check, X, ArrowRight } from 'lucide-react';
 import { FadeUp } from '../components/animations/FadeUp';
 import { ServiceFaq } from '../components/ui/ServiceFaq';
-import { SzkicScene } from '../components/szkic/SzkicScene';
+import { SzkicHeroVideo } from '../components/szkic/SzkicHeroVideo';
+import { SzkicHowItWorks } from '../components/szkic/SzkicHowItWorks';
+import { SzkicBento } from '../components/szkic/SzkicBento';
 import {
     SZKIC_DOWNLOAD_URL,
     SZKIC_LICENSE_URL,
     SZKIC_REQUIREMENTS,
     SZKIC_HERO,
-    SZKIC_STEPS,
-    SZKIC_PRIVACY,
-    SZKIC_ENGINES,
     SZKIC_PERMISSIONS,
     SZKIC_LICENSE,
     SZKIC_FAQ,
@@ -27,15 +26,15 @@ const FAQ = SZKIC_FAQ.map((f) => ({ q: nb(f.q), a: nb(f.a) }));
  * /narzedzia/szkic - strona aplikacji Szkic (macOS, pasek menu).
  * Treść w src/data/szkic.js (wspólna ze statycznym fallbackiem SEO).
  *
- * Sekcje: hero z animowaną sceną, jak to działa, prywatność i transkrypcja (czarny panel),
+ * Sekcje: hero z filmem działania Szkicu, jak to działa (kroki z kadrami), kafelki o prywatności i transkrypcji,
  * wymagania i licencja, FAQ, końcowe wezwanie do pobrania.
  */
 export default function SzkicPage() {
     return (
         <main className="bg-sage">
             <Hero />
-            <Steps />
-            <Privacy />
+            <SzkicHowItWorks />
+            <SzkicBento />
             <RequirementsAndLicense />
             <section className="px-4 py-16 md:py-24">
                 <div className="max-w-[1320px] mx-auto rounded-3xl bg-white px-6 py-12 md:px-12 md:py-16">
@@ -77,7 +76,7 @@ function Key({ children, size = 'md' }) {
 
 function Hero() {
     return (
-        <section className="px-4 pt-28 lg:pt-20 pb-16 md:pb-24">
+        <section className="px-4 pt-28 lg:pt-36 pb-16 md:pb-24">
             <div className="max-w-[1320px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
                 <div className="lg:col-span-5">
                     <FadeUp duration={0.6}>
@@ -99,75 +98,8 @@ function Hero() {
                 </div>
                 <div className="lg:col-span-7">
                     <FadeUp duration={0.8} delay={0.15}>
-                        <SzkicScene />
+                        <SzkicHeroVideo />
                     </FadeUp>
-                </div>
-            </div>
-        </section>
-    );
-}
-
-function Steps() {
-    return (
-        <section id="jak-dziala" className="px-4 py-16 md:py-24 scroll-mt-24 border-t border-black/5">
-            <div className="max-w-[1320px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-10">
-                <FadeUp className="lg:col-span-4" duration={0.6}>
-                    <h2 className="text-4xl md:text-5xl tracking-tight text-black text-balance lg:sticky lg:top-28">Jak to działa</h2>
-                </FadeUp>
-                <ol className="lg:col-span-8">
-                    {SZKIC_STEPS.map((step, i) => (
-                        <FadeUp key={step.title} delay={i * 0.08} duration={0.6}>
-                            <li className={`grid grid-cols-1 md:grid-cols-[minmax(0,15rem)_1fr] gap-5 md:gap-10 py-8 md:py-10 ${i > 0 ? 'border-t border-black/10' : 'pt-0 md:pt-2'}`}>
-                                <div className="flex flex-wrap items-center gap-2">
-                                    {step.keys.map((combo, ci) => (
-                                        <span key={ci} className="inline-flex items-center gap-2">
-                                            {ci > 0 && <span className="text-muted-dark text-lg px-1" aria-hidden="true">{step.join}</span>}
-                                            <span className="inline-flex gap-1.5">
-                                                {combo.map((k) => (
-                                                    <Key key={k} size="lg">{k === 'mysz' ? <span className="text-base md:text-lg font-sans">mysz</span> : k}</Key>
-                                                ))}
-                                            </span>
-                                        </span>
-                                    ))}
-                                </div>
-                                <div>
-                                    <h3 className="text-2xl md:text-3xl tracking-tight text-black text-balance">{nb(step.title)}</h3>
-                                    <p className="mt-3 text-lg text-muted-dark leading-relaxed text-pretty max-w-[52ch]">{nb(step.text)}</p>
-                                </div>
-                            </li>
-                        </FadeUp>
-                    ))}
-                </ol>
-            </div>
-        </section>
-    );
-}
-
-function Privacy() {
-    return (
-        <section className="px-4 py-8 md:py-12">
-            <div className="max-w-[1320px] mx-auto rounded-3xl bg-black text-white px-6 py-14 md:px-14 md:py-20 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-                <FadeUp className="lg:col-span-5" duration={0.6}>
-                    <h2 className="text-4xl md:text-5xl tracking-tight !text-white text-balance">{nb(SZKIC_PRIVACY.title)}</h2>
-                    <p className="mt-6 text-lg text-white/65 leading-relaxed text-pretty max-w-[44ch]">{nb(SZKIC_PRIVACY.text)}</p>
-                </FadeUp>
-                <div className="lg:col-span-7">
-                    <FadeUp duration={0.6} delay={0.1}>
-                        <h3 className="text-xl md:text-2xl tracking-tight !text-white mb-6">{nb(SZKIC_PRIVACY.enginesTitle)}</h3>
-                    </FadeUp>
-                    <ul className="space-y-3">
-                        {SZKIC_ENGINES.map((engine, i) => (
-                            <FadeUp key={engine.name} delay={0.15 + i * 0.08} duration={0.6}>
-                                <li className="rounded-2xl bg-white/[0.06] ring-1 ring-white/10 p-5 md:p-6 grid grid-cols-1 sm:grid-cols-[11rem_1fr] gap-2 sm:gap-6">
-                                    <div>
-                                        <p className="text-lg text-white">{engine.name}</p>
-                                        <p className="mt-1 font-mono text-xs text-white/50">{engine.where}</p>
-                                    </div>
-                                    <p className="text-base text-white/65 leading-relaxed text-pretty">{nb(engine.text)}</p>
-                                </li>
-                            </FadeUp>
-                        ))}
-                    </ul>
                 </div>
             </div>
         </section>
@@ -257,7 +189,6 @@ function Final() {
                     <div className="flex justify-center gap-1.5 mb-8" aria-hidden="true">
                         <Key>⌃</Key>
                         <Key>⌥</Key>
-                        <Key>⇧</Key>
                         <Key>S</Key>
                     </div>
                     <h2 className="text-4xl md:text-6xl tracking-[-0.03em] text-black text-balance">{nb(SZKIC_FINAL.title)}</h2>
