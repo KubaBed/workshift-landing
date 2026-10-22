@@ -7,10 +7,10 @@
  * Źródło faktów: ~/Projekty/szkic/README.md i SPEC.md (wersja 0.2).
  */
 
-// Zaślepki do czasu notaryzacji Apple i upublicznienia repo. Przed wdrożeniem na produkcję
-// podmień oba adresy na prawdziwe (DMG z Developer ID, repo na GitHubie).
-export const SZKIC_DOWNLOAD_URL = '/downloads/Szkic.dmg';
+// DMG (Developer ID, notaryzacja Apple) to zasób najnowszego wydania na GitHubie, zawsze pod nazwą Szkic.dmg,
+// więc nowe wydanie nie wymaga zmiany strony.
 export const SZKIC_REPO_URL = 'https://github.com/KubaBed/szkic';
+export const SZKIC_DOWNLOAD_URL = `${SZKIC_REPO_URL}/releases/latest/download/Szkic.dmg`;
 export const SZKIC_LICENSE_URL = `${SZKIC_REPO_URL}/blob/main/LICENSE`;
 
 export const SZKIC_REQUIREMENTS = 'macOS 26 lub nowszy, Mac z procesorem Apple';
