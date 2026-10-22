@@ -45,15 +45,6 @@
       ]
     },
     {
-      "source": "/narzedzia/szkic",
-      "headers": [
-        {
-          "key": "X-Robots-Tag",
-          "value": "noindex, nofollow, noarchive"
-        }
-      ]
-    },
-    {
       "source": "/showcase",
       "headers": [
         {

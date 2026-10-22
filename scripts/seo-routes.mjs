@@ -58,8 +58,7 @@ const CRAWL_HINTS = {
   '/audyt-ai': { priority: '0.9', changefreq: 'monthly' },
   '/kalkulator': { priority: '0.9', changefreq: 'monthly' },
   '/prompty': { priority: '0.8', changefreq: 'monthly' },
-  // noindex do odwołania przez Kubę: poza sitemapą, <meta robots> i nagłówek X-Robots-Tag w vercel.json.
-  '/narzedzia/szkic': { priority: '0.7', changefreq: 'monthly', noindex: true },
+  '/narzedzia/szkic': { priority: '0.7', changefreq: 'monthly' },
   '/polityka-prywatnosci': { priority: '0.3', changefreq: 'yearly' },
 };
 
