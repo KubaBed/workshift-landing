@@ -101,7 +101,7 @@ export const SZKIC_FAQ = [
     },
     {
         q: 'Gdzie są moje nagrania?',
-        a: 'W folderze ~/Szkic na Twoim dysku. Każde nagranie to osobny folder z filmem, dźwiękiem, klatkami i opisem. Przeglądasz i usuwasz je w oknie Nagrania (⌘O w menu Szkicu).',
+        a: 'W folderze ~/Szkic na Twoim dysku. Każde nagranie to osobny folder z filmem, dźwiękiem, klatkami i opisem. Przeglądasz i usuwasz je w Panelu nagrań. Otworzysz go kliknięciem ikony Szkicu w Docku albo z menu pod ikoną w pasku menu (⌘O).',
     },
 ];
 
