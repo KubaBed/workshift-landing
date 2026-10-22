@@ -65,6 +65,7 @@ function patchHead(shell, route) {
     [/(<meta property="twitter:title" content=")[^"]*(")/, `$1${title}$2`],
     [/(<meta property="twitter:description" content=")[^"]*(")/, `$1${description}$2`],
     [/(<meta property="twitter:image" content=")[^"]*(")/, `$1${escapeAttr(image)}$2`],
+    [/(<meta name="robots" content=")[^"]*(")/, `$1${route.noindex ? 'noindex, nofollow' : 'index, follow'}$2`],
   ];
 
   let html = shell;
@@ -133,6 +134,7 @@ const ROUTE_PAGE_MODULES = [
   [/^\/kalkulator$/, 'src/pages/KalkulatorStratPage.jsx'],
   [/^\/audyt-ai$/, 'src/pages/AudytAiPage.jsx'],
   [/^\/prompty$/, 'src/pages/PromptyPage.jsx'],
+  [/^\/narzedzia\/szkic$/, 'src/pages/SzkicPage.jsx'],
   [/^\/polityka-prywatnosci$/, 'src/pages/PrivacyPolicyPage.jsx'],
 ];
 
@@ -178,6 +180,7 @@ const SITE_NAV = [
   ['/audyt-ai', 'Mikro-audyt AI'],
   ['/kalkulator', 'Kalkulator strat czasowych'],
   ['/prompty', 'Baza promptów i person AI'],
+  ['/narzedzia/szkic', 'Szkic - aplikacja na Maca'],
   ['/polityka-prywatnosci', 'Polityka prywatności'],
 ];
 
@@ -300,6 +303,7 @@ function assertTitleLength(route) {
 
 function buildSitemap() {
   const urls = routes
+    .filter((route) => !route.noindex)
     .map((route) => {
       const parts = [
         `    <loc>${absoluteUrl(route.path)}</loc>`,

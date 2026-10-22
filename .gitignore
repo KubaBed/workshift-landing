@@ -89,6 +89,8 @@ scripts/fonts/
 *.mov
 *.avi
 *.mkv
+# Wyjątek: lekkie filmy Szkicu przygotowane pod stronę (AV1 + H.264, razem ok. 3,3 MB)
+!public/szkic/*.mp4
 
 # Wewnętrzne wytyczne głosu (krytyka własnego copy, rejestr liczb) - nie do publicznego repo
 .claude/brand-voice-guidelines*.md
