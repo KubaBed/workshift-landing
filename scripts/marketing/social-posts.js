@@ -101,6 +101,14 @@ const POSTS = [
       fb: 'Pamiętasz, co było w pliku, ale nie pamiętasz, jak się nazywał? 🕵️‍♂️\n\nDigUp to darmowa apka open source, która szuka po zawartości plików. Wpisujesz, co było na zdjęciu albo o czym mówili w nagraniu, a ona otwiera plik we właściwym miejscu, np. film od 42. sekundy.\n\nDziała lokalnie, więc firmowe pliki nie wychodzą z komputera. Pod spodem pracuje EmbeddingGemma 2.',
       ig: 'Pamiętasz, co było w pliku, ale nie pamiętasz nazwy? 🕵️‍♂️\n\nDigUp szuka po zawartości: opisujesz zdjęcie albo fragment nagrania, a apka otwiera plik we właściwym miejscu. Działa lokalnie, pliki nie wychodzą z komputera.\n\nDarmowe i open source.\n\n🔗 Link do repo w komentarzu 👇\n.\n#AI #opensource #produktywność #narzędziaAI #MŚP' },
 
+
+    // ── Wpis z 28.10: które AI kupić dla firmy (Copilot, Gemini, ChatGPT Business, Claude Team) ──
+    // Czas zimowy (CET), wiec offset +01:00. FB: --fb planuje natywnie (link w tresci, grafika fbImg
+    // z pigulka "Porownanie na workshift.pl"). IG: --ig --force z jednorazowego wyzwalacza o 9:00.
+    { slug: 'ktore-ai-kupic-dla-firmy-copilot-chatgpt-claude-gemini', img: 'WS-post-12-ktore-ai-1080x1080.png', fbImg: 'WS-post-12-ktore-ai-fb-1080x1080.png',
+      story: 'WS-story-12-ktore-ai-1080x1920.png', publishAt: '2026-10-28T09:00:00+01:00',
+      fb: 'Firma kupiła licencje AI dla 300 osób. Po kilku miesiącach regularnie korzystało z nich najwyżej pięć osób. Taką historię opisał na Reddicie administrator IT.\n\nPorównałem cztery pakiety, które kosztują podobnie: Microsoft 365 Copilot Business, Gemini w Google Workspace, ChatGPT Business i Claude Team. Różnią się tym, do jakich narzędzi pasują.\n\nWe wpisie znajdziesz ceny sprawdzone 27 października, podpowiedź, kiedy który pakiet ma sens, i plan 30-dniowego pilotażu na kilku osobach, zanim zapłacisz za wszystkich.',
+      ig: '300 licencji AI, a po kilku miesiącach korzysta z nich najwyżej pięć osób. Taką historię opisał na Reddicie administrator IT. 😬\n\nCopilot, Gemini, ChatGPT Business czy Claude Team? Kosztują podobnie, a różnią się tym, do czego pasują.\n\nPorównałem ceny i pułapki każdego z nich. Do tego plan 30-dniowego pilotażu, zanim kupisz licencje dla wszystkich.\n\n🔗 Cały wpis - link w komentarzu 👇\n.\n#AI #MŚP #ChatGPT #Copilot #Gemini #Claude #narzędziaAI #biznes' },
 ];
 
 async function graph(pathname, { method = 'GET', params, token = TOKEN } = {}) {
