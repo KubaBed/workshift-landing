@@ -12,6 +12,10 @@
  * Obrazki: IG wymaga PUBLICZNEGO URL-a - dlatego grafiki leżą w public/social/
  * i są serwowane z workshift.pl/social/... (muszą być wdrożone PRZED runem).
  *
+ * Wideo (opcjonalne pola pozycji): `video` (MP4 9:16, IG Reels), `storyVideo` (MP4 9:16,
+ * IG Story), `fbVideo` (MP4 1:1, FB), `cover` (PNG okładki Reelsa). Gdy pole jest ustawione,
+ * skrypt najpierw próbuje wideo, a przy błędzie publikuje statyczną grafikę (img/story/fbImg).
+ *
  * Wymagane env (.env.local, NIE commitować):
  *  - SOCIAL_ACCESS_TOKEN  token użytkownika/systemowy ze scope:
  *      pages_manage_posts, pages_read_engagement, instagram_basic,
@@ -103,10 +107,13 @@ const POSTS = [
 
 
     // ── Wpis z 28.10: które AI kupić dla firmy (Copilot, Gemini, ChatGPT Business, Claude Team) ──
-    // Czas zimowy (CET), wiec offset +01:00. FB: --fb planuje natywnie (link w tresci, grafika fbImg
-    // z pigulka "Porownanie na workshift.pl"). IG: --ig --force z jednorazowego wyzwalacza o 9:00.
+    // Czas zimowy (CET), wiec offset +01:00. FB: --fb planuje natywnie wideo (link w tresci).
+    // IG: --ig --force z jednorazowego wyzwalacza o 9:00, Reels + Story wideo. PNG to fallback, gdy wideo nie przejdzie.
+    // Zrodlo wideo: assets/blog/ktore-ai-kupic/motion/ (HyperFrames).
     { slug: 'ktore-ai-kupic-dla-firmy-copilot-chatgpt-claude-gemini', img: 'WS-post-12-ktore-ai-1080x1080.png', fbImg: 'WS-post-12-ktore-ai-fb-1080x1080.png',
       story: 'WS-story-12-ktore-ai-1080x1920.png', publishAt: '2026-10-28T09:00:00+01:00',
+      video: 'WS-reel-12-ktore-ai-1080x1920.mp4', storyVideo: 'WS-reel-12-ktore-ai-1080x1920.mp4',
+      fbVideo: 'WS-video-12-ktore-ai-fb-1080x1080.mp4', cover: 'WS-reel-12-ktore-ai-cover-1080x1920.png',
       fb: 'Firma kupiła licencje AI dla 300 osób. Po kilku miesiącach regularnie korzystało z nich najwyżej pięć osób. Taką historię opisał na Reddicie administrator IT.\n\nPorównałem cztery pakiety, które kosztują podobnie: Microsoft 365 Copilot Business, Gemini w Google Workspace, ChatGPT Business i Claude Team. Różnią się tym, do jakich narzędzi pasują.\n\nWe wpisie znajdziesz ceny sprawdzone 27 października, podpowiedź, kiedy który pakiet ma sens, i plan 30-dniowego pilotażu na kilku osobach, zanim zapłacisz za wszystkich.',
       ig: '300 licencji AI, a po kilku miesiącach korzysta z nich najwyżej pięć osób. Taką historię opisał na Reddicie administrator IT. 😬\n\nCopilot, Gemini, ChatGPT Business czy Claude Team? Kosztują podobnie, a różnią się tym, do czego pasują.\n\nPorównałem ceny i pułapki każdego z nich. Do tego plan 30-dniowego pilotażu, zanim kupisz licencje dla wszystkich.\n\n🔗 Cały wpis - link w komentarzu 👇\n.\n#AI #MŚP #ChatGPT #Copilot #Gemini #Claude #narzędziaAI #biznes' },
 ];
@@ -131,6 +138,15 @@ function loadState() {
 function saveState(s) { fs.writeFileSync(STATE_FILE, JSON.stringify(s, null, 2)); }
 
 const imgUrl = (f) => `${ASSET_BASE}/${f}`;
+
+// Najpierw wideo, przy błędzie statyczna grafika (fallback). Zwraca wynik i użyty tryb.
+async function videoOrImage(label, videoFn, imageFn) {
+    if (videoFn) {
+        try { return { res: await videoFn(), mode: 'video' }; }
+        catch (e) { console.log(`  ${label}: wideo nie przeszło (${e.message}), publikuję grafikę`); }
+    }
+    return { res: await imageFn(), mode: 'image' };
+}
 // Domyślnie wpis na blogu. Pozycje wydarzeniowe podają własny `link` (np. zapisy na Lumie)
 // oraz opcjonalnie `linkLabel` (etykieta przed URL-em w poście FB / komentarzu IG).
 const linkFor = (p) => p.link || `${BLOG_BASE}/${p.slug}`;
@@ -158,14 +174,21 @@ async function scheduleFacebook({ pageId, pageToken }) {
         if (state[key]) { console.log(`FB pominięty (już zaplanowany): ${p.slug}`); continue; }
         const ts = Math.floor(new Date(p.publishAt).getTime() / 1000);
         if (ts < Math.floor(Date.now() / 1000) + 600) { console.log(`FB pominięty (termin <10 min od teraz): ${p.slug}`); continue; }
-        const res = await graph(`/${pageId}/photos`, {
-            method: 'POST',
-            token: pageToken,
-            params: { url: imgUrl(p.fbImg || p.img), caption: `${p.fb}\n\n${fbLinkLine(p)}`, published: 'false', scheduled_publish_time: String(ts) },
-        });
-        state[key] = { id: res.id || res.post_id, at: p.publishAt };
+        const text = `${p.fb}\n\n${fbLinkLine(p)}`;
+        const { res, mode } = await videoOrImage('FB',
+            p.fbVideo && (() => graph(`/${pageId}/videos`, {
+                method: 'POST',
+                token: pageToken,
+                params: { file_url: imgUrl(p.fbVideo), description: text, published: 'false', scheduled_publish_time: String(ts) },
+            })),
+            () => graph(`/${pageId}/photos`, {
+                method: 'POST',
+                token: pageToken,
+                params: { url: imgUrl(p.fbImg || p.img), caption: text, published: 'false', scheduled_publish_time: String(ts) },
+            }));
+        state[key] = { id: res.id || res.post_id, at: p.publishAt, mode };
         saveState(state);
-        console.log(`FB zaplanowany: ${p.slug} → ${p.publishAt} (${res.id || res.post_id})`);
+        console.log(`FB zaplanowany (${mode}): ${p.slug} → ${p.publishAt} (${res.id || res.post_id})`);
     }
 }
 
@@ -196,15 +219,15 @@ async function publishFacebookNow({ pageId, pageToken }, forceSlug) {
 }
 
 // Kontener IG przetwarza się asynchronicznie - media_publish przed FINISHED
-// zwraca code 9007 "Media ID is not available". Czekamy do skutku (max ~60 s).
-async function waitForContainer(creationId) {
-    for (let i = 0; i < 20; i++) {
+// zwraca code 9007 "Media ID is not available". Czekamy do skutku (obraz ~60 s, wideo ~5 min).
+async function waitForContainer(creationId, tries = 20) {
+    for (let i = 0; i < tries; i++) {
         const { status_code } = await graph(`/${creationId}`, { params: { fields: 'status_code' } });
         if (status_code === 'FINISHED') return;
         if (status_code === 'ERROR') throw new Error(`Kontener ${creationId} w stanie ERROR (sprawdź URL/format obrazka).`);
         await new Promise((r) => setTimeout(r, 3000));
     }
-    throw new Error(`Kontener ${creationId} nie osiągnął FINISHED w 60 s.`);
+    throw new Error(`Kontener ${creationId} nie osiągnął FINISHED w ${tries * 3} s.`);
 }
 
 // ── IG: publikuj dojrzałe (feed + story), dodaj link w komentarzu ────────────
@@ -220,27 +243,39 @@ async function publishInstagram({ igId }, forceSlug) {
         // Feed
         const feedKey = `ig:${p.slug}`;
         if (!state[feedKey]) {
-            const c = await graph(`/${igId}/media`, { method: 'POST', params: { image_url: imgUrl(p.img), caption: p.ig } });
-            await waitForContainer(c.id);
-            const pub = await graph(`/${igId}/media_publish`, { method: 'POST', params: { creation_id: c.id } });
-            state[feedKey] = { id: pub.id, at: new Date().toISOString() };
+            const publish = async (params, tries) => {
+                const c = await graph(`/${igId}/media`, { method: 'POST', params });
+                await waitForContainer(c.id, tries);
+                return graph(`/${igId}/media_publish`, { method: 'POST', params: { creation_id: c.id } });
+            };
+            const reel = { media_type: 'REELS', video_url: imgUrl(p.video), caption: p.ig, share_to_feed: 'true' };
+            if (p.cover) reel.cover_url = imgUrl(p.cover);
+            const { res: pub, mode } = await videoOrImage('IG feed',
+                p.video && (() => publish(reel, 100)),
+                () => publish({ image_url: imgUrl(p.img), caption: p.ig }));
+            state[feedKey] = { id: pub.id, at: new Date().toISOString(), mode };
             saveState(state);
             // Link jako pierwszy komentarz (IG nie lubi linków w caption).
             // BYŁO: linkFor(p.slug) - linkFor oczekuje obiektu posta, nie stringa.
             // Dla stringa `p.link` trafiało w String.prototype.link, więc komentarz
             // publikował się jako "Cały wpis 👉 function link() { [native code] }".
             try { await graph(`/${pub.id}/comments`, { method: 'POST', params: { message: igLinkLine(p) } }); } catch (e) { console.log(`  (komentarz IG nie dodany: ${e.message})`); }
-            console.log(`IG feed opublikowany: ${p.slug} (${pub.id})`);
+            console.log(`IG feed opublikowany (${mode}): ${p.slug} (${pub.id})`);
         }
         // Story
         const storyKey = `ig-story:${p.slug}`;
         if (!state[storyKey]) {
-            const c = await graph(`/${igId}/media`, { method: 'POST', params: { image_url: imgUrl(p.story), media_type: 'STORIES' } });
-            await waitForContainer(c.id);
-            const pub = await graph(`/${igId}/media_publish`, { method: 'POST', params: { creation_id: c.id } });
-            state[storyKey] = { id: pub.id, at: new Date().toISOString() };
+            const publish = async (params, tries) => {
+                const c = await graph(`/${igId}/media`, { method: 'POST', params });
+                await waitForContainer(c.id, tries);
+                return graph(`/${igId}/media_publish`, { method: 'POST', params: { creation_id: c.id } });
+            };
+            const { res: pub, mode } = await videoOrImage('IG story',
+                p.storyVideo && (() => publish({ video_url: imgUrl(p.storyVideo), media_type: 'STORIES' }, 100)),
+                () => publish({ image_url: imgUrl(p.story), media_type: 'STORIES' }));
+            state[storyKey] = { id: pub.id, at: new Date().toISOString(), mode };
             saveState(state);
-            console.log(`IG story opublikowane: ${p.slug} (${pub.id})`);
+            console.log(`IG story opublikowane (${mode}): ${p.slug} (${pub.id})`);
         }
     }
 }
