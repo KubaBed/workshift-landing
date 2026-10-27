@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<style>
+  /* Strona wpisu przycina hero do 21:9 (ok. 85 px z gory i z dolu), wiec cala tresc trzymamy w srodkowym pasie. */
+  .frame { width: 1280px; height: 720px; padding: 100px 80px; display: flex; flex-direction: column; justify-content: center; }
+  .label { font-size: 18px; letter-spacing: 2px; }
+  h1 { font-size: 50px; font-weight: 500; letter-spacing: -2px; line-height: 1.08; margin-top: 22px; }
+  .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 40px; }
+  .card { padding: 24px 22px 22px; height: 170px; display: flex; flex-direction: column; }
+  .name { font-size: 24px; white-space: nowrap; font-weight: 500; letter-spacing: -0.5px; line-height: 1.15; }
+  .fit { font-size: 15px; letter-spacing: 1px; margin-top: 10px; }
+  .price { font-size: 26px; margin-top: auto; }
+  .price small { font-size: 15px; color: #AAAAAA; }
+  .foot { display: flex; align-items: center; margin-top: 36px; }
+  .step { font-size: 22px; padding: 10px 16px; }
+  .steptext { font-size: 24px; margin-left: 18px; }
+  .brand { margin-left: auto; }
+</style></head>
+<body><div class="frame">
+  <div class="label mono muted">PORÓWNANIE · CENY Z 27.10.2026</div>
+  <h1>Które AI kupić dla firmy?<br><span class="muted">Zależy od narzędzi, w których pracuje zespół.</span></h1>
+  <div class="cards">
+    <div class="card"><div class="name">Copilot Business</div><div class="fit mono muted">MICROSOFT 365</div><div class="price mono">21 USD <small>/ os.</small></div></div>
+    <div class="card"><div class="name">Gemini</div><div class="fit mono muted">GOOGLE WORKSPACE</div><div class="price mono">w cenie <small>planu</small></div></div>
+    <div class="card"><div class="name">ChatGPT Business</div><div class="fit mono muted">NIEZALEŻNIE OD POCZTY</div><div class="price mono">20 USD <small>/ os.</small></div></div>
+    <div class="card"><div class="name">Claude Team</div><div class="fit mono muted">NIEZALEŻNIE OD POCZTY</div><div class="price mono">20 USD <small>/ os.</small></div></div>
+  </div>
+  <div class="foot">
+    <span class="step mono lime">Krok 1</span>
+    <span class="steptext">Sprawdź, co już masz w abonamencie</span>
+    <span class="brand">WORKSHIFT.PL</span>
+  </div>
+</div></body></html>

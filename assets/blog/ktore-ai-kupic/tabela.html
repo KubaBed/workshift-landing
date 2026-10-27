@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<style>
+  /* Artykul wyswietla grafike w ok. 750 px, wiec fonty sa duze wzgledem szerokosci 1200 px. */
+  .frame { width: 1200px; padding: 64px 56px 52px; }
+  h1 { font-size: 44px; font-weight: 500; letter-spacing: -1.5px; line-height: 1.15; }
+  table { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 0; margin-top: 40px; border: 1px solid #333; border-radius: 16px; overflow: hidden; }
+  th, td { text-align: left; vertical-align: top; padding: 20px 18px; border-bottom: 1px solid #262626; }
+  tr:last-child td { border-bottom: 0; }
+  th { font-size: 27px; font-weight: 500; letter-spacing: -0.5px; background: #0d0d0d; }
+  td { font-size: 25px; line-height: 1.3; }
+  td.row { font-family: 'Plex Mono', monospace; font-size: 17px; letter-spacing: 1px; color: #AAAAAA; padding-top: 24px; }
+  td .big { font-family: 'Plex Mono', monospace; font-size: 30px; }
+  td .note { display: block; color: #AAAAAA; font-size: 20px; margin-top: 4px; }
+  .foot { display: flex; align-items: center; margin-top: 32px; }
+  .foot .mono { font-size: 18px; max-width: 820px; line-height: 1.4; }
+  .brand { margin-left: auto; }
+</style></head>
+<body><div class="frame">
+  <h1>Cztery pakiety AI dla firmy.<br><span class="muted">Podobna cena, inne dopasowanie.</span></h1>
+  <table>
+    <colgroup><col style="width:150px"><col><col><col><col></colgroup>
+    <tr><th></th><th>Copilot Business</th><th>Gemini w Workspace</th><th>ChatGPT Business</th><th>Claude Team</th></tr>
+    <tr><td class="row">CENA ZA OSOBĘ</td>
+      <td><span class="big">21&nbsp;USD</span><span class="note">25,20&nbsp;USD przy płatności co miesiąc</span></td>
+      <td><span class="big">63&nbsp;zł</span><span class="note">plan Business Standard, Gemini w&nbsp;cenie</span></td>
+      <td><span class="big">20&nbsp;USD</span><span class="note">25&nbsp;USD przy płatności co miesiąc</span></td>
+      <td><span class="big">20&nbsp;USD</span><span class="note">25&nbsp;USD przy płatności co miesiąc</span></td></tr>
+    <tr><td class="row">NAJLEPIEJ, GDY</td>
+      <td>firma pracuje w&nbsp;Outlooku, Teams i&nbsp;Excelu</td>
+      <td>firma pracuje w&nbsp;Gmailu i&nbsp;Dokumentach</td>
+      <td>potrzebujesz uniwersalnego asystenta</td>
+      <td>pracujesz na długich dokumentach</td></tr>
+    <tr><td class="row">WYMAGA</td>
+      <td>planu Microsoft 365 Business, do 300&nbsp;osób</td>
+      <td>planu Workspace (w&nbsp;Starter Gemini tylko w&nbsp;Gmailu)</td>
+      <td>minimum 2&nbsp;osób</td>
+      <td>od 2 do 150&nbsp;osób</td></tr>
+    <tr><td class="row">DROŻSZY WARIANT</td>
+      <td class="muted">brak</td>
+      <td>Business Plus, 99&nbsp;zł</td>
+      <td>Premium, 100&nbsp;USD</td>
+      <td>Premium, 100&nbsp;USD</td></tr>
+    <tr><td class="row">TRENOWANIE NA DANYCH FIRMY</td>
+      <td>nie</td>
+      <td>nie</td>
+      <td>nie (domyślnie)</td>
+      <td>nie (domyślnie)</td></tr>
+  </table>
+  <div class="foot">
+    <span class="mono muted">Ceny netto za osobę miesięcznie, przy płatności albo zobowiązaniu rocznym. Sprawdzone 27.10.2026.</span>
+    <span class="brand">WORKSHIFT.PL</span>
+  </div>
+</div></body></html>
