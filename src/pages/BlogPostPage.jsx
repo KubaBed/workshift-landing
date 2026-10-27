@@ -217,32 +217,33 @@ export default function BlogPostPage() {
 function renderContent(raw) {
   const lines = raw.trim().split('\n');
   let html = '';
-  let inList = false;
+  // Typ otwartej listy ('ul' albo 'ol'), zeby zamknac ja wlasciwym tagiem.
+  let inList = null;
 
   for (const line of lines) {
     const trimmed = line.trim();
 
     // Empty line - close list if open, add spacing
     if (!trimmed) {
-      if (inList) { html += '</ul>'; inList = false; }
+      if (inList) { html += `</${inList}>`; inList = null; }
       continue;
     }
 
     // Headings
     if (trimmed.startsWith('### ')) {
-      if (inList) { html += '</ul>'; inList = false; }
+      if (inList) { html += `</${inList}>`; inList = null; }
       html += `<h4>${inline(trimmed.slice(4))}</h4>`;
       continue;
     }
     if (trimmed.startsWith('## ')) {
-      if (inList) { html += '</ul>'; inList = false; }
+      if (inList) { html += `</${inList}>`; inList = null; }
       html += `<h3>${inline(trimmed.slice(3))}</h3>`;
       continue;
     }
 
     // Blockquote
     if (trimmed.startsWith('> ')) {
-      if (inList) { html += '</ul>'; inList = false; }
+      if (inList) { html += `</${inList}>`; inList = null; }
       html += `<blockquote><p>${inline(trimmed.slice(2))}</p></blockquote>`;
       continue;
     }
@@ -251,7 +252,7 @@ function renderContent(raw) {
     // Bez wariantu "pion" pionowe nagranie dostaje czarne pasy po bokach i robi sie male.
     const ytMatch = trimmed.match(/^\[youtube:([\w-]+)(?:\|([^\]]+))?\]$/);
     if (ytMatch) {
-      if (inList) { html += '</ul>'; inList = false; }
+      if (inList) { html += `</${inList}>`; inList = null; }
       const id = ytMatch[1];
       const vertical = (ytMatch[2] || '').trim() === 'pion';
       const wrapper = vertical
@@ -264,7 +265,7 @@ function renderContent(raw) {
     // Image embed: [image:/path.png] or [image:/path.png|alt text] on its own line
     const imgMatch = trimmed.match(/^\[image:([^\]|]+)(?:\|([^\]]+))?\]$/);
     if (imgMatch) {
-      if (inList) { html += '</ul>'; inList = false; }
+      if (inList) { html += `</${inList}>`; inList = null; }
       const src = imgMatch[1].trim();
       const alt = (imgMatch[2] || '').trim();
       html += `<div class="my-8 w-full overflow-hidden rounded-[10px]"><img src="${src}" alt="${alt}" loading="lazy" class="w-full h-auto"/></div>`;
@@ -273,24 +274,24 @@ function renderContent(raw) {
 
     // List item
     if (trimmed.startsWith('- ')) {
-      if (!inList) { html += '<ul>'; inList = true; }
+      if (inList !== 'ul') { if (inList) html += `</${inList}>`; html += '<ul>'; inList = 'ul'; }
       html += `<li>${inline(trimmed.slice(2))}</li>`;
       continue;
     }
 
     // Numbered list
     if (/^\d+\.\s/.test(trimmed)) {
-      if (!inList) { html += '<ol>'; inList = true; }
+      if (inList !== 'ol') { if (inList) html += `</${inList}>`; html += '<ol>'; inList = 'ol'; }
       html += `<li>${inline(trimmed.replace(/^\d+\.\s/, ''))}</li>`;
       continue;
     }
 
     // Paragraph
-    if (inList) { html += '</ul>'; inList = false; }
+    if (inList) { html += `</${inList}>`; inList = null; }
     html += `<p>${inline(trimmed)}</p>`;
   }
 
-  if (inList) html += '</ul>';
+  if (inList) html += `</${inList}>`;
   return html;
 }
 
