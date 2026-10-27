@@ -1,0 +1,150 @@
+<!doctype html>
+<!-- Ruchoma okladka posta 08 (wzorce 2 i 3 z playbooka okladek: licznik + lista).
+     Szablon dla reel/ (1080x1920) i square/ (1080x1080): edytuj ten plik i uruchom `python3 build.py`. -->
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height={{H}}" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: 'Inter'; font-weight: 300 800; src: url('assets/fonts/inter-latin.woff2') format('woff2'); }
+      @font-face { font-family: 'Inter'; font-weight: 300 800; src: url('assets/fonts/inter-latin-ext.woff2') format('woff2'); unicode-range: U+0100-024F; }
+      @font-face { font-family: 'IBM Plex Mono'; font-weight: 400; src: url('assets/fonts/plex-mono-400-latin.woff2') format('woff2'); }
+      @font-face { font-family: 'IBM Plex Mono'; font-weight: 400; src: url('assets/fonts/plex-mono-400-latin-ext.woff2') format('woff2'); unicode-range: U+0100-024F; }
+      @font-face { font-family: 'IBM Plex Mono'; font-weight: 500; src: url('assets/fonts/plex-mono-500-latin.woff2') format('woff2'); }
+      @font-face { font-family: 'IBM Plex Mono'; font-weight: 500; src: url('assets/fonts/plex-mono-500-latin-ext.woff2') format('woff2'); unicode-range: U+0100-024F; }
+
+      :root {
+        --sage: #E6E8DD; --lime: #9CE069; --ink: #000; --grey: #AAAAAA; --dim: #84857D;
+        /* Strefa tekstu: w 9:16 omija UI Reelsa/Story i kadr 3:4 w siatce profilu. */
+        --safe-top: {{SAFE_TOP}}px; --safe-bottom: {{SAFE_BOTTOM}}px;
+        --num: {{NUM}}px; --name: {{NAME}}px; --head: {{HEAD}}px; --cap: {{CAP}}px;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: {{H}}px; overflow: hidden; background: var(--ink); }
+      body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+
+      .scene { position: absolute; inset: 0; overflow: hidden; }
+      .bg { position: absolute; inset: 0; }
+      .safe {
+        position: absolute; top: var(--safe-top); bottom: var(--safe-bottom); left: 0; right: 0;
+        padding: 0 84px; display: flex; flex-direction: column;
+      }
+      .label { font-family: 'IBM Plex Mono', monospace; font-size: 28px; letter-spacing: 3px; }
+
+      /* Scena 1: licznik 300 -> 5 na czerni */
+      #s1 .bg { background: var(--ink); }
+      #s1 .label { color: var(--grey); }
+      #s1 .numwrap { margin-top: auto; }
+      #s1-num {
+        font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: var(--num);
+        line-height: 0.9; letter-spacing: -0.04em; color: #fff; font-variant-numeric: tabular-nums;
+        transform-origin: left bottom;
+      }
+      #s1 .caps { position: relative; height: calc(var(--cap) * 2.8); margin-top: 36px; margin-bottom: auto; }
+      #s1 .cap { position: absolute; left: 0; top: 0; font-size: var(--cap); line-height: 1.3; color: var(--grey); }
+      #s1 .cap b { color: #fff; font-weight: 400; }
+
+      /* Scena 2: lista narzedzi z przeskakujacym podswietleniem */
+      #s2 .bg { background: var(--sage); }
+      #s2 .label { color: var(--ink); display: flex; align-items: center; }
+      #s2 .label::before { content: ''; width: 56px; height: 3px; background: var(--lime); margin-right: 22px; }
+      #s2 .list { margin: auto 0; display: flex; flex-direction: column; gap: 6px; }
+      #s2 .name {
+        position: relative; align-self: flex-start; font-weight: 700; font-size: var(--name);
+        line-height: 1.08; letter-spacing: -0.035em; color: var(--dim); padding: 0 14px; margin-left: -14px; z-index: 0;
+      }
+      #s2 .name i { position: absolute; inset: 6% 0; background: var(--lime); transform-origin: left center; z-index: -1; }
+      #s2 .name span { position: relative; }
+
+      /* Scena 3: pelne lime, pytanie i CTA */
+      #s3 .bg { background: var(--lime); }
+      #s3 .label { color: var(--ink); }
+      #s3 h1 {
+        margin: auto 0; font-weight: 700; font-size: var(--head); line-height: 1.02; letter-spacing: -0.04em; color: var(--ink);
+      }
+      #s3 h1 .w { display: inline-block; }
+      #s3 .foot { display: flex; align-items: center; }
+      #s3 .word { font-weight: 600; font-size: 40px; letter-spacing: -0.5px; }
+      #s3 .pill {
+        margin-left: auto; background: var(--ink); color: #fff; font-family: 'IBM Plex Mono', monospace;
+        font-size: 28px; padding: 24px 34px; border-radius: 999px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="cover-08" data-start="0" data-duration="7.2" data-fps="30"
+         data-width="1080" data-height="{{H}}">
+
+      <div id="s1" class="scene clip" data-start="0" data-duration="3.3" data-track-index="1">
+        <div class="bg"></div>
+        <div class="safe">
+          <div class="label">HISTORIA Z&nbsp;REDDITA · ADMINISTRATOR IT</div>
+          <div class="numwrap"><div id="s1-num">300</div></div>
+          <div class="caps" data-layout-allow-overlap>
+            <div id="s1-cap-a" class="cap">kupionych licencji AI</div>
+            <div id="s1-cap-b" class="cap" style="opacity:0">osób, które <b>po kilku miesiącach naprawdę z&nbsp;nich korzystają</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="s2" class="scene clip" data-start="3.3" data-duration="1.7" data-track-index="2">
+        <div id="s2-bg" class="bg"></div>
+        <div class="safe">
+          <div id="s2-label" class="label">PORÓWNANIE · CENY Z&nbsp;27.10.2026</div>
+          <div class="list">
+            <div class="name" id="n1"><i></i><span>Copilot</span></div>
+            <div class="name" id="n2"><i></i><span>Gemini</span></div>
+            <div class="name" id="n3"><i></i><span>ChatGPT</span></div>
+            <div class="name" id="n4"><i></i><span>Claude</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="s3" class="scene clip" data-start="5.0" data-duration="2.2" data-track-index="3">
+        <div id="s3-bg" class="bg"></div>
+        <div class="safe">
+          <div id="s3-label" class="label">COPILOT · GEMINI · CHATGPT · CLAUDE</div>
+          <h1><span class="w">Które</span> <span class="w">AI</span> <span class="w">kupić</span> <span class="w">dla</span> <span class="w">firmy?</span></h1>
+          <div id="s3-foot" class="foot"><span class="word">Workshift</span><span class="pill">Porównanie na workshift.pl</span></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // S1: liczba stoi od klatki 0 (okladka), potem spada 300 -> 5 i robi sie lime.
+      const counter = { v: 300 };
+      const num = document.getElementById('s1-num');
+      tl.fromTo(counter, { v: 300 }, {
+        v: 5, duration: 1.3, ease: 'power3.inOut',
+        onUpdate: () => { num.textContent = String(Math.round(counter.v)); }
+      }, 0.5);
+      tl.fromTo('#s1-num', { color: '#ffffff' }, { color: '#9CE069', duration: 0.2, ease: 'none' }, 1.7);
+      tl.fromTo('#s1-num', { scale: 1 }, { scale: 1.06, duration: 0.12, ease: 'power2.out', yoyo: true, repeat: 1 }, 1.8);
+      tl.fromTo('#s1-cap-a', { opacity: 1, y: 0 }, { opacity: 0, y: -20, duration: 0.25, ease: 'power2.in' }, 1.3);
+      tl.fromTo('#s1-cap-b', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power3.out' }, 1.65);
+
+      // S2: tlo wjezdza od dolu, nazwy wjezdzaja z prawej, podswietlenie przeskakuje po kolei.
+      tl.fromTo('#s2-bg', { yPercent: 100 }, { yPercent: 0, duration: 0.3, ease: 'power3.out' }, 3.3);
+      tl.fromTo('#s2-label', { opacity: 0 }, { opacity: 1, duration: 0.2 }, 3.45);
+      tl.fromTo('#s2 .name', { x: 140, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35, ease: 'power3.out', stagger: 0.06 }, 3.4);
+      ['#n1', '#n2', '#n3', '#n4'].forEach((id, i) => {
+        const t = 3.8 + i * 0.32;
+        tl.fromTo(id + ' i', { scaleX: 0 }, { scaleX: 1, duration: 0.14, ease: 'power2.out' }, t);
+        tl.fromTo(id, { color: '#84857D' }, { color: '#000000', duration: 0.1 }, t);
+        if (i < 3) tl.fromTo(id + ' i', { scaleX: 1 }, { scaleX: 0, duration: 0.12, ease: 'power2.in', immediateRender: false }, t + 0.26);
+      });
+
+      // S3: lime zalewa kadr, slowa pytania wskakuja kolejno, na koncu CTA.
+      tl.fromTo('#s3-bg', { yPercent: 100 }, { yPercent: 0, duration: 0.28, ease: 'power3.out' }, 5.0);
+      tl.fromTo('#s3-label', { opacity: 0 }, { opacity: 1, duration: 0.2 }, 5.2);
+      tl.fromTo('#s3 h1 .w', { yPercent: 60, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.3, ease: 'power3.out', stagger: 0.06 }, 5.15);
+      tl.fromTo('#s3-foot', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power3.out' }, 5.65);
+
+      window.__timelines['cover-08'] = tl;
+    </script>
+  </body>
+</html>

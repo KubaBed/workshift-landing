@@ -1,0 +1,10 @@
+{
+  "name": "ktore-ai-kupic-motion",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "python3 build.py",
+    "check": "python3 build.py && npx --yes hyperframes@0.7.77 check reel && npx --yes hyperframes@0.7.77 check square",
+    "render": "python3 build.py && npx --yes hyperframes@0.7.77 render reel -o renders/reel.mp4 && npx --yes hyperframes@0.7.77 render square -o renders/square.mp4"
+  }
+}
