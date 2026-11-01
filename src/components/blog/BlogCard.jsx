@@ -63,7 +63,10 @@ export function BlogCard({ post, variant = 'standard' }) {
           <img
             src={post.image}
             alt={post.title}
+            width={960}
+            height={720}
             loading="lazy"
+            decoding="async"
             className={`w-full object-cover transition-transform duration-500 group-hover:scale-[1.1] ${
               isFeatured ? 'aspect-[4/3]' : 'aspect-[4/3]'
             }`}

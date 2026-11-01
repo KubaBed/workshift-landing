@@ -505,7 +505,15 @@ export const routes = [
 
   ...blogPosts.map((post) => ({
     ...postMeta(post),
-    lastmod: post.date,
+    lastmod: post.updated || post.date,
+    articleSchema: {
+      headline: post.title,
+      description: plainText(post.excerpt, 300),
+      datePublished: post.date,
+      dateModified: post.updated || post.date,
+      authorName: post.author?.name ?? 'Jakub Bednarz',
+      section: post.category,
+    },
     priority: '0.7',
     changefreq: 'monthly',
     fallbackHeading: post.title,
