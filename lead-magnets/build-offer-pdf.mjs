@@ -1167,6 +1167,17 @@ const FONT_FACES = [
     ['IBM Plex Mono', '500', 'public/fonts/plex-mono-500-latin-ext.woff2', LATIN_EXT],
 ];
 
+// Obraz i QR oferty mają leżeć w gitignorowanym offers/source/<slug>/ tej oferty. Ścieżka gdzie
+// indziej (public/, src/, katalog innego klienta) grozi commitem materiału klienta do publicznego
+// repo albo wstawieniem do PDF pliku z cudzej oferty. Tylko ostrzeżenie, build idzie dalej.
+function warnIfOutsideClientDir(rel, field) {
+    const clientDir = path.join(ROOT, 'offers', 'source', path.basename(slug));
+    const fromClient = path.relative(clientDir, path.resolve(ROOT, rel));
+    if (fromClient.startsWith('..') || path.isAbsolute(fromClient)) {
+        console.warn(`⚠ ${field}: ${rel} leży poza offers/source/${path.basename(slug)}/ (sprawdź, czy plik nie trafi do repo i czy należy do tej oferty)`);
+    }
+}
+
 async function dataUri(rel, mime) {
     const buf = await fs.readFile(path.join(ROOT, rel));
     return `data:${mime};base64,${buf.toString('base64')}`;
@@ -1212,6 +1223,7 @@ async function build() {
     // Obrazy sekcji (`sections[].image.path`, ścieżka względem repo, np. offers/source/...) jako data URI.
     for (const section of offer.sections || []) {
         if (!section.image?.path) continue;
+        warnIfOutsideClientDir(section.image.path, 'sections[].image.path');
         const ext = path.extname(section.image.path).slice(1).toLowerCase();
         const mime = { png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp', svg: 'image/svg+xml' }[ext] || 'application/octet-stream';
         section.image.dataUri = await dataUri(section.image.path, mime);
@@ -1220,6 +1232,7 @@ async function build() {
     // Kod QR do demo w części 1 (`board.demo.qrPath`, SVG lub PNG względem repo). Brak pliku = bez QR.
     const demo = offer.board?.demo;
     if (demo?.qrPath) {
+        warnIfOutsideClientDir(demo.qrPath, 'board.demo.qrPath');
         const ext = path.extname(demo.qrPath).slice(1).toLowerCase();
         try {
             demo.qrDataUri = await dataUri(demo.qrPath, ext === 'svg' ? 'image/svg+xml' : 'image/png');

@@ -49,12 +49,11 @@ stash/
 src/data/offers/*.js
 !src/data/offers/index.js
 !src/data/offers/*.example.js
-api/_data/offers/*.js
-api/_data/offers/_views.json
-# Archiwalne oferty klientów. Do 15.10 łapała je reguła `offers/`; po zmianie na `/offers/` (PR #25)
-# podkatalog przestał być ignorowany, a repo jest publiczne.
-api/_data/offers/_archive/
-!api/_data/offers/*.example.js
+# Cały katalog poza szablonem: dane klientów w każdym formacie (.js, .json, PDF, _views.json)
+# i podkatalog _archive/. Reguła z "/" w środku jest kotwiczona do roota, więc nie łapie
+# api/offers/ (Vercel Functions, kod publiczny). Do 15.10 dane łapała reguła `offers/`.
+api/_data/offers/*
+!api/_data/offers/_template.example.js
 public/offers/
 
 # Root ma byc czysty: zadnych binariow ani dokumentow luzem na najwyzszym poziomie.
