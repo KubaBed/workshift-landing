@@ -118,6 +118,9 @@ export default function BlogPostPage() {
             <img
               src={post.image}
               alt={post.title}
+              width={960}
+              height={411}
+              decoding="async"
               className="w-full aspect-[21/9] object-cover"
             />
           </div>

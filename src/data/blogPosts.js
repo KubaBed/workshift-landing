@@ -139,7 +139,7 @@ Kod i instalatory: [github.com/ARahim3/DigUp](https://github.com/ARahim3/DigUp)
     category: 'Wiedza',
     date: '2026-10-04',
     author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.webp' },
-    image: 'https://i.ytimg.com/vi/i1sN9PiTeBk/maxresdefault.jpg',
+    image: '/images/blog/drugi-mozg-agenta-jak-ciac-tokeny.webp',
     excerpt:
       'Nagranie mojego wystąpienia na webinarze AI Now Polska jest już na YouTube. Mój agent spalał 28 686 tokenów, zanim padło pierwsze pytanie - pokazuję, jak drugi mózg zbił to do kilkuset. Do tego najważniejsze tezy, pomiary i porażki.',
     content: `
@@ -383,7 +383,7 @@ Kod i instalatory: [github.com/ARahim3/DigUp](https://github.com/ARahim3/DigUp)
     category: 'Wiedza',
     date: '2026-07-17',
     author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.webp' },
-    image: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&q=80',
+    image: '/images/blog/firmowa-baza-wiedzy-dobre-praktyki.webp',
     excerpt:
       'Cerebras opublikował techniczny opis swojej wewnętrznej bazy wiedzy - 15 000 pytań dziennie, korzystają z niej ludzie, automatyzacje i agenty AI. Rozbieram ich architekturę na zasady, które działają w każdej skali, i pokazuję, jak wdrożyć je w firmie bez działu ML.',
     content: `
@@ -457,7 +457,7 @@ A jeśli wolisz to policzyć i zaplanować na spokojnie - [zacznij od bezpłatne
     category: 'Wiedza',
     date: '2026-07-04',
     author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.webp' },
-    image: 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=800&q=80',
+    image: '/images/blog/oszczedzanie-tokenow-ai-agent.webp',
     excerpt:
       'Wchodzimy w drugą fazę AI - tę, w której tokeny i narzędzia zaczynają realnie kosztować. Trzy konkretne sposoby, żeby nauczyć swojego agenta AI oszczędnego gospodarowania zasobami - i jeden nawyk, który oszczędza jeszcze więcej.',
     content: `
@@ -860,7 +860,7 @@ Jeśli macie ochotę posłuchać wystąpień, ale przede wszystkim zbić piątk�
     category: 'Wiedza',
     date: '2026-04-10',
     author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.webp' },
-    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80',
+    image: '/images/blog/google-turboquant-kompresja-ai.webp',
     excerpt:
       'Google zaprezentowało algorytm bezstratnej kompresji KV cache. Co to oznacza dla prywatności i szybkości AI na smartfonach?',
     content: `
@@ -897,7 +897,7 @@ Google mogło to schować do szuflady i wykorzystywać tylko dla siebie, ale udo
     category: 'Wiedza',
     date: '2026-04-05',
     author: { name: 'Jakub Bednarz', avatar: '/Jakub-Bednarz.webp' },
-    image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80',
+    image: '/images/blog/vibe-coding-demokratyzacja-software.webp',
     excerpt:
       'Czy AI w rękach laików to budowa domu narzędziami z Lidla? O demokratyzacji tworzenia oprogramowania i sile MVP.',
     content: `

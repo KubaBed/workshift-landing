@@ -100,6 +100,32 @@ function patchHead(shell, route) {
     extras.push(`  <script type="application/ld+json">${serviceLd}</script>`);
   }
 
+  // BlogPosting dla wpisów: autor, daty i obrazek w danych strukturalnych. Modele z wyszukiwaniem
+  // i Google premiują treść datowaną i podpisaną. Wpisy pisze Jakub, więc autor to encja
+  // .../#jakub-bednarz z index.html; inny autor dostaje własny obiekt Person.
+  if (route.articleSchema) {
+    const a = route.articleSchema;
+    const author =
+      a.authorName === 'Jakub Bednarz'
+        ? { '@id': `${SITE_ORIGIN}/#jakub-bednarz` }
+        : { '@type': 'Person', name: a.authorName };
+    const articleLd = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: a.headline,
+      description: a.description,
+      image: image,
+      datePublished: a.datePublished,
+      dateModified: a.dateModified,
+      author,
+      publisher: { '@id': `${SITE_ORIGIN}/#organization` },
+      mainEntityOfPage: url,
+      articleSection: a.section,
+      inLanguage: 'pl-PL',
+    }).replace(/</g, '\\u003c');
+    extras.push(`  <script type="application/ld+json">${articleLd}</script>`);
+  }
+
   // FAQPage tylko dla tras, których dane niosą pole `faq` (automatyzacja,
   // szkolenia).
   if (route.faq?.length) {

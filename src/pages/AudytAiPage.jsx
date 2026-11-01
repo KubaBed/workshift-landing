@@ -59,10 +59,11 @@ export default function AudytAiPage() {
         <main className="bg-sage relative overflow-hidden">
             {/* ============ HERO ============ */}
             <section className="relative px-4 pt-6 md:pt-20 pb-8 md:pb-24">
-                {/* Background blur orbs (same pattern co kalkulator) */}
+                {/* Background blur orbs (same pattern co kalkulator). Pozycja w px od góry, nie w % wysokości
+                    sekcji: przy % plama skakała, gdy sekcja rosła w trakcie ładowania (CLS 0,08 w PSI 02.11). */}
                 <div className="absolute inset-0 pointer-events-none z-0">
-                    <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-lime/15 blur-[140px] rounded-full" />
-                    <div className="absolute bottom-1/4 right-1/4 w-[420px] h-[420px] bg-black/5 blur-[140px] rounded-full" />
+                    <div className="absolute top-[160px] left-1/4 w-[500px] h-[500px] bg-lime/15 blur-[140px] rounded-full" />
+                    <div className="absolute top-[480px] right-1/4 w-[420px] h-[420px] bg-black/5 blur-[140px] rounded-full" />
                 </div>
 
                 <div className="relative z-10 max-w-4xl mx-auto pt-4 md:pt-16">
