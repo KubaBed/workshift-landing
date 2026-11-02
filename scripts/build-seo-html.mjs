@@ -400,10 +400,13 @@ async function prerender(html, route) {
 
 const shell = await readFile(join(DIST, 'index.html'), 'utf8');
 
-// Powłoka SPA bez prerenderu dla tras spoza listy (oferty, /thank-you, 404, /showcase).
-// Catch-all w vercel.json kieruje na nią, a nie na /index.html: ten po prerenderze zawiera
-// stronę główną i React próbowałby ją hydratować pod innym adresem.
-await writeFile(join(DIST, 'spa.html'), shell, 'utf8');
+// Powłoka SPA bez prerenderu, z noindex. spa.html: trasy spoza listy, które istnieją tylko w kliencie
+// (rewrites w vercel.json: oferty, /thank-you, /showcase, /uslugi). 404.html: Vercel podaje go ze statusem
+// 404 dla pozostałych adresów, a NotFoundPage rysuje się w kliencie. Nie /index.html: ten po prerenderze
+// zawiera stronę główną i React próbowałby ją hydratować pod innym adresem.
+const spaShell = shell.replace(/(<meta name="robots" content=")[^"]*(")/, '$1noindex, nofollow$2');
+await writeFile(join(DIST, 'spa.html'), spaShell, 'utf8');
+await writeFile(join(DIST, '404.html'), spaShell, 'utf8');
 
 const thin = [];
 /** Ile linków przychodzących ma każda trasa w statycznym HTML - kontrola orphan pages. */

@@ -21,7 +21,19 @@
       "destination": "/brand/index.html"
     },
     {
-      "source": "/(.*)",
+      "source": "/oferta/(.*)",
+      "destination": "/spa.html"
+    },
+    {
+      "source": "/thank-you(/)?",
+      "destination": "/spa.html"
+    },
+    {
+      "source": "/showcase(/)?",
+      "destination": "/spa.html"
+    },
+    {
+      "source": "/uslugi(/)?",
       "destination": "/spa.html"
     }
   ],
