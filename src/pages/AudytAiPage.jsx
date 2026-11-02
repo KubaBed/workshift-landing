@@ -67,9 +67,10 @@ export default function AudytAiPage() {
                 </div>
 
                 <div className="relative z-10 max-w-4xl mx-auto pt-4 md:pt-16">
+                    {/* Bez opacity 0: nagłówek jest w prerenderowanym HTML i ma być widoczny przed JS (LCP). */}
                     <motion.div
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
+                        initial={{ y: 16 }}
+                        animate={{ y: 0 }}
                         transition={{ duration: 0.6 }}
                         className="text-center"
                     >

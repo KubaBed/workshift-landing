@@ -2,7 +2,8 @@ import { useParams, Link, Navigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { ArrowLeft, Linkedin, Twitter, Link2 } from 'lucide-react';
-import { getPostBySlug, getRelatedPosts, formatDate, loadPostContent } from '../data/blog';
+import { getPostBySlug, getRelatedPosts, formatDate, loadPostContent, getPostContentSync } from '../data/blog';
+import { SITE_ORIGIN } from '../lib/seo';
 import { BlogCard } from '../components/blog/BlogCard';
 import { FadeUp } from '../components/animations/FadeUp';
 import { track, EVENTS } from '../lib/analytics';
@@ -22,9 +23,14 @@ export default function BlogPostPage() {
 
   // Treść wpisu to osobny chunk (content/blog/<slug>.md), pobierany dopiero tutaj.
   // Nagłówek, data i okładka są w indeksie, więc renderują się od razu.
-  const [loaded, setLoaded] = useState({ slug: null, content: null });
+  // Przy wejściu na prerenderowany wpis treść jest już w HTML (getPostContentSync),
+  // więc pierwszy render zgadza się z serwerem i nie ma drugiego pobrania.
+  const [loaded, setLoaded] = useState(() => {
+    const initial = getPostContentSync(slug);
+    return initial == null ? { slug: null, content: null } : { slug, content: initial };
+  });
   useEffect(() => {
-    if (!post) return undefined;
+    if (!post || loaded.slug === slug) return undefined;
     let cancelled = false;
     loadPostContent(slug).then((content) => {
       if (!cancelled) setLoaded({ slug, content });
@@ -32,7 +38,7 @@ export default function BlogPostPage() {
     return () => {
       cancelled = true;
     };
-  }, [slug, post]);
+  }, [slug, post, loaded.slug]);
   const content = loaded.slug === slug ? loaded.content : null;
 
   // Scroll to top on post change
@@ -79,7 +85,8 @@ export default function BlogPostPage() {
   // Simple markdown-ish content → HTML
   const contentHtml = content ? renderContent(content) : '';
 
-  const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
+  // Z adresu kanonicznego, nie z window.location: ten sam link na serwerze i w przeglądarce.
+  const shareUrl = `${SITE_ORIGIN}/blog/${slug}`;
 
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -98,7 +105,7 @@ export default function BlogPostPage() {
       {/* ─── Banner Section ─── */}
       <section id="banner" className="max-w-[1320px] mx-auto px-6 max-md:px-4 mb-16">
         {/* Back link */}
-        <FadeUp>
+        <FadeUp fade={false}>
           <Link
             to="/blog"
             className="inline-flex items-center gap-2 text-sm text-muted-dark hover:text-black transition-colors mb-12"
@@ -109,7 +116,7 @@ export default function BlogPostPage() {
         </FadeUp>
 
         {/* Author + Meta - centered */}
-        <FadeUp delay={0.05}>
+        <FadeUp fade={false} delay={0.05}>
           <div className="flex flex-col items-center text-center mb-8">
 
             {/* Category + Date */}
@@ -128,14 +135,14 @@ export default function BlogPostPage() {
         </FadeUp>
 
         {/* Title - centered, large */}
-        <FadeUp delay={0.1}>
+        <FadeUp fade={false} delay={0.1}>
           <h1 className="text-3xl md:text-5xl lg:text-[60px] font-display tracking-tight text-black text-center max-w-[900px] mx-auto leading-[1.1] mb-12">
             {post.title}
           </h1>
         </FadeUp>
 
         {/* Featured image - full container width */}
-        <FadeUp delay={0.15}>
+        <FadeUp fade={false} delay={0.15}>
           <div className="w-full overflow-hidden rounded-[10px]">
             <img
               src={post.image}
@@ -151,7 +158,7 @@ export default function BlogPostPage() {
 
       {/* ─── Article Body ─── */}
       <section className="max-w-[800px] mx-auto px-6 max-md:px-4 mb-16">
-        <FadeUp delay={0.2}>
+        <FadeUp fade={false} delay={0.2}>
           <article
             className={`prose-workshift ${content ? '' : 'min-h-[60vh]'}`}
             aria-busy={!content}

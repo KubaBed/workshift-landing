@@ -14,7 +14,8 @@ const LineFigure = lazy(() => import('./LineFigure').then((m) => ({ default: m.L
 export function LazyLineFigure({ className, ...props }) {
     const el = useRef(null);
     // Bez IntersectionObserver (stare przeglądarki) figura montuje się od razu.
-    const [near, setNear] = useState(() => !('IntersectionObserver' in window));
+    // Na serwerze (prerender) false, tak jak w nowoczesnej przeglądarce: HTML i hydratacja się zgadzają.
+    const [near, setNear] = useState(() => typeof window !== 'undefined' && !('IntersectionObserver' in window));
 
     useEffect(() => {
         const node = el.current;

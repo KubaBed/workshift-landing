@@ -6,7 +6,7 @@ import apiMiddleware from './vite-api-middleware.mjs'
 import { blogIndexPlugin } from './scripts/lib/blog-source.mjs'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ isSsrBuild }) => ({
   plugins: [
     tailwindcss(),
     react(),
@@ -24,7 +24,12 @@ export default defineConfig({
   },
   build: {
     // Manifest czyta scripts/build-seo-html.mjs (modulepreload chunków trasy) i potem go usuwa.
-    manifest: true,
+    manifest: !isSsrBuild,
+    // Build SSR (src/entry-server.jsx -> dist-ssr) służy tylko do prerenderu, bez kopii public/.
+    copyPublicDir: !isSsrBuild,
+    // Logotypy z src/assets/logos jako pliki, nie base64: marquee powiela je kilkanaście razy,
+    // co w prerenderowanym HTML strony głównej dawało ok. 460 KB samych data URI.
+    assetsInlineLimit: (file) => (file.includes('/src/assets/logos/') ? false : undefined),
     chunkSizeWarningLimit: 600,
     rollupOptions: {
       output: {
@@ -42,4 +47,4 @@ export default defineConfig({
       },
     },
   },
-})
+}))

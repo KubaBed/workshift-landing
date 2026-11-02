@@ -133,6 +133,7 @@ export function HeroTypographic() {
           <TextReveal
             text="Wdrażamy AI, które po prostu działa."
             wordMode
+            as="h1"
             delay={0.5}
             className="text-[36px] sm:text-[52px] md:text-[68px] lg:text-[72px] leading-[1.1] tracking-[-2px] lg:tracking-[-3.6px] font-normal text-black"
           />

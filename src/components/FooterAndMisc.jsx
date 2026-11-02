@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Floating } from './animations/Floating';
 import { track, EVENTS } from '../lib/analytics';
 import { openConsentBanner } from '../lib/consent';
+import { SERVICE_LINKS, TOOL_LINKS } from '../data/siteNav';
 // -------------------------------------------------------------
 // FAQ SECTION
 // -------------------------------------------------------------
@@ -186,15 +187,34 @@ export function Footer() {
     return (
         <footer className="bg-black pt-20 pb-10 border-t border-white/10">
             <div className="max-w-[1400px] mx-auto px-6 max-md:px-4">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-12 mb-16">
 
-                    <div className="md:col-span-2">
+                    <div className="sm:col-span-2">
                         <div className="mb-6">
                             <Logo variant="dark" size={48} />
                         </div>
                         <p className="text-white/50 max-w-sm leading-relaxed">
                             Wdrażamy automatyzacje i agentów AI w polskich MŚP.
                         </p>
+                    </div>
+
+                    {/* Linki do podstron w HTML: prerender nie ma już ukrytej mapy strony z fallbacku. */}
+                    <div>
+                        <h4 className="text-white font-display mb-6">Usługi</h4>
+                        <ul className="space-y-4">
+                            {SERVICE_LINKS.map(([href, label]) => (
+                                <li key={href}><Link to={href} className="text-white/50 hover:text-lime transition-colors">{label}</Link></li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 className="text-white font-display mb-6">Narzędzia</h4>
+                        <ul className="space-y-4">
+                            {TOOL_LINKS.map(([href, label]) => (
+                                <li key={href}><Link to={href} className="text-white/50 hover:text-lime transition-colors">{label}</Link></li>
+                            ))}
+                        </ul>
                     </div>
 
                     <div>

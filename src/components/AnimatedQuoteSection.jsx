@@ -86,6 +86,8 @@ export function AnimatedQuoteSection() {
                                         {word}
                                     </span>
                                 )}
+                                {/* Spacja na końcu inline-blocka nie zmienia układu, a bez niej czytniki HTML sklejają słowa. */}
+                                {' '}
                             </span>
                         );
                     })}

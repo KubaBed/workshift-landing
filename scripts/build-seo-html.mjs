@@ -28,7 +28,8 @@ import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { routes } from './seo-routes.mjs';
-import { readBlogIndex } from './lib/blog-source.mjs';
+import { readBlogIndex, readBlogPosts } from './lib/blog-source.mjs';
+import { SITE_NAV } from '../src/data/siteNav.js';
 import { MAX_TITLE_LENGTH, SITE_ORIGIN, absoluteUrl } from '../src/lib/seo.js';
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist');
@@ -180,15 +181,8 @@ function patchPreloads(html, route) {
   const match = ROUTE_PAGE_MODULES.find(([pattern]) => pattern.test(route.path));
   if (!match) return html;
   if (!manifest[match[1]]) throw new Error(`build-seo-html: brak ${match[1]} w manifeście Vite`);
+  // Treść wpisu bloga jest w HTML (prerender + window.__WS_POST__), więc jej chunku nie preloadujemy.
   const files = chunkFiles(match[1]);
-  // Wpis bloga: treść to osobny chunk (content/blog/<slug>.md), ładowany dynamicznie
-  // przez BlogPostPage. Preload, żeby nie czekał w kolejce za chunkiem strony.
-  const postSlug = /^\/blog\/([^/]+)$/.exec(route.path)?.[1];
-  if (postSlug) {
-    const key = `content/blog/${postSlug}.md?raw`;
-    if (!manifest[key]) throw new Error(`build-seo-html: brak ${key} w manifeście Vite`);
-    files.push(manifest[key].file);
-  }
   const links = [...new Set(files)]
     .filter((file) => !html.includes(`/${file}"`))
     .map((file) => `    <link rel="modulepreload" crossorigin href="/${file}">`);
@@ -205,20 +199,7 @@ const TEXT_STYLE = 'font-size: 1rem; line-height: 1.6; color: #000000; margin: 0
  * bo to decyzja nawigacyjna: chcemy każdą usługę i każdą stronę-hub, ale nie
  * 12 wpisów bloga w stopce każdego URL-a (do wpisów prowadzi hub /blog).
  */
-const SITE_NAV = [
-  ['/', 'Strona główna'],
-  ['/uslugi/automatyzacja', 'Audyt i automatyzacja procesów'],
-  ['/uslugi/aplikacja', 'Dedykowana aplikacja'],
-  ['/uslugi/agenty', 'Agenci AI'],
-  ['/uslugi/szkolenia', 'Szkolenia AI'],
-  ['/uslugi/kreacje', 'Kreacje reklamowe AI'],
-  ['/blog', 'Blog'],
-  ['/audyt-ai', 'Mikro-audyt AI'],
-  ['/kalkulator', 'Kalkulator strat czasowych'],
-  ['/prompty', 'Baza promptów i person AI'],
-  ['/narzedzia/szkic', 'Szkic - aplikacja na Maca'],
-  ['/polityka-prywatnosci', 'Polityka prywatności'],
-];
+
 
 function renderSection(section) {
   const parts = [`<h3 style="font-size: 1.125rem; font-weight: 600; margin: 2rem 0 0.75rem 0; letter-spacing: -0.01em;">${escapeHtml(section.heading)}</h3>`];
@@ -354,9 +335,75 @@ function buildSitemap() {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 
+/* ---------- prerender ---------- */
+
+/**
+ * HTML aplikacji z buildu SSR (src/entry-server.jsx -> dist-ssr). Zastępuje statyczny fallback
+ * w #root: przeglądarka maluje prawdziwą stronę przed JS, a boty bez JS czytają tę samą treść
+ * co ludzie. src/main.jsx widzi data-prerendered i hydratuje zamiast renderować od zera.
+ * Trasa, której render się nie uda, zostaje przy fallbacku (ostrzeżenie w logu buildu).
+ * PRERENDER=0 wyłącza całość (awaryjnie, bez zmiany kodu).
+ */
+const SSR_ENTRY = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist-ssr', 'entry-server.js');
+const prerenderEnabled = process.env.PRERENDER !== '0';
+const { render } = prerenderEnabled ? await import(SSR_ENTRY) : { render: null };
+
+/** Podmienia zawartość <div id="root"> (szuka pasującego </div>, liczy zagnieżdżenia). */
+function replaceRoot(html, inner) {
+  const open = '<div id="root">';
+  const start = html.indexOf(open);
+  if (start === -1) throw new Error('build-seo-html: brak <div id="root"> w index.html');
+  const tagRe = /<\/?div\b[^>]*>/g;
+  tagRe.lastIndex = start + open.length;
+  let depth = 1;
+  let match;
+  while ((match = tagRe.exec(html))) {
+    depth += match[0].startsWith('</') ? -1 : 1;
+    if (depth === 0) {
+      return `${html.slice(0, start)}<div id="root" data-prerendered>${inner}</div>${html.slice(tagRe.lastIndex)}`;
+    }
+  }
+  throw new Error('build-seo-html: niedomknięty <div id="root">');
+}
+
+/** Treść wpisu dla pierwszego renderu w przeglądarce (getPostContentSync w src/data/blog.js). */
+function postContentScript(route) {
+  const slug = /^\/blog\/([^/]+)$/.exec(route.path)?.[1];
+  if (!slug) return '';
+  const post = blogPostsWithContent.find((p) => p.slug === slug);
+  if (!post) return '';
+  const json = JSON.stringify({ slug, content: post.content }).replace(/</g, '\\u003c');
+  return `<script>window.__WS_POST__=${json}</script>`;
+}
+
+const blogPostsWithContent = readBlogPosts();
+const prerenderFailed = [];
+
+/**
+ * Trasy przy fallbacku: narzędzia, których treść ładuje się dopiero w przeglądarce (kalkulator,
+ * baza promptów z JSON-a). W HTML aplikacji mają ok. 120-140 słów, a fallback ma opis narzędzia.
+ */
+const KEEP_FALLBACK = new Set(['/kalkulator', '/prompty']);
+
+async function prerender(html, route) {
+  if (!render || KEEP_FALLBACK.has(route.path)) return html;
+  try {
+    const appHtml = await render(route.path);
+    return replaceRoot(html, appHtml).replace('</body>', `${postContentScript(route)}</body>`);
+  } catch (error) {
+    prerenderFailed.push(`${route.path} (${String(error?.message ?? error).split('\n')[0]})`);
+    return html;
+  }
+}
+
 /* ---------- wejście ---------- */
 
 const shell = await readFile(join(DIST, 'index.html'), 'utf8');
+
+// Powłoka SPA bez prerenderu dla tras spoza listy (oferty, /thank-you, 404, /showcase).
+// Catch-all w vercel.json kieruje na nią, a nie na /index.html: ten po prerenderze zawiera
+// stronę główną i React próbowałby ją hydratować pod innym adresem.
+await writeFile(join(DIST, 'spa.html'), shell, 'utf8');
 
 const thin = [];
 /** Ile linków przychodzących ma każda trasa w statycznym HTML - kontrola orphan pages. */
@@ -365,7 +412,7 @@ const inbound = new Map(routes.map((route) => [route.path, 0]));
 for (const route of routes) {
   assertTitleLength(route);
 
-  const html = patchPreloads(patchBody(patchHead(shell, route), route), route);
+  const html = await prerender(patchPreloads(patchBody(patchHead(shell, route), route), route), route);
   const target = route.path === '/' ? join(DIST, 'index.html') : join(DIST, route.path, 'index.html');
   await mkdir(dirname(target), { recursive: true });
   await writeFile(target, html, 'utf8');
@@ -401,6 +448,10 @@ await writeFile(
   'utf8',
 );
 
+if (prerenderFailed.length) {
+  console.warn(`PRERENDER OSTRZEŻENIE: trasy zostały przy fallbacku: ${prerenderFailed.join('; ')}`);
+}
+
 const orphans = [...inbound].filter(([, count]) => count === 0).map(([path]) => path);
 if (orphans.length) {
   console.warn(`SEO OSTRZEŻENIE: trasy bez linku przychodzącego w statycznym HTML: ${orphans.join(', ')}`);
@@ -410,5 +461,5 @@ if (thin.length) {
 }
 
 console.log(
-  `SEO: ${routes.length} tras z własnym <head> i <body>, sitemap.xml + robots.txt zaktualizowane`,
+  `SEO: ${routes.length} tras z własnym <head> i <body> (prerender: ${render ? routes.length - prerenderFailed.length - KEEP_FALLBACK.size : 0}), sitemap.xml + robots.txt zaktualizowane`,
 );
