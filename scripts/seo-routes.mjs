@@ -29,7 +29,10 @@
  */
 
 import { createRequire } from 'node:module';
-import { blogPosts } from '../src/data/blogPosts.js';
+import { readBlogPosts } from './lib/blog-source.mjs';
+
+// Wpisy z treścią, od najnowszego (content/blog/*.md).
+const blogPosts = readBlogPosts();
 import { SERVICES } from '../src/data/services.js';
 import { BRANZE, KOSZTY, REKOMENDACJE, RECOVERY_RATE, ZESPOLY } from '../src/data/kalkulator.js';
 import { SECTIONS as AUDYT_SECTIONS, TOTAL_QUESTIONS } from '../src/data/audytQuestions.js';
@@ -511,7 +514,7 @@ export const routes = [
       description: plainText(post.excerpt, 300),
       datePublished: post.date,
       dateModified: post.updated || post.date,
-      authorName: post.author?.name ?? 'Jakub Bednarz',
+      authorName: post.author ?? 'Jakub Bednarz',
       section: post.category,
     },
     priority: '0.7',
@@ -522,7 +525,7 @@ export const routes = [
     fallbackSections: [
       {
         heading: 'O wpisie',
-        text: `Kategoria: ${post.category}. Data publikacji: ${post.date}. Autor: ${post.author?.name ?? 'Workshift'}.`,
+        text: `Kategoria: ${post.category}. Data publikacji: ${post.date}. Autor: ${post.author ?? 'Workshift'}.`,
       },
     ],
     fallbackLinks: [

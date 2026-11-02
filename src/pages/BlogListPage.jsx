@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { blogPosts, blogCategories } from '../data/blogPosts';
+import { blogPosts, blogCategories } from '../data/blog';
 import { BlogCard } from '../components/blog/BlogCard';
 import { FadeUp } from '../components/animations/FadeUp';
 

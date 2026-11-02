@@ -321,7 +321,7 @@ w GSC. Zgodnie z workflow designerskim z `CLAUDE.md`: komponenty budujemy najpie
 **Sprint 2 - klaster A1, wpis definicyjny (`/blog`):**
 Jeden solidny wpis pod `automatyzacja procesów biznesowych` (590/mies., KD 0, CPC 6,81 zł).
 Mechanika sprawdzona u `letsautomate.pl` - jeden wpis łapie dwie frazy naraz. Bez CMS-a każdy wpis
-to zmiana w `src/data/blogPosts.js`, więc opłaca się jeden dobry, nie pięć przeciętnych.
+to nowy plik `content/blog/<slug>.md`, więc opłaca się jeden dobry, nie pięć przeciętnych.
 
 **Sprint 3 - decyzja o szkoleniach (klaster D):**
 Największy popyt komercyjny, ale SERP instytucjonalny. **Najpierw decyzja Kuby, czy w to wchodzić**,
