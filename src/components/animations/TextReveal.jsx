@@ -54,7 +54,8 @@ export function TextReveal({ text, className = "", delay = 0, wordMode = false, 
             key={index}
             className="inline-block"
           >
-            {word}
+            {/* Spacja na końcu inline-blocka nie zmienia układu, a bez niej czytniki HTML sklejają słowa. */}
+            {`${word} `}
           </motion.span>
         ))}
       </Wrapper>
