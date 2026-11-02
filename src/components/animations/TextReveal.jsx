@@ -8,7 +8,9 @@ import { motion, useReducedMotion } from "framer-motion";
  * na IntersectionObserver, co przesuwało LCP strony głównej o ok. 1,5 s.
  * Przy prefers-reduced-motion słowa stoją od razu na miejscu.
  */
-export function TextReveal({ text, className = "", delay = 0, wordMode = false }) {
+export function TextReveal({ text, className = "", delay = 0, wordMode = false, as = "div" }) {
+  // as="h1": nagłówek strony (hero) jako prawdziwy <h1> w HTML, wygląd bez zmian.
+  const Wrapper = motion[as] ?? motion.div;
   const reduce = useReducedMotion();
   const words = text.split(" ");
 
@@ -39,7 +41,7 @@ export function TextReveal({ text, className = "", delay = 0, wordMode = false }
 
   if (wordMode) {
     return (
-      <motion.div
+      <Wrapper
         className={`flex flex-wrap ${className}`}
         variants={container}
         initial={initial}
@@ -55,7 +57,7 @@ export function TextReveal({ text, className = "", delay = 0, wordMode = false }
             {word}
           </motion.span>
         ))}
-      </motion.div>
+      </Wrapper>
     );
   }
 

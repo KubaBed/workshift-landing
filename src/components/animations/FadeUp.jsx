@@ -1,10 +1,15 @@
 import { motion } from "framer-motion";
 
-export function FadeUp({ children, delay = 0, className = "", duration = 0.8 }) {
+/**
+ * fade={false}: element widoczny od pierwszego malowania, animujemy tylko przesunięcie.
+ * Dla treści u góry strony (nagłówki, element LCP): strony są prerenderowane do HTML
+ * i opacity 0 chowałoby gotowy tekst do czasu załadowania JS.
+ */
+export function FadeUp({ children, delay = 0, className = "", duration = 0.8, fade = true }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={fade ? { opacity: 0, y: 30 } : { y: 30 }}
+      whileInView={fade ? { opacity: 1, y: 0 } : { y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{
         duration: duration,

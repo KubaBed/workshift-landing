@@ -24,7 +24,7 @@ export default function BlogListPage() {
     <main className="min-h-screen bg-sage pt-40 pb-24">
       <div className="max-w-[1320px] mx-auto px-6 max-md:px-4">
         {/* Hero */}
-        <FadeUp>
+        <FadeUp fade={false}>
           <div className="mb-12 max-w-3xl">
             <div className="flex items-center gap-2 mb-6">
               <span className="w-2 h-2 rounded-full bg-lime" />
@@ -39,7 +39,7 @@ export default function BlogListPage() {
         </FadeUp>
 
         {/* Category filters */}
-        <FadeUp delay={0.05}>
+        <FadeUp fade={false} delay={0.05}>
           <div className="flex flex-wrap gap-3 mb-16">
             <button
               onClick={() => setActiveCategory(null)}
