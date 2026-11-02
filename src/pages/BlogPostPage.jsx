@@ -155,6 +155,7 @@ export default function BlogPostPage() {
           <article
             className={`prose-workshift ${content ? '' : 'min-h-[60vh]'}`}
             aria-busy={!content}
+            onClick={playYoutube}
             dangerouslySetInnerHTML={{ __html: contentHtml }}
           />
         </FadeUp>
@@ -235,6 +236,20 @@ export default function BlogPostPage() {
   );
 }
 
+/** Klik w miniaturę [youtube:ID]: podmienia ją na odtwarzacz z autostartem. */
+function playYoutube(event) {
+  const button = event.target.closest('[data-yt-id]');
+  if (!button) return;
+  const iframe = document.createElement('iframe');
+  iframe.className = 'w-full h-full';
+  iframe.src = `https://www.youtube.com/embed/${button.dataset.ytId}?rel=0&autoplay=1`;
+  iframe.title = 'YouTube video player';
+  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+  iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+  iframe.allowFullscreen = true;
+  button.replaceWith(iframe);
+}
+
 /**
  * Minimal markdown-ish → HTML converter.
  * Handles: ## headings, ### headings, **bold**, > blockquotes, - lists, paragraphs.
@@ -284,7 +299,9 @@ function renderContent(raw) {
       const wrapper = vertical
         ? 'my-8 mx-auto w-full max-w-sm aspect-[9/16] overflow-hidden rounded-[10px] bg-black'
         : 'my-8 aspect-video w-full overflow-hidden rounded-[10px] bg-black';
-      html += `<div class="${wrapper}"><iframe class="w-full h-full" src="https://www.youtube.com/embed/${id}?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>`;
+      // Miniatura z przyciskiem zamiast iframe: odtwarzacz YouTube to ok. 900 KB skryptów, które
+      // blokowały render wpisu (PSI 02.11: LCP 9,9 s). Iframe wstawia playYoutube() po kliknięciu.
+      html += `<div class="${wrapper}"><button type="button" data-yt-id="${id}" aria-label="Odtwórz film na YouTube" class="group relative block w-full h-full cursor-pointer"><img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" width="480" height="360" loading="lazy" decoding="async" class="w-full h-full object-cover opacity-90 transition-opacity group-hover:opacity-100"/><span aria-hidden="true" class="absolute inset-0 m-auto flex size-16 items-center justify-center rounded-full bg-lime shadow-lg transition-transform group-hover:scale-110"><svg width="24" height="24" viewBox="0 0 24 24" fill="#000"><path d="M8 5v14l11-7z"/></svg></span></button></div>`;
       continue;
     }
 
