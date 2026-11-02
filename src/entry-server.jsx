@@ -27,6 +27,9 @@ export async function render(url) {
         </LenisProvider>
       </StaticRouter>
     </StrictMode>,
+    // Bez limitu: inaczej React wynosi większe granice Suspense do <div hidden> i odsłania je skryptem,
+    // a treść ma być widoczna w samym HTML (dla crawlerów bez JS i przed załadowaniem skryptów).
+    { progressiveChunkSize: Number.POSITIVE_INFINITY },
   );
   return streamToString(prelude);
 }
