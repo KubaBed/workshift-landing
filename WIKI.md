@@ -20,7 +20,7 @@
 │  HeroTypographic → InteractiveServicesBento       │
 │  → Kontakt → Newsletter → Footer                 │
 ├──────────────────────────────────────────────────┤
-│  Data Layer: src/data/services.js + blogPosts.js  │
+│  Data Layer: src/data/services.js + content/blog │
 ├──────────────────────────────────────────────────┤
 │  Backend: Vercel Functions (/api/*)               │
 │  send-email → subscribe-newsletter                │
@@ -50,7 +50,7 @@
 - **AboutUsSection.jsx** — Team section with photos
 
 ### Pages (`src/pages/`)
-- **BlogListPage.jsx** — List of blog posts from `src/data/blogPosts.js`
+- **BlogListPage.jsx** - List of blog posts from `src/data/blog.js` (index of `content/blog/*.md`)
 - **BlogPostPage.jsx** — Individual blog post with meta tags
 - **ServicePage.jsx** — Service detail with SEO metadata, redirect logic
 - **PrivacyPolicyPage.jsx** — Privacy policy
@@ -59,7 +59,7 @@
 
 ### Data files (`src/data/`)
 - **services.js** — Array of service objects (id, title, description, icon, details, bento metadata)
-- **blogPosts.js** — Array of blog posts (slug, title, category, excerpt, content as HTML)
+- **blog.js** - blog index (frontmatter of `content/blog/*.md`) and lazy per-post content
 
 ## Backend
 

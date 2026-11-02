@@ -78,7 +78,7 @@ src/
 │   └── NotFoundPage.jsx
 ├── data/
 │   ├── services.js      # Service definitions
-│   └── blogPosts.js     # Blog content
+│   └── blog.js          # Blog: indeks wpisów + leniwa treść (wpisy w content/blog/*.md)
 ├── lib/
 │   ├── analytics.js     # Custom event tracking
 │   └── consent.js       # Dynamic script loading

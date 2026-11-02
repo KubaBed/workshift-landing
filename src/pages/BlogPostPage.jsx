@@ -1,8 +1,8 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { ArrowLeft, Linkedin, Twitter, Link2 } from 'lucide-react';
-import { getPostBySlug, getRelatedPosts, formatDate } from '../data/blogPosts';
+import { getPostBySlug, getRelatedPosts, formatDate, loadPostContent } from '../data/blog';
 import { BlogCard } from '../components/blog/BlogCard';
 import { FadeUp } from '../components/animations/FadeUp';
 import { track, EVENTS } from '../lib/analytics';
@@ -19,6 +19,21 @@ export default function BlogPostPage() {
   const { slug } = useParams();
   const post = getPostBySlug(slug);
   const related = post ? getRelatedPosts(slug, 2) : [];
+
+  // Treść wpisu to osobny chunk (content/blog/<slug>.md), pobierany dopiero tutaj.
+  // Nagłówek, data i okładka są w indeksie, więc renderują się od razu.
+  const [loaded, setLoaded] = useState({ slug: null, content: null });
+  useEffect(() => {
+    if (!post) return undefined;
+    let cancelled = false;
+    loadPostContent(slug).then((content) => {
+      if (!cancelled) setLoaded({ slug, content });
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [slug, post]);
+  const content = loaded.slug === slug ? loaded.content : null;
 
   // Scroll to top on post change
   useEffect(() => {
@@ -40,7 +55,8 @@ export default function BlogPostPage() {
   // Pamięć per-slug w sessionStorage żeby nie trackować tego samego posta 2x.
   const sentinelRef = useRef(null);
   useEffect(() => {
-    if (!post || !sentinelRef.current) return;
+    // Bez treści sentinel stoi tuż pod okładką i od razu byłby "przeczytany".
+    if (!post || !content || !sentinelRef.current) return;
     const key = `blog_read_${slug}`;
     if (sessionStorage.getItem(key)) return;
 
@@ -56,12 +72,12 @@ export default function BlogPostPage() {
     );
     obs.observe(sentinelRef.current);
     return () => obs.disconnect();
-  }, [slug, post]);
+  }, [slug, post, content]);
 
   if (!post) return <Navigate to="/blog" replace />;
 
   // Simple markdown-ish content → HTML
-  const contentHtml = renderContent(post.content);
+  const contentHtml = content ? renderContent(content) : '';
 
   const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
 
@@ -101,6 +117,12 @@ export default function BlogPostPage() {
               <span>{post.category}</span>
               <span className="w-1 h-1 rounded-full bg-muted-light" />
               <span>{formatDate(post.date)}</span>
+              {post.updated && (
+                <>
+                  <span className="w-1 h-1 rounded-full bg-muted-light" />
+                  <span>zaktualizowano {formatDate(post.updated)}</span>
+                </>
+              )}
             </div>
           </div>
         </FadeUp>
@@ -131,7 +153,8 @@ export default function BlogPostPage() {
       <section className="max-w-[800px] mx-auto px-6 max-md:px-4 mb-16">
         <FadeUp delay={0.2}>
           <article
-            className="prose-workshift"
+            className={`prose-workshift ${content ? '' : 'min-h-[60vh]'}`}
+            aria-busy={!content}
             dangerouslySetInnerHTML={{ __html: contentHtml }}
           />
         </FadeUp>

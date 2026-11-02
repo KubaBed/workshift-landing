@@ -28,6 +28,7 @@ import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { routes } from './seo-routes.mjs';
+import { readBlogIndex } from './lib/blog-source.mjs';
 import { MAX_TITLE_LENGTH, SITE_ORIGIN, absoluteUrl } from '../src/lib/seo.js';
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist');
@@ -179,7 +180,16 @@ function patchPreloads(html, route) {
   const match = ROUTE_PAGE_MODULES.find(([pattern]) => pattern.test(route.path));
   if (!match) return html;
   if (!manifest[match[1]]) throw new Error(`build-seo-html: brak ${match[1]} w manifeście Vite`);
-  const links = [...new Set(chunkFiles(match[1]))]
+  const files = chunkFiles(match[1]);
+  // Wpis bloga: treść to osobny chunk (content/blog/<slug>.md), ładowany dynamicznie
+  // przez BlogPostPage. Preload, żeby nie czekał w kolejce za chunkiem strony.
+  const postSlug = /^\/blog\/([^/]+)$/.exec(route.path)?.[1];
+  if (postSlug) {
+    const key = `content/blog/${postSlug}.md?raw`;
+    if (!manifest[key]) throw new Error(`build-seo-html: brak ${key} w manifeście Vite`);
+    files.push(manifest[key].file);
+  }
+  const links = [...new Set(files)]
     .filter((file) => !html.includes(`/${file}"`))
     .map((file) => `    <link rel="modulepreload" crossorigin href="/${file}">`);
   return links.length ? html.replace(/<\/head>/, `${links.join('\n')}\n  </head>`) : html;
@@ -320,7 +330,7 @@ function assertTitleLength(route) {
   if (route.title.length <= MAX_TITLE_LENGTH) return;
   throw new Error(
     `Tytuł trasy ${route.path} ma ${route.title.length} znaków (limit ${MAX_TITLE_LENGTH}): ` +
-      `"${route.title}". Skróć go - dla wpisu bloga dopisz pole "seoTitle" w src/data/blogPosts.js, ` +
+      `"${route.title}". Skróć go - dla wpisu bloga dopisz pole "seoTitle" we frontmatterze content/blog/<slug>.md, ` +
       'dla usługi popraw "metaTitle" w src/data/services.js, dla strony statycznej "title" w src/lib/seo.js.',
   );
 }
@@ -373,6 +383,18 @@ for (const route of routes) {
 await rm(join(DIST, '.vite'), { recursive: true, force: true });
 
 await writeFile(join(DIST, 'sitemap.xml'), buildSitemap(), 'utf8');
+
+// Indeks wpisów jako publiczny JSON: czyta go funkcja api/confirm-newsletter.js (3 najnowsze
+// wpisy w mailu powitalnym), bo funkcje Vercela nie widzą katalogu content/.
+await writeFile(
+  join(DIST, 'blog-index.json'),
+  JSON.stringify(
+    readBlogIndex().map(({ slug, title, category, date, updated, excerpt, image }) => ({
+      slug, title, category, date, updated, excerpt, image, url: `${SITE_ORIGIN}/blog/${slug}`,
+    })),
+  ),
+  'utf8',
+);
 await writeFile(
   join(DIST, 'robots.txt'),
   `User-agent: *\nAllow: /\nDisallow: /showcase\nDisallow: /thank-you\n\nSitemap: ${SITE_ORIGIN}/sitemap.xml\n`,

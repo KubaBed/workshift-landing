@@ -127,8 +127,8 @@ i `automatyzacja procesów biznesowych` mają zerowe pokrycie domen. Jedna stron
 **Pułapka:** długi ogon tej frazy to uczelnie (studia podyplomowe, uł, kozminski, agh, pdf).
 Nie ciągnąć treści w tę stronę.
 
-**Technicznie:** brak CMS - wpis to zmiana w `src/data/blogPosts.js`. Trasa wchodzi do sitemapy
-automatycznie (`scripts/seo-routes.mjs` mapuje `blogPosts`). Składnia renderera w `MEMORY.md`:
+**Technicznie:** brak CMS - wpis to plik `content/blog/<slug>.md` (frontmatter + treść). Trasa wchodzi do sitemapy
+automatycznie (`scripts/seo-routes.mjs` czyta `content/blog` przez `scripts/lib/blog-source.mjs`). Składnia renderera w `MEMORY.md`:
 listy tylko `- `, linki `[tekst](url)`, `[youtube:ID]`, `> cytat`, `### ` → `<h4>`.
 
 ---

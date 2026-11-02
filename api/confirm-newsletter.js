@@ -1,7 +1,6 @@
 import { Resend } from 'resend';
 import { verifyToken } from './_lib/doi.js';
 import { buildWelcomeEmail, buildWelcomeText } from './_lib/welcomeEmail.js';
-import { blogPosts } from '../src/data/blogPosts.js';
 
 const errorPage = (title, body, status = 400) => ({
     status,
@@ -80,7 +79,7 @@ export default async function handler(req, res) {
         // Nie failujemy całego flow gdy wysyłka padnie — user już jest w audience.
         if (!alreadyExists) {
             try {
-                const latestPosts = blogPosts.slice(0, 3);
+                const latestPosts = await fetchLatestPosts(3);
                 const html = buildWelcomeEmail({ firstName, posts: latestPosts });
                 const text = buildWelcomeText({ firstName, posts: latestPosts });
 
@@ -108,5 +107,17 @@ export default async function handler(req, res) {
         console.error('confirm-newsletter fatal:', err);
         const page = errorPage('Chwilowy problem', 'Nie mogliśmy zakończyć zapisu. Odśwież tę stronę za minutę.', 500);
         return res.status(page.status).send(page.html);
+    }
+}
+
+// Wpisy żyją w content/blog/*.md, a funkcja Vercela nie ma tego katalogu. Build zapisuje
+// publiczny indeks /blog-index.json (scripts/build-seo-html.mjs); przy błędzie mail idzie bez wpisów.
+async function fetchLatestPosts(count) {
+    try {
+        const res = await fetch('https://www.workshift.pl/blog-index.json', { signal: AbortSignal.timeout(3000) });
+        if (!res.ok) return [];
+        return (await res.json()).slice(0, count);
+    } catch {
+        return [];
     }
 }

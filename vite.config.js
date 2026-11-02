@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import path from "path"
 import apiMiddleware from './vite-api-middleware.mjs'
+import { blogIndexPlugin } from './scripts/lib/blog-source.mjs'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -10,6 +11,7 @@ export default defineConfig({
     tailwindcss(),
     react(),
     apiMiddleware(),
+    blogIndexPlugin(),
   ],
   resolve: {
     alias: {

@@ -70,7 +70,7 @@ function articleCard(post) {
 }
 
 /**
- * Główny builder. Posts = array z 3 najnowszymi z blogPosts.js.
+ * Główny builder. Posts = 3 najnowsze wpisy z /blog-index.json (api/confirm-newsletter.js).
  */
 export function buildWelcomeEmail({ firstName, posts }) {
     const greeting = firstName ? `Cześć ${escapeHtml(firstName)},` : 'Cześć,';

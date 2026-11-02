@@ -91,7 +91,7 @@ export default function apiMiddlewarePlugin() {
         // więc plugin jest niepotrzebny w build phase. `apply: 'serve'` wyklucza
         // plugin z `vite build` — eliminujemy ryzyko interakcji z Rollup AST
         // parser, które wcześniej powodowało false "Expected ',', got 'ident'"
-        // w nieskorelowanych plikach (np. src/data/blogPosts.js).
+        // w nieskorelowanych plikach (np. content/blog/*.md).
         apply: 'serve',
         configureServer(server) {
             server.middlewares.use(async (req, res, next) => {

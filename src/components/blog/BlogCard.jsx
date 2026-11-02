@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
-import { formatDate } from '../../data/blogPosts';
+import { formatDate } from '../../data/blog';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Magnetic } from '../animations/Magnetic';
 
