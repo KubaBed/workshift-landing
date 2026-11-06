@@ -18,6 +18,14 @@ export const TOOL_LINKS = [
   ['/narzedzia/szkic', 'Szkic - aplikacja na Maca'],
 ];
 
+// Rozwijana pozycja „Narzędzia" w menu (src/components/Header.jsx). Krótsze nazwy niż w stopce;
+// bez /audyt-ai, bo to landing kampanii płatnej z celowo pustym menu.
+export const MENU_TOOL_LINKS = [
+  ['/prompty', 'Baza promptów'],
+  ['/narzedzia/szkic', 'Szkic'],
+  ['/kalkulator', 'Kalkulator'],
+];
+
 export const SITE_NAV = [
   ['/', 'Strona główna'],
   ...SERVICE_LINKS,
